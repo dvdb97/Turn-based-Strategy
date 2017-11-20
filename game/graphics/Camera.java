@@ -1,4 +1,4 @@
-package entities;
+package graphics;
 
 import lwlal.Vector3f;
 import static utils.Const.HALF_PI;

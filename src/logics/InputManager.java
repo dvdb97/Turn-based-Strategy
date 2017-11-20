@@ -1,7 +1,7 @@
 package logics;
 
 import package1.Input;
-import entities.Camera;
+import graphics.Camera;
 import package1.GameState;
 
 import utils.Const;

@@ -21,7 +21,6 @@ import assets.meshes.fileLoaders.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
 import assets.models.*;
 import assets.textures.Texture2D;
-import entities.Camera;
 import gui.GUI;
 import gui.TestWindow;
 import models.HexagonBorderMesh;
@@ -104,8 +103,6 @@ public class Graphics {
 	public void loadData() {
 		
 		monkey = OBJ_FileLoader.loadOBJ_File("Models/Monkey.obj", new StandardMaterial());
-		
-		testTex = new Texture2D("Fonts/font.jpg", 2, GL_NEAREST_MIPMAP_NEAREST, GL_REPEAT);
 		
 		coordinateSystem = new CoordinateSystem(100f);
 		
@@ -202,7 +199,7 @@ public class Graphics {
 		
 			shader.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());
 		
-			//RenderEngine.draw(hexagonBorderMesh, null);
+			RenderEngine.draw(hexagonBorderMesh, null);
 			
 			RenderEngine.draw(coordinateSystem, null);
 		

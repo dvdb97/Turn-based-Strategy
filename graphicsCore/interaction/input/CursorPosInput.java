@@ -1,4 +1,4 @@
-package input;
+package interaction.input;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 

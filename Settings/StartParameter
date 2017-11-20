@@ -1,0 +1,5 @@
+title="Strategy Game";
+version="2.4";
+window = windowed;
+debug = false;
+cheats = false;

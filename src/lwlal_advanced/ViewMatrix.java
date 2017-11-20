@@ -1,6 +1,6 @@
 package lwlal_advanced;
 
-import entities.Camera;
+import graphics.Camera;
 
 //A ViewMatrix is a TransformationMatrix which represents the
 //opposite movement of the camera it is referring to
