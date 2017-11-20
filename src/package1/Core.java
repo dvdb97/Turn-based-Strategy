@@ -1,11 +1,10 @@
 package package1;
 
 import interaction.Window;
+import interaction.input.KeyInput;
 import rendering.RenderEngine;
 
 import static org.lwjgl.glfw.GLFW.*;
-
-import input.KeyInput;
 
 public class Core implements Runnable {
 	

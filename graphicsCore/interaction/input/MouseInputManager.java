@@ -1,4 +1,4 @@
-package input;
+package interaction.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
