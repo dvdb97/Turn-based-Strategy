@@ -1,5 +1,8 @@
 package core;
 
+import Interaction.PlayerCamera;
+import graphics.ProjectionMatrix;
+import graphics.shaders.ShaderManager;
 import map.MapManager;
 import rendering.RenderEngine;
 import save.GameScore;
@@ -13,10 +16,19 @@ public class Game {
 	//Start a completely new game
 	public Game(int numberOfAgents, int boardWidth, int boardHeight) {
 		
+		//Init the shaders
+		ShaderManager.init();
+		
+		//Init the maps
 		MapManager.init(boardWidth, boardHeight);
 		
-		//Init Agents etc
+		//Init the camera
+		PlayerCamera.init();
 		
+		//Init the Projection Matrix:
+		ProjectionMatrix.init();
+		
+		//Init Agents etc
 		run();
 		
 	}
@@ -38,17 +50,31 @@ public class Game {
 			
 			RenderEngine.clear();
 			
-			//Process input
+			processInput();
 			
-			//update
+			update();
 			
-			//render stuff
+			render();
 			
 			RenderEngine.swapBuffers();
 			
 		}
 		
 		close();
+		
+	}
+	
+	
+	private void processInput() {
+		
+		PlayerCamera.update();
+		
+	}
+	
+	
+	private void update() {
+		
+		
 		
 	}
 	
@@ -61,6 +87,8 @@ public class Game {
 	
 	
 	public void close() {
+		
+		
 		
 	}
 

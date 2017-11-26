@@ -1,10 +1,16 @@
 package map;
 
+import Interaction.PlayerCamera;
 import assets.material.StandardMaterial;
 import assets.models.Element_Model;
 import assets.models.Illuminated_Model;
+import graphics.Camera;
+import graphics.ProjectionMatrix;
+import graphics.shaders.ShaderManager;
+import lwlal.Matrix44f;
 import models.HexagonBorderMesh;
 import models.TriangleMesh;
+import rendering.RenderEngine;
 import save.GameScore;
 import terrain.Terrain;
 
@@ -14,7 +20,11 @@ public class MapManager {
 	
 	private static HexagonBorderMesh hexagonBorderMap;
 	
-	//Current map mode
+	
+	private static  Matrix44f modelMatrix;
+	
+	
+	private boolean hexagonBordersEnabled = true;
 	
 	
 	public static void init(int widthInHex, int heightInHex) {
@@ -26,6 +36,10 @@ public class MapManager {
 		
 		//Load the hexagon borders
 		hexagonBorderMap = new HexagonBorderMesh(geographicMap, 0, 0, 1);
+		
+		
+		//The model matrix for the map (as we only move the map the model matrix won't change)
+		modelMatrix = new Matrix44f();
 		
 	}
 	
@@ -39,7 +53,18 @@ public class MapManager {
 	
 	public static void render() {
 		
-		//Display the maps that are currently active	
+		ShaderManager.useLightShader(modelMatrix, PlayerCamera.getViewMatrix(), ProjectionMatrix.getProjectionMatrix(), Camera.getPosition(), light, mat);
+		
+		RenderEngine.draw(geographicMap, null);
+		
+		ShaderManager.disableLightShader();
+		
+		
+		ShaderManager.useShader(modelMatrix, PlayerCamera.getViewMatrix(), ProjectionMatrix.getProjectionMatrix());
+		
+		RenderEngine.draw(hexagonBorderMap, null);
+		
+		ShaderManager.disableShader();
 		
 	}
 	

@@ -176,4 +176,25 @@ public class Vector3f extends Vectorf {
 		set(2, c);
 	}
 	
+	/**
+	 * @param increases the first component of the vector by value
+	 */
+	public void increaseA(float value) {
+		setA(getA() + value);
+	}
+	
+	/**
+	 * @param increases the second component of the vector by value
+	 */
+	public void increaseB(float value) {
+		setB(getB() + value);
+	}	
+	
+	/**
+	 * @param increases the third component of the vector by value
+	 */
+	public void increaseC(float value) {
+		setC(getC() + value);
+	}
+	
 }
