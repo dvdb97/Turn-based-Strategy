@@ -81,7 +81,7 @@ public class Game {
 	
 	private void render() {
 		
-		MapManager.render();
+		
 		
 	}
 	
