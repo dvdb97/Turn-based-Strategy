@@ -44,6 +44,8 @@ public class Application {
 		
 		RenderEngine.init(window);
 		RenderEngine.setClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+		RenderEngine.enableDepthTest();
+		RenderEngine.setSwapInterval(1);
 		
 	}
 	
