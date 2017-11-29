@@ -64,13 +64,5 @@ public class Application {
 		window.close();
 		
 	}
-	
-	
-	public static void main(String[] args) {
-		
-		new Application(new StartParams("Settings/StartParameter"));
-		
-	}
-	
 
 }
