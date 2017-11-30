@@ -28,6 +28,7 @@ in mat3 out_viewMatrix;
 //Uniform variables:
 uniform sampler2D texture;
 uniform vec3 cameraPosition;
+
 uniform vec3 ambientLight;
 
 uniform Material material;
@@ -39,7 +40,6 @@ out vec4 fColor;
 
 void main() {
 
-	//vec3 cameraPosition = vec3(0.0, 0.0, 1.0);
 	vec3 lightDirection = normalize(light.direction);
 	
 	//************ Scattered lighting ************

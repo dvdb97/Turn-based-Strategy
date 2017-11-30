@@ -16,7 +16,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 import assets.models.Element_Model;
-import lwlal.Vector3f;
+import math.vectors.Vector3f;
 
 public class HexagonBorderMesh extends Element_Model{
 	

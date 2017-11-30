@@ -1,8 +1,7 @@
 
 package utils;
 
-import lwlal.Vector3f;
-import world.GoodsVector;
+import math.vectors.Vector3f;
 
 public class Const {
 	

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
-import lwlal.Vector3f;
+import math.vectors.Vector3f;
 
 public class CustomBufferUtils {
 	

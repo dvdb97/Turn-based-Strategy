@@ -1,13 +1,11 @@
 #version 330 core
 
-in vec2 vs_tex_coord;
-
-uniform sampler2D textureSampler;
+in vec4 out_Color;
 
 out vec4 fColor;
 
 void main() {
 
-	fColor = texture(textureSampler, vs_tex_coord);
+	fColor = out_Color;
 
 }

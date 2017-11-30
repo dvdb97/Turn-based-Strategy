@@ -1,7 +1,7 @@
 package models;
 
 import assets.meshes.geometry.Color;
-import utils.ColorFunction;
+import models.seeds.ColorFunction;
 
 public class PosCol implements ColorFunction{
 	

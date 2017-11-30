@@ -13,13 +13,11 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
-import assets.meshes.geometry.Color;
-import assets.models.Element_Model;
 import assets.models.Illuminated_Model;
-import lwlal.Vector3f;
+import math.vectors.Vector3f;
 import utils.Const;
 import utils.CustomBufferUtils;
-import utils.ColorFunction;
+import models.seeds.ColorFunction;
 
 public class TriangleMesh extends Illuminated_Model {
 	
