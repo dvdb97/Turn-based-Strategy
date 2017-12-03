@@ -1,4 +1,4 @@
-package models;
+package models.worldModels;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -21,6 +21,7 @@ import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
 import utils.Const;
 import utils.CustomBufferUtils;
+import models.PosCol;
 import models.seeds.ColorFunction;
 
 public class TriangleMesh extends Illuminated_Model {

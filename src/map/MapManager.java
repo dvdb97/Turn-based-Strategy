@@ -11,19 +11,21 @@ import graphics.matrices.ProjectionMatrix;
 import graphics.shaders.ShaderManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import models.HexagonBorderMesh;
 import models.TerrainCol;
-import models.TriangleMesh;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import core.saves.GameScore;
 import models.seeds.Terrain;
+import models.worldModels.HexagonBorderMesh;
+import models.worldModels.TriangleMesh;
 
 public class MapManager {
 	
 	private static TriangleMesh geographicMap;
 	
 	private static HexagonBorderMesh hexagonBorderMap;
+	
+	private static TriangleMesh seaModel;
 	
 	private static CoordinateSystem coordinates;
 	
@@ -45,6 +47,10 @@ public class MapManager {
 		//Load the 3D Terrain
 		Terrain terrain = new Terrain(heightInHex, widthInHex);
 		geographicMap = new TriangleMesh(0.1f, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
+		
+		
+		//Load the the model to display the sea:
+		//TODO:
 		
 		
 		//Load the hexagon borders

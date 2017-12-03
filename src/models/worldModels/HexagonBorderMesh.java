@@ -1,4 +1,4 @@
-package models;
+package models.worldModels;
 
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
