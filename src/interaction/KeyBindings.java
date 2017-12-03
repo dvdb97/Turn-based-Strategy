@@ -11,23 +11,23 @@ public class KeyBindings {
 	
 	private static int mapTranslationRight = GLFW_KEY_D;
 	
-	private static int mapTranslationUp = GLFW_KEY_W;
+	private static int mapTranslationForward = GLFW_KEY_W;
 	
-	private static int mapTranslationDown = GLFW_KEY_S;
+	private static int mapTranslationBackward = GLFW_KEY_S;
 	
-	private static int mapZoomOut = GLFW_KEY_R;
+	private static int mapTranslationUp = GLFW_KEY_R;
 	
-	private static int mapZoomIn = GLFW_KEY_F;
+	private static int mapTranslationDown = GLFW_KEY_F;
 
 
 	public static void setMapZoomOut(int mapZoomOut) {
-		KeyBindings.mapZoomOut = mapZoomOut;
+		KeyBindings.mapTranslationUp = mapZoomOut;
 	}
 
 
 
 	public static void setMapZoomIn(int mapZoomIn) {
-		KeyBindings.mapZoomIn = mapZoomIn;
+		KeyBindings.mapTranslationDown = mapZoomIn;
 	}
 
 
@@ -46,13 +46,13 @@ public class KeyBindings {
 	}
 
 	
-	public static void setMapTranslationUp(int mapTranslationUp) {
-		KeyBindings.mapTranslationUp = mapTranslationUp;
+	public static void setMapTranslationForward(int mapTranslationUp) {
+		KeyBindings.mapTranslationForward = mapTranslationUp;
 	}
 
 	
-	public static void setMapTranslationDown(int mapTranslationDown) {
-		KeyBindings.mapTranslationDown = mapTranslationDown;
+	public static void setMapTranslationBackward(int mapTranslationDown) {
+		KeyBindings.mapTranslationBackward = mapTranslationDown;
 	}
 
 
@@ -71,6 +71,16 @@ public class KeyBindings {
 	}
 
 
+	public static int getMapTranslationForward() {
+		return mapTranslationForward;
+	}
+
+
+	public static int getMapTranslationBackward() {
+		return mapTranslationBackward;
+	}
+	
+	
 	public static int getMapTranslationUp() {
 		return mapTranslationUp;
 	}
@@ -78,16 +88,6 @@ public class KeyBindings {
 
 	public static int getMapTranslationDown() {
 		return mapTranslationDown;
-	}
-	
-	
-	public static int getMapZoomOut() {
-		return mapZoomOut;
-	}
-
-
-	public static int getMapZoomIn() {
-		return mapZoomIn;
 	}
 
 }

@@ -192,7 +192,7 @@ public class OBJ_FileLoader {
 		//Store the texture position data if there is any...
 		FloatBuffer texPosBuffer;
 		if ((texPosBuffer = vertexTexPosToFloatBuffer(vertices)) != null) {
-			outputModel.setTexturePositionData(texPosBuffer, 2, GL_STATIC_DRAW);
+			outputModel.setVertexTexturePositionData(texPosBuffer, 2, GL_STATIC_DRAW);
 		}
 		
 		

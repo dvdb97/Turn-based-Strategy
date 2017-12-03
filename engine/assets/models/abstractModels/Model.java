@@ -224,7 +224,7 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	
 	
-	public void setTexturePositionData(FloatBuffer texturePositionDataBuffer, int size, int accessibility) {
+	public void setVertexTexturePositionData(FloatBuffer texturePositionDataBuffer, int size, int accessibility) {
 		
 		setTexturePositionData(texturePositionDataBuffer, TEX_POS_ARRAY_INDEX, size, accessibility);		
 		

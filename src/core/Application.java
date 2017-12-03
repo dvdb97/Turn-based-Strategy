@@ -2,6 +2,7 @@ package core;
 
 import core.game.Game;
 import core.saves.StartParams;
+import graphics.matrices.Matrices;
 import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.KeyInput;
@@ -48,6 +49,8 @@ public class Application {
 		RenderEngine.enableDepthTest();
 		RenderEngine.setSwapInterval(1);
 		
+		Matrices.initProjectionMatrix(window);
+		
 	}
 	
 	
@@ -55,7 +58,7 @@ public class Application {
 		
 		//TODO: Add a main menu
 		
-		Game game = new Game(1, 200, 200);
+		Game game = new Game(1, 300, 300);
 		
 		close();
 		

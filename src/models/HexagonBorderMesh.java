@@ -17,6 +17,7 @@ import org.lwjgl.BufferUtils;
 
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
+import utils.CustomBufferUtils;
 
 public class HexagonBorderMesh extends Element_Model{
 	
@@ -27,6 +28,8 @@ public class HexagonBorderMesh extends Element_Model{
 	private final int PRI = -1;					//primitive restart index
 	
 	private int hexLength, hexWidth;			//length and width measured in vertices, that are relevant for a hexagon mesh
+	
+	private IntBuffer indexBuffer;
 	
 	//********************************** constructor ************************************
 	
@@ -50,8 +53,8 @@ public class HexagonBorderMesh extends Element_Model{
 		this.yOffset = halfYOffset;
 		this.elr = (int)Math.pow(2, log2EdgeLengthRelation);
 		
-		hexLength = (triangleMesh.getLength() - 2 * xOffset + elr - 1) / elr;
-		hexWidth  = (triangleMesh.getWidth()  - 2 * yOffset + elr -1 - elr/2) / elr;
+		hexLength =  (triangleMesh.getLength() - 2 * xOffset - 1) / elr + 1;
+		hexWidth  = ((triangleMesh.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
 		
 		FloatBuffer posBuffer = processVertices(triangleMesh);
 		IntBuffer elementBuffer = createElementBuffer();
@@ -71,30 +74,33 @@ public class HexagonBorderMesh extends Element_Model{
 		
 		Vector3f[] triMeshPos = triangleMesh.getPosArray();
 		
+		float delta = 0.005f*elr;
+		
 		for (int i=0; i<triMeshPos.length; i++) {
 			float c;
 			float d = triMeshPos[i].getC();
 			if (d < 0) {
-				c = 0.01f;
+				c = delta;
 			} else {
-				c = d + 0.01f;
+				c = d + delta;
 			}
 			triMeshPos[i].setC(c);
 			
 		}
 		
-		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*2);
+		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*3);
 		
-		for (int y=0; y<hexWidth; y++) {
-			
+	/*	for (int y=yOffset; y<hexWidth*3/2-yOffset; y++) {
+		
 			if (y%3 == 0) {
 				for (int x=0; x<hexLength; x++) {
 					
 					if (x%2 == 0) {
 						posBuffer.put(triMeshPos[elr*(x+(2*y+1)*hexLength)].toArray());
 					} else {
-						posBuffer.put(triMeshPos[elr*(x+2*y*hexLength)].toArray());
+						posBuffer.put(triMeshPos[elr*(x+(2*y  )*hexLength)].toArray());
 					}
+					
 				}
 			} else if (y%3 == 2) {
 				for (int x=0; x<hexLength; x++) {
@@ -102,10 +108,40 @@ public class HexagonBorderMesh extends Element_Model{
 					if (x%2 == 0) {
 						posBuffer.put(triMeshPos[elr*(x+(2*y-1)*hexLength)].toArray());
 					} else {
-						posBuffer.put(triMeshPos[elr*(x+(2*y)*hexLength)].toArray());
+						posBuffer.put(triMeshPos[elr*(x+(2*y  )*hexLength)].toArray());
 					}
+					
 				}
 			}
+			
+		}*/
+		
+		for (int y=0; y<hexWidth; y++) {
+			
+			if (y%2 == 0) {
+				for (int x=0; x<hexLength; x++) {
+					
+					if (x%2 == 0) {
+						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triMeshVertLength].toArray());
+					} else {
+						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triMeshVertLength].toArray());
+					}
+
+					
+				}
+			} else { //(y%2 == 1)
+				for (int x=0; x<hexLength; x++) {
+					
+					if (x%2 == 0) {
+						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triMeshVertLength].toArray());
+					} else {
+						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triMeshVertLength].toArray());
+					}
+
+					
+				}
+			}
+			
 		}
 		
 		posBuffer.flip();
@@ -117,7 +153,7 @@ public class HexagonBorderMesh extends Element_Model{
 		
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer( hexLength * hexWidth * 7 );
 		
-		for (int y=0; y<hexWidth*2/3-1; y++) {
+		for (int y=0; y<hexWidth-1; y++) {
 			
 			if(y%2 == 0) {
 				for (int x=0; x<hexLength/2 - 1; x++) {
@@ -150,6 +186,17 @@ public class HexagonBorderMesh extends Element_Model{
 		}
 		
 		
+		/*for (int y=0; y<hexWidth; y++) {
+			for (int x=0; x<hexLength; x++) {
+				
+				elementBuffer.put(y*hexLength + x);
+			}
+			
+			elementBuffer.put(PRI);
+		}*/
+		
+		this.indexBuffer = elementBuffer;
+		
 		elementBuffer.flip();
 		
 		return elementBuffer;
@@ -177,10 +224,66 @@ public class HexagonBorderMesh extends Element_Model{
 	//********************************** other stuff **********************************************
 	
 	
+	private int[] getIndexArrayByID(int index) {
+		
+		if (index < 0) {
+			return getIndexArrayByID(0);
+		}
+		
+		
+		if (index >= hexLength * hexWidth) {
+			return getIndexArrayByID(hexLength * hexWidth - 1);
+		}
+		
+		
+		int[] indices = new int[7];
+		
+		int positionInElementArray = index * 7;
+		
+		
+		for (int i = 0; i < 7; ++i) {
+			
+			indices[i] = indexBuffer.get(positionInElementArray + i);
+			
+		}
+		
+		
+		return indices;
+		
+	}
+	
+	
+	public void display(int index) {
+		
+		IntBuffer elementBuffer = CustomBufferUtils.createIntBuffer(getIndexArrayByID(index));
+		
+		this.setElementArrayData(elementBuffer);
+		
+	}
+	
+	
+	public void display(int[] tiles) {
+		
+		IntBuffer elementBuffer = BufferUtils.createIntBuffer(tiles.length * 7);
+		
+		for (int index : tiles) {
+			
+			elementBuffer.put(getIndexArrayByID(index));
+			
+		}
+		
+		elementBuffer.flip();
+		
+		this.setElementArrayData(elementBuffer);
+		
+	}
+	
+	
+	
 	public void onDrawStart() {
 		super.onDrawStart();
 		
-		glLineWidth(2.0f);
+		glLineWidth(0.1f);
 		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);

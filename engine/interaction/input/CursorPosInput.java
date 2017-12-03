@@ -4,14 +4,31 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 public class CursorPosInput extends GLFWCursorPosCallback {
 
-	public static double xPos;
+	private static double xPos;
 	
-	public static double yPos;
+	private static double yPos;
 	
 	@Override
-	public void invoke(long arg0, double arg1, double arg2) {
+	public void invoke(long window, double x, double y) {
 		
+		xPos = x;
+		yPos = y;
 		
 	}
+	
+	
+	public static double getXPos() {
+		
+		return xPos;
+		
+	}
+	
+	
+	public static double getYPos() {
+		
+		return yPos;
+		
+	}	
+	
 
 }

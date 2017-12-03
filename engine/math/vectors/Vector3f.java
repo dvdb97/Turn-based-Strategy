@@ -44,9 +44,23 @@ public class Vector3f extends Vectorf {
 	 * @param v summand
 	 * @return returns itself after a component wise addition
 	 */
-	public Vector3f plus(Vector3f v) {
+	public Vector3f plusEQ(Vector3f v) {
 		super.plus(v);
 		return this;
+	}
+	
+	
+	/**
+	 * Vector addition
+	 * 
+	 * @param v summand
+	 * @return returns a new Vector
+	 */
+	public Vector3f plus(Vector3f v) {
+		Vector3f output = this.copyOf();
+		
+		return output.plusEQ(v);
+		
 	}
 	
 	/**
@@ -55,10 +69,24 @@ public class Vector3f extends Vectorf {
 	 * @param v subtrahend
 	 * @return returns itself after a component subtraction
 	 */
-	public Vector3f minus(Vector3f v) {
+	public Vector3f minusEQ(Vector3f v) {
 		super.minus(v);
 		return this;
 	}
+	
+	
+	/**
+	 * Vector subtraction
+	 * 
+	 * @param v subtrahend
+	 * @return returns a new Vector
+	 */
+	public Vector3f minus(Vector3f v) {
+		Vector3f output = this.copyOf();
+		
+		return output.minusEQ(v);
+	}
+	
 	
 	/**
 	 * Scalar Multiplication
@@ -115,7 +143,6 @@ public class Vector3f extends Vectorf {
 							this.getC()*v.getA() - this.getA()*v.getC(),
 							this.getA()*v.getB() - this.getB()*v.getA());
 	}
-	
 	
 	
 	//---------------------- other methods -------------------

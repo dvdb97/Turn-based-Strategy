@@ -4,10 +4,10 @@ import interaction.PlayerCamera;
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;
-import assets.models.Element_Model;
-import assets.models.Illuminated_Model;
 import math.MatrixManager;
-import math.ProjectionMatrix;
+import graphics.Camera;
+import graphics.matrices.Matrices;
+import graphics.matrices.ProjectionMatrix;
 import graphics.shaders.ShaderManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -56,14 +56,14 @@ public class MapManager {
 		
 		
 		//The model matrix for the map (as we only move the map the model matrix won't change)
-		geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f((float)Math.PI, 0f, 0f), 1f);
+		geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
 	
 		
 		//TODO: Figure out better values for the material
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
 		
 		//TODO: Figure out a better position / color for this light
-		sun = new LightSource(new Vector3f(-0.3f, 0.5f, -0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 	}
@@ -78,14 +78,14 @@ public class MapManager {
 	
 	public static void render() {
 		
-		ShaderManager.useLightShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), ProjectionMatrix.getProjectionMatrix(), PlayerCamera.getCameraPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.draw(geographicMap, null);
 		
 		ShaderManager.disableLightShader();
 		
 		
-		ShaderManager.useShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), ProjectionMatrix.getProjectionMatrix());
+		ShaderManager.useShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix());
 		
 		RenderEngine.draw(hexagonBorderMap, null);
 		

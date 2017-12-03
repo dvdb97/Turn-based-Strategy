@@ -1,9 +1,11 @@
 package models;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glDisable;
 
 
 import java.nio.FloatBuffer;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
+import assets.meshes.geometry.Color;
+import assets.models.Element_Model;
 import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
 import utils.Const;
@@ -269,13 +273,10 @@ public class TriangleMesh extends Illuminated_Model {
 	}
 	
 	//********************************** other stuff **********************************************
-	
-	
 	public void onDrawStart() {
 		super.onDrawStart();
 		
 		glEnable(GL_PRIMITIVE_RESTART);
-		
 		glPrimitiveRestartIndex(PRI);
 	}
 	
@@ -286,7 +287,6 @@ public class TriangleMesh extends Illuminated_Model {
 		glDisable(GL_PRIMITIVE_RESTART);
 		
 	}
-	
 	
 	//******************************************** get & set **************************************
 	
