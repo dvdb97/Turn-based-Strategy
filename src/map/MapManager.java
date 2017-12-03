@@ -8,6 +8,7 @@ import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.matrices.ProjectionMatrix;
+import graphics.matrices.ViewMatrix;
 import graphics.shaders.ShaderManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -98,6 +99,13 @@ public class MapManager {
 		RenderEngine.draw(coordinates, null);
 		
 		ShaderManager.disableShader();
+		
+	}
+	
+	
+	public static Matrix44f getMapModelMVPMatrix() {
+		
+		return geoMapModelMatrix.times(PlayerCamera.getViewMatrix()).times(Matrices.getProjectionMatrix());
 		
 	}
 	

@@ -1,7 +1,9 @@
 package interaction.tileSelection;
 
+import core.Application;
 import elements.Tile;
 import interaction.input.CursorPosInput;
+import math.vectors.Vector3f;
 
 public class TileSelecter {
 	
@@ -10,6 +12,8 @@ public class TileSelecter {
 	
 	
 	private static Tile selectedTile;
+	
+	private static int selectedTileIndex;
 	
 	
 	public static void init(Tile[] generatedTiles) {
@@ -28,10 +32,12 @@ public class TileSelecter {
 	
 	public static int computeSelectedTileIndex() {
 		
-		double xPos = CursorPosInput.getXPos();
-		double yPos = CursorPosInput.getYPos();
+		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
+		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
 		
-		return 1;
+		Vector3f rayStart = new Vector3f(cursorX, cursorY, 1.0f);
+		Vector3f rayDirection = new Vector3f(0f, 0f, 1f);
+		
 		
 	}
 

@@ -1,5 +1,5 @@
 title="Strategy Game";
 version="2.4";
-window = windowed;
+window = fullscreen;
 debug = false;
 cheats = false;
