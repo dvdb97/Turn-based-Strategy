@@ -308,6 +308,17 @@ public class Matrix44f extends Matrixf {
 		set(15, d4);
 	}
 	
+	
+	public float get(int x, int y) {
+		return get(x * N + y);
+	}
+	
+	
+	public void set(int x, int y, float value) {
+		set(x * N + y, value);
+	}
+	
+	
 	//-----------------------------------
 	private Vector4f getCol(int c) {
 		return new Vector4f(get(0+c*N), get(1+c*N), get(2+c*N), get(3+c*N));

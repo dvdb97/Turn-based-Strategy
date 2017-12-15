@@ -1,6 +1,7 @@
 package graphics.matrices;
 
 import graphics.Camera;
+import math.matrices.Matrix44f;
 
 //A ViewMatrix is a TransformationMatrix which represents the
 //opposite movement of the camera it is referring to
@@ -45,8 +46,15 @@ public class ViewMatrix extends TransformationMatrix {
 		setC4( scale*(-transX*sRY+transY*sRX+transZ*cRX*cRY));
 		
 		
-	//	setD4( scale);
+	    //setD4( scale);
 		setD4( 1.0f);
+		
+	}
+	
+	
+	public Matrix44f getMultiplicativeInverse() {
+		
+		return new TransformationMatrix(Camera.getPosition().getA(), Camera.getPosition().getB(), Camera.getPosition().getC(), Camera.getPitch(), Camera.getYaw(), Camera.getRoll(), 1.0f / Camera.getZoom());
 		
 	}
 	

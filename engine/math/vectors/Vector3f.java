@@ -94,10 +94,24 @@ public class Vector3f extends Vectorf {
 	 * @param r the scalar, every component is multiplicated with
 	 * @return returns itself after the multiplication
 	 */
-	public Vector3f times(float r) {
+	public Vector3f timesEQ(float r) {
 		super.times(r);
 		return this;
 	}
+	
+	
+	/**
+	 * Scalar Multiplication
+	 * 
+	 * @param r the scalar, every component is multiplicated with
+	 * @return returns a new Vector after the multiplication
+	 */
+	public Vector3f times(float r) {
+		Vector3f output = this.copyOf();
+		
+		return output.timesEQ(r);
+	}
+	
 	
 	/**
 	 * Dot Product (Inner Product)

@@ -2,6 +2,7 @@ package graphics.shaders;
 
 import assets.light.LightSource;
 import assets.material.Material;
+import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.shaders.ShaderProgram;
@@ -16,6 +17,8 @@ public class ShaderManager {
 	//TODO: Maybe change the name
 	private static ShaderProgram shader;
 	
+	private static TextRenderingShader fontShader;
+	
 	//More shaders that are needed
 	
 	public static void init(/* TODO: Graphics quality */) {
@@ -23,6 +26,8 @@ public class ShaderManager {
 		lightShader = LightShader.createPerVertexLightShader();
 		
 		shader = new ShaderProgram("Shaders/shader.vert", "Shaders/shader.frag");
+		
+		fontShader = new TextRenderingShader();
 		
 		initialized = true;
 		
@@ -106,6 +111,35 @@ public class ShaderManager {
 		
 		shader.disable();
 		
+	}
+	
+	
+	public static void useFontShader(Matrix44f mvpMatrix) {
+		
+		if (!initialized) {
+			
+			System.err.println("ShaderManager hasn't been initialized yet!");
+			
+			return;
+			
+		}
+		
+		fontShader.prepareForRendering(mvpMatrix);
+		
+	}
+	
+	
+	public static void disableFontShader() {
+		
+		if (!initialized) {
+			
+			System.err.println("ShaderManager hasn't been initialized yet!");
+			
+			return;
+			
+		}
+		
+		fontShader.disable();
 	}
 
 }

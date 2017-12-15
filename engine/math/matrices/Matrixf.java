@@ -17,7 +17,27 @@ public abstract class Matrixf {
 	}
 	
 	
+	//-------------------------------- generate -----------------------------
+	
+	
+	/** 
+	 * generates a random matrix. Usefull for testing
+	 * 
+	 * @param range the range of the values is 0 - range.
+	 */
+	public void generateRandomData(float range) {
+		
+		for (int i = 0; i < data.length; ++i) {
+			
+			data[i] = (float)Math.random() * range;
+			
+		}
+		
+	}
+	
+	
 	//---------------------------- calculus ---------------------------
+	
 	
 	protected void plus(Matrixf m) {
 		
@@ -57,8 +77,7 @@ public abstract class Matrixf {
 	
 	protected void voidNegated() {
 		times(new Float(-1));
-	}
-	
+	}	
 	
 	
 	//-------------------------------- convert -----------------------------
@@ -125,4 +144,5 @@ public abstract class Matrixf {
 	protected int getDataLength() {
 		return data.length;
 	}
+	
 }

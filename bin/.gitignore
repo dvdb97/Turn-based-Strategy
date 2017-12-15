@@ -1,11 +1,3 @@
-/assets/
+/fontRendering/
 /core/
-/graphics/
-/interaction/
-/map/
-/math/
-/models/
-/rendering/
-/screenshot/
-/utils/
-/visualize/
+/gui/

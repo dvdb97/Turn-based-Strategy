@@ -2,10 +2,10 @@ package core.game;
 
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
+import gui.font.FontCollection;
 import interaction.PlayerCamera;
 import interaction.input.KeyInput;
 import map.MapManager;
-import math.ProjectionMatrix;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
 
@@ -30,8 +30,8 @@ public class Game {
 		//Init the camera
 		PlayerCamera.init();
 		
-		//Init the Projection Matrix:
-		ProjectionMatrix.init();
+		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
+		FontCollection.init();
 		
 		//Init Agents etc
 		run();
