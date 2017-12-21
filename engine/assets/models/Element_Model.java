@@ -78,7 +78,7 @@ public class Element_Model extends Model {
 		
 		if (normals) {
 			normalBuffer.flip();
-			this.setVertexPositionData(posBuffer, 3, GL_STATIC_DRAW);
+			this.setVertexNormalData(normalBuffer, 3, GL_STATIC_DRAW);
 		}
 		
 	}

@@ -24,8 +24,7 @@ public class MatrixInversion {
 		
 		
 		Matrix44f l_inverted = getLInverted(l_Matrix);
-		Matrix44f u_inverted = getUInverted(u_Matrix);
-		
+		Matrix44f u_inverted = getUInverted(u_Matrix);		
 		
 		return l_inverted.times(u_inverted);
 		

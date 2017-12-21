@@ -21,9 +21,9 @@ public abstract class Matrixf {
 	
 	
 	/** 
-	 * generates a random matrix. Usefull for testing
+	 * Generates a random matrix. Useful for testing
 	 * 
-	 * @param range the range of the values is 0 - range.
+	 * @param range the range of the values is 0 to range.
 	 */
 	public void generateRandomData(float range) {
 		

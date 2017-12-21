@@ -1,6 +1,7 @@
 package map;
 
 import interaction.PlayerCamera;
+import interaction.tileSelection.TileSelecter;
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -16,6 +17,7 @@ import models.TerrainCol;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import core.saves.GameScore;
+import elements.Tile;
 import models.seeds.Terrain;
 import models.worldModels.HexagonBorderMesh;
 import models.worldModels.TriangleMesh;
@@ -24,6 +26,7 @@ public class MapManager {
 	
 	private static TriangleMesh geographicMap;
 	
+	//TODO: Merge both hexagonBorderMaps
 	private static HexagonBorderMesh hexagonBorderMap;
 	
 	private static TriangleMesh seaModel;
@@ -94,12 +97,13 @@ public class MapManager {
 		
 		ShaderManager.useShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix());
 		
+		hexagonBorderMap.display(TileSelecter.getHoveredTileIndex());
 		RenderEngine.draw(hexagonBorderMap, null);
 		
 		RenderEngine.draw(coordinates, null);
 		
 		ShaderManager.disableShader();
-		
+				
 	}
 	
 	
@@ -107,6 +111,13 @@ public class MapManager {
 		
 		return geoMapModelMatrix.times(PlayerCamera.getViewMatrix()).times(Matrices.getProjectionMatrix());
 		
+	}
+	
+	
+	public static Vector3f[] getTileCenterVertices() {
+		
+		return hexagonBorderMap.getCenterVertices();
+	
 	}
 	
 

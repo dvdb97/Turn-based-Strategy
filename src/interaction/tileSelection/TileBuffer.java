@@ -2,6 +2,7 @@ package interaction.tileSelection;
 
 import math.MathUtils;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 public class TileBuffer {
 	
@@ -142,6 +143,17 @@ public class TileBuffer {
 	// **************************** The core of the algorithm ****************************
 	
 	
+	public static int getTileIndex(Vector4f origin, Vector4f direction, float tolerance, int steps, int expandingSearchIterations) {
+		
+		Vector3f rayStart = new Vector3f(origin.getA(), origin.getB(), origin.getC());
+		Vector3f rayDir = new Vector3f(direction.getA(), direction.getB(), direction.getC());
+		
+		return getTileIndex(rayStart, rayDir, tolerance, steps, expandingSearchIterations);
+		
+		
+	}
+	
+	
 	
 	/**
 	 * This algorithm searches the vertex that is the closest to the ray defined by origin and direction
@@ -181,7 +193,6 @@ public class TileBuffer {
 		float requestedDistance;
 		float candidateDistance;
 		
-		
 		for (int i = 0; i < steps; ++i) {
 			
 			//Compute the distance of the current version of the raySource to the reference point
@@ -192,7 +203,7 @@ public class TileBuffer {
 			
 			
 			//Among those points, look for the point that has to closest distance to the raySource
-			currentIndex = expandingSearch(currentIndex, expandingSearchIterations, entryPoint);
+			//currentIndex = expandingSearch(currentIndex, expandingSearchIterations, entryPoint);
 			
 			
 			//Evaluate the distance of this step's candidate to entryPoint. If it is close enough break.
@@ -236,7 +247,7 @@ public class TileBuffer {
 		float pivotDistance = distanceArray[pivotIndex];
 		
 		
-		if (start == end) {
+		if (end - start < 1) {
 			return pivotIndex;
 		}
 		

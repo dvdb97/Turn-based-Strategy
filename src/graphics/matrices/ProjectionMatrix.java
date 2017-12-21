@@ -15,6 +15,10 @@ public class ProjectionMatrix extends Matrix44f{
 	
 	private float widthOverHeight;
 	
+	
+	private Matrix44f multiplicativeInverse;
+	
+	
 	//---------------------- contructor --------------------------
 	public ProjectionMatrix(float left, float right, float bottom, float top, float near, float far, float widthOverHeight) {
 		
@@ -46,6 +50,8 @@ public class ProjectionMatrix extends Matrix44f{
 		setB3( (top+bottom) / (top-bottom) * widthOverHeight);
 		setC3(-(far+near)   / (far-near));
 		setC4(-2*far*near   / (far-near));
+		
+		computeMultiplicativeInverse();
 	}
 	
 	//---------------------- get & set --------------------------------
@@ -59,6 +65,25 @@ public class ProjectionMatrix extends Matrix44f{
 		
 		updateData();
 	}
+	
+	
+	private void computeMultiplicativeInverse() {
+		
+		multiplicativeInverse = new Matrix44f();
+		
+		multiplicativeInverse.setA1((right - left) / (2 * near));
+		multiplicativeInverse.setA4((right + left) / (right - left));
+		
+		multiplicativeInverse.setB2((top - bottom) / (2 * near * widthOverHeight));
+		multiplicativeInverse.setB4((-top - bottom) / (2 * near));
+		
+		multiplicativeInverse.setC4(-1);
+		
+		multiplicativeInverse.setD3((far - near) / (-2 * far * near));
+		multiplicativeInverse.setD4((far * far - near * near) / (-2 * far * far * near + 2 * near * near * far));
+		
+	}
+	
 	
 	public float getLeft() {
 		return left;
@@ -82,6 +107,10 @@ public class ProjectionMatrix extends Matrix44f{
 
 	public float getFar() {
 		return far;
+	}
+	
+	public Matrix44f getMultiplicativeInverse() {
+		return multiplicativeInverse;
 	}
 	
 }

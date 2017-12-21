@@ -125,6 +125,16 @@ public class Vector4f extends Vectorf {
 		return new Vector3f(get(0), get(1), get(2));
 	}
 	
+	public void random() {
+		
+		this.setA((float)Math.random() * 2f - 1f);
+		this.setB((float)Math.random() * 2f - 1f);
+		this.setC((float)Math.random() * 2f - 1f);
+		this.setD((float)Math.random() * 2f - 1f);
+	}
+	
+	
+	
 	//------------------------- Get & Set ----------------------
 	
 	/**

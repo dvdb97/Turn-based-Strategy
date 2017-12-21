@@ -157,4 +157,11 @@ public class PlayerCamera {
 		
 	}
 	
+	
+	public static Matrix44f getInvertedMatrix() {
+		
+		return viewMatrix.getMultiplicativeInverse();
+		
+	}
+	
 }

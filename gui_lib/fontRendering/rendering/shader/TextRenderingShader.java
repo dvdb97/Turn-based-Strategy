@@ -10,15 +10,8 @@ public class TextRenderingShader extends ShaderProgram {
 	}
 	
 	
-	public void prepareForRendering(Matrix44f mvpMatrix) {
-		this.use();
-		
+	public void prepareForRendering(Matrix44f mvpMatrix) {		
 		this.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());
-	}
-	
-	
-	private void stopRendering() {
-		this.disable();
 	}
 
 }

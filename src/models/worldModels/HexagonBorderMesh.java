@@ -31,6 +31,8 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	private IntBuffer indexBuffer;
 	
+	private FloatBuffer posBuffer;
+	
 	//********************************** constructor ************************************
 	
 	/**
@@ -144,6 +146,8 @@ public class HexagonBorderMesh extends Element_Model{
 			
 		}
 		
+		this.posBuffer = posBuffer;
+		
 		posBuffer.flip();
 		
 		return posBuffer;
@@ -203,6 +207,7 @@ public class HexagonBorderMesh extends Element_Model{
 		
 	}
 	
+
 	private FloatBuffer createColBuffer() {
 		
 		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*4);
@@ -222,6 +227,46 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	
 	//********************************** other stuff **********************************************
+	
+	
+	//Compute a center point for every vertex. Will be used to compute the selectedTile
+	public Vector3f[] getCenterVertices() {
+		
+		Vector3f[] vertices = new Vector3f[posBuffer.capacity() / 18];
+		
+		float x = 0f;
+		float y = 0f;
+		float z = 0f;
+		
+		for (int i = 0; i < posBuffer.capacity(); ++i) {
+			
+			if (i % 3 == 0) {
+				x += posBuffer.get(i);
+			}
+			
+			if (i % 3 == 1) {
+				y += posBuffer.get(i);
+			}
+			
+			if (i % 3 == 2) {
+				z += posBuffer.get(i);
+			}
+					
+			if (i % 18 == 17) {	
+				
+				vertices[i / 18] = new Vector3f(x / 6, y / 6, z / 6);
+				
+				x = 0f;
+				y = 0f;
+				z = 0f;
+				
+			}
+			
+		}
+		
+		return vertices;
+		
+	}
 	
 	
 	private int[] getIndexArrayByID(int index) {
@@ -276,6 +321,11 @@ public class HexagonBorderMesh extends Element_Model{
 		
 		this.setElementArrayData(elementBuffer);
 		
+	}
+	
+	
+	public void showAll() {
+		this.setElementArrayData(this.indexBuffer);
 	}
 	
 	

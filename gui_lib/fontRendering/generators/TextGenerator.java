@@ -5,10 +5,6 @@ import fontRendering.texture.FontTexture;
 
 public class TextGenerator {
 	
-	public static void init() {
-		
-	}
-	
 	
 	public static Vertex[] generateText(char[] text, float x, float y, float width, float height, FontTexture font) {
 		
@@ -31,12 +27,10 @@ public class TextGenerator {
 		if(vertices.length / 4 != text.length) {
 			System.err.println("The mesh isn't big enough to map the text on it!");
 			
-			//TODO: Maybe generate a mesh to render the text properly
-			
 		}
 		
 		
-		for (int letter = 0; letter < vertices.length; ++letter) {
+		for (int letter = 0; letter < text.length; ++letter) {
 			
 			int index = letter * 4; 
 			

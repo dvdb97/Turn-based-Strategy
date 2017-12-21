@@ -124,6 +124,7 @@ public class ShaderManager {
 			
 		}
 		
+		fontShader.use();
 		fontShader.prepareForRendering(mvpMatrix);
 		
 	}

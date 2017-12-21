@@ -32,6 +32,33 @@ public class Matrix44f extends Matrixf {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * @param data the data to be stored in this matrix
+	 * 
+	 */
+	public Matrix44f(float[] data) {
+		
+		super(LENGTH);
+		
+		if (data.length == LENGTH) {
+			
+			for (int i = 0; i < data.length; ++i) {
+				
+				int x = i / N;
+				int y = i % N;
+				
+				
+				this.set(x * N + y, data[i]);
+				
+			}
+			
+		}
+		
+	}
+	
+	
 	/**
 	 * 
 	 * @param col1 first column

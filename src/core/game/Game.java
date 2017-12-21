@@ -3,10 +3,11 @@ package core.game;
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
+import gui.test.HelloWorld;
 import interaction.PlayerCamera;
 import interaction.input.KeyInput;
+import interaction.tileSelection.TileSelecter;
 import map.MapManager;
-import math.vectors.Vector3f;
 import rendering.RenderEngine;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -30,10 +31,17 @@ public class Game {
 		//Init the camera
 		PlayerCamera.init();
 		
+		TileSelecter.init(MapManager.getTileCenterVertices());
+		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
 		
+		//TODO: Temp. Just for testing the font
+		HelloWorld.init();
+		
 		//Init Agents etc
+		
+		
 		run();
 		
 	}
@@ -74,6 +82,8 @@ public class Game {
 		
 		PlayerCamera.update();
 		
+		TileSelecter.processInput();
+		
 		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}
@@ -89,7 +99,9 @@ public class Game {
 	
 	
 	private void render() {
-		MapManager.render();	
+		MapManager.render();
+		
+		HelloWorld.render();
 	}
 	
 	

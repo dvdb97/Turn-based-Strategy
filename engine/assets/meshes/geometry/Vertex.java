@@ -24,7 +24,7 @@ public class Vertex extends Vector3f {
 	
 	
 	//the normal vector of the vertex is the average of the normals of its surrounding surfaces
-	private Vector3f normalVec = new Vector3f(0, 0, 0);
+	private Vector3f normalVec = null;
 	private int numberOfSurfaceNormals = 0;
 	
 	//************************************** constructor **************************************
@@ -73,6 +73,10 @@ public class Vertex extends Vector3f {
 	
 	
 	public void addSurfaceNormal(Vector3f surfaceNormal) {
+		
+		if (this.normalVec == null) {
+			this.normalVec = new Vector3f(0f, 0f, 0f);
+		}
 		
 		this.normalVec = this.normalVec.timesEQ(numberOfSurfaceNormals);
 		

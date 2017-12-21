@@ -11,6 +11,7 @@ public class LU_Decomposition {
 	private static Matrix44f u_Matrix;
 	
 	
+	//TODO: Set the input to references
 	public static void generate(Matrix44f input) {
 		
 		l_Matrix = new Matrix44f(1.0f, 0.0f, 0.0f, 0.0f,
