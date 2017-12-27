@@ -190,22 +190,12 @@ public class Window {
 	
 	
 	public float toNormalizedXCoordinates(double xPosInPixel) {
-		return (float)(2.0f / windowWidth) * (float)xPosInPixel - 1.0f;
-	}
-	
-	
-	public float getNormalizedCursorXPos() {
-		return toNormalizedXCoordinates(this.getMouseXPos());
+		return (float)(2.0f * xPosInPixel) / this.screenWidth - 1.0f;
 	}
 	
 	
 	public float toNormalizedYCoordinates(double yPosInPixel) {
-		return (float)(-2.0f / windowHeight) * (float)yPosInPixel + 1.0f;
-	}
-	
-	
-	public float getNormalizedCursorYPos() {
-		return toNormalizedYCoordinates(this.getMouseYPos());
+		return (float)(-2.0f * yPosInPixel) / this.screenHeight + 1.0f;
 	}
 	
 	

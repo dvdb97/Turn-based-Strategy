@@ -1,89 +1,106 @@
 package interaction.tileSelection;
 
 import math.MathUtils;
+import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
+import math.vectors.advanced.Distances;
 
 public class TileBuffer {
 	
 	//The array of vertices
-	private static Vector3f[] vertices;
+	private Vector3f[] vertices;
+	
+	private float distanceBetweenVertices;
 	
 	/*
 	 * An array containing the distance of every vertex to the refPoint. It's generated once and 
 	 * used for binary search to save computations.
 	 */
-	private static float[] distanceArray;
+	private float[] distanceArray;
 	
 	//This array stores the actual index of every vertex to point to the old location of the vertex after sorting "vertices"
-	private static int[] oldLocation;
+	private int[] oldLocation;
 	
 	
 	//A point in space that let's us sort the vertices by sorting them by their distance to refPoint
-	private static Vector3f refPoint;
-	
-	//The highest vertex in the array.
-	private static float highestPoint;
-	
-	//The lowest vertex in the array.
-	private static float lowestPoint;
+	private Vector3f refPoint;
 	
 	
-	// **************************** Preparation ****************************
+	private float highestZ;
+	
+	private float lowestZ;
 	
 	
-	public static void init(Vector3f[] inputVertices, Vector3f referencePoint) {
+	
+	public TileBuffer(Vector3f[] vertices, Vector3f referencePoint) {	
 		
-		vertices = inputVertices;
+		generateDistanceArray(vertices, referencePoint);
 		
-		refPoint = referencePoint;
+		quickSort(0, this.vertices.length-1);
 		
-		generateDistanceArray(refPoint);
-		
-		quickSort(0, vertices.length - 1);
-		
-	}
+	}	
+	
+	
+	// **************************** initialization ****************************
 	
 	
 	/*
-	 * - Generates a distance to the referencePoint for each vertex
-	 * - Looks for the highest and lowest point in the vertex cloud
-	 * - Initializes the array that stores the old indices of the vertices
+	 * Generates a distance to the referencePoint for each vertex
+	 * Initializes the array that stores the old indices of the vertices
 	 */
-	private static void generateDistanceArray(Vector3f referencePoint) {
+	private void generateDistanceArray(Vector3f[] vertices, Vector3f referencePoint) {
 		
-		lowestPoint = 100.0f;
-		highestPoint = -100.0f;
+		this.refPoint = referencePoint;
 		
-		distanceArray = new float[vertices.length];
-		oldLocation = new int[vertices.length];
+		this.vertices = new Vector3f[vertices.length];
+				
+		this.distanceArray = new float[vertices.length];
+		
+		this.oldLocation = new int[vertices.length];
+		
+		this.highestZ = -Float.MAX_VALUE;
+		this.lowestZ = Float.MAX_VALUE;
+		
+				
+		distanceBetweenVertices = 0f;
 		
 		
 		for (int i = 0; i < vertices.length; ++i) {
 			
-			if (vertices[i].getC() < lowestPoint) {
-				lowestPoint = vertices[i].getC();
+			this.vertices[i] = vertices[i].copyOf();
+			
+			this.distanceArray[i] = vertices[i].minus(referencePoint).norm();			
+			
+			this.oldLocation[i] = i;
+			
+			if(i < vertices.length - 1) {
+				distanceBetweenVertices += vertices[i].minus(vertices[i+1]).norm();
 			}
 			
-			if (vertices[i].getC() > highestPoint) {
-				highestPoint = vertices[i].getC();
+			
+			if (vertices[i].getC() < lowestZ) {
+				lowestZ = vertices[i].getC();
 			}
 			
-			
-			distanceArray[i] = vertices[i].minus(referencePoint).norm();			
-			
-			oldLocation[i] = i;
-			
+			if (vertices[i].getC() > highestZ) {
+				highestZ = vertices[i].getC();
+			}
+						
 		}
+		
+		System.out.println("Highest point: " + highestZ + " lowest point: " + lowestZ);
+		
+		distanceBetweenVertices /= vertices.length - 1;
 		
 	}
 	
 	
 	/*
-	 * - Sorts the vertices by their distance to the referencePoint
-	 * - Aplies the same changes to the arrays "oldLocation" and "distanceArray"
+	 * Sorts the vertices by their distance to the referencePoint
+	 * Aplies the same changes to the arrays "oldLocation" and "distanceArray"
 	 */
-	private static void quickSort(int start, int end) {
+	private void quickSort(int start, int end) {
 				
 		//Look up the vertex in the middle of the section and compute its distance to the referencePoint
 		float pivotDistance = distanceArray[start + (end - start) / 2];
@@ -123,7 +140,7 @@ public class TileBuffer {
 		
 		
 	//A small utility function for the quicksort algorithm:
-	private static void swap(int a, int b) {
+	private void swap(int a, int b) {
 		
 		float tempDist = distanceArray[a];
 		distanceArray[a] = distanceArray[b];
@@ -140,19 +157,7 @@ public class TileBuffer {
 	}
 	
 	
-	// **************************** The core of the algorithm ****************************
-	
-	
-	public static int getTileIndex(Vector4f origin, Vector4f direction, float tolerance, int steps, int expandingSearchIterations) {
-		
-		Vector3f rayStart = new Vector3f(origin.getA(), origin.getB(), origin.getC());
-		Vector3f rayDir = new Vector3f(direction.getA(), direction.getB(), direction.getC());
-		
-		return getTileIndex(rayStart, rayDir, tolerance, steps, expandingSearchIterations);
-		
-		
-	}
-	
+	// **************************** The core of the algorithm ****************************	
 	
 	
 	/**
@@ -160,70 +165,48 @@ public class TileBuffer {
 	 * 
 	 * @param origin The origin of the ray
 	 *  
-	 * @param direction The direction of the ray
-	 * 
-	 * @param tolerance If the distance between two points is smaller than tolerance we assume that they are actually the same point
-	 * 
-	 * @param steps When we are looking at the part of the ray that interects the cloud of vertices, steps defines the sampling rate
-	 * 
-	 * @param expandingSearchInterations Defines the range of the array that is checked during expanding search
-	 * 
+	 * @param destination The direction of the ray
+	 *
 	 * @return Returns the index of the closest vertex to the ray
 	 * 
 	 */
-	public static int getTileIndex(Vector3f origin, Vector3f direction, float tolerance, int steps, int expandingSearchIterations) {
+	
+	
+	public int getTileIndex(Vector3f origin, Vector3f direction) {
 		
-		//Find the starting point of the section of the ray between max = (x, y, highestPoint) and min = (x2, y2, lowestPoint)
-		Vector3f entryPoint = computePoint(origin, direction, highestPoint);
+		float r1 = computePoint(origin, direction, highestZ);
+		float r2 = computePoint(origin, direction, lowestZ);
 		
-		//Divide the section in steps pieces
-		float rPerStep = computeRPerStep(entryPoint, direction, lowestPoint, steps);
+		float rIncreasePerStep = (r1 - r2) / 5;
 		
-		
-		
-		//The index of the vertex that is currently the best candidate
 		int bestCandidateIndex = 0;
-		
-		//The best candidate's distance to 
-		float bestDistance = Float.MAX_VALUE;
+		float bestCandidateDistance = Float.MAX_VALUE;
 		
 		
-		
-		int currentIndex = 0;
-		float requestedDistance;
-		float candidateDistance;
-		
-		for (int i = 0; i < steps; ++i) {
+		for (int rStep = 0; rStep < 5; ++rStep) {
 			
-			//Compute the distance of the current version of the raySource to the reference point
-			requestedDistance = MathUtils.getAbsoluteValue(entryPoint.minus(refPoint).norm());
+			Vector3f point = origin.plus(direction.times(r1 + rStep * rIncreasePerStep));
 			
-			//Search for points with a similar distance to the reference point
-			currentIndex = binarySearch(requestedDistance, 0, distanceArray.length - 1, tolerance);
-			
-			
-			//Among those points, look for the point that has to closest distance to the raySource
-			//currentIndex = expandingSearch(currentIndex, expandingSearchIterations, entryPoint);
-			
-			
-			//Evaluate the distance of this step's candidate to entryPoint. If it is close enough break.
-			candidateDistance = MathUtils.getAbsoluteValue(entryPoint.minus(vertices[currentIndex]).norm());
-			
-			if (candidateDistance < tolerance) {
-				break;
+			float distance;
+			for (int i = 0; i < vertices.length; ++i) {
+				
+				distance = point.minus(vertices[i]).norm();
+				
+				if (distance < bestCandidateDistance) {
+					bestCandidateDistance = distance;
+					bestCandidateIndex = i;
+				}
+				
 			}
 			
-			entryPoint.plusEQ(direction.times(rPerStep));
-			//TODO: Do we need to change the tolerance when going deeper into the vertex cloud?
 			
 		}
+		
 		
 		
 		return oldLocation[bestCandidateIndex];
 		
 	}
-	
-	
 	
 	
 	
@@ -241,7 +224,7 @@ public class TileBuffer {
 	 * param tolerance Defines the how similar a distance in the array has to count as a candidate
 	 * 
 	 */
-	private static int binarySearch(float resquestedDistance, int start, int end, float tolerance) {
+	private int binarySearch(float resquestedDistance, int start, int end, float tolerance) {
 		
 		int pivotIndex = start + (end - start) / 2;
 		float pivotDistance = distanceArray[pivotIndex];
@@ -267,10 +250,10 @@ public class TileBuffer {
 	}
 	
 	
-	private static int expandingSearch(int index, int iterations, Vector3f raySource) {
+	private int expandingSearch(int index, int iterations, Vector3f origin, Vector3f direction) {
 		
 		int bestCandidateIndex = index;
-		float bestDistance = MathUtils.getAbsoluteValue(vertices[index].minus(raySource).norm());
+		float bestDistance = Distances.computeDistance(origin, direction, vertices[index]);
 		
 		int a = index - 1;
 		int b = index + 1;
@@ -280,28 +263,37 @@ public class TileBuffer {
 		for (int i = 0; i < iterations; ++i) {
 			
 			if (a >= 0) {
-				temp = MathUtils.getAbsoluteValue(vertices[a].minus(raySource).norm());
+				temp = Distances.computeDistance(origin, direction, vertices[a]);
+				
+				if (temp < distanceBetweenVertices / 2) {
+					return a;
+				}
+				
 			
 				if (temp < bestDistance) {
 					bestCandidateIndex = a;
 					bestDistance = temp;
 				}
+				
+				--a;
 			
 			}
 			
 			if (b < vertices.length) {
-				temp = MathUtils.getAbsoluteValue(vertices[b].minus(raySource).norm());
+				temp = Distances.computeDistance(origin, direction, vertices[b]);
+				
+				if (temp < distanceBetweenVertices / 2) {
+					return a;
+				}
 				
 				if (temp < bestDistance) {
 					bestCandidateIndex = b;
 					bestDistance = temp;
 				}
 				
+				++b;
+				
 			}
-			
-			
-			--a;
-			++b;
 			
 		}
 		
@@ -310,22 +302,9 @@ public class TileBuffer {
 	}
 	
 	
-	// **************************** Matrix computations ****************************
-	
-	
-	//Assuming the ray is defined by point = origin + r * direction
-	public static Vector3f computePoint(Vector3f origin, Vector3f direction, float requestedZ) {
-	
-		float r = (requestedZ - origin.getC()) / direction.getC();
+	private float computePoint(Vector3f origin, Vector3f direction, float requestedZ) {
 		
-		return origin.plus(direction.timesEQ(r));
-		
-	}
-	
-	
-	public static float computeRPerStep(Vector3f origin, Vector3f direction, float requestedZ, int steps) {
-		
-		return ((requestedZ - origin.getC()) / direction.getC()) / steps;
+		return (requestedZ - origin.getC()) / direction.getC();
 		
 	}
 	

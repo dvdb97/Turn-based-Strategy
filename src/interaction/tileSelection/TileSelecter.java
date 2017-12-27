@@ -1,40 +1,61 @@
 package interaction.tileSelection;
 
 import core.Application;
+import graphics.Camera;
 import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
 import interaction.input.CursorPosInput;
+import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import math.matrices.advanced.MatrixInversion33f;
+import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
+
+import static org.lwjgl.opengl.GL11.*;
+
+
 public class TileSelecter {	
+	
+	private static TileBuffer tileBuffer;
+	
+	private static Matrix44f invertedProjectionMatrix;
+	private static Matrix33f invertedProjectionMatrix33f;
 	
 	private static int hoveredTileIndex;
 	
 		
 	public static void init(Vector3f[] centerVertices) {
 		
-		TileBuffer.init(centerVertices, new Vector3f(-200.34f, 120.567f, -10.32f));
+		//Generate the inverse of the 4x4 projection matrix
+		invertedProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(Matrices.getProjectionMatrix());
+		
+		//Generate the inverse of the 3x3 projection matrix
+		invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
+		
+		tileBuffer = new TileBuffer(centerVertices, new Vector3f(-0.1f, -0.1f, 0.1f));
 		
 	}
 	
 	
 	private static void computeSelectedTileIndex() {
 		
+		Matrix44f invertedViewMatrix = MatrixInversion44f.generateMultiplicativeInverse(PlayerCamera.getViewMatrix());
+		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
+		
 		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
 		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
 		
-		Vector4f rayStart = new Vector4f(cursorX, cursorY, 1.0f, 1.0f);
-		Vector4f rayDirection = new Vector4f(0f, 0f, -1f, 1f);		
+		Vector3f rayOrigin = Camera.getPosition();
 		
-		Matrix44f invertedVMatrix = PlayerCamera.getInvertedMatrix().times(Matrices.getProjectionMatrix());
-		rayStart = invertedVMatrix.times(rayStart);	
-		rayDirection = invertedVMatrix.times(rayDirection);
+		Vector3f ray = new Vector3f(cursorX, cursorY, -1f);
+		ray = invertedViewMatrix33f.times(ray);
+		ray = ray.normalize();
 		
-		hoveredTileIndex = TileBuffer.getTileIndex(rayStart, rayDirection, 0.001f, 10, 20);
+		hoveredTileIndex = tileBuffer.getTileIndex(rayOrigin, ray);	
 		
-	}
+	}	
 	
 	
 	public static void processInput() {

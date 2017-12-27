@@ -2,7 +2,7 @@ package math.matrices.advanced;
 
 import math.matrices.Matrix44f;
 
-public class MatrixInversion {
+public class MatrixInversion44f {
 	
 	private static Matrix44f unityMatrix = new Matrix44f(1f, 0f, 0f, 0f, 
 														 0f, 1f, 0f, 0f, 
@@ -17,10 +17,14 @@ public class MatrixInversion {
 	
 	public static Matrix44f generateMultiplicativeInverse(Matrix44f matrix) {
 		
-		LU_Decomposition.generate(matrix);
+		Matrix44f l_Matrix = new Matrix44f();
+		l_Matrix.times(0f);
+		Matrix44f u_Matrix = new Matrix44f();
+		u_Matrix.times(0f);
 		
-		Matrix44f l_Matrix = LU_Decomposition.getLMatrix();
-		Matrix44f u_Matrix = LU_Decomposition.getUMatrix();
+		LU_Decomposition.generate(matrix, l_Matrix, u_Matrix);
+		
+		
 		
 		
 		Matrix44f l_inverted = getLInverted(l_Matrix);

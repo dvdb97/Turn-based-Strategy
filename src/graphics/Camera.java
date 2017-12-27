@@ -9,7 +9,7 @@ import static utils.Const.HALF_PI;
 //TODO: now it is static, but maybe just temporary
 public class Camera {
 	
-	private static Vector3f position = new Vector3f(0, 0, 0);
+	private static Vector3f position = new Vector3f(0, 0, 1f);
 	//in radian measure
 	private static float    pitch = 0.0f;		//up and down
 	private static float    yaw   = 0.0f;		//right left

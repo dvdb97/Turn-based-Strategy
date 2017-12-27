@@ -6,19 +6,26 @@ import math.matrices.Matrix44f;
 public class Determinant {
 	
 	//TODO:
-	public static float getDeterminant(Matrix33f matrix) {
-		return 0f;
+	public static float getDeterminant(Matrix44f matrix) {
+		
+		Matrix44f u_Matrix = new Matrix44f();
+		u_Matrix.times(0f);
+		
+		LU_Decomposition.generate(matrix, new Matrix44f(), u_Matrix);
+		
+		return u_Matrix.getA1() * u_Matrix.getB2() * u_Matrix.getC3() * u_Matrix.getD4();
+		
 	}
 	
 	
-	//TODO:
-	public static float getDeterminant(Matrix44f matrix) {
+	public static float getDeterminant(Matrix33f matrix) {
 		
-		LU_Decomposition.generate(matrix);
+		Matrix33f u_Matrix = new Matrix33f();
+		u_Matrix.times(0f);
 		
-		Matrix44f u_Matrix = LU_Decomposition.getUMatrix();
+		LU_Decomposition.generate(matrix, new Matrix33f(), u_Matrix);
 		
-		return u_Matrix.getA1() * u_Matrix.getB2() * u_Matrix.getC3() * u_Matrix.getD4();
+		return u_Matrix.getA1() * u_Matrix.getB2() * u_Matrix.getC3();
 		
 	}
 	

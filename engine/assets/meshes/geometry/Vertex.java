@@ -44,6 +44,11 @@ public class Vertex extends Vector3f {
 	}
 	
 	
+	public Vertex(Vector3f position, Color color) {
+		this(position.getA(), position.getB(), position.getC(), color);
+	}
+	
+	
 	public Vertex() {
 		super(0, 0, 0);
 		

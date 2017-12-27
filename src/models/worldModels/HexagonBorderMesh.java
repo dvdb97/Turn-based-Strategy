@@ -155,7 +155,7 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	private IntBuffer createElementBuffer() {
 		
-		IntBuffer elementBuffer = BufferUtils.createIntBuffer( hexLength * hexWidth * 7 );
+		IntBuffer elementBuffer = BufferUtils.createIntBuffer((hexLength / 2 - 1) * (hexWidth - 1) * 7 );
 		
 		for (int y=0; y<hexWidth-1; y++) {
 			
@@ -232,35 +232,31 @@ public class HexagonBorderMesh extends Element_Model{
 	//Compute a center point for every vertex. Will be used to compute the selectedTile
 	public Vector3f[] getCenterVertices() {
 		
-		Vector3f[] vertices = new Vector3f[posBuffer.capacity() / 18];
+		Vector3f[] vertices = new Vector3f[indexBuffer.capacity() / 7];
 		
 		float x = 0f;
 		float y = 0f;
 		float z = 0f;
 		
-		for (int i = 0; i < posBuffer.capacity(); ++i) {
+		for (int i = 0; i < indexBuffer.capacity(); ++i) {
 			
-			if (i % 3 == 0) {
-				x += posBuffer.get(i);
-			}
+			int vertexIndex = indexBuffer.get(i);
 			
-			if (i % 3 == 1) {
-				y += posBuffer.get(i);
-			}
-			
-			if (i % 3 == 2) {
-				z += posBuffer.get(i);
-			}
-					
-			if (i % 18 == 17) {	
+			if(vertexIndex == PRI) {
 				
-				vertices[i / 18] = new Vector3f(x / 6, y / 6, z / 6);
+				vertices[i / 7] = new Vector3f(x / 6, y / 6, z / 6);
 				
 				x = 0f;
 				y = 0f;
 				z = 0f;
 				
+				continue;
+				
 			}
+			
+			x += posBuffer.get(vertexIndex * 3);
+			y += posBuffer.get(vertexIndex * 3 + 1);
+			z += posBuffer.get(vertexIndex * 3 + 2);
 			
 		}
 		

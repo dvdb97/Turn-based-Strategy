@@ -58,8 +58,22 @@ public class Matrix33f extends Matrixf {
 	}
 	
 	
-	//------------------------- math methods ------------------------
+	public Matrix33f(float value) {
+		this(value, value, value, value, value, value, value, value, value);
+	}
 	
+	
+	public Matrix33f(Matrix44f matrix) {
+		super(LENGTH);
+		
+		set( 0, matrix.getA1()); set( 3, matrix.getA2()); set( 6, matrix.getA3());
+		set( 1, matrix.getB1()); set( 4, matrix.getB2()); set( 7, matrix.getB3());
+		set( 2, matrix.getC1()); set( 5, matrix.getC2()); set( 8, matrix.getC3());
+	}
+	
+	
+	//------------------------- math methods ------------------------
+
 	/**
 	 * Matrix addition
 	 * 
@@ -211,6 +225,17 @@ public class Matrix33f extends Matrixf {
 	public void setA3(float a3) {
 		set(6, a3);
 	}
+	
+	
+	public float get(int x, int y) {
+		return get(x * N + y);
+	}
+	
+	
+	public void set(int x, int y, float value) {
+		set(x * N + y, value);
+	}
+	
 	
 	//-----------------------------------
 	

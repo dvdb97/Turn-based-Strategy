@@ -33,6 +33,17 @@ public class Vector4f extends Vectorf {
 		set(3, d);
 	}
 	
+	
+	public Vector4f(Vector3f vec, float d) {
+		super(LENGTH);
+		
+		setA(vec.getA());
+		setB(vec.getB());
+		setC(vec.getC());
+		setD(d);
+		
+	}
+	
 	//------------------------- math methods -------------------
 	
 	/**

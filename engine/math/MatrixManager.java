@@ -63,7 +63,7 @@ public class MatrixManager {
 	// ************** basic operations **************
 	
 	
-	private static Matrix44f getTranslationMatrix(float x, float y, float z) {
+	public static Matrix44f getTranslationMatrix(float x, float y, float z) {
 		
 		return new Matrix44f(1f, 0f, 0f, x, 
 							 0f, 1f, 0f, y, 
@@ -73,7 +73,7 @@ public class MatrixManager {
 	}
 	
 	
-	private static Matrix44f getRotationMatrix(float x, float y, float z) {
+	public static Matrix44f getRotationMatrix(float x, float y, float z) {
 		
 		Matrix44f xRotation = new Matrix44f(1f, 0f, 0f, 0f, 
 											0f, cosine(x), -sine(x), 0f, 
@@ -95,7 +95,7 @@ public class MatrixManager {
 	}
 	
 	
-	private static Matrix44f getScalingMatrix(float scale) {
+	public static Matrix44f getScalingMatrix(float scale) {
 		
 		return new Matrix44f(scale, 0f, 0f, 0f, 
 							 0f, scale, 0f, 0f, 
@@ -105,7 +105,7 @@ public class MatrixManager {
 	}
 	
 	
-	private static Matrix44f getScalingMatrix(float sx, float sy, float sz) {
+	public static Matrix44f getScalingMatrix(float sx, float sy, float sz) {
 		
 		return new Matrix44f(sx, 0f, 0f, 0f,
 							 0f, sy, 0f, 0f, 

@@ -88,6 +88,8 @@ public class MapManager {
 	
 	public static void render() {
 		
+		Matrix44f matrix = new Matrix44f();
+		
 		ShaderManager.useLightShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.draw(geographicMap, null);

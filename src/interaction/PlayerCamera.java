@@ -151,7 +151,7 @@ public class PlayerCamera {
 	}
 	
 	
-	public static Matrix44f getViewMatrix() {
+	public static ViewMatrix getViewMatrix() {
 		
 		return viewMatrix;
 		

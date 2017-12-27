@@ -35,6 +35,10 @@ public class Vector3f extends Vectorf {
 	}
 	
 	
+	public Vector3f(Vector4f vec) {
+		this(vec.getA(), vec.getB(), vec.getC());
+	}
+	
 	
 	//------------------------- math methods -------------------
 	
