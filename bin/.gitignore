@@ -1,7 +1,10 @@
+/rendering/
+/graphics/
 /interaction/
-/models/
-/math/
 /map/
 /assets/
+/visualize/
+/fontRendering/
+/gui/
+/math/
 /core/
-/graphics/

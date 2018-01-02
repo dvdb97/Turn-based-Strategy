@@ -5,7 +5,7 @@ import fontRendering.texture.FontTexture;
 public class TimesNewRoman extends FontTexture {
 
 	public TimesNewRoman() {
-		super("res/fonts/Font.png", 1, 10, 10);
+		super("res/fonts/Font.png", 2, 10, 10);
 		// TODO Auto-generated constructor stub
 		
 		char[] correspondingChars = {
@@ -15,9 +15,9 @@ public class TimesNewRoman extends FontTexture {
 			'U', 'V', 'W', 'X', 'Y', 'Z', 'Ä', 'Ö', 'Ü', 'ß',
 			'Ñ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-			't', 'u', 'v', 'w', 'x', 'y', 'z', '(', ')', '.',
+			't', 'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü',
 			':', '!', '?', ';', '+', '*', '/', '-', ',', '=',
-			'_', '"', '%', '&'
+			'_', '"', '%', '&', '(', ')', '.'
 		};
 		
 		this.setCorrespondingChars(correspondingChars);

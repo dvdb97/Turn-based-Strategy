@@ -36,7 +36,7 @@ public class Element_Model extends Model {
 		
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
-		FloatBuffer texPosBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
+		FloatBuffer texPosBuffer = BufferUtils.createFloatBuffer(vertices.length * 2);
 		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		
 		
@@ -69,7 +69,7 @@ public class Element_Model extends Model {
 		
 		if (textured) {
 			texPosBuffer.flip();
-			this.setVertexTexturePositionData(texPosBuffer, 3, GL_STATIC_DRAW);
+			this.setVertexTexturePositionData(texPosBuffer, 2, GL_STATIC_DRAW);
 		} else {
 			colBuffer.flip();
 			this.setVertexColorData(colBuffer, 4, GL_STATIC_DRAW);

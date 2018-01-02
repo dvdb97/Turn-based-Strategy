@@ -3,7 +3,6 @@ package core.game;
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
-import gui.test.HelloWorld;
 import interaction.PlayerCamera;
 import interaction.input.KeyInput;
 import interaction.tileSelection.TileSelecter;
@@ -35,9 +34,6 @@ public class Game {
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
-		
-		//TODO: Temp. Just for testing the font
-		HelloWorld.init();
 		
 		//Init Agents etc
 		
@@ -100,8 +96,6 @@ public class Game {
 	
 	private void render() {
 		MapManager.render();
-		
-		HelloWorld.render();
 	}
 	
 	

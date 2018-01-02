@@ -2,12 +2,33 @@ package assets.textures;
 
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 
 
 public class Texture {
 	
+	//Linear filtering
+	public static final int LINEAR = GL_LINEAR;
+	
+	//Nearest neighbor filtering
+	public static final int NEAREST = GL_NEAREST;
+	
+	//Clamp mode - Repeat the texture. 
+	public static final int REPEAT = GL_REPEAT;
+	
+	//Clamp mode - clamp the texture to the edge. 
+	public static final int CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE;
+	
+	//Clamp mode - clamp the texture to the border.
+	public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
+	
+	
+	
+	//The opengl ID of this texture
 	private final int ID;
 	
+	//The type of the texture
 	private final int TYPE;
 	
 	
@@ -42,6 +63,11 @@ public class Texture {
 	
 	public void unbind() {
 		glBindTexture(TYPE, 0);
+	}
+	
+	
+	public void delete() {
+		glDeleteTextures(ID);
 	}
 	
 	

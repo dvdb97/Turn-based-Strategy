@@ -42,28 +42,14 @@ public class Texture2D extends Texture {
 		this.height = image.getHeight();
 		this.mipmapLevels = mipmapLevels;
 		
-		glTexStorage2D(getType(), this.mipmapLevels, GL_RGBA8, width, height);
-		
 		this.setFilter(filter);
 		this.setTextureWrap(wrapMode);
 		
-		glTexSubImage2D(getType(), 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		glTexImage2D(getType(), 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
 		
-		if (mipmapLevels > 1) {
-			glGenerateMipmap(getType());
-		}
+		glGenerateMipmap(getType());
 		
 		unbind();
-	}
-	
-	
-	public void bind() {
-		glBindTexture(getType(), getID());
-	}
-	
-	
-	public void unbind() {
-		glBindTexture(getType(), 0);
 	}
 
 }

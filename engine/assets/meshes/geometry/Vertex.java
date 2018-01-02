@@ -3,6 +3,7 @@ package assets.meshes.geometry;
 
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 
 public class Vertex extends Vector3f {
@@ -46,6 +47,13 @@ public class Vertex extends Vector3f {
 	
 	public Vertex(Vector3f position, Color color) {
 		this(position.getA(), position.getB(), position.getC(), color);
+	}
+	
+	
+	public Vertex(Vector3f position, Vector2f texPos) {
+		this(position, new Color(0f, 0f, 0f, 0f));
+		
+		this.setTexturePositions(texPos);
 	}
 	
 	

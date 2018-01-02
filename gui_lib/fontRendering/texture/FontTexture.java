@@ -1,6 +1,8 @@
 package fontRendering.texture;
 
+import assets.meshes.geometry.Quad;
 import assets.meshes.geometry.Vertex;
+import assets.textures.Texture;
 import assets.textures.Texture2D;
 import math.vectors.Vector2f;
 
@@ -17,11 +19,13 @@ public class FontTexture extends Texture2D {
 	
 	
 	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol) {
-		super(path, mipmapLevels, GL_LINEAR, GL_CLAMP_TO_BORDER);
+		super(path, mipmapLevels, GL_LINEAR, Texture.CLAMP_TO_BORDER);
 		
 		this.charsPerRow = charsPerRow;
 		
 		this.charsPerCol = charsPerCol;
+		
+		
 		
 	}
 	
@@ -41,6 +45,16 @@ public class FontTexture extends Texture2D {
 	//******************************* look up functions *******************************
 	
 	
+	public float getXPosition(char c) {
+		return getCharXPositionOnTexture(getCharIndex(c));
+	}
+	
+	
+	public float getYPosition(char c) {
+		return getCharYPositionOnTexture(getCharIndex(c));
+	}
+	
+	
 	private int getCharIndex(char c) {
 		
 		for (int i = 0; i < correspondingChars.length; ++i) {
@@ -52,25 +66,6 @@ public class FontTexture extends Texture2D {
 		}
 		
 		return charsPerCol * charsPerRow - 1;
-		
-	}
-	
-	
-	public void mapToQuad(char c, Vertex upperLeft, Vertex upperRight, Vertex lowerLeft, Vertex lowerRight) {
-		
-		int index = getCharIndex(c);
-		
-		float x = getCharXPositionOnTexture(index);
-		float y = getCharYPositionOnTexture(index);
-		
-		float width = getCharWidth();
-		float height = getCharHeight();
-		
-		
-		upperLeft.setTexturePositions(new Vector2f(x, y));
-		upperRight.setTexturePositions(new Vector2f(x + width, y));
-		lowerLeft.setTexturePositions(new Vector2f(x, y + height));
-		lowerRight.setTexturePositions(new Vector2f(x + width, y + height));
 		
 	}
 	
@@ -88,7 +83,7 @@ public class FontTexture extends Texture2D {
 	
 	private float getCharYPositionOnTexture(int index) {
 		
-		int y = index % charsPerCol;
+		int y = index / charsPerRow;
 		
 		float charHeight = getCharHeight();
 		
@@ -97,12 +92,12 @@ public class FontTexture extends Texture2D {
 	}
 	
 	
-	private float getCharWidth() {
+	public float getCharWidth() {
 		return 1.0f / charsPerRow;
 	}
 	
 	
-	private float getCharHeight() {
+	public float getCharHeight() {
 		return 1.0f / charsPerCol;
 	}
 

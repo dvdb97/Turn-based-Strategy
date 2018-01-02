@@ -1,11 +1,13 @@
 package rendering.shaders;
 
-
-import utils.FileUtils;
-
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
 
+import math.matrices.Matrix33f;
+import math.matrices.Matrix44f;
+import math.vectors.Vector3f;
+import math.vectors.Vector4f;
+
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 
 public class ShaderProgram {
 	
@@ -15,20 +17,17 @@ public class ShaderProgram {
 	int fragShaderID;
 	
 	
-	public ShaderProgram(String vertPath, String fragPath) {
-		init(vertPath, fragPath);
+	public ShaderProgram(String vertSource, String fragSource) {
+		init(vertSource, fragSource);
 	}
 	
 	
-	public void init(String vertPath, String fragPath) {
+	public void init(String vertSource, String fragSource) {
 		
 		ID = glCreateProgram();
 		
 		vertShaderID = glCreateShader(GL_VERTEX_SHADER);
 		fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-		
-		String vertSource = FileUtils.loadShaderSourceCode(vertPath);
-		String fragSource = FileUtils.loadShaderSourceCode(fragPath);
 		
 		compileShader(vertSource, vertShaderID);
 		compileShader(fragSource, fragShaderID);
@@ -49,7 +48,7 @@ public class ShaderProgram {
 		
 	}
 	
-	public void compileShader(String sourceCode, int id) {
+	private void compileShader(String sourceCode, int id) {
 		glShaderSource(id, sourceCode);
 		glCompileShader(id);
 		
@@ -64,29 +63,82 @@ public class ShaderProgram {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * Pass an single float into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param value The value of the uniform variable should have
+	 */
 	public void setUniform1f(String name, float value) {
 		glUniform1f(getUniformLocation(name), value);
 	}
-
-	/*public void setUniform3f(String name, Vector values) {
-		glUniform3f(getUniformLocation(name), values.x, values.y, values.z);
-	}*/
 	
+	
+	/**
+	 * 
+	 * Pass an single integer into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param value The value of the uniform variable should have
+	 */
 	public void setUniform1i(String name, int value) {
 		glUniform1i(getUniformLocation(name), value);
 	}
 	
-	public void setUniformfv(String name, float[] array) {
-		glUniform1fv(getUniformLocation(name), array);
+	
+	/**
+	 * 
+	 * Pass a vector into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param value The value of the uniform variable should have
+	 */
+	public void setUniformVector(String name, float[] array) {
+		glUniform4fv(getUniformLocation(name), array);
 	}
 	
+	public void setUniformVector3f(String name, Vector3f vector) {
+		setUniformVector(name, vector.toArray());
+	}
+	
+	public void setUniformVector4f(String name, Vector4f vector) {
+		setUniformVector(name, vector.toArray());
+	}
+	
+	
+	/**
+	 * 
+	 * Pass a 4x4 Matrix into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param value The value of the uniform variable should have
+	 */
 	public void setUniformMatrix4fv(String name, float[] array) {
 		glUniformMatrix4fv(getUniformLocation(name), false, array);
 	}
 	
+	public void setUniformMatrix4fv(String name, Matrix44f matrix) {
+		setUniformMatrix4fv(name, matrix.toArray());
+	}
+	
+	
+	/**
+	 * 
+	 * Pass a 3x3 Matrix into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param value The value of the uniform variable should have
+	 */
 	public void setUniform3fv(String name, float[] array) {
 		glUniform3fv(getUniformLocation(name), array);
 	}
+	
+	public void setUnifrom3fv(String name, Matrix33f matrix) {
+		setUniform3fv(name, matrix.toArray());
+	}
+	
 	
 	public int getUniformLocation(String name) {
 		return glGetUniformLocation(ID, name);
@@ -95,6 +147,7 @@ public class ShaderProgram {
 	public int getAttributeLocation(String name) {
 		return glGetAttribLocation(ID, name);
 	}
+	
 	
 	public void use() {
 		glUseProgram(ID);

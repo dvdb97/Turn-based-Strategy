@@ -12,6 +12,9 @@ public class Vector2f extends Vectorf {
 	
 	public Vector2f(float a, float b) {
 		this();
+		
+		setA(a);
+		setB(b);
 	}
 	
 	

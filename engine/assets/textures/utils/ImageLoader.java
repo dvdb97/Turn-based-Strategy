@@ -28,7 +28,7 @@ public class ImageLoader {
 			for (int y = 0; y < image.getHeight(); ++y) {
                 for (int x = 0; x < image.getWidth(); ++x) {
                      
-                	//Extract the 4 byte of the 32-Bit-Integer and store them in the array:
+                	//Extract the 4 bytes of the 32-Bit-Integer and store them in the array:
                     convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 16) & 0xFF); //RED
                     convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 8)  & 0xFF); //GREEN
                     convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 0)  & 0xFF); //BLUE

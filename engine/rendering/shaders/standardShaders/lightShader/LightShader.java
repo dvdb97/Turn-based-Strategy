@@ -9,6 +9,7 @@ import assets.material.StandardMaterial;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.shaders.ShaderProgram;
+import utils.FileUtils;
 
 
 public class LightShader extends ShaderProgram {
@@ -16,7 +17,6 @@ public class LightShader extends ShaderProgram {
 	//A constant for loading the files because I'm lazy to type it 4 times ¯\_(ツ)_/¯
 	private static final String path = "Shaders/LightShaders/";
 
-	
 	//The list of LightSources to be rendered next render call
 	private LinkedList<LightSource> lightSources = new LinkedList<LightSource>();
 	
@@ -35,7 +35,11 @@ public class LightShader extends ShaderProgram {
 	 * @param returns a LightShader that does per vertex light computing
 	 */
 	public static LightShader createPerVertexLightShader() {
-		return new LightShader(path + "lightShaderPV.vert", path + "lightShaderPV.frag");
+		
+		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShaderPV.vert");
+		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShaderPV.frag");
+		
+		return new LightShader(vertSource, fragSource);
 	}
 	
 	
@@ -43,7 +47,11 @@ public class LightShader extends ShaderProgram {
 	 * @param returns a LightShader that does per fragment light computing
 	 */
 	public static LightShader createPerFragmentLightShader() {
-		return new LightShader(path + "lightShader.vert", path + "lightShader.frag");
+		
+		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
+		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
+		
+		return new LightShader(vertSource, fragSource);
 	}
 	
 	

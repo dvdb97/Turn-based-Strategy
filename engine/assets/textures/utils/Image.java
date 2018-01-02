@@ -14,7 +14,6 @@ public class Image {
 
 	
 	public Image(int width, int height, byte[] imageData) {
-		super();
 		this.width = width;
 		this.height = height;
 		this.imageData = imageData;

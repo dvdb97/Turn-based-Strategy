@@ -5,6 +5,8 @@ import assets.material.Material;
 import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
+import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 import rendering.shaders.standardShaders.lightShader.LightShader;
 
@@ -17,6 +19,10 @@ public class ShaderManager {
 	//TODO: Maybe change the name
 	private static ShaderProgram shader;
 	
+	private static ShaderProgram shaderColorAsU;
+	
+	private static ShaderProgram texturedMeshShader;
+	
 	private static TextRenderingShader fontShader;
 	
 	//More shaders that are needed
@@ -25,7 +31,11 @@ public class ShaderManager {
 		
 		lightShader = LightShader.createPerVertexLightShader();
 		
-		shader = new ShaderProgram("Shaders/shader.vert", "Shaders/shader.frag");
+		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shader.vert", "Shaders/StandardShaders/shader.frag");
+		
+		shaderColorAsU = ShaderLoader.loadShader("Shaders/StandardShaders/shaderColorAsU.vert", "Shaders/StandardShaders/shaderColorAsU.frag");
+		
+		texturedMeshShader = ShaderLoader.loadShader("Shaders/StandardShaders/shaderTexturedMesh.vert", "Shaders/StandardShaders/shaderTexturedMesh.frag");
 		
 		fontShader = new TextRenderingShader();
 		
@@ -79,7 +89,7 @@ public class ShaderManager {
 	}
 	
 	
-	public static void useShader(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix) {
+	public static void useShader(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, boolean colorAsUniform, Vector4f color) {
 		
 		if (!initialized) {
 			
@@ -89,12 +99,27 @@ public class ShaderManager {
 			
 		}
 		
-		//TODO: Might be in the wrong order
+		
 		Matrix44f mvpMatrix = pMatrix.times(vMatrix).times(mMatrix);
 		
-		shader.use();
 		
-		shader.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());
+		
+		if (!colorAsUniform) {
+						
+			shader.use();
+			
+			shader.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());
+			
+		} else {
+			
+			shaderColorAsU.use();
+			
+			shaderColorAsU.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());	
+			shaderColorAsU.setUniformVector4f("u_Color", color);
+			
+		}
+		
+		
 		
 	}
 	
@@ -110,6 +135,37 @@ public class ShaderManager {
 		}
 		
 		shader.disable();
+		
+	}
+	
+	
+	public static void useTexturedMeshShaders(Matrix44f mvpMatrix) {
+		
+		if (!initialized) {
+			
+			System.err.println("ShaderManager hasn't been initialized yet!");
+			
+			return;
+			
+		}
+		
+		texturedMeshShader.use();
+		texturedMeshShader.setUniformMatrix4fv("u_mvpMatrix", mvpMatrix);
+		
+	}
+	
+	
+	public static void disableTexturedMeshShader() {
+		
+		if (!initialized) {
+			
+			System.err.println("ShaderManager hasn't been initialized yet!");
+			
+			return;
+			
+		}
+		
+		texturedMeshShader.disable();
 		
 	}
 	

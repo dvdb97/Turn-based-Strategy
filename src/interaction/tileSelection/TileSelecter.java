@@ -5,6 +5,7 @@ import graphics.Camera;
 import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
 import interaction.input.CursorPosInput;
+import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.matrices.advanced.MatrixInversion33f;
@@ -23,7 +24,9 @@ public class TileSelecter {
 	private static Matrix44f invertedProjectionMatrix;
 	private static Matrix33f invertedProjectionMatrix33f;
 	
-	private static int hoveredTileIndex;
+	private static int hoveredTileIndex = 0;
+	
+	private static int selectedTileIndex = 0;
 	
 		
 	public static void init(Vector3f[] centerVertices) {
@@ -55,6 +58,10 @@ public class TileSelecter {
 		
 		hoveredTileIndex = tileBuffer.getTileIndex(rayOrigin, ray);	
 		
+		if (MouseInputManager.isLeftMouseButtonPressed()) {
+			selectedTileIndex = hoveredTileIndex;
+		}
+		
 	}	
 	
 	
@@ -65,6 +72,11 @@ public class TileSelecter {
 	
 	public static int getHoveredTileIndex() {
 		return hoveredTileIndex;
+	}
+	
+	
+	public static int getSelectedTileIndex() {
+		return selectedTileIndex;
 	}
 
 }

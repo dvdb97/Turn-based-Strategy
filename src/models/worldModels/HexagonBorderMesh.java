@@ -320,7 +320,7 @@ public class HexagonBorderMesh extends Element_Model{
 	}
 	
 	
-	public void showAll() {
+	public void displayAll() {
 		this.setElementArrayData(this.indexBuffer);
 	}
 	

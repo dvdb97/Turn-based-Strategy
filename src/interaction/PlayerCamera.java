@@ -24,7 +24,8 @@ public class PlayerCamera {
 	
 	
 	//TODO: The value is temporary
-	private static float cameraSpeed = 0.1f;
+	private static float cameraMovementSpeed = 0.1f;
+	private static float cameraRotationSpeed = 0.1f;
 	
 	
 	//Init the camera
@@ -73,28 +74,28 @@ public class PlayerCamera {
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationForward())) {
 			
-			Camera.move(0f, cameraSpeed, 0f);
+			Camera.move(0f, cameraMovementSpeed, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationBackward())) {
 			
-			Camera.move(0f, -cameraSpeed, 0f);
+			Camera.move(0f, -cameraMovementSpeed, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationRight())) {
 			
-			Camera.move(cameraSpeed, 0f, 0f);
+			Camera.move(cameraMovementSpeed, 0f, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationLeft())) {
 			
-			Camera.move(-cameraSpeed, 0f, 0f);
+			Camera.move(-cameraMovementSpeed, 0f, 0f);
 			
 		}
 		
@@ -109,28 +110,28 @@ public class PlayerCamera {
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationDown())) {
 			
-			Camera.move(0f, 0f, -cameraSpeed);
+			Camera.move(0f, 0f, -cameraMovementSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationUp())) {
 			
-			Camera.move(0f, 0f, cameraSpeed);
+			Camera.move(0f, 0f, cameraMovementSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(GLFW_KEY_G)) {
 			
-			Camera.incrPitch(0.1f * cameraSpeed);
+			Camera.incrPitch(0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(GLFW_KEY_J)) {
 			
-			Camera.incrPitch(-0.1f * cameraSpeed);
+			Camera.incrPitch(-0.1f * cameraRotationSpeed);
 			
 		}
 		

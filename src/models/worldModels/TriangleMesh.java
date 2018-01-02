@@ -305,6 +305,15 @@ public class TriangleMesh extends Illuminated_Model {
 		return width;
 	}
 	
+	
+	public float getTotalWidth() {
+		return width * edgeLength;
+	}
+	
+	public float getTotalHeight() {
+		return length * edgeLength;
+	}
+	
 	/**
 	 * this method deletes this objects ArrayList positions, because this list was only implemented
 	 * to realize this method

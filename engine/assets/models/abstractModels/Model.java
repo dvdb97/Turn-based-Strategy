@@ -41,6 +41,8 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	//List to store all vertex attribute pointers needed for this model.
 	private List<Integer> indexList = new ArrayList<Integer>();
 	
+	private List<Integer> customBuffers = new ArrayList<Integer>();
+	
 	
 	//The vertex array object
 	private int vaoID;
@@ -213,7 +215,7 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 		
 		glBufferData(GL_ARRAY_BUFFER, texturePositionDataBuffer, accessibility);
 		
-		glVertexAttribPointer(vaIndex, 3, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(vaIndex, size, GL_FLOAT, false, 0, 0);
 		indexList.add(vaIndex);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -229,8 +231,6 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 		setTexturePositionData(texturePositionDataBuffer, TEX_POS_ARRAY_INDEX, size, accessibility);		
 		
 	}
-	
-	
 	
 	
 	
@@ -268,6 +268,35 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 		
 	}	
 	
+	
+	public int setVertexDataOfUnusualType(FloatBuffer dataBuffer, int vaIndex, int size, int accessibility ) {
+		
+		if (indexList.contains(vaIndex)) {
+			System.err.println("There is already a pointer to existing data at this index of the attribute object!");
+			
+			return -1;
+		}
+		
+		glBindVertexArray(getVaoID());
+		
+		int bufferID = glGenBuffers();
+		customBuffers.add(bufferID);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+		
+		glBufferData(GL_ARRAY_BUFFER, dataBuffer, accessibility);
+		
+		glVertexAttribPointer(vaIndex, size, GL_FLOAT, false, 0, 0);
+		indexList.add(vaIndex);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		glBindVertexArray(0);
+		
+		
+		return customBuffers.lastIndexOf(bufferID);
+		
+	}
 	
 	
 	public void setSubData(int offset, FloatBuffer positionData, FloatBuffer colorData, FloatBuffer texturePositionData) {

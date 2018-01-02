@@ -24,5 +24,21 @@ public class Mesh {
 	public int[] getIndexArray() {
 		return indexArray;
 	}
+	
+	
+	public void print() {
+		
+		for (Vertex vert : vertices) {
+			System.out.println("Position:");
+			vert.print();
+			
+			if (vert.isTextured()) {
+				System.out.println("Texture:");
+				vert.getTexturePositions().print();
+			}
+			
+		}
+		
+	}
 
 }
