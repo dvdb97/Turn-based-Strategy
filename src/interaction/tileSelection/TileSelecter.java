@@ -14,9 +14,6 @@ import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
 
-import static org.lwjgl.opengl.GL11.*;
-
-
 public class TileSelecter {	
 	
 	private static TileBuffer tileBuffer;
