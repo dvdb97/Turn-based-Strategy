@@ -59,7 +59,10 @@ public class TextGenerator {
 		
 		//The x and y position of the current char
 		float xPos, yPos;
+		
+		//The current row of the text. Will be increased when the char '\b' marks the end of a line
 		int row = 0;
+		//The index of the current char in the current row
 		int rowIndex = 0;
 		
 		//The width and height of a char

@@ -1,13 +1,7 @@
 package fontRendering.texture;
 
-import assets.meshes.geometry.Quad;
-import assets.meshes.geometry.Vertex;
 import assets.textures.Texture;
 import assets.textures.Texture2D;
-import math.vectors.Vector2f;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
 
 public class FontTexture extends Texture2D {
 	
@@ -19,7 +13,7 @@ public class FontTexture extends Texture2D {
 	
 	
 	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol) {
-		super(path, mipmapLevels, GL_LINEAR, Texture.CLAMP_TO_BORDER);
+		super(path, mipmapLevels, Texture.NEAREST, Texture.CLAMP_TO_BORDER);
 		
 		this.charsPerRow = charsPerRow;
 		

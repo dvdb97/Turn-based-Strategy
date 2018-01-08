@@ -29,7 +29,7 @@ public class ShaderManager {
 	
 	public static void init(/* TODO: Graphics quality */) {
 		
-		lightShader = LightShader.createPerVertexLightShader();
+		lightShader = LightShader.createPerFragmentLightShader();
 		
 		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shader.vert", "Shaders/StandardShaders/shader.frag");
 		

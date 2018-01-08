@@ -23,6 +23,8 @@ public abstract class PrimitiveModel {
 	
 	public PrimitiveModel() {
 		
+		texture = null;
+		
 		transformationMatrix = new TransformationMatrix();
 		
 	}
@@ -77,6 +79,11 @@ public abstract class PrimitiveModel {
 		
 		transformationMatrix.setRot(x, y, z);
 		
+	}
+	
+	
+	public boolean isTextured() {
+		return texture == null;
 	}
 	
 
