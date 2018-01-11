@@ -36,8 +36,10 @@ abstract class Vectorf extends Matrixf {
 	public void print() {
 		
 		for (int i=0; i<getDataLength(); i++) {
-			System.out.println(get(i) + " ");
+			System.out.print(get(i) + "  ");
 		}
+		
+		System.out.println();
 		
 	}
 	

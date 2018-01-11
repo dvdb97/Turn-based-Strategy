@@ -165,7 +165,7 @@ public class TileBuffer {
 	 * 
 	 * @param origin The origin of the ray
 	 *  
-	 * @param destination The direction of the ray
+	 * @param direction The direction of the ray
 	 *
 	 * @return Returns the index of the closest vertex to the ray
 	 * 
