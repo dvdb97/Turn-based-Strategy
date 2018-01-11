@@ -5,8 +5,11 @@ import static org.lwjgl.glfw.GLFW.*;
 public class KeyBindings {
 	
 	//Set the key bindings. E.g.:
+	
+	//Menu
 	private static int mainMenuButton = GLFW_KEY_ESCAPE;
 	
+	//Map movement
 	private static int mapTranslationLeft = GLFW_KEY_A;
 	
 	private static int mapTranslationRight = GLFW_KEY_D;
@@ -18,8 +21,7 @@ public class KeyBindings {
 	private static int mapTranslationUp = GLFW_KEY_R;
 	
 	private static int mapTranslationDown = GLFW_KEY_F;
-
-
+	
 	public static void setMapZoomOut(int mapZoomOut) {
 		KeyBindings.mapTranslationUp = mapZoomOut;
 	}

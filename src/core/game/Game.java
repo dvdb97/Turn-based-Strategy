@@ -3,7 +3,7 @@ package core.game;
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
-import interaction.PlayerCamera;
+import interaction.CameraOperator;
 import interaction.input.KeyInput;
 import interaction.tileSelection.TileSelecter;
 import map.MapManager;
@@ -28,7 +28,7 @@ public class Game {
 		MapManager.init(boardWidth, boardHeight);
 		
 		//Init the camera
-		PlayerCamera.init();
+		CameraOperator.init();
 		
 		TileSelecter.init(MapManager.getTileCenterVertices());
 		
@@ -76,7 +76,7 @@ public class Game {
 	
 	private void processInput() {
 		
-		PlayerCamera.update();
+		CameraOperator.update();
 		
 		TileSelecter.processInput();
 		

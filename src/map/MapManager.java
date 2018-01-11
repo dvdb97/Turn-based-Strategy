@@ -1,6 +1,6 @@
 package map;
 
-import interaction.PlayerCamera;
+import interaction.CameraOperator;
 import interaction.tileSelection.TileSelecter;
 import assets.light.LightSource;
 import assets.material.Material;
@@ -112,14 +112,14 @@ public class MapManager {
 	
 	public static void render() {
 		
-		ShaderManager.useLightShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShader(geoMapModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.draw(geographicMap, null);
 		
 		ShaderManager.disableLightShader();
 		
 		
-		ShaderManager.useShader(geoMapModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
+		ShaderManager.useShader(geoMapModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
 		RenderEngine.draw(hexagonBorderMap, null);
 		
@@ -128,7 +128,7 @@ public class MapManager {
 		ShaderManager.disableShader();
 		
 		
-		ShaderManager.useShader(hexagonBorderModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
+		ShaderManager.useShader(hexagonBorderModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
 		
 		hexagonBorderMap.display(TileSelecter.getHoveredTileIndex());
 		RenderEngine.draw(hexagonBorderMap, null);
@@ -136,7 +136,7 @@ public class MapManager {
 		ShaderManager.disableShader();
 		
 		
-		ShaderManager.useShader(hexagonBorderModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
+		ShaderManager.useShader(hexagonBorderModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
 		
 		hexagonBorderMap.display(TileSelecter.getSelectedTileIndex());
 		RenderEngine.draw(hexagonBorderMap, null);
@@ -157,7 +157,7 @@ public class MapManager {
 	
 	public static Matrix44f getMapModelMVPMatrix() {
 		
-		return geoMapModelMatrix.times(PlayerCamera.getViewMatrix()).times(Matrices.getProjectionMatrix());
+		return geoMapModelMatrix.times(CameraOperator.getViewMatrix()).times(Matrices.getProjectionMatrix());
 		
 	}
 	

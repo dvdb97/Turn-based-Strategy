@@ -3,7 +3,7 @@ package interaction.tileSelection;
 import core.Application;
 import graphics.Camera;
 import graphics.matrices.Matrices;
-import interaction.PlayerCamera;
+import interaction.CameraOperator;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
@@ -24,12 +24,15 @@ public class TileSelecter {
 	private static Matrix44f invertedProjectionMatrix;
 	private static Matrix33f invertedProjectionMatrix33f;
 	
-	private static int hoveredTileIndex = 0;
+	private static int hoveredTileIndex;
 	
-	private static int selectedTileIndex = 0;
+	private static int selectedTileIndex;
 	
 		
 	public static void init(Vector3f[] centerVertices) {
+		
+		hoveredTileIndex = 0;
+		selectedTileIndex = 0;
 		
 		//Generate the inverse of the 4x4 projection matrix
 		invertedProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(Matrices.getProjectionMatrix());
@@ -44,8 +47,8 @@ public class TileSelecter {
 	
 	private static void computeSelectedTileIndex() {
 		
-		Matrix44f invertedViewMatrix = MatrixInversion44f.generateMultiplicativeInverse(PlayerCamera.getViewMatrix());
-		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
+		Matrix44f invertedViewMatrix = MatrixInversion44f.generateMultiplicativeInverse(CameraOperator.getViewMatrix());
+		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
 		
 		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
 		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
