@@ -67,7 +67,7 @@ public class PlayerCamera {
 	}
 	
 	
-	//Checks the input and checks wether the player wants to move the map
+	//Checks the input and checks whether the player wants to move the map
 	private static void processCameraMovement() {
 		
 		//Temporary: Move the map with W-A-S-D
