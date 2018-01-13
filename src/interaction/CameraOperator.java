@@ -14,7 +14,7 @@ import graphics.Camera;
 import graphics.matrices.ViewMatrix;
 
 
-public class PlayerCamera {
+public class CameraOperator {
 	
 	//The Map shouldn't move in some cases. For example when you are in a menu
 	private static boolean cameraMovementDisabled;
@@ -67,7 +67,7 @@ public class PlayerCamera {
 	}
 	
 	
-	//Checks the input and checks wether the player wants to move the map
+	//Checks the input and checks whether the player wants to move the map
 	private static void processCameraMovement() {
 		
 		//Temporary: Move the map with W-A-S-D
@@ -122,14 +122,14 @@ public class PlayerCamera {
 		}
 		
 		
-		if (KeyInput.keyPressed(GLFW_KEY_G)) {
+		if (KeyInput.keyPressed(GLFW_KEY_T)) {
 			
 			Camera.incrPitch(0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(GLFW_KEY_J)) {
+		if (KeyInput.keyPressed(GLFW_KEY_G)) {
 			
 			Camera.incrPitch(-0.1f * cameraRotationSpeed);
 			

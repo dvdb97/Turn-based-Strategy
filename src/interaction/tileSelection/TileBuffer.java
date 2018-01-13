@@ -23,14 +23,13 @@ public class TileBuffer {
 	private int[] oldLocation;
 	
 	
-	//A point in space that let's us sort the vertices by sorting them by their distance to refPoint
+	//A point in space that lets us sort the vertices by sorting them by their distance to refPoint
 	private Vector3f refPoint;
 	
 	
 	private float highestZ;
 	
 	private float lowestZ;
-	
 	
 	
 	public TileBuffer(Vector3f[] vertices, Vector3f referencePoint) {	
@@ -165,7 +164,7 @@ public class TileBuffer {
 	 * 
 	 * @param origin The origin of the ray
 	 *  
-	 * @param destination The direction of the ray
+	 * @param direction The direction of the ray
 	 *
 	 * @return Returns the index of the closest vertex to the ray
 	 * 
@@ -177,11 +176,14 @@ public class TileBuffer {
 		float r1 = computePoint(origin, direction, highestZ);
 		float r2 = computePoint(origin, direction, lowestZ);
 		
-		float rIncreasePerStep = (r1 - r2) / 5;
+		float rIncreasePerStep = (r2 - r1) / 5;
 		
 		int bestCandidateIndex = 0;
 		float bestCandidateDistance = Float.MAX_VALUE;
 		
+		System.out.println("o+d");
+		origin.print();
+		direction.print();
 		
 		for (int rStep = 0; rStep < 5; ++rStep) {
 			
@@ -202,8 +204,6 @@ public class TileBuffer {
 			
 		}
 		
-		
-		
 		return oldLocation[bestCandidateIndex];
 		
 	}
@@ -215,13 +215,13 @@ public class TileBuffer {
 	 * Searches for a location to start looking for a candidate. The algorithm assumes that two vertices
 	 * with similar distance to a reference point are more likely to be located close to each other.
 	 * 
-	 * param resquestedDistance The distance we are looking for.
+	 * @param resquestedDistance The distance we are looking for.
 	 * 
-	 * param start The index that defines the lower end of the range of the array we are looking at.
+	 * @param start The index that defines the lower end of the range of the array we are looking at.
 	 * 
-	 * param end The index that defines the upper end of the range of the array we are looking at.
+	 * @param end The index that defines the upper end of the range of the array we are looking at.
 	 * 
-	 * param tolerance Defines the how similar a distance in the array has to count as a candidate
+	 * @param tolerance Defines the how similar a distance in the array has to count as a candidate
 	 * 
 	 */
 	private int binarySearch(float resquestedDistance, int start, int end, float tolerance) {
@@ -304,7 +304,8 @@ public class TileBuffer {
 	
 	private float computePoint(Vector3f origin, Vector3f direction, float requestedZ) {
 		
-		return (requestedZ - origin.getC()) / direction.getC();
+	//	return (requestedZ - origin.getC()) / direction.getC();
+		return (origin.getC() - requestedZ) / Math.abs(direction.getC());
 		
 	}
 	

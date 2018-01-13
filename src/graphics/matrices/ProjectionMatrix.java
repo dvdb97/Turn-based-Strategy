@@ -109,6 +109,10 @@ public class ProjectionMatrix extends Matrix44f{
 		return far;
 	}
 	
+	public float getWidthOverHeight() {
+		return widthOverHeight;
+	}
+	
 	public Matrix44f getMultiplicativeInverse() {
 		return multiplicativeInverse;
 	}

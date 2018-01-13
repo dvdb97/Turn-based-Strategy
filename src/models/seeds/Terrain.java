@@ -81,7 +81,7 @@ public class Terrain implements Generator {
 			}
 		}
 		
-		//because the "0.9f*" it's not the average height, but it looks better
+		//because the "0.9f*" it's not the average height, but this name looks better
 		averageElevation = 0.9f*averageElevation/length/width;
 		
 		for (int x=0; x<length; x++) {
