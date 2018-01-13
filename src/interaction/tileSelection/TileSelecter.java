@@ -8,6 +8,7 @@ import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import math.matrices.RotationMatrix;
 import math.matrices.advanced.MatrixInversion33f;
 import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector3f;
@@ -51,18 +52,20 @@ public class TileSelecter {
 		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
 		Matrix33f invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
 		
-		Matrix33f invertedPVMatrix = invertedViewMatrix33f.times(invertedProjectionMatrix33f);
-		
-		float cursorX = -Application.toOpenglXCoords(CursorPosInput.getXPos());
-		float cursorY = -Application.toOpenglYCoords(CursorPosInput.getYPos());
+		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
+		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
 		
 		Vector3f rayOrigin = Camera.getPosition();
 		
-		Vector3f rayDirection = new Vector3f(cursorX, cursorY, -1f);
-		rayDirection = invertedPVMatrix.times(rayDirection);
-	//	rayDirection = invertedViewMatrix33f.times(rayDirection);
+		Vector3f rayDirection = new Vector3f(cursorX, cursorY/Matrices.getProjectionMatrix().getWidthOverHeight(), -1f);
+		
+		rayDirection = invertedViewMatrix33f.times(rayDirection);
+		
+		
 		
 		rayDirection = rayDirection.normalize();
+		
+		
 		
 		hoveredTileIndex = tileBuffer.getTileIndex(rayOrigin, rayDirection);	
 		
