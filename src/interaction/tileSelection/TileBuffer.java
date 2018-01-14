@@ -253,7 +253,7 @@ public class TileBuffer {
 	private int expandingSearch(int index, int iterations, Vector3f origin, Vector3f direction) {
 		
 		int bestCandidateIndex = index;
-		float bestDistance = Distances.computeDistance(origin, direction, vertices[index]);
+		float bestDistance = Distances.distanceLinePoint(origin, direction, vertices[index]);
 		
 		int a = index - 1;
 		int b = index + 1;
@@ -263,7 +263,7 @@ public class TileBuffer {
 		for (int i = 0; i < iterations; ++i) {
 			
 			if (a >= 0) {
-				temp = Distances.computeDistance(origin, direction, vertices[a]);
+				temp = Distances.distanceLinePoint(origin, direction, vertices[a]);
 				
 				if (temp < distanceBetweenVertices / 2) {
 					return a;
@@ -280,7 +280,7 @@ public class TileBuffer {
 			}
 			
 			if (b < vertices.length) {
-				temp = Distances.computeDistance(origin, direction, vertices[b]);
+				temp = Distances.distanceLinePoint(origin, direction, vertices[b]);
 				
 				if (temp < distanceBetweenVertices / 2) {
 					return a;
