@@ -5,6 +5,7 @@ import interaction.tileSelection.TileSelecter;
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;
+import assets.meshes.geometry.Color;
 import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
@@ -22,6 +23,7 @@ import visualize.TextureTests;
 import core.saves.GameScore;
 import elements.Tile;
 import fontRendering.texture.FontTexture;
+import models.seeds.ColorFunction;
 import models.seeds.Terrain;
 import models.worldModels.HexagonBorderMesh;
 import models.worldModels.TriangleMesh;
@@ -63,11 +65,23 @@ public class MapManager {
 	public static void init(int widthInHex, int heightInHex) {
 		
 		//Load the 3D Terrain
-		Terrain terrain = new Terrain(heightInHex, widthInHex);
+		Terrain terrain = new Terrain(widthInHex, heightInHex);
 		geographicMap = new TriangleMesh(0.1f, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
 		//Load the the model to display the sea:
-		//TODO		
+		float[][] seaLevel = new float[widthInHex][heightInHex];
+		for (int i=0; i<widthInHex; i++) {
+			for (int j=0; j<heightInHex; j++) {
+				seaLevel[i][j] = 0;
+			}
+		}
+		ColorFunction seaColor = new ColorFunction() {
+			@Override
+			public Color color(int x, int y, float height) {
+				return new Color(0, 0.2f, 0.7f, 0.7f);
+			}
+		};
+		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
 		
 		//Load the hexagon borders
 		hexagonBorderMap = new HexagonBorderMesh(geographicMap, 0, 0, 1);
@@ -122,6 +136,8 @@ public class MapManager {
 		ShaderManager.useShader(geoMapModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
 		RenderEngine.draw(hexagonBorderMap, null);
+		
+		RenderEngine.draw(seaModel, null);
 		
 		RenderEngine.draw(coordinates, null);
 		
