@@ -1,5 +1,7 @@
 package interaction.tileSelection;
 
+import org.lwjgl.glfw.GLFW;
+
 import math.MathUtils;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -173,34 +175,18 @@ public class TileBuffer {
 	
 	public int getTileIndex(Vector3f origin, Vector3f direction) {
 		
-		float r1 = computePoint(origin, direction, highestZ);
-		float r2 = computePoint(origin, direction, lowestZ);
-		
-		float rIncreasePerStep = (r2 - r1) / 5;
-		
+		float distance;
 		int bestCandidateIndex = 0;
 		float bestCandidateDistance = Float.MAX_VALUE;
 		
-		System.out.println("o+d");
-		origin.print();
-		direction.print();
-		
-		for (int rStep = 0; rStep < 5; ++rStep) {
+		for (int i=0; i<vertices.length; i++) {
 			
-			Vector3f point = origin.plus(direction.times(r1 + rStep * rIncreasePerStep));
+			distance = Distances.distanceLinePoint(origin, direction, vertices[i]);
 			
-			float distance;
-			for (int i = 0; i < vertices.length; ++i) {
-				
-				distance = point.minus(vertices[i]).norm();
-				
-				if (distance < bestCandidateDistance) {
-					bestCandidateDistance = distance;
-					bestCandidateIndex = i;
-				}
-				
+			if (distance < bestCandidateDistance) {
+				bestCandidateDistance = distance;
+				bestCandidateIndex = i;
 			}
-			
 			
 		}
 		
@@ -253,7 +239,7 @@ public class TileBuffer {
 	private int expandingSearch(int index, int iterations, Vector3f origin, Vector3f direction) {
 		
 		int bestCandidateIndex = index;
-		float bestDistance = Distances.computeDistance(origin, direction, vertices[index]);
+		float bestDistance = Distances.distanceLinePoint(origin, direction, vertices[index]);
 		
 		int a = index - 1;
 		int b = index + 1;
@@ -263,7 +249,7 @@ public class TileBuffer {
 		for (int i = 0; i < iterations; ++i) {
 			
 			if (a >= 0) {
-				temp = Distances.computeDistance(origin, direction, vertices[a]);
+				temp = Distances.distanceLinePoint(origin, direction, vertices[a]);
 				
 				if (temp < distanceBetweenVertices / 2) {
 					return a;
@@ -280,7 +266,7 @@ public class TileBuffer {
 			}
 			
 			if (b < vertices.length) {
-				temp = Distances.computeDistance(origin, direction, vertices[b]);
+				temp = Distances.distanceLinePoint(origin, direction, vertices[b]);
 				
 				if (temp < distanceBetweenVertices / 2) {
 					return a;
