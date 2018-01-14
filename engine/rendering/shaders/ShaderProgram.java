@@ -2,6 +2,8 @@ package rendering.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import java.util.HashMap;
+
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -11,10 +13,14 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 
 public class ShaderProgram {
 	
-	int ID;
+	private int ID;
 	
-	int vertShaderID;
-	int fragShaderID;
+	private int vertShaderID;
+	private int fragShaderID;
+	
+	
+	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
+	private HashMap<String, Integer> uniformLocationMap = new HashMap<String, Integer>();
 	
 	
 	public ShaderProgram(String vertSource, String fragSource) {
@@ -141,7 +147,13 @@ public class ShaderProgram {
 	
 	
 	public int getUniformLocation(String name) {
-		return glGetUniformLocation(ID, name);
+		
+		if (!uniformLocationMap.containsKey(name)) {
+			uniformLocationMap.put(name, glGetUniformLocation(ID, name));
+		}
+		
+		return uniformLocationMap.get(name);
+				
 	}
 	
 	public int getAttributeLocation(String name) {
