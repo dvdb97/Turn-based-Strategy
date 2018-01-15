@@ -1,4 +1,4 @@
-package map;
+package world;
 
 import interaction.CameraOperator;
 import interaction.tileSelection.TileSelecter;
@@ -9,8 +9,6 @@ import assets.meshes.geometry.Color;
 import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
-import graphics.matrices.ProjectionMatrix;
-import graphics.matrices.ViewMatrix;
 import graphics.shaders.ShaderManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -19,22 +17,42 @@ import models.TerrainCol;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
-import visualize.TextureTests;
 import core.saves.GameScore;
-import elements.Tile;
-import fontRendering.texture.FontTexture;
 import models.seeds.ColorFunction;
 import models.seeds.Terrain;
 import models.worldModels.HexagonBorderMesh;
 import models.worldModels.TriangleMesh;
+import utils.Calc;
 
 
-import static org.lwjgl.opengl.GL11.glGetError;
-import static org.lwjgl.opengl.CGL.CGLErrorString;
-
-
-public class MapManager {
+public class ModelManager {
 	
+	//measurements
+	private static int lengthInHexagons;
+	private static int widthInHexagons;
+	
+	private static int hexLength;		//this is not the length/width measured in hexagons, but
+	private static int hexWidth;		//	the l/w of the hex mesh measured in vertices
+	
+	private static int triLength;
+	private static int triWidth;
+	
+	private static int xOffset;
+	private static int yOffset;
+	
+	private static int elr;
+	
+	
+	//hard code
+	private static float hexEdgeLength = 0.1f;
+	
+	private static final int halfXOffset = 2;
+	private static final int halfYOffset = 2;
+	
+	private static final int log2EdgeLengthRelation = 1;
+	
+	
+	//models
 	private static TriangleMesh geographicMap;
 	
 	//TODO: Merge both hexagonBorderMaps
@@ -50,47 +68,46 @@ public class MapManager {
 	private static Vector4f selectedTileColor;
 	
 	
+	//matrices
 	private static Matrix44f geoMapModelMatrix;
 	
 	private static Matrix44f hexagonBorderModelMatrix;
 	
 	
-	
+	//others
 	private static Material mapMaterial;
 	
 	private static LightSource sun;
 	private static Vector3f ambientLight;
 	
+	private static Vector3f[] hexMeshVertices;
 	
-	public static void init(int widthInHex, int heightInHex) {
+	public static void init(int lengthInHex, int widthInHex) {
+		
+		lengthInHexagons = lengthInHex;
+		widthInHexagons  = widthInHex;
+		
+		calculations();
+		
+		System.out.println("hexagons: " + lengthInHexagons + " x " + widthInHexagons);
+		System.out.println("hexLW   : " + hexLength + " x " + hexWidth);
+		System.out.println("triLW   : " + triLength + " x " + triLength);
 		
 		//Load the 3D Terrain
-		Terrain terrain = new Terrain(widthInHex, heightInHex);
-		geographicMap = new TriangleMesh(0.1f, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
+		Terrain terrain = new Terrain(triLength, triWidth);
+		geographicMap = new TriangleMesh(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
 		//Load the the model to display the sea:
-		float[][] seaLevel = new float[widthInHex][heightInHex];
-		for (int i=0; i<widthInHex; i++) {
-			for (int j=0; j<heightInHex; j++) {
-				seaLevel[i][j] = 0;
-			}
-		}
-		ColorFunction seaColor = new ColorFunction() {
-			@Override
-			public Color color(int x, int y, float height) {
-				return new Color(0, 0.2f, 0.7f, 0.7f);
-			}
-		};
-		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
+		initSea();
 		
 		//Load the hexagon borders
-		hexagonBorderMap = new HexagonBorderMesh(geographicMap, 0, 0, 1);
-		
+		createHexBorders();
+
 		
 		//The color of the tile the mouse cursor is on
 		hoveredTileColor = new Vector4f(1f, 1f, 0f, 1f);
 		
-		//The coloe of the currently selected tile
+		//The color of the currently selected tile
 		selectedTileColor = new Vector4f(1f, 0f, 0f, 1f);
 
 		
@@ -113,6 +130,10 @@ public class MapManager {
 		//TODO: Figure out a better position / color for this light
 		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
+		
+		
+		
+	//	setupGameBoard();	out-commented, because NUllPointerException in line 290
 		
 	}
 	
@@ -191,5 +212,93 @@ public class MapManager {
 	
 	}
 	
-
+	//----------------------------------------------------------------------------
+	private static void setupGameBoard() {
+		
+		Tile[] tiles = new Tile[lengthInHexagons*widthInHexagons];
+		
+		for (int t=0; t<tiles.length; t++) {
+			tiles[t] = createTile(t);
+		}
+		
+		GameBoard.setTiles(tiles);
+		
+	}
+	
+	//------------------------------------------------------------------------------
+	private static void calculations() {
+		
+		hexLength = (lengthInHexagons + 1) * 2;
+		hexWidth = widthInHexagons + 1;
+		
+		xOffset = 2 * halfXOffset;
+		yOffset = 2 * halfYOffset;
+		
+		elr = (int)Math.pow(2, log2EdgeLengthRelation);
+		
+		triLength = (hexLength-1)*elr + 2*xOffset + 1;
+		triWidth  = ((hexWidth-1)*3/2 + 1)*elr + 2*yOffset;
+		
+	}
+	
+	private static void createHexBorders() {
+		
+		hexagonBorderMap = new HexagonBorderMesh(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
+		
+		hexMeshVertices = new Vector3f[hexagonBorderMap.getVerticesLength()];
+		
+		hexagonBorderMap.getVertices(hexMeshVertices);
+		
+		
+	}
+	
+	private static void initSea() {
+		
+		float[][] seaLevel = new float[triLength][triWidth];
+		for (int i=0; i<triLength; i++) {
+			for (int j=0; j<triWidth; j++) {
+				seaLevel[i][j] = 0;
+			}
+		}
+		ColorFunction seaColor = new ColorFunction() {
+			@Override
+			public Color color(int x, int y, float height) {
+				return new Color(0, 0.2f, 0.7f, 0.7f);
+			}
+		};
+		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
+		
+		
+	}
+	
+	private static Tile createTile(int index) {
+		
+		int x = index/lengthInHexagons;
+		int y = index%lengthInHexagons;
+		
+		//get height data
+		int[] indices = hexagonBorderMap.getHexagonIndexArray(x, y, y%2);
+		float[] heights = new float[indices.length];
+		for (int i=0; i<indices.length; i++) {
+			int z = indices[i];
+			if (z<hexMeshVertices.length) {
+				
+				if (hexMeshVertices[z] == null) {
+					System.out.println("createTile: hexMeshVertices[" + z + "] == null");
+				}
+				
+				float temp = hexMeshVertices[z].getC();		//NullPointerException
+				heights[i] = temp;
+			}
+		}
+		
+		
+		float avgHeight = Calc.average(heights);
+		
+		float heightSTDV = Calc.standardDeviation(heights, avgHeight);
+		
+		return new Tile(index, avgHeight, heightSTDV);
+		
+	}
+	
 }

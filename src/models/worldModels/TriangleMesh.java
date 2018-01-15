@@ -116,8 +116,7 @@ public class TriangleMesh extends Illuminated_Model {
 		this.setElementArrayData(elementBuffer);
 		
 		//normal vectors
-		float[] normalArray = new float[length * width * 3];
-		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(normalArray.length);
+		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(length * width * 3);
 		
 		//first row
 		
@@ -128,7 +127,7 @@ public class TriangleMesh extends Illuminated_Model {
 			normalBuffer.put(avgNormal_III_IV(elevation[x-1][0], elevation[x][1], elevation[x+1][0], elevation[x][0]).toArray());
 		}
 		if (lengthMod2 == 1) {
-			int x = length-1;
+			int x = length-2;
 			normalBuffer.put(avgNormal_II_III_IV_V(elevation[x-1][0], elevation[x-1][1], elevation[x][1], elevation[x+1][1], elevation[x+1][0], elevation[x][0]).toArray());
 		}
 		normalBuffer.put(avgNormal_II_III(elevation[length-2][0], elevation[length-2][1], elevation[length-1][1], elevation[length-1][0]).toArray());
@@ -139,10 +138,14 @@ public class TriangleMesh extends Illuminated_Model {
 		for (int y=1; y<width-1; y++) {
 			
 			normalBuffer.put(avgNormal_IV_V_VI(elevation[0][y-1], elevation[0][y+1], elevation[1][y], elevation[1][y-1], elevation[0][y]).toArray());
-			for (int x=1; x<length-1; x++) {
+			for (int x=1; x<length-1-lengthMod2; x++) {
 				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]).toArray());
 				x++;
 				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y-1], elevation[x-1][y], elevation[x][y+1], elevation[x+1][y], elevation[x+1][y-1]).toArray());
+			}
+			if (lengthMod2 == 1) {
+				int x = length-2;
+				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]).toArray());
 			}
 			
 			normalBuffer.put(avgNormal_I_II_III(elevation[length-1][y-1], elevation[length-1][y-lengthMod2], elevation[length-2][y+1-lengthMod2], elevation[length-1][y+1], elevation[length-1][y]).toArray());
@@ -158,7 +161,7 @@ public class TriangleMesh extends Illuminated_Model {
 			normalBuffer.put(avgNormal_I_II_V_VI(elevation[x][width-2], elevation[x-1][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x+1][width-2], elevation[x][width-1]).toArray());
 		}
 		if (lengthMod2 == 1) {
-			int x = length-1;
+			int x = length-2;
 			normalBuffer.put(avgNormal_VI_I(elevation[x][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x][width-1]).toArray());
 		}
 		normalBuffer.put(avgNormal_I(elevation[length-1][width-2], elevation[length-2][width-1], elevation[length-1][width-1]).toArray());
@@ -305,7 +308,8 @@ public class TriangleMesh extends Illuminated_Model {
 		return width;
 	}
 	
-	
+	//TODO: bad methods names
+	//TODO: java doc
 	public float getTotalWidth() {
 		return width * edgeLength;
 	}

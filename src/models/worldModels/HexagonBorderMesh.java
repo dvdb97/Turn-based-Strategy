@@ -69,7 +69,7 @@ public class HexagonBorderMesh extends Element_Model{
 	}
 	
 	
-	//********************************** prime method ***********************************
+	//********************************** prime methods ***********************************
 	private FloatBuffer processVertices(TriangleMesh triangleMesh) {
 		
 		int triMeshVertLength = triangleMesh.getLength();
@@ -91,32 +91,6 @@ public class HexagonBorderMesh extends Element_Model{
 		}
 		
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*3);
-		
-	/*	for (int y=yOffset; y<hexWidth*3/2-yOffset; y++) {
-		
-			if (y%3 == 0) {
-				for (int x=0; x<hexLength; x++) {
-					
-					if (x%2 == 0) {
-						posBuffer.put(triMeshPos[elr*(x+(2*y+1)*hexLength)].toArray());
-					} else {
-						posBuffer.put(triMeshPos[elr*(x+(2*y  )*hexLength)].toArray());
-					}
-					
-				}
-			} else if (y%3 == 2) {
-				for (int x=0; x<hexLength; x++) {
-					
-					if (x%2 == 0) {
-						posBuffer.put(triMeshPos[elr*(x+(2*y-1)*hexLength)].toArray());
-					} else {
-						posBuffer.put(triMeshPos[elr*(x+(2*y  )*hexLength)].toArray());
-					}
-					
-				}
-			}
-			
-		}*/
 		
 		for (int y=0; y<hexWidth; y++) {
 			
@@ -162,42 +136,20 @@ public class HexagonBorderMesh extends Element_Model{
 			if(y%2 == 0) {
 				for (int x=0; x<hexLength/2 - 1; x++) {
 					
-					elementBuffer.put(new int[] {	0           + 2*x + hexLength*y,
-													1           + 2*x + hexLength*y,
-													2           + 2*x + hexLength*y,
-													hexLength+2 + 2*x + hexLength*y,
-													hexLength+1 + 2*x + hexLength*y,
-													hexLength   + 2*x + hexLength*y,
-													PRI
-												});
+					elementBuffer.put(getHexagonIndexArray(x, y, 0));
+					elementBuffer.put(PRI);
 					
 				}
 			} else {	// y%2 == 1
 				for (int x=0; x<hexLength/2 - 1; x++) {
 					
-					elementBuffer.put(new int[] {	0           + 2*x + hexLength*y + 1,
-													1           + 2*x + hexLength*y + 1,
-													2           + 2*x + hexLength*y + 1,
-													hexLength+2 + 2*x + hexLength*y + 1,
-													hexLength+1 + 2*x + hexLength*y + 1,
-													hexLength   + 2*x + hexLength*y + 1,
-													PRI
-												});
+					elementBuffer.put(getHexagonIndexArray(x, y, 1));
+					elementBuffer.put(PRI);
 					
 				}
 			}
 			
 		}
-		
-		
-		/*for (int y=0; y<hexWidth; y++) {
-			for (int x=0; x<hexLength; x++) {
-				
-				elementBuffer.put(y*hexLength + x);
-			}
-			
-			elementBuffer.put(PRI);
-		}*/
 		
 		this.indexBuffer = elementBuffer;
 		
@@ -226,8 +178,34 @@ public class HexagonBorderMesh extends Element_Model{
 	}
 	
 	
+	//********************************** util methods *********************************************
+	public int[] getHexagonIndexArray(int x, int y, int yMod2) {
+		
+		return new int[] {	0           + 2*x + hexLength*y + yMod2,
+							1           + 2*x + hexLength*y + yMod2,
+							2           + 2*x + hexLength*y + yMod2,
+							hexLength+2 + 2*x + hexLength*y + yMod2,
+							hexLength+1 + 2*x + hexLength*y + yMod2,
+							hexLength   + 2*x + hexLength*y + yMod2
+		};
+		
+	}
+	
 	//********************************** other stuff **********************************************
 	
+	public int getVerticesLength() {
+		
+		return posBuffer.capacity() / 3;
+		
+	}
+	
+	public void getVertices(Vector3f[] vertices) {
+		
+		for (int i=0; i<vertices.length; i = i+3) {
+			vertices[i] = new Vector3f(posBuffer.get(i), posBuffer.get(i+1), posBuffer.get(i+2));
+		}
+		
+	}
 	
 	//Compute a center point for every vertex. Will be used to compute the selectedTile
 	public Vector3f[] getCenterVertices() {
