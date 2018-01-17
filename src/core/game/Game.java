@@ -6,8 +6,8 @@ import gui.font.FontCollection;
 import interaction.CameraOperator;
 import interaction.input.KeyInput;
 import interaction.tileSelection.TileSelecter;
-import map.MapManager;
 import rendering.RenderEngine;
+import world.ModelManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -25,12 +25,12 @@ public class Game {
 		ShaderManager.init();
 		
 		//Init the maps
-		MapManager.init(boardWidth, boardHeight);
+		ModelManager.init(boardWidth, boardHeight);
 		
 		//Init the camera
 		CameraOperator.init();
 		
-		TileSelecter.init(MapManager.getTileCenterVertices());
+		TileSelecter.init(ModelManager.getTileCenterVertices());
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
@@ -95,7 +95,7 @@ public class Game {
 	
 	
 	private void render() {
-		MapManager.render();
+		ModelManager.render();
 	}
 	
 	
