@@ -1,6 +1,6 @@
 package models.seeds;
 
-import models.seeds.noise.TrigonalPerlinNoise;
+import models.seeds.noise.TrigonalNoise;
 
 //TODO: rename, maybe call it seed, elevationMap, elevationSeed,
 //			don't forget to integrate vegetation
@@ -16,8 +16,8 @@ public class Terrain implements Generator {
 	
 	private float[][] elevation;
 	
-	private TrigonalPerlinNoise elePerlin;
-	private TrigonalPerlinNoise expPerlin;
+	private TrigonalNoise eleNoise;
+	private TrigonalNoise expNoise;
 	
 	
 	/************************************************************
@@ -33,15 +33,15 @@ public class Terrain implements Generator {
 		int maxOctave = 7;
 		int extra = (int)Math.pow(2, maxOctave);
 		
-		elePerlin = new TrigonalPerlinNoise(length+extra, width+extra, 0, 7);
-		expPerlin = new TrigonalPerlinNoise(length+extra, width+extra, 5, 7);
+		eleNoise = new TrigonalNoise(length+extra, width+extra, 0, 7);
+		expNoise = new TrigonalNoise(length+extra, width+extra, 5, 7);
 		
 		elevation = new float[length][width];
 		
 		for (int x=0; x<length; x++) {
 			for (int y=0; y<width; y++) {
 				
-				elevation[x][y] = elePerlin.getValue(x, y);
+				elevation[x][y] = eleNoise.getValue(x, y);
 				
 			}
 		}
