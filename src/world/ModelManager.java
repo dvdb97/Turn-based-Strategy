@@ -20,6 +20,7 @@ import visualize.FontTest;
 import core.saves.GameScore;
 import models.seeds.ColorFunction;
 import models.seeds.Terrain;
+import models.seeds.noise.TrigonalNoise;
 import models.worldModels.HexagonBorderMesh;
 import models.worldModels.TriangleMesh;
 import utils.Calc;
@@ -56,12 +57,13 @@ public class ModelManager {
 	private static TriangleMesh geographicMap;
 	
 	//TODO: Merge both hexagonBorderMaps
-	private static HexagonBorderMesh hexagonBorderMap;
+	private static HexagonBorderMesh hexagonBorderMesh;
 	
 	private static TriangleMesh seaModel;
 	
 	private static CoordinateSystem coordinates;
 	
+	private static TrigonalNoise fertilityNoise;
 	
 	private static Vector4f hoveredTileColor;
 	
@@ -131,7 +133,6 @@ public class ModelManager {
 		FontTest.init("The quick brown fox \njumps over the lazy dog!");
 		
 		
-		
 		//The model matrix for the map (as we only move the map the model matrix won't change)	
 		geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
 	
@@ -144,9 +145,7 @@ public class ModelManager {
 		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
-		
-		
-	//	setupGameBoard();	out-commented, because NUllPointerException in line 290
+		setupGameBoard();
 		
 	}
 	
@@ -169,7 +168,7 @@ public class ModelManager {
 		
 		ShaderManager.useShader(geoMapModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
-		RenderEngine.draw(hexagonBorderMap, null);
+		RenderEngine.draw(hexagonBorderMesh, null);
 		
 		RenderEngine.draw(seaModel, null);
 		
@@ -177,19 +176,22 @@ public class ModelManager {
 		
 		ShaderManager.disableShader();
 		
+		//TODO: temporary: I want to visualize the fertility of a tile
+		hoveredTileColor = new Color(1, 0, GameBoard.getTile(TileSelecter.getHoveredTileIndex()).getFertility(), 1);
+		
 		
 		ShaderManager.useShader(hexagonBorderModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
 		
-		hexagonBorderMap.display(TileSelecter.getHoveredTileIndex());
-		RenderEngine.draw(hexagonBorderMap, null);
+		hexagonBorderMesh.display(TileSelecter.getHoveredTileIndex());
+		RenderEngine.draw(hexagonBorderMesh, null);
 		
 		ShaderManager.disableShader();
 		
 		
 		ShaderManager.useShader(hexagonBorderModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
 		
-		hexagonBorderMap.display(TileSelecter.getSelectedTileIndex());
-		RenderEngine.draw(hexagonBorderMap, null);
+		hexagonBorderMesh.display(TileSelecter.getSelectedTileIndex());
+		RenderEngine.draw(hexagonBorderMesh, null);
 		
 		ShaderManager.disableShader();
 		
@@ -200,7 +202,7 @@ public class ModelManager {
 		
 		ShaderManager.disableTexturedMeshShader();
 		
-		hexagonBorderMap.displayAll();
+		hexagonBorderMesh.displayAll();
 		
 	}
 	
@@ -221,17 +223,21 @@ public class ModelManager {
 	
 	public static Vector3f[] getTileCenterVertices() {
 		
-		return hexagonBorderMap.getCenterVertices();
+		return hexagonBorderMesh.getCenterVertices();
 	
 	}
 	
 	//----------------------------------------------------------------------------
 	private static void setupGameBoard() {
 		
+		//actually we need a hexagonal noise
+		fertilityNoise = new TrigonalNoise(lengthInHexagons, widthInHexagons, 4, 6);
+		
 		Tile[] tiles = new Tile[lengthInHexagons*widthInHexagons];
 		
 		for (int t=0; t<tiles.length; t++) {
-			tiles[t] = createTile(t);
+			float fertility = fertilityNoise.getValue(t%lengthInHexagons, t/lengthInHexagons);
+			tiles[t] = createTile(t, fertility);
 		}
 		
 		GameBoard.setTiles(tiles);
@@ -256,12 +262,9 @@ public class ModelManager {
 	
 	private static void createHexBorders() {
 		
-		hexagonBorderMap = new HexagonBorderMesh(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
+		hexagonBorderMesh = new HexagonBorderMesh(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
 		
-		hexMeshVertices = new Vector3f[hexagonBorderMap.getVerticesLength()];
-		
-		hexagonBorderMap.getVertices(hexMeshVertices);
-		
+		hexMeshVertices = hexagonBorderMesh.getVertices();
 		
 	}
 	
@@ -284,23 +287,19 @@ public class ModelManager {
 		
 	}
 	
-	private static Tile createTile(int index) {
+	private static Tile createTile(int index, float fertility) {
 		
 		int x = index/lengthInHexagons;
 		int y = index%lengthInHexagons;
 		
 		//get height data
-		int[] indices = hexagonBorderMap.getHexagonIndexArray(x, y, y%2);
+		int[] indices = hexagonBorderMesh.getHexagonIndexArray(x, y, y%2);
 		float[] heights = new float[indices.length];
 		for (int i=0; i<indices.length; i++) {
 			int z = indices[i];
 			if (z<hexMeshVertices.length) {
 				
-				if (hexMeshVertices[z] == null) {
-					System.out.println("createTile: hexMeshVertices[" + z + "] == null");
-				}
-				
-				float temp = hexMeshVertices[z].getC();		//NullPointerException
+				float temp = hexMeshVertices[z].getC();
 				heights[i] = temp;
 			}
 		}
@@ -310,7 +309,7 @@ public class ModelManager {
 		
 		float heightSTDV = Calc.standardDeviation(heights, avgHeight);
 		
-		return new Tile(index, avgHeight, heightSTDV);
+		return new Tile(index, avgHeight, heightSTDV, fertility);
 		
 	}
 	

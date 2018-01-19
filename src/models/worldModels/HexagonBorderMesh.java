@@ -193,18 +193,14 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	//********************************** other stuff **********************************************
 	
-	public int getVerticesLength() {
+	public Vector3f[] getVertices() {
 		
-		return posBuffer.capacity() / 3;
-		
-	}
-	
-	public void getVertices(Vector3f[] vertices) {
-		
-		for (int i=0; i<vertices.length; i = i+3) {
-			vertices[i] = new Vector3f(posBuffer.get(i), posBuffer.get(i+1), posBuffer.get(i+2));
+		Vector3f[] vertices = new Vector3f[posBuffer.capacity() / 3];
+		for (int i=0; i<vertices.length; i++) {
+			vertices[i] = new Vector3f(posBuffer.get(3*i), posBuffer.get(3*i+1), posBuffer.get(3*i+2));
 		}
 		
+		return vertices;
 	}
 	
 	//Compute a center point for every vertex. Will be used to compute the selectedTile

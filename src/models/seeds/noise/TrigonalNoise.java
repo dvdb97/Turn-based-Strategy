@@ -85,9 +85,9 @@ public class TrigonalNoise {
 	
 	private void norm() {
 		
-		//everey value should lay between one and zero
+		//every value should lay between one and zero
 		
-		float a = (float)Math.pow(2, maxOctave+1) - (float)Math.pow(2, minOctave);
+		float a = (float)Math.pow(2, maxOctave+1) - (float)Math.pow(2, minOctave) + maxOctave - minOctave;
 		
 		for (int i=0; i<length; i++) {
 			for (int j=0; j<width; j++) {
