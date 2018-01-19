@@ -1,13 +1,14 @@
-package elements.click;
+package elements.input;
 
 import assets.textures.Texture;
-import elements.Element;
+import assets.textures.Texture2D;
+import elements.GUIElement;
 import elements.functions.GUIFunc;
 import math.vectors.Vector4f;
-import rendering.shapes.Shape;
+import rendering.shapes.GUIShape;
 import timer.Cooldown;
 
-public abstract class Button extends Element {
+public abstract class GUIButton extends GUIElement {
 	
 	private String label;
 	
@@ -15,7 +16,7 @@ public abstract class Button extends Element {
 	
 	private GUIFunc func;
 
-	public Button(Shape shape, Texture texture, float x, float y, float width, float height) {
+	public GUIButton(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		// TODO Auto-generated constructor stub
 		
@@ -28,7 +29,7 @@ public abstract class Button extends Element {
 	}
 	
 	
-	public Button(Shape shape, Texture texture, float x, float y, float width, float height, GUIFunc func) {
+	public GUIButton(GUIShape shape, Texture2D texture, float x, float y, float width, float height, GUIFunc func) {
 		this(shape, texture, x, y, width, height);
 		
 		this.func = func;
@@ -36,7 +37,7 @@ public abstract class Button extends Element {
 	}
 	
 	
-	public Button(Shape shape, Vector4f color, float x, float y, float width, float height) {
+	public GUIButton(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
 		this.setMovable(false);
@@ -48,8 +49,8 @@ public abstract class Button extends Element {
 	}
 	
 	
-	public Button(Shape shape, Vector4f color, float x, float y, float width, float height, GUIFunc func) {
-		super(shape, color, x, y, width, height);
+	public GUIButton(GUIShape shape, Vector4f color, float x, float y, float width, float height, GUIFunc func) {
+		this(shape, color, x, y, width, height);
 		
 		this.func = func;
 	}
@@ -73,8 +74,5 @@ public abstract class Button extends Element {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
-	
-	
-	
+		
 }

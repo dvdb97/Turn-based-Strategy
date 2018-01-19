@@ -98,6 +98,19 @@ public class ModelManager {
 		geographicMap = new TriangleMesh(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
 		//Load the the model to display the sea:
+		float[][] seaLevel = new float[widthInHex][lengthInHex];
+		for (int i=0; i<widthInHex; i++) {
+			for (int j=0; j < lengthInHex; j++) {
+				seaLevel[i][j] = 0;
+			}
+		}
+		ColorFunction seaColor = new ColorFunction() {
+			@Override
+			public Color color(int x, int y, float height) {
+				return new Color(0, 0.2f, 0.7f, 0.8f);
+			}
+		};
+		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
 		initSea();
 		
 		//Load the hexagon borders

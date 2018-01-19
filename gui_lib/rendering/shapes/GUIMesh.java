@@ -15,10 +15,12 @@ public class GUIMesh {
 
 	public GUIMesh(FloatBuffer posData, FloatBuffer colorData, FloatBuffer texPosData, IntBuffer indexData) {
 		super();
+		
 		this.posData = posData;
 		this.colorData = colorData;
 		this.texPosData = texPosData;
 		this.indexData = indexData;
+		
 	}
 	
 	

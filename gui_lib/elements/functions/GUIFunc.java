@@ -1,9 +1,9 @@
 package elements.functions;
 
-import elements.Element;
+import elements.GUIElement;
 
 public interface GUIFunc {
 	
-	public abstract void function(Element source);
+	public abstract void function(GUIElement source);
 
 }
