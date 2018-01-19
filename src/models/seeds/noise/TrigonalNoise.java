@@ -1,7 +1,7 @@
 package models.seeds.noise;
 
 
-public class TrigonalPerlinNoise {
+public class TrigonalNoise {
 	
 	/************************************************************
 	 * 															*
@@ -37,7 +37,7 @@ public class TrigonalPerlinNoise {
 	 * 						constructor							*
 	 * 															*
 	 ************************************************************/
-	public TrigonalPerlinNoise(int length, int width, int minOctave, int maxOctave) {
+	public TrigonalNoise(int length, int width, int minOctave, int maxOctave) {
 		
 		this.length  = length;
 		this.width = width;
