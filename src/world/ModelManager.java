@@ -98,10 +98,9 @@ public class ModelManager {
 		geographicMap = new TriangleMesh(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
 		//Load the the model to display the sea:
-<<<<<<< HEAD:src/map/MapManager.java
-		float[][] seaLevel = new float[widthInHex][heightInHex];
+		float[][] seaLevel = new float[widthInHex][lengthInHex];
 		for (int i=0; i<widthInHex; i++) {
-			for (int j=0; j<heightInHex; j++) {
+			for (int j=0; j < lengthInHex; j++) {
 				seaLevel[i][j] = 0;
 			}
 		}
@@ -112,9 +111,7 @@ public class ModelManager {
 			}
 		};
 		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
-=======
 		initSea();
->>>>>>> 2180d5bbb201ea789f24678277b09034bd0ea705:src/world/ModelManager.java
 		
 		//Load the hexagon borders
 		createHexBorders();
