@@ -78,7 +78,7 @@ public class MapManager {
 		ColorFunction seaColor = new ColorFunction() {
 			@Override
 			public Color color(int x, int y, float height) {
-				return new Color(0, 0.2f, 0.7f, 0.7f);
+				return new Color(0, 0.2f, 0.7f, 0.8f);
 			}
 		};
 		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
@@ -90,7 +90,7 @@ public class MapManager {
 		//The color of the tile the mouse cursor is on
 		hoveredTileColor = new Vector4f(1f, 1f, 0f, 1f);
 		
-		//The coloe of the currently selected tile
+		//The color of the currently selected tile
 		selectedTileColor = new Vector4f(1f, 0f, 0f, 1f);
 
 		

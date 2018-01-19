@@ -3,6 +3,7 @@ package core;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
+import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.KeyInput;
@@ -20,6 +21,8 @@ public class Application {
 		initWindow(params);
 		
 		initRenderEngine(params);
+		
+		initGuiCore(params);
 		
 		start();
 		
@@ -50,6 +53,13 @@ public class Application {
 		RenderEngine.setSwapInterval(1);
 		
 		Matrices.initProjectionMatrix(window);
+		
+	}
+	
+	
+	private static void initGuiCore(StartParams params) {
+		
+		GUIManager.init();
 		
 	}
 	
