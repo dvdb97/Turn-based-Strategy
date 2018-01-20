@@ -13,7 +13,5 @@ public interface Clickable {
 	public abstract void onClose();
 	
 	public abstract void onOpen();
-	
-	public abstract void close();
 
 }

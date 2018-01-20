@@ -1,14 +1,13 @@
 package gui.windows;
 
 import elements.containers.GUIWindow;
-import gui.shapes.Quad;
 import math.vectors.Vector4f;
-import rendering.shapes.GUIShape;
+import rendering.shapes.implemented.GUIQuad;
 
 public class ImplementedWindow extends GUIWindow {
 
-	public ImplementedWindow(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
-		super(new Quad(), color, x, y, width, height);
+	public ImplementedWindow(Vector4f color, float x, float y, float width, float height) {
+		super(new GUIQuad(), color, x, y, width, height);
 	}
 
 	@Override
@@ -19,8 +18,7 @@ public class ImplementedWindow extends GUIWindow {
 
 	@Override
 	public void onHover() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -46,10 +44,5 @@ public class ImplementedWindow extends GUIWindow {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void close() {
-		super.delete();
-	}
-
+	
 }

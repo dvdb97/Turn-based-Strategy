@@ -13,6 +13,7 @@ import rendering.RenderEngine;
 
 public class Application {
 	
+	
 	private static Window window;
 	
 	
@@ -109,6 +110,20 @@ public class Application {
 	public static float toOpenglYCoords(double yPos) {
 		
 		return window.toNormalizedYCoordinates(yPos);
+		
+	}
+	
+	
+	public static float getCursorX() {
+		
+		return toOpenglXCoords(CursorPosInput.getXPos());
+		
+	}
+	
+	
+	public static float getCursorY() {
+		
+		return toOpenglYCoords(CursorPosInput.getYPos());
 		
 	}
 

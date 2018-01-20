@@ -1,4 +1,4 @@
-package gui.shapes;
+package rendering.shapes.implemented;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -6,48 +6,34 @@ import java.nio.IntBuffer;
 import rendering.shapes.GUIShape;
 import utils.CustomBufferUtils;
 
-public class Quad extends GUIShape  {
+public class GUIQuad extends GUIShape {
 	
-	private final float[] positionData = {
-		0f, 1f,
-		1f, 1f,
-		0f, 0f,
-		1f, 0f
+	private static final float[] data = {
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f			
 	};
 	
-	
-	private final int[] indexArray = {
+	private static final int[] indices = {
 		0, 1, 3,
 		0, 2, 3
 	};
 	
 	
-	private final float[] texturePositions = {
-		0f, 0f,
-		1f, 0f,
-		0f, 1f,
-		1f, 1f		
-	};
-	
-	
-	public Quad() {
-		
-	}
-	
-
 	@Override
 	public FloatBuffer getPositionData() {
-		return CustomBufferUtils.createFloatBuffer(positionData);
+		return CustomBufferUtils.createFloatBuffer(data);
 	}
 
 	@Override
 	public FloatBuffer getTexPosData() {
-		return CustomBufferUtils.createFloatBuffer(texturePositions);
+		return CustomBufferUtils.createFloatBuffer(data);
 	}
 
 	@Override
 	public IntBuffer getIndexData() {
-		return CustomBufferUtils.createIntBuffer(indexArray);
+		return CustomBufferUtils.createIntBuffer(indices);
 	}
 
 	@Override

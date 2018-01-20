@@ -10,6 +10,8 @@ import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.shaders.ShaderManager;
+import gui.windows.ImplementedWindow;
+import gui_core.GUIManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
@@ -17,6 +19,7 @@ import models.TerrainCol;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
+import core.Application;
 import core.saves.GameScore;
 import models.seeds.ColorFunction;
 import models.seeds.Terrain;
@@ -66,6 +69,8 @@ public class ModelManager {
 	private static Vector4f hoveredTileColor;
 	
 	private static Vector4f selectedTileColor;
+	
+	private static ImplementedWindow window;
 	
 	
 	//matrices
@@ -122,6 +127,8 @@ public class ModelManager {
 		
 		//The color of the currently selected tile
 		selectedTileColor = new Vector4f(1f, 0f, 0f, 1f);
+		
+		window = new ImplementedWindow(new Vector4f(1f, 1f, 0f, 1f), 0f, 0f, 0.2f, 0.8f);
 
 		
 		//A coordinate system that is mostly used for testing
@@ -201,6 +208,11 @@ public class ModelManager {
 		ShaderManager.disableTexturedMeshShader();
 		
 		hexagonBorderMap.displayAll();
+		
+		
+		//TODO: Testing
+		GUIManager.update(Application.getCursorX(), Application.getCursorY(), false, false);
+		
 		
 	}
 	

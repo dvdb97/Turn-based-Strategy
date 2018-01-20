@@ -137,12 +137,12 @@ public class ShaderProgram {
 	 * @param name The name of the uniform variable to address
 	 * @param value The value of the uniform variable should have
 	 */
-	public void setUniform3fv(String name, float[] array) {
+	public void setUniformMatrix3fv(String name, float[] array) {
 		glUniform3fv(getUniformLocation(name), array);
 	}
 	
-	public void setUnifrom3fv(String name, Matrix33f matrix) {
-		setUniform3fv(name, matrix.toArray());
+	public void setUniformMatrix3fv(String name, Matrix33f matrix) {
+		setUniformMatrix3fv(name, matrix.toArray());
 	}
 	
 	

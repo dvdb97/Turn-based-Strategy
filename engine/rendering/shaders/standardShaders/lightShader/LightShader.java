@@ -109,27 +109,27 @@ public class LightShader extends ShaderProgram {
 	
 	public void setCameraPosition(Vector3f pos) {
 		
-		this.setUniform3fv("cameraPosition", pos.toArray());
+		this.setUniformMatrix3fv("cameraPosition", pos.toArray());
 		
 	}
 	
 	
 	public void setAmbientLight(Vector3f vec) {
 		
-		this.setUniform3fv("ambientLight", vec.toArray());
+		this.setUniformMatrix3fv("ambientLight", vec.toArray());
 		
 	}
 	
 	
 	public void setMaterial(Material mat) {
 		
-		this.setUniform3fv("material.emission", mat.emission.toArray());
+		this.setUniformMatrix3fv("material.emission", mat.emission.toArray());
 		
-		this.setUniform3fv("material.ambient", mat.ambient.toArray());
+		this.setUniformMatrix3fv("material.ambient", mat.ambient.toArray());
 		
-		this.setUniform3fv("material.diffuse", mat.diffuse.toArray());
+		this.setUniformMatrix3fv("material.diffuse", mat.diffuse.toArray());
 		
-		this.setUniform3fv("material.specular", mat.specular.toArray());
+		this.setUniformMatrix3fv("material.specular", mat.specular.toArray());
 		
 		this.setUniform1f("material.shininess", mat.shininess);
 		
@@ -138,9 +138,9 @@ public class LightShader extends ShaderProgram {
 	
 	public void setLightSource(LightSource ls) {
 		
-		this.setUniform3fv("light.direction", ls.getDirection().toArray());
+		this.setUniformMatrix3fv("light.direction", ls.getDirection().toArray());
 		
-		this.setUniform3fv("light.color", ls.getColor().toArray());
+		this.setUniformMatrix3fv("light.color", ls.getColor().toArray());
 		
 	}
 
