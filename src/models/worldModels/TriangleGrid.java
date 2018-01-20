@@ -24,7 +24,7 @@ import utils.CustomBufferUtils;
 import models.PosCol;
 import models.seeds.ColorFunction;
 
-public class TriangleMesh extends Illuminated_Model {
+public class TriangleGrid extends Illuminated_Model {
 	
 	private int length, width;
 	
@@ -42,7 +42,7 @@ public class TriangleMesh extends Illuminated_Model {
 	private ArrayList<Vector3f> positions;
 	
 	//************************************** constructor *************************************
-	public TriangleMesh(float edgeLength, float[][] elevation, ColorFunction colorFunc, Material material) {
+	private TriangleGrid(float edgeLength, float[][] elevation, Material material) {
 		
 		super(GL_TRIANGLE_STRIP, material);
 		
@@ -59,14 +59,29 @@ public class TriangleMesh extends Illuminated_Model {
 		
 		this.elevation = elevation;
 		
+	}
+
+	public TriangleGrid(float edgeLength, float[][] elevation, ColorFunction colorFunc, Material material) {
+		
+		this(edgeLength, elevation, material);
+		
 		this.colorFunc = colorFunc;
 		
 		processVertices();
 	}
 	
-	public TriangleMesh(float edgeLength, float[][] elevation, Material material) {
+	public TriangleGrid(float edgeLength, float[][] elevation, Color color, Material material) {
 		
-		this(edgeLength, elevation, new PosCol(elevation.length, elevation[0].length), material);
+		this(edgeLength, elevation, material);
+		
+		this.colorFunc = new ColorFunction() {
+			@Override
+			public Color color(int x, int y, float height) {
+				return color;
+			}
+		};
+		
+		processVertices();
 		
 	}
 	

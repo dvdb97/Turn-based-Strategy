@@ -14,6 +14,7 @@ public class Vertex extends Vector3f {
 	 */
 	private int structuringIndex;
 	
+	//better save in this in form of Color
 	private float red;
 	private float green;
 	private float blue;

@@ -15,11 +15,12 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
 import utils.CustomBufferUtils;
 
-public class HexagonBorderMesh extends Element_Model{
+public class HexagonBorderGrid extends Element_Model{
 	
 	private int elr;			//edge length relation = edgeLengthHexagons / edgeLengthTriangles
 	
@@ -33,21 +34,24 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	private FloatBuffer posBuffer;
 	
+	private Vertex[] vertices;
+	
+	
 	//********************************** constructor ************************************
 	
 	/**
 	 * 
-	 * @param triangleMesh TriangleMesh this hexagonal mesh is based on
+	 * @param triangleGrid TriangleGrid this hexagonal grid is based on
 	 * @param halfXOffset the xOffset divided by two, to avoid odd numbers
 	 * @param halfYOffset the yOffset divided by two, to avoid odd numbers
 	 * @param log2EdgeLengthRelation the base 2 logarithm of the edge length relation, to make sure it's a power of 2
 	 * , edgeLengthRelation = edge length of hexagons / edge length of triangles
 	 */
-	public HexagonBorderMesh(TriangleMesh triangleMesh, int halfXOffset, int halfYOffset, int log2EdgeLengthRelation) {
+	public HexagonBorderGrid(TriangleGrid triangleGrid, int halfXOffset, int halfYOffset, int log2EdgeLengthRelation) {
 		
 		super(GL_LINE_LOOP);
 		//TODO: maybe log2EdgeLengthRelation < 1
-		if (log2EdgeLengthRelation < 0 || triangleMesh == null || xOffset < 0 || yOffset < 0) {
+		if (log2EdgeLengthRelation < 0 || triangleGrid == null || xOffset < 0 || yOffset < 0) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -55,10 +59,10 @@ public class HexagonBorderMesh extends Element_Model{
 		this.yOffset = halfYOffset;
 		this.elr = (int)Math.pow(2, log2EdgeLengthRelation);
 		
-		hexLength =  (triangleMesh.getLength() - 2 * xOffset - 1) / elr + 1;
-		hexWidth  = ((triangleMesh.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
+		hexLength =  (triangleGrid.getLength() - 2 * xOffset - 1) / elr + 1;
+		hexWidth  = ((triangleGrid.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
 		
-		FloatBuffer posBuffer = processVertices(triangleMesh);
+		FloatBuffer posBuffer = processVertices(triangleGrid);
 		IntBuffer elementBuffer = createElementBuffer();
 		FloatBuffer colBuffer = createColBuffer();
 		
@@ -70,23 +74,23 @@ public class HexagonBorderMesh extends Element_Model{
 	
 	
 	//********************************** prime methods ***********************************
-	private FloatBuffer processVertices(TriangleMesh triangleMesh) {
+	private FloatBuffer processVertices(TriangleGrid triangleGrid) {
 		
-		int triMeshVertLength = triangleMesh.getLength();
+		int triGridVertLength = triangleGrid.getLength();
 		
-		Vector3f[] triMeshPos = triangleMesh.getPosArray();
+		Vector3f[] triGridPos = triangleGrid.getPosArray();
 		
 		float delta = 0.005f*elr;
 		
-		for (int i=0; i<triMeshPos.length; i++) {
+		for (int i=0; i<triGridPos.length; i++) {
 			float c;
-			float d = triMeshPos[i].getC();
+			float d = triGridPos[i].getC();
 			if (d < 0) {
 				c = delta;
 			} else {
 				c = d + delta;
 			}
-			triMeshPos[i].setC(c);
+			triGridPos[i].setC(c);
 			
 		}
 		
@@ -98,9 +102,9 @@ public class HexagonBorderMesh extends Element_Model{
 				for (int x=0; x<hexLength; x++) {
 					
 					if (x%2 == 0) {
-						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triMeshVertLength].toArray());
+						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
 					} else {
-						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triMeshVertLength].toArray());
+						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
 					}
 
 					
@@ -109,9 +113,9 @@ public class HexagonBorderMesh extends Element_Model{
 				for (int x=0; x<hexLength; x++) {
 					
 					if (x%2 == 0) {
-						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triMeshVertLength].toArray());
+						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
 					} else {
-						posBuffer.put(triMeshPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triMeshVertLength].toArray());
+						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
 					}
 
 					

@@ -21,8 +21,9 @@ import core.saves.GameScore;
 import models.seeds.ColorFunction;
 import models.seeds.Terrain;
 import models.seeds.noise.TrigonalNoise;
-import models.worldModels.HexagonBorderMesh;
-import models.worldModels.TriangleMesh;
+import models.worldModels.HexagonBorderGrid;
+import models.worldModels.TriangleGrid;
+import utils.ArrayUtil;
 import utils.Calc;
 
 
@@ -54,12 +55,12 @@ public class ModelManager {
 	
 	
 	//models
-	private static TriangleMesh geographicMap;
+	private static TriangleGrid geographicMap;
 	
 	//TODO: Merge both hexagonBorderMaps
-	private static HexagonBorderMesh hexagonBorderMesh;
+	private static HexagonBorderGrid hexagonBorderMesh;
 	
-	private static TriangleMesh seaModel;
+	private static TriangleGrid seaModel;
 	
 	private static CoordinateSystem coordinates;
 	
@@ -92,27 +93,11 @@ public class ModelManager {
 		calculations();
 		
 		System.out.println("hexagons: " + lengthInHexagons + " x " + widthInHexagons);
-		System.out.println("hexLW   : " + hexLength + " x " + hexWidth);
-		System.out.println("triLW   : " + triLength + " x " + triLength);
 		
 		//Load the 3D Terrain
 		Terrain terrain = new Terrain(triLength, triWidth);
-		geographicMap = new TriangleMesh(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
+		geographicMap = new TriangleGrid(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
-		//Load the the model to display the sea:
-		float[][] seaLevel = new float[widthInHex][lengthInHex];
-		for (int i=0; i<widthInHex; i++) {
-			for (int j=0; j < lengthInHex; j++) {
-				seaLevel[i][j] = 0;
-			}
-		}
-		ColorFunction seaColor = new ColorFunction() {
-			@Override
-			public Color color(int x, int y, float height) {
-				return new Color(0, 0.2f, 0.7f, 0.8f);
-			}
-		};
-		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
 		initSea();
 		
 		//Load the hexagon borders
@@ -262,7 +247,7 @@ public class ModelManager {
 	
 	private static void createHexBorders() {
 		
-		hexagonBorderMesh = new HexagonBorderMesh(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
+		hexagonBorderMesh = new HexagonBorderGrid(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
 		
 		hexMeshVertices = hexagonBorderMesh.getVertices();
 		
@@ -270,20 +255,7 @@ public class ModelManager {
 	
 	private static void initSea() {
 		
-		float[][] seaLevel = new float[triLength][triWidth];
-		for (int i=0; i<triLength; i++) {
-			for (int j=0; j<triWidth; j++) {
-				seaLevel[i][j] = 0;
-			}
-		}
-		ColorFunction seaColor = new ColorFunction() {
-			@Override
-			public Color color(int x, int y, float height) {
-				return new Color(0, 0.2f, 0.7f, 0.7f);
-			}
-		};
-		seaModel = new TriangleMesh(0.1f, seaLevel, seaColor, new StandardMaterial());
-		
+		seaModel = new TriangleGrid(0.1f, new float[triLength][triWidth], new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial());
 		
 	}
 	
