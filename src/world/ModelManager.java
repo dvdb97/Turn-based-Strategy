@@ -19,7 +19,7 @@ import visualize.CoordinateSystem;
 import visualize.FontTest;
 import core.saves.GameScore;
 import models.seeds.ColorFunction;
-import models.seeds.Terrain;
+import models.seeds.ElevationMap;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.HexagonBorderGrid;
 import models.worldModels.TriangleGrid;
@@ -95,7 +95,7 @@ public class ModelManager {
 		System.out.println("hexagons: " + lengthInHexagons + " x " + widthInHexagons);
 		
 		//Load the 3D Terrain
-		Terrain terrain = new Terrain(triLength, triWidth);
+		ElevationMap terrain = new ElevationMap(triLength, triWidth);
 		geographicMap = new TriangleGrid(hexEdgeLength, terrain.getElevationArray(), new TerrainCol(), new StandardMaterial());
 		
 		initSea();

@@ -2,9 +2,7 @@ package models.seeds;
 
 import models.seeds.noise.TrigonalNoise;
 
-//TODO: rename, maybe call it seed, elevationMap, elevationSeed,
-//			don't forget to integrate vegetation
-public class Terrain implements Generator {
+public class ElevationMap implements Generator {
 	
 	/************************************************************
 	 * 															*
@@ -25,7 +23,7 @@ public class Terrain implements Generator {
 	 * 						constructor							*
 	 * 															*
 	 ************************************************************/
-	public Terrain(int length, int width) {
+	public ElevationMap(int length, int width) {
 		
 		this.length  = length;
 		this.width = width;
