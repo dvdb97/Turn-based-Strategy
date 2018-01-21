@@ -1,6 +1,7 @@
 package models;
 
 import assets.meshes.geometry.Color;
+import math.vectors.Vector3f;
 import models.seeds.ColorFunction;
 
 public class TerrainCol implements ColorFunction{

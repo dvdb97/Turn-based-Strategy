@@ -40,4 +40,12 @@ class GameBoard {
 		
 	}
 	
+	//-------------------------------------- reset -------------------------------
+	
+	public static void reset() {
+		
+		tiles = null;
+		
+	}
+	
 }

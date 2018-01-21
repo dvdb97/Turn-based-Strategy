@@ -2,6 +2,7 @@ package models.worldModels;
 
 import assets.light.LightSource;
 import assets.material.Material;
+import assets.meshes.geometry.Vertex;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.matrices.TransformationMatrix;
@@ -9,6 +10,8 @@ import graphics.shaders.ShaderManager;
 import interaction.CameraOperator;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
+import models.TerrainCol;
+import models.seeds.ColorFunction;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
@@ -40,9 +43,18 @@ public class BoardModels {
 	
 	private static LightSource sun;
 	private static Vector3f ambientLight;
-
+	
+	private Vertex[] vertices;
 	
 	//***************************** constructor ********************************
+	
+	/**
+	 * 
+	 * @param terrain
+	 * @param tileBorders
+	 * @param sea
+	 * @param coSystem
+	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
 			CoordinateSystem coSystem) {
 		
@@ -57,10 +69,16 @@ public class BoardModels {
 		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
+		createVertexArray();
+		
 	}
 
 	
 	//***************************** render ******************************
+	
+	/**
+	 * renders the game board models
+	 */
 	public void render() {
 		
 		//render terrain
@@ -93,4 +111,36 @@ public class BoardModels {
 	}
 	
 	
+	//**********************************************************************
+	
+	private void createVertexArray() {
+		
+		Vector3f[] positions = terrain.getPosArray();
+		ColorFunction terrainCol = new TerrainCol();
+		
+		vertices = new Vertex[positions.length];
+		for (int v=0; v<vertices.length; v++) {
+			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
+		}
+		
+	}
+	
+	//**************************** get *************************************
+	
+	/**
+	 * @return an array containing all terrains vertices
+	 */
+	public Vertex[] getVertices() {
+		
+		return vertices;
+		
+	}
+	
+	/**
+	 * 
+	 * @return an array containing the vertex-array-indices of all tiles center
+	 */
+	//public int[] getTileCenters() {
+		
+	//}
 }

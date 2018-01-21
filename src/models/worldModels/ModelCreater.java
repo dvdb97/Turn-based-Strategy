@@ -12,16 +12,16 @@ public class ModelCreater {
 	//********************************* fields *********************************
 	
 	//measurements
-	private static int lengthInHex;
-	private static int widthInHex;
+	private int lengthInHex;
+	private int widthInHex;
 	
-	private static int triLength;
-	private static int triWidth;
+	private int triLength;
+	private int triWidth;
 	
-	private static int xOffset;
-	private static int yOffset;
+	private int xOffset;
+	private int yOffset;
 	
-	private static int elr;		//edgeLengthRelation
+	private int elr;		//edgeLengthRelation
 	
 	
 	//hard code
@@ -34,20 +34,24 @@ public class ModelCreater {
 	
 	
 	//models
-	private static TriangleGrid terrain;
+	private TriangleGrid terrain;
 	
-	private static HexagonBorderGrid tileBorders;
+	private HexagonBorderGrid tileBorders;
 	
-	private static TriangleGrid sea;
+	private TriangleGrid sea;
 	
-	private static CoordinateSystem coSystem;
+	private CoordinateSystem coSystem;
 	
 	//others
-	private static Vector3f[] hexMeshVertices;
+	private Vector3f[] hexMeshVertices;
 	
 	//********************************** initialization ************************
 	
-	public static void init(int lengthInHexagons, int widthInHexagons) {
+	/**
+	 * @param lengthInHexagons length of the board in hexagons
+	 * @param widthInHexagons width of the board inhexagons
+	 */
+	public ModelCreater(int lengthInHexagons, int widthInHexagons) {
 		
 		lengthInHex = lengthInHexagons;
 		widthInHex = widthInHexagons;
@@ -59,7 +63,11 @@ public class ModelCreater {
 	
 	//********************************** ergon *********************************
 	
-	public static BoardModels createModels() {
+	/**
+	 * creates all models needed to render the game board
+	 * namely: terrain, sea, tile borders and an coordinate system
+	 */
+	public BoardModels createModels() {
 		
 		createTerrain();
 		createTileBorders();
@@ -70,20 +78,16 @@ public class ModelCreater {
 		
 	}
 	
-	public static void setupGameBoard() {
-		
-	}
-	
 	//********************************* prime methods **************************
 	
-	private static void createTerrain() {
+	private void createTerrain() {
 		
 		ElevationMap terrainData = new ElevationMap(triLength, triWidth);
 		terrain = new TriangleGrid(hexEdgeLength, terrainData.getElevationArray(), new TerrainCol(), new StandardMaterial());
 
 	}
 	
-	private static void createTileBorders() {
+	private void createTileBorders() {
 		
 		tileBorders = new HexagonBorderGrid(terrain, halfXOffset, halfYOffset, log2EdgeLengthRelation);
 		
@@ -91,13 +95,13 @@ public class ModelCreater {
 		
 	}
 	
-	private static void createSea() {
+	private void createSea() {
 		
 		sea = new TriangleGrid(0.1f, new float[triLength][triWidth], new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial());
 		
 	}
 	
-	private static void createCoSystem() {
+	private void createCoSystem() {
 		
 		coSystem = new CoordinateSystem(100.0f);
 		
@@ -105,7 +109,7 @@ public class ModelCreater {
 	
 	//******************************** calculations *******************************
 	
-	private static void calculations() {
+	private void calculations() {
 		
 		xOffset = 2 * halfXOffset;
 		yOffset = 2 * halfYOffset;
