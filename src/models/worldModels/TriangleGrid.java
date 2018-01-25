@@ -41,7 +41,10 @@ public class TriangleGrid extends Illuminated_Model {
 	
 	private ArrayList<Vector3f> positions;
 	
+	
+	
 	//************************************** constructor *************************************
+	
 	private TriangleGrid(float edgeLength, float[][] elevation, Material material) {
 		
 		super(GL_TRIANGLE_STRIP, material);
@@ -67,7 +70,7 @@ public class TriangleGrid extends Illuminated_Model {
 		
 		this.colorFunc = colorFunc;
 		
-		processVertices();
+		processGrid();
 	}
 	
 	public TriangleGrid(float edgeLength, float[][] elevation, Color color, Material material) {
@@ -81,14 +84,28 @@ public class TriangleGrid extends Illuminated_Model {
 			}
 		};
 		
-		processVertices();
+		processGrid();
 		
 	}
 	
 	//*************************************** prime method ****************************************
-	private void processVertices() {
+	
+	private void processGrid() {
 		
-		//position and color data
+		processPositionAndColor();
+		
+		processElementArray();
+		
+		processNormalVectors();
+		
+	}
+	
+	
+	
+	//*************************************** secondary methods **********************************
+	
+	private void processPositionAndColor() {
+		
 		positions = new ArrayList<>(length * width * 3);
 		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(length * width * 4);
 		
@@ -110,7 +127,11 @@ public class TriangleGrid extends Illuminated_Model {
 		this.setVertexPositionData(CustomBufferUtils.createFloatBuffer(positions), 3, GL_STATIC_DRAW);
 		this.setVertexColorData(colBuffer, 4, GL_STATIC_DRAW);
 		
-		//element array
+	}
+	
+	
+	private void processElementArray() {
+		
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer( (width*2+1)*(length-1));
 		
 		for (int col=0; col<length-1; col++) {
@@ -130,7 +151,10 @@ public class TriangleGrid extends Illuminated_Model {
 		
 		this.setElementArrayData(elementBuffer);
 		
-		//normal vectors
+	}
+	
+	
+	private void processNormalVectors() {
 		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(length * width * 3);
 		
 		//first row
@@ -184,13 +208,15 @@ public class TriangleGrid extends Illuminated_Model {
 		normalBuffer.flip();
 		
 		this.setVertexNormalData(normalBuffer, GL_STATIC_DRAW);
-		
 	}
+
+
 	
 	
 	
 	
 	//********************************** util methods *********************************************
+	
 	private Vector3f avgNormal(float a, float b, float c, float d, float e, float f) {
 		
 		Vector3f result = new Vector3f(edgeLength*(b+c-e-f)/4.0f,
@@ -334,9 +360,6 @@ public class TriangleGrid extends Illuminated_Model {
 	}
 	
 	/**
-	 * this method deletes this objects ArrayList positions, because this list was only implemented
-	 * to realize this method
-	 * 
 	 * @return an array of floats containing the position of this meshs vertices
 	 */
 	public Vector3f[] getPosArray() {
@@ -345,8 +368,6 @@ public class TriangleGrid extends Illuminated_Model {
 		for (int i=0; i<positions.size(); i++) {
 			posArray[i] = positions.get(i);
 		}
-		
-		positions = null;
 		
 		return posArray;
 		

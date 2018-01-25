@@ -1,12 +1,10 @@
-package interaction.tileSelection;
-
-import org.lwjgl.glfw.GLFW;
+package utils;
 
 import math.MathUtils;
-import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
 import math.vectors.advanced.Distances;
+
+//TODO: refactor this class!, move algorithms to a searching algorithms class or to a sorting algorithms class
 
 public class TileBuffer {
 	
@@ -140,7 +138,7 @@ public class TileBuffer {
 	}
 		
 		
-	//A small utility function for the quicksort algorithm:
+	//A small utility function for the quick sort algorithm:
 	private void swap(int a, int b) {
 		
 		float tempDist = distanceArray[a];

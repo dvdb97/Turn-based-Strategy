@@ -1,9 +1,8 @@
-package interaction.tileSelection;
+package interaction;
 
 import core.Application;
 import graphics.Camera;
 import graphics.matrices.Matrices;
-import interaction.CameraOperator;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
@@ -13,67 +12,85 @@ import math.matrices.advanced.MatrixInversion33f;
 import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
-
+import math.vectors.advanced.Distances;
 
 import static org.lwjgl.opengl.GL11.*;
 
 
-public class TileSelecter {	
-	
-	private static TileBuffer tileBuffer;
-	
-	private static Matrix44f invertedProjectionMatrix;
-	private static Matrix33f invertedProjectionMatrix33f;
+public class TileSelecter {
 	
 	private static int hoveredTileIndex;
 	
 	private static int selectedTileIndex;
 	
-		
+	private static float cursorX, cursorY;
+	
+	private static Vector3f[] centerVertices;
+	
 	public static void init(Vector3f[] centerVertices) {
 		
 		hoveredTileIndex = 0;
 		selectedTileIndex = 0;
 		
-		//Generate the inverse of the 4x4 projection matrix
-		invertedProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(Matrices.getProjectionMatrix());
-		
-		//Generate the inverse of the 3x3 projection matrix
-		invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
-		
-		tileBuffer = new TileBuffer(centerVertices, new Vector3f(-0.1f, -0.1f, 0.1f));
+		TileSelecter.centerVertices = centerVertices;
 		
 	}
 	
 	
 	private static void computeSelectedTileIndex() {
 		
-		Matrix44f invertedViewMatrix44f = MatrixInversion44f.generateMultiplicativeInverse(CameraOperator.getViewMatrix());
 		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
-		Matrix33f invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
 		
-		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
-		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
+		cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
+		cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
 		
 		Vector3f rayOrigin = Camera.getPosition();
-		
 		Vector3f rayDirection = new Vector3f(cursorX, cursorY/Matrices.getProjectionMatrix().getWidthOverHeight(), -1f);
 		
 		rayDirection = invertedViewMatrix33f.times(rayDirection);
-		
-		
-		
 		rayDirection = rayDirection.normalize();
 		
-		
-		
-		hoveredTileIndex = tileBuffer.getTileIndex(rayOrigin, rayDirection);	
+		hoveredTileIndex = getTileIndex(rayOrigin, rayDirection, centerVertices);
 		
 		if (MouseInputManager.isLeftMouseButtonPressed()) {
 			selectedTileIndex = hoveredTileIndex;
 		}
 		
 	}	
+	
+	
+	
+	/**
+	 * This algorithm searches the vertex that is the closest to the ray defined by origin and direction
+	 * 
+	 * @param origin The origin of the ray
+	 *  
+	 * @param direction The direction of the ray
+	 *
+	 * @return Returns the index of the closest vertex to the ray
+	 * 
+	 */
+	private static int getTileIndex(Vector3f origin, Vector3f direction, Vector3f[] vertices) {
+		
+		float distance;
+		int bestCandidateIndex = 0;
+		float bestCandidateDistance = Float.MAX_VALUE;
+		
+		for (int i=0; i<vertices.length; i++) {
+			
+			distance = Distances.distanceLinePoint(origin, direction, vertices[i]);
+			
+			if (distance < bestCandidateDistance) {
+				bestCandidateDistance = distance;
+				bestCandidateIndex = i;
+			}
+			
+		}
+		
+		return bestCandidateIndex;
+		
+	}
+
 	
 	
 	public static void processInput() {

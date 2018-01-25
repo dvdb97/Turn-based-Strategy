@@ -4,8 +4,8 @@ import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
 import interaction.CameraOperator;
+import interaction.TileSelecter;
 import interaction.input.KeyInput;
-import interaction.tileSelection.TileSelecter;
 import rendering.RenderEngine;
 import world.ModelManager;
 

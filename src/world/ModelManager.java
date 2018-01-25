@@ -1,7 +1,7 @@
 package world;
 
 import interaction.CameraOperator;
-import interaction.tileSelection.TileSelecter;
+import interaction.TileSelecter;
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;

@@ -103,7 +103,7 @@ public class BoardModels {
 		ShaderManager.disableShader();
 		
 		
-		//render fonttest
+		//render font-test
 		ShaderManager.useFontShader(new Matrix44f());
 		
 		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());

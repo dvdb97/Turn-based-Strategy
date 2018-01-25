@@ -150,6 +150,7 @@ public class TrigonalNoise {
 				if (col != 0 && x-col >= 0 && x-col < length && y+startRow+dRow >= 0 && y+startRow+dRow < width) {
 					temp[x-col][y+startRow+dRow] += factor*ran/wavelength;
 				}
+				
 			}
 			for (int dRow=wavelength; dRow<numRows; dRow++) {
 				

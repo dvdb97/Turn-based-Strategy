@@ -1,6 +1,7 @@
 package models.seeds;
 
 import models.seeds.noise.TrigonalNoise;
+import static utils.ArrayUtil.calcAverage;
 
 public class ElevationMap implements Generator {
 	
@@ -69,18 +70,8 @@ public class ElevationMap implements Generator {
 	
 	private void seaLevelToZero() {
 		
-		float averageElevation = 0;
-		
-		for (int x=0; x<length; x++) {
-			for (int y=0; y<width; y++) {
-				
-				averageElevation += elevation[x][y];
-				
-			}
-		}
-		
 		//because the "0.9f*" it's not the average height, but this name looks better
-		averageElevation = 0.9f*averageElevation/length/width;
+		float averageElevation = 0.9f*calcAverage(elevation);
 		
 		for (int x=0; x<length; x++) {
 			for (int y=0; y<width; y++) {
