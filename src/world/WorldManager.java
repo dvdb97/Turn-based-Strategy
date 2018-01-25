@@ -8,6 +8,7 @@ public class WorldManager {
 	
 	private static BoardModels boardModels;
 	
+	
 	private static Vertex[] vertices;
 	private static float[] fertility;
 	private static int[] tileCenterIndices;
