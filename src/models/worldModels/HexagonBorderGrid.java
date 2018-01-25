@@ -12,6 +12,8 @@ import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
@@ -28,13 +30,15 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	private final int PRI = -1;					//primitive restart index
 	
-	private int hexLength, hexWidth;			//length and width measured in vertices, that are relevant for a hexagon mesh
+	private int hexLength, hexWidth;			//length and width measured in for a hexagon grid relevant vertices
 	
 	private IntBuffer indexBuffer;
 	
 	private FloatBuffer posBuffer;
 	
 	private Vertex[] vertices;
+	
+	private List<Integer> hexagonCenterIndices;
 	
 	
 	//********************************** constructor ************************************
@@ -96,30 +100,52 @@ public class HexagonBorderGrid extends Element_Model{
 		
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*3);
 		
+		hexagonCenterIndices = new ArrayList<Integer>((hexLength / 2 - 1) * (hexWidth - 1));
+		
 		for (int y=0; y<hexWidth; y++) {
 			
 			if (y%2 == 0) {
-				for (int x=0; x<hexLength; x++) {
+				for (int x=0; x<hexLength-1; x++) {
 					
 					if (x%2 == 0) {
 						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
 					} else {
 						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+						hexagonCenterIndices.add((xOffset + x*elr) + (yOffset + y*elr*3/2 + elr  )*triGridVertLength);
 					}
-
-					
+						
 				}
+				int x=hexLength-1;
+				if (x%2 == 0) {
+					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+				} else {
+					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+				}
+				
+				
 			} else { //(y%2 == 1)
-				for (int x=0; x<hexLength; x++) {
+				
+				//int x=0;
+				
+				posBuffer.put(triGridPos[(xOffset + 0*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+				
+				for (int x=1; x<hexLength-1; x++) {
 					
 					if (x%2 == 0) {
 						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+						hexagonCenterIndices.add((xOffset + x*elr) + (yOffset + y*elr*3/2 + elr  )*triGridVertLength);
 					} else {
 						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
 					}
-
 					
 				}
+				int x=hexLength-1;
+				if (x%2 == 0) {
+					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+				} else {
+					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+				}
+				
 			}
 			
 		}
@@ -207,10 +233,24 @@ public class HexagonBorderGrid extends Element_Model{
 		return vertices;
 	}
 	
+	/** 
+	 * the vertex of a hexagon's center has an index in the vertex-array of the triangle grid
+	 * @return an array containing all these indices
+	 */
+	public int[] getHexCenterIndices() {
+		
+		int[] hexCenterIndices = new int[hexagonCenterIndices.size()];
+		for (int i=0; i<hexCenterIndices.length; i++) {
+			hexCenterIndices[i] = hexagonCenterIndices.get(i);
+		}
+		return hexCenterIndices;
+		
+	}
+	
 	//Compute a center point for every vertex. Will be used to compute the selectedTile
 	public Vector3f[] getCenterVertices() {
 		
-		Vector3f[] vertices = new Vector3f[indexBuffer.capacity() / 7];
+		Vector3f[] centerVertices = new Vector3f[indexBuffer.capacity() / 7];
 		
 		float x = 0f;
 		float y = 0f;
@@ -222,7 +262,7 @@ public class HexagonBorderGrid extends Element_Model{
 			
 			if(vertexIndex == PRI) {
 				
-				vertices[i / 7] = new Vector3f(x / 6, y / 6, z / 6);
+				centerVertices[i / 7] = new Vector3f(x / 6, y / 6, z / 6);
 				
 				x = 0f;
 				y = 0f;
@@ -238,7 +278,7 @@ public class HexagonBorderGrid extends Element_Model{
 			
 		}
 		
-		return vertices;
+		return centerVertices;
 		
 	}
 	

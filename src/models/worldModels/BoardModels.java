@@ -1,5 +1,7 @@
 package models.worldModels;
 
+import java.awt.List;
+
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.meshes.geometry.Vertex;
@@ -137,10 +139,11 @@ public class BoardModels {
 	}
 	
 	/**
-	 * 
-	 * @return an array containing the vertex-array-indices of all tiles center
+	 * @return an array containing the vertex-array-indices of all tile's center
 	 */
-	//public int[] getTileCenters() {
+	public int[] getTileCenters() {
 		
-	//}
+		return tilBorders.getHexCenterIndices();
+		
+	}
 }
