@@ -27,6 +27,8 @@ public class TileSelecter {
 	
 	private static Vector3f[] centerVertices;
 	
+	
+	
 	public static void init(Vector3f[] centerVertices) {
 		
 		hoveredTileIndex = 0;

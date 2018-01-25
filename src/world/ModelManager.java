@@ -26,6 +26,7 @@ import models.worldModels.TriangleGrid;
 import utils.ArrayUtil;
 import utils.Calc;
 
+import org.lwjgl.glfw.GLFW;
 
 public class ModelManager {
 	
@@ -151,6 +152,8 @@ public class ModelManager {
 		ShaderManager.disableLightShader();
 		
 		
+		hexagonBorderMesh.displayAll();
+		
 		ShaderManager.useShader(geoMapModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
 		RenderEngine.draw(hexagonBorderMesh, null);
@@ -160,6 +163,7 @@ public class ModelManager {
 		RenderEngine.draw(coordinates, null);
 		
 		ShaderManager.disableShader();
+		
 		
 		//TODO: temporary: I want to visualize the fertility of a tile
 		hoveredTileColor = new Color(1, 0, GameBoard.getTile(TileSelecter.getHoveredTileIndex()).getFertility(), 1);
@@ -186,8 +190,6 @@ public class ModelManager {
 		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
 		
 		ShaderManager.disableTexturedMeshShader();
-		
-		hexagonBorderMesh.displayAll();
 		
 	}
 	
@@ -247,7 +249,11 @@ public class ModelManager {
 	
 	private static void createHexBorders() {
 		
+		double time = GLFW.glfwGetTime();
+		
 		hexagonBorderMesh = new HexagonBorderGrid(geographicMap, halfXOffset, halfYOffset, log2EdgeLengthRelation);
+		
+		System.out.println((GLFW.glfwGetTime() - time)*1000 + " ms");
 		
 		hexMeshVertices = hexagonBorderMesh.getVertices();
 		

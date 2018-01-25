@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
@@ -34,12 +35,11 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	private IntBuffer indexBuffer;
 	
-	private FloatBuffer posBuffer;
-	
-	private Vertex[] vertices;
+	private List<Vertex> vertices;
 	
 	private List<Integer> hexagonCenterIndices;
 	
+	private final Color color = new Color(0.2f, 0.2f, 0.2f, 1);
 	
 	//********************************** constructor ************************************
 	
@@ -66,19 +66,19 @@ public class HexagonBorderGrid extends Element_Model{
 		hexLength =  (triangleGrid.getLength() - 2 * xOffset - 1) / elr + 1;
 		hexWidth  = ((triangleGrid.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
 		
-		FloatBuffer posBuffer = processVertices(triangleGrid);
-		IntBuffer elementBuffer = createElementBuffer();
-		FloatBuffer colBuffer = createColBuffer();
+		vertices = new ArrayList<>(hexLength*hexWidth);
 		
-		this.setVertexPositionData(posBuffer, 3, GL_STATIC_DRAW);
-		this.setElementArrayData(elementBuffer);
-		this.setVertexColorData(colBuffer, 4, GL_STATIC_DRAW);
+		processVertices(triangleGrid);
+		createIndexBuffer();
+		
+		//TODO: Element_Model should accept a list of vertices instead of just arrays
+		setData(vertexListToArray(), indexBuffer);
 		
 	}
 	
 	
 	//********************************** prime methods ***********************************
-	private FloatBuffer processVertices(TriangleGrid triangleGrid) {
+	private void processVertices(TriangleGrid triangleGrid) {
 		
 		int triGridVertLength = triangleGrid.getLength();
 		
@@ -98,8 +98,6 @@ public class HexagonBorderGrid extends Element_Model{
 			
 		}
 		
-		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*3);
-		
 		hexagonCenterIndices = new ArrayList<Integer>((hexLength / 2 - 1) * (hexWidth - 1));
 		
 		for (int y=0; y<hexWidth; y++) {
@@ -108,105 +106,82 @@ public class HexagonBorderGrid extends Element_Model{
 				for (int x=0; x<hexLength-1; x++) {
 					
 					if (x%2 == 0) {
-						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+						vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength], color));
 					} else {
-						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+						vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength], color));
 						hexagonCenterIndices.add((xOffset + x*elr) + (yOffset + y*elr*3/2 + elr  )*triGridVertLength);
 					}
 						
 				}
 				int x=hexLength-1;
 				if (x%2 == 0) {
-					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+					vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength], color));
+
 				} else {
-					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+					vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength], color));
+					
 				}
 				
 				
 			} else { //(y%2 == 1)
 				
 				//int x=0;
-				
-				posBuffer.put(triGridPos[(xOffset + 0*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+				vertices.add(new Vertex(triGridPos[(xOffset + 0*elr) + (yOffset + y*elr*3/2        )*triGridVertLength], color));
+
 				
 				for (int x=1; x<hexLength-1; x++) {
 					
 					if (x%2 == 0) {
-						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+						vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength], color));
 						hexagonCenterIndices.add((xOffset + x*elr) + (yOffset + y*elr*3/2 + elr  )*triGridVertLength);
 					} else {
-						posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+						vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength], color));
+
 					}
 					
 				}
 				int x=hexLength-1;
 				if (x%2 == 0) {
-					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength].toArray());
+					vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength], color));
+
 				} else {
-					posBuffer.put(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength].toArray());
+					vertices.add(new Vertex(triGridPos[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength], color));
+
 				}
 				
 			}
 			
 		}
 		
-		this.posBuffer = posBuffer;
-		
-		posBuffer.flip();
-		
-		return posBuffer;
 	}
 	
-	private IntBuffer createElementBuffer() {
+	private void createIndexBuffer() {
 		
-		IntBuffer elementBuffer = BufferUtils.createIntBuffer((hexLength / 2 - 1) * (hexWidth - 1) * 7 );
+		indexBuffer = BufferUtils.createIntBuffer((hexLength / 2 - 1) * (hexWidth - 1) * 7 );
 		
 		for (int y=0; y<hexWidth-1; y++) {
 			
 			if(y%2 == 0) {
 				for (int x=0; x<hexLength/2 - 1; x++) {
 					
-					elementBuffer.put(getHexagonIndexArray(x, y, 0));
-					elementBuffer.put(PRI);
+					indexBuffer.put(getHexagonIndexArray(x, y, 0));
+					indexBuffer.put(PRI);
 					
 				}
 			} else {	// y%2 == 1
 				for (int x=0; x<hexLength/2 - 1; x++) {
 					
-					elementBuffer.put(getHexagonIndexArray(x, y, 1));
-					elementBuffer.put(PRI);
+					indexBuffer.put(getHexagonIndexArray(x, y, 1));
+					indexBuffer.put(PRI);
 					
 				}
 			}
 			
 		}
 		
-		this.indexBuffer = elementBuffer;
+		indexBuffer.flip();
 		
-		elementBuffer.flip();
-		
-		return elementBuffer;
-		
-	}
-	
-
-	private FloatBuffer createColBuffer() {
-		
-		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(hexLength*hexWidth*4);
-		
-		for (int y=0; y<hexWidth; y++) {
-			for (int x=0; x<hexLength; x++) {
-				
-				colBuffer.put(new float[] {0.2f, 0.2f, 0.2f, 1});
-				
-			}
-		}
-		
-		colBuffer.flip();
-		
-		return colBuffer;
-	}
-	
+	}	
 	
 	//********************************** util methods *********************************************
 	public int[] getHexagonIndexArray(int x, int y, int yMod2) {
@@ -225,12 +200,13 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	public Vector3f[] getVertices() {
 		
-		Vector3f[] vertices = new Vector3f[posBuffer.capacity() / 3];
-		for (int i=0; i<vertices.length; i++) {
-			vertices[i] = new Vector3f(posBuffer.get(3*i), posBuffer.get(3*i+1), posBuffer.get(3*i+2));
+		Vector3f[] posData = new Vector3f[vertices.size()];
+		
+		for (int i=0; i<posData.length; i++) {
+			posData[i] = vertices.get(i).getPosition();
 		}
 		
-		return vertices;
+		return posData;
 	}
 	
 	/** 
@@ -272,9 +248,10 @@ public class HexagonBorderGrid extends Element_Model{
 				
 			}
 			
-			x += posBuffer.get(vertexIndex * 3);
-			y += posBuffer.get(vertexIndex * 3 + 1);
-			z += posBuffer.get(vertexIndex * 3 + 2);
+			x += vertices.get(vertexIndex).getA();
+			y += vertices.get(vertexIndex).getB();
+			z += vertices.get(vertexIndex).getC();
+
 			
 		}
 		
@@ -358,6 +335,18 @@ public class HexagonBorderGrid extends Element_Model{
 		super.onDrawStop();
 		
 		glDisable(GL_PRIMITIVE_RESTART);
+		
+	}
+	
+	private Vertex[] vertexListToArray() {
+		
+		Vertex[] array = new Vertex[vertices.size()];
+		
+		for (int v=0; v<array.length; v++) {
+			array[v] = vertices.get(v);
+		}
+		
+		return array;
 		
 	}
 
