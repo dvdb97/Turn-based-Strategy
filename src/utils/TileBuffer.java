@@ -228,7 +228,7 @@ public class TileBuffer {
 		if (resquestedDistance < pivotDistance) {
 			return binarySearch(resquestedDistance, start, pivotIndex - 1, tolerance);		
 		}
-				
+		
 		return binarySearch(resquestedDistance, pivotIndex + 1, end, tolerance);
 		
 	}
