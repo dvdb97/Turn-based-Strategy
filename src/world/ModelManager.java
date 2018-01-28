@@ -10,13 +10,14 @@ import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.shaders.ShaderManager;
-import gui.windows.ImplementedWindow;
+import gui.test.ImplementedWindow;
 import gui_core.GUIManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import models.TerrainCol;
 import rendering.RenderEngine;
+import rendering.shapes.implemented.GUIQuad;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
 import core.Application;
@@ -128,7 +129,7 @@ public class ModelManager {
 		//The color of the currently selected tile
 		selectedTileColor = new Vector4f(1f, 0f, 0f, 1f);
 		
-		window = new ImplementedWindow(new Vector4f(1f, 1f, 0f, 1f), 0f, 0f, 0.2f, 0.8f);
+		window = new ImplementedWindow(new Vector4f(1f, 0f, 0f, 1f), 0f, 0f, 0.8f, 0.8f);
 
 		
 		//A coordinate system that is mostly used for testing
@@ -201,16 +202,16 @@ public class ModelManager {
 		ShaderManager.disableShader();
 		
 		
-		ShaderManager.useFontShader(new Matrix44f());
+		ShaderManager.useFontShader(new Matrix44f(), true);
 		
 		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
 		
-		ShaderManager.disableTexturedMeshShader();
+		ShaderManager.disableFontShader();
 		
 		hexagonBorderMap.displayAll();
 		
 		
-		//TODO: Testing
+		//Draw the gui
 		GUIManager.update(Application.getCursorX(), Application.getCursorY(), false, false);
 		
 		

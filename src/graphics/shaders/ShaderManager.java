@@ -170,7 +170,7 @@ public class ShaderManager {
 	}
 	
 	
-	public static void useFontShader(Matrix44f mvpMatrix) {
+	public static void useFontShader(Matrix44f mvpMatrix, boolean textured) {
 		
 		if (!initialized) {
 			
@@ -181,6 +181,12 @@ public class ShaderManager {
 		}
 		
 		fontShader.use();
+		
+		if (textured) {
+			fontShader.setUniform1i("u_textured", 1);
+		} else {
+			fontShader.setUniform1i("u_textured", 0);
+		}
 		fontShader.prepareForRendering(mvpMatrix);
 		
 	}

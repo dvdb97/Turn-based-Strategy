@@ -1,12 +1,9 @@
 package visualize;
 
-import assets.meshes.Mesh;
-import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import fontRendering.generation.TextGenerator;
 import fontRendering.generation.functions.TempFunction;
-import fontRendering.rendering.TextModel;
 import fontRendering.texture.FontTexture;
 import gui.font.TimesNewRoman;
 

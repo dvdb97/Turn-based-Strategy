@@ -9,11 +9,20 @@ import utils.CustomBufferUtils;
 public class GUIQuad extends GUIShape {
 	
 	private static final float[] data = {
+		0.0f,  0.0f, -0.90f,
+		1.0f,  0.0f, -0.90f,
+		0.0f, -1.0f, -0.90f,
+		1.0f, -1.0f, -0.90f		
+	};
+	
+	
+	private static final float[] texData = {
 		0.0f, 1.0f,
 		1.0f, 1.0f,
 		0.0f, 0.0f,
-		1.0f, 0.0f			
+		1.0f, 0.0f	
 	};
+	
 	
 	private static final int[] indices = {
 		0, 1, 3,
@@ -28,7 +37,7 @@ public class GUIQuad extends GUIShape {
 
 	@Override
 	public FloatBuffer getTexPosData() {
-		return CustomBufferUtils.createFloatBuffer(data);
+		return CustomBufferUtils.createFloatBuffer(texData);
 	}
 
 	@Override

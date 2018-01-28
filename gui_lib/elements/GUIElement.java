@@ -4,8 +4,8 @@ import assets.textures.Texture2D;
 import elements.containers.GUIContainerElement;
 import gui_core.GUIManager;
 import gui_core.GUIMatrixManager;
-import math.matrices.Matrix33f;
-import math.matrices.advanced.MatrixInversion33f;
+import math.matrices.Matrix44f;
+import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 
@@ -27,10 +27,10 @@ public abstract class GUIElement implements Clickable {
 	private GUIShape shape;
 	
 	//The transformation matrix of this element
-	private Matrix33f renderingMatrix;
+	private Matrix44f renderingMatrix;
 	
 	//The inverted transformation matrix
-	private Matrix33f invertedRenderingMatrix;
+	private Matrix44f invertedRenderingMatrix;
 	
 	//The texture for rendering this element
 	private Texture2D texture;
@@ -50,10 +50,14 @@ public abstract class GUIElement implements Clickable {
 			GUIManager.init();
 		}
 		
-		this.ID = GUIManager.generateID();
+		this.parent = null;
 		
-		this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
-		this.invertedRenderingMatrix = MatrixInversion33f.generateMultiplicativeInverse(renderingMatrix);
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		
+		this.ID = GUIManager.generateID();
 		
 		this.changed = true;
 		
@@ -65,6 +69,12 @@ public abstract class GUIElement implements Clickable {
 		this.visible = true;
 		this.movable = false;
 		this.closeable = true;
+		
+		this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
+		this.invertedRenderingMatrix = MatrixInversion44f.generateMultiplicativeInverse(renderingMatrix);
+		
+		System.out.println(this);
+		this.getRenderingMatrix().print();
 		
 	}
 
@@ -88,22 +98,28 @@ public abstract class GUIElement implements Clickable {
 		if (!visible) {
 			return;
 		}
-		
+
 		shape.render(texture, color, renderingMatrix);
+		
 	}
 	
 	
 	public void update() {
 		
-		if (changed) {
-			this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
+		Matrix44f parentMatrix = new Matrix44f();
+		Matrix44f invertedParentMatrix = new Matrix44f();
+		
 			
-			changed = false;
-			
+		this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
+
+		
+		if (parent != null) {
+			parentMatrix = parent.getRenderingMatrix();
+			invertedParentMatrix = parent.getInvertedRenderingMatrix();
 		}
 		
-		this.renderingMatrix = parent.getRenderingMatrix().times(renderingMatrix);
-		this.invertedRenderingMatrix = MatrixInversion33f.generateMultiplicativeInverse(renderingMatrix);
+		this.renderingMatrix = renderingMatrix.times(parentMatrix);
+		this.invertedRenderingMatrix = invertedParentMatrix.times(MatrixInversion44f.generateMultiplicativeInverse(renderingMatrix));
 		
 	}
 	
@@ -211,12 +227,12 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 	
-	public Matrix33f getRenderingMatrix() {
+	public Matrix44f getRenderingMatrix() {
 		return renderingMatrix;
 	}
 	
 	
-	public Matrix33f getInvertedRenderingMatrix() {
+	public Matrix44f getInvertedRenderingMatrix() {
 		return invertedRenderingMatrix;
 	}
 	

@@ -10,6 +10,7 @@ import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import gui_core.GUIManager;
 import math.matrices.Matrix33f;
+import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 
@@ -18,7 +19,7 @@ public abstract class GUIShape extends Element_Model {
 	public GUIShape() {
 		super(GL_TRIANGLES);
 		
-		this.setVertexPositionData(getPositionData(), 2, GL_STATIC_DRAW);
+		this.setVertexPositionData(getPositionData(), 3, GL_STATIC_DRAW);
 		this.setVertexTexturePositionData(getTexPosData(), 2, GL_STATIC_DRAW);
 		this.setElementArrayData(getIndexData());
 		
@@ -48,6 +49,8 @@ public abstract class GUIShape extends Element_Model {
 	
 	/**
 	 * 
+	 * Checks if the cursor is on the Shape.
+	 * 
 	 * @param cursorX The x position of the cursor.
 	 * @param cursorY The y position of the cursor.
 	 * @return Returns Wether the cursor ist on the this shape.
@@ -55,7 +58,15 @@ public abstract class GUIShape extends Element_Model {
 	public abstract boolean isHit(float cursorX, float cursorY);
 	
 	
-	public void render(Texture2D texture, Vector4f color, Matrix33f matrix) {
+	/**
+	 * 
+	 * Renders the Shape on the screen.
+	 * 
+	 * @param texture The texture that is needed to render this shape. Can be null.
+	 * @param color The color that is needed to render this shape. Can be null.
+	 * @param matrix A 3x3 Matrix to transform the shape when rendering.
+	 */
+	public void render(Texture2D texture, Vector4f color, Matrix44f matrix) {
 		
 		if (texture != null) {
 			GUIManager.useGuiShader(matrix);

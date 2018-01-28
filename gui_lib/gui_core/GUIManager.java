@@ -2,13 +2,18 @@ package gui_core;
 
 import java.util.LinkedList;
 
+import assets.textures.Texture;
+import assets.textures.Texture2D;
 import elements.containers.GUIWindow;
+import graphics.matrices.Matrices;
 import math.matrices.Matrix33f;
+import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
 public class GUIManager {
+	
 	
 	private static boolean initialized = false;
 	
@@ -33,7 +38,7 @@ public class GUIManager {
 		
 		idCounter = 0;
 		
-		guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
+		guiShader = ShaderLoader.loadShader("Shaders/GUI/Font/FontShader.vert", "Shaders/GUI/Font/FontShader.frag");
 		
 		initialized = true;
 		
@@ -46,7 +51,11 @@ public class GUIManager {
 		
 		for (GUIWindow window : windows) {
 			
+			//TODO: Only call it when there were changes
+			window.update();
+			
 			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
+				
 				break;
 			}
 			
@@ -82,7 +91,7 @@ public class GUIManager {
 	}
 	
 	
-	public static void useGuiShader(Matrix33f renderingMatrix) {
+	public static void useGuiShader(Matrix44f renderingMatrix) {
 		
 		if (!initialized) {
 			init();
@@ -90,12 +99,13 @@ public class GUIManager {
 		
 		guiShader.use();
 		
-		guiShader.setUniformMatrix3fv("u_Matrix", renderingMatrix.toArray());
+		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 1);
+		
 	}
 	
 	
-	public static void useGuiShader(Matrix33f renderingMatrix, Vector4f color) {
+	public static void useGuiShader(Matrix44f renderingMatrix, Vector4f color) {
 		
 		if (!initialized) {
 			init();
@@ -105,7 +115,7 @@ public class GUIManager {
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 0);
-		guiShader.setUniformVector4f("u_color", color);
+		guiShader.setUniformVector4f("u_Color", color);
 		
 	}
 	

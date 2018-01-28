@@ -35,15 +35,16 @@ public abstract class GUIContainerElement extends GUIElement {
 	@Override
 	public void render() {
 		
-		super.render();
-		
 		if (!super.isVisible()) {
 			return;
 		}
 		
+		super.render();
+		
 		for (GUIElement element : children) {
 			element.render();
 		}
+		
 		
 	}
 	
@@ -64,9 +65,8 @@ public abstract class GUIContainerElement extends GUIElement {
 	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
 		
 		//Compute the local space coordinates of the cursor position
-		Vector3f vec = new Vector3f(cursorX, cursorY, 1f);
+		Vector4f vec = new Vector4f(cursorX, cursorY, 0f, 1f);
 		vec = this.getInvertedRenderingMatrix().times(vec);
-		
 		
 		if (this.getShape().isHit(vec.getA(), vec.getB())) {
 			
