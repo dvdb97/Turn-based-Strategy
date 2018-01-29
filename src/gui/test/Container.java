@@ -3,6 +3,7 @@ package gui.test;
 import elements.containers.GUIContainerElement;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
+import rendering.shapes.implemented.GUIRoundedQuad;
 
 public class Container extends GUIContainerElement {
 
@@ -19,8 +20,7 @@ public class Container extends GUIContainerElement {
 
 	@Override
 	public void onHover() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("inner container hovered!");		
 	}
 
 	@Override

@@ -19,6 +19,11 @@ public abstract class GUIShape extends Element_Model {
 	public GUIShape() {
 		super(GL_TRIANGLES);
 		
+	}
+	
+	
+	protected void loadData() {
+		
 		this.setVertexPositionData(getPositionData(), 3, GL_STATIC_DRAW);
 		this.setVertexTexturePositionData(getTexPosData(), 2, GL_STATIC_DRAW);
 		this.setElementArrayData(getIndexData());

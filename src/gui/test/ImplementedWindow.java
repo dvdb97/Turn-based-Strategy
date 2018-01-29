@@ -24,7 +24,7 @@ public class ImplementedWindow extends GUIWindow {
 
 	@Override
 	public void onHover() {
-
+		System.out.println("window hovered!");
 	}
 
 	@Override

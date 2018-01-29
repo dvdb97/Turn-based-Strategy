@@ -19,6 +19,9 @@ public class TestElement extends GUIElement {
 	@Override
 	public void onHover() {
 		
+		System.out.println("Hovered!");
+		
+		this.setColor(new Vector4f(1f, 1f, 1f, 1f));
 	}
 
 	@Override
@@ -43,13 +46,6 @@ public class TestElement extends GUIElement {
 	public void onOpen() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown,
-			boolean rightMouseButtonDown) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

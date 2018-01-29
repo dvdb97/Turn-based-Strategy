@@ -7,7 +7,7 @@ import rendering.shapes.GUIShape;
 import utils.CustomBufferUtils;
 
 public class GUIQuad extends GUIShape {
-	
+		
 	private static final float[] data = {
 		0.0f,  0.0f, -0.90f,
 		1.0f,  0.0f, -0.90f,
@@ -28,6 +28,13 @@ public class GUIQuad extends GUIShape {
 		0, 1, 3,
 		0, 2, 3
 	};
+	
+	
+	public GUIQuad() {
+		super();
+		
+		this.loadData();
+	}
 	
 	
 	@Override
@@ -52,7 +59,7 @@ public class GUIQuad extends GUIShape {
 			return false;
 		}
 		
-		if (cursorY < 0f || cursorY > 1f) {
+		if (cursorY > 0f || cursorY < -1f) {
 			return false;
 		}
 		

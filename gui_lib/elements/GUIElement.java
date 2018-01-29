@@ -73,9 +73,6 @@ public abstract class GUIElement implements Clickable {
 		this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
 		this.invertedRenderingMatrix = MatrixInversion44f.generateMultiplicativeInverse(renderingMatrix);
 		
-		System.out.println(this);
-		this.getRenderingMatrix().print();
-		
 	}
 
 	
@@ -124,7 +121,37 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 	
-	public abstract boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown);
+	/**
+	 * 
+	 * Processes the mouse input and checks if it effects this element.
+	 * 
+	 * @param cursorX The cursor x position.
+	 * @param cursorY The cursor y position.
+	 * @param leftMouseButtonDown Is the left mouse button pressed?
+	 * @param rightMouseButtonDown Is the right mouse button pressed?
+	 * @return Returns if this element is hit by this cursor.
+	 */
+	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+		
+		//Compute the local space coordinates of the cursor position
+		Vector4f vec = new Vector4f(cursorX, cursorY, 0.9f, 1f);
+		vec = this.getInvertedRenderingMatrix().times(vec);
+		
+		if (shape.isHit(vec.getA(), vec.getB())) {
+			
+			if (leftMouseButtonDown) {
+				onClick();
+			} else {
+				onHover();
+			}
+			
+			return true;
+			
+		}
+		
+		return false;
+		
+	}
 	
 	
 	public void resize(float width, float height) {
@@ -205,6 +232,11 @@ public abstract class GUIElement implements Clickable {
 	public GUIShape getShape() {
 		return shape;
 	}
+	
+	
+	public void setColor(Vector4f color) {
+		this.color = color;
+	}
 
 
 	public float getX() {
@@ -238,8 +270,10 @@ public abstract class GUIElement implements Clickable {
 	
 	public void delete() {		
 		parent.remove(this);
-		
+				
 		onClose();
+		
+		this.delete();
 	}
 
 }
