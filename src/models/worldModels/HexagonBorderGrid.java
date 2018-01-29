@@ -86,7 +86,7 @@ public class HexagonBorderGrid extends Element_Model{
 	//********************************** prime methods ***********************************
 	private void processVertices(TriangleGrid triangleGrid) {
 		
-		Vertex[] triGridVertices = prepareTriGridArray(triangleGrid);
+		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
 		
 		for (int y=0; y<hexWidth; y++) {
 			
@@ -159,7 +159,7 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	//********************************** util methods *********************************************
 	
-	private Vertex[] prepareTriGridArray(TriangleGrid triangleGrid) {
+	private Vertex[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
 		
 		Vector3f[] triGridPos = triangleGrid.getPosArray();
 		Vertex[] triGridVertices = new Vertex[triGridPos.length];

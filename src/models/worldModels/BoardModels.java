@@ -1,22 +1,21 @@
 package models.worldModels;
 
-import java.awt.List;
-
 import assets.light.LightSource;
 import assets.material.Material;
+import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.matrices.TransformationMatrix;
 import graphics.shaders.ShaderManager;
 import interaction.CameraOperator;
-import math.matrices.Matrix44f;
+import interaction.TileSelecter;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
-import visualize.FontTest;
 
 public class BoardModels {
 	
@@ -24,27 +23,27 @@ public class BoardModels {
 	private int lengthInHexagons;
 	private int widthInHexagons;
 	
-	private int xOffset;
-	private int yOffset;
-	private int edgeLengthRelation;
-	
 	//models
 	private TriangleGrid terrain;
 	
-	private HexagonBorderGrid tilBorders;
+	private HexagonBorderGrid tileBorders;
 	
 	private TriangleGrid sea;
 	
 	private CoordinateSystem coSystem;
 	
 	//matrices
-	private TransformationMatrix boardMatrix;
+	private TransformationMatrix boardModelMatrix;
 	
 	//others
 	private static Material mapMaterial;
 	
 	private static LightSource sun;
 	private static Vector3f ambientLight;
+	
+	private static Color hoveredTileColor;
+	
+	private static Color selectedTileColor;
 	
 	private Vertex[] vertices;
 	
@@ -61,22 +60,20 @@ public class BoardModels {
 			CoordinateSystem coSystem) {
 		
 		this.terrain = terrain;
-		this.tilBorders = tileBorders;
+		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.coSystem = coSystem;
 		
-		//TODO: no hard coding!
-		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
-		
-		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
-		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
+		hardCode();
 		
 		createVertexArray();
+		
+		boardModelMatrix = new TransformationMatrix();
 		
 	}
 
 	
-	//***************************** render ******************************
+	//***************************** render ********************************
 	
 	/**
 	 * renders the game board models
@@ -84,17 +81,18 @@ public class BoardModels {
 	public void render() {
 		
 		//render terrain
-		ShaderManager.useLightShader(boardMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.draw(terrain, null);
 		
 		ShaderManager.disableLightShader();
 		
+		tileBorders.displayAll();
 		
 		//render hexagon borders, sea, and co-system
-		ShaderManager.useShader(boardMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
-		RenderEngine.draw(tilBorders, null);
+		RenderEngine.draw(tileBorders, null);
 		
 		RenderEngine.draw(sea, null);
 		
@@ -102,16 +100,36 @@ public class BoardModels {
 		
 		ShaderManager.disableShader();
 		
+		renderHoveredTile();
 		
-		//render font-test
-		ShaderManager.useFontShader(new Matrix44f());
-		
-		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
-		
-		ShaderManager.disableTexturedMeshShader();
+		renderSelectedTile();
 		
 	}
 	
+	
+	private void renderHoveredTile() {
+		
+		tileBorders.display(TileSelecter.getHoveredTileIndex());
+		
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
+		
+		RenderEngine.draw(tileBorders, null);
+		
+		ShaderManager.disableShader();
+		
+	}
+	
+	private void renderSelectedTile() {
+		
+		tileBorders.display(TileSelecter.getSelectedTileIndex());
+		
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
+		
+		RenderEngine.draw(tileBorders, null);
+		
+		ShaderManager.disableShader();
+		
+	}
 	
 	//**********************************************************************
 	
@@ -124,6 +142,20 @@ public class BoardModels {
 		for (int v=0; v<vertices.length; v++) {
 			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
 		}
+		
+	}
+	
+	private void hardCode() {
+		
+		//TODO: no hard coding!
+		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
+		
+		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
+		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
+		
+		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
+		
+		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 	}
 	
@@ -143,7 +175,7 @@ public class BoardModels {
 	 */
 	public int[] getTileCenters() {
 		
-		return tilBorders.getHexCenterIndices();
+		return tileBorders.getHexCenterIndices();
 		
 	}
 }

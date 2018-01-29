@@ -28,7 +28,7 @@ public class TriangleGrid extends Illuminated_Model {
 	
 	private int length, width;
 	
-	private int lengthMod2, widthMod2;
+	private int lengthMod2;
 	
 	private float edgeLength;
 	private float triangleAltitude;
@@ -45,25 +45,12 @@ public class TriangleGrid extends Illuminated_Model {
 	
 	//************************************** constructor *************************************
 	
-	private TriangleGrid(float edgeLength, float[][] elevation, Material material) {
-		
-		super(GL_TRIANGLE_STRIP, material);
-		
-		length  = elevation.length;
-		width = elevation[0].length;
-		
-		lengthMod2 = length%2;
-		widthMod2  = width%2;
-		
-		PRI = length*width;
-		
-		this.edgeLength = edgeLength;
-		triangleAltitude = 0.5f * Const.SQRT3 * edgeLength;
-		
-		this.elevation = elevation;
-		
-	}
-
+	/**
+	 * @param edgeLength edge length of the triangles
+	 * @param elevation the elevation of the vertices
+	 * @param colorFunc a function that gives a vertex a color depending on its position
+	 * @param material
+	 */
 	public TriangleGrid(float edgeLength, float[][] elevation, ColorFunction colorFunc, Material material) {
 		
 		this(edgeLength, elevation, material);
@@ -73,6 +60,13 @@ public class TriangleGrid extends Illuminated_Model {
 		processGrid();
 	}
 	
+	/**
+	 * 
+	 * @param edgeLength edge length of the triangles
+	 * @param elevation the elevation of the vertices
+	 * @param color the color of the grid
+	 * @param material
+	 */
 	public TriangleGrid(float edgeLength, float[][] elevation, Color color, Material material) {
 		
 		this(edgeLength, elevation, material);
@@ -85,6 +79,25 @@ public class TriangleGrid extends Illuminated_Model {
 		};
 		
 		processGrid();
+		
+	}
+	
+	
+	private TriangleGrid(float edgeLength, float[][] elevation, Material material) {
+		
+		super(GL_TRIANGLE_STRIP, material);
+		
+		length  = elevation.length;
+		width = elevation[0].length;
+		
+		lengthMod2 = length%2;
+		
+		PRI = length*width;
+		
+		this.edgeLength = edgeLength;
+		triangleAltitude = 0.5f * Const.SQRT3 * edgeLength;
+		
+		this.elevation = elevation;
 		
 	}
 	

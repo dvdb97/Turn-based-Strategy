@@ -49,7 +49,7 @@ public class ModelCreater {
 	
 	/**
 	 * @param lengthInHexagons length of the board in hexagons
-	 * @param widthInHexagons width of the board inhexagons
+	 * @param widthInHexagons width of the board in hexagons
 	 */
 	public ModelCreater(int lengthInHexagons, int widthInHexagons) {
 		
@@ -64,7 +64,7 @@ public class ModelCreater {
 	//********************************** ergon *********************************
 	
 	/**
-	 * creates all models needed to render the game board
+	 * creates all models needed to render the game board.
 	 * namely: terrain, sea, tile borders and an coordinate system
 	 */
 	public BoardModels createModels() {

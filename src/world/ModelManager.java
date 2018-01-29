@@ -6,7 +6,6 @@ import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
-import math.MatrixManager;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.shaders.ShaderManager;
@@ -18,12 +17,10 @@ import rendering.RenderEngine;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
 import core.saves.GameScore;
-import models.seeds.ColorFunction;
 import models.seeds.ElevationMap;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.HexagonBorderGrid;
 import models.worldModels.TriangleGrid;
-import utils.ArrayUtil;
 import utils.Calc;
 
 import org.lwjgl.glfw.GLFW;
@@ -120,9 +117,9 @@ public class ModelManager {
 		
 		
 		//The model matrix for the map (as we only move the map the model matrix won't change)	
-		geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
+	//	geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
 	
-		hexagonBorderModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0.01f), new Vector3f(0f, 0f, 0f), 1f);
+	//	hexagonBorderModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0.01f), new Vector3f(0f, 0f, 0f), 1f);
 		
 		//TODO: Figure out better values for the material
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
@@ -165,10 +162,6 @@ public class ModelManager {
 		ShaderManager.disableShader();
 		
 		
-		//TODO: temporary: I want to visualize the fertility of a tile
-		hoveredTileColor = new Color(1, 0, GameBoard.getTile(TileSelecter.getHoveredTileIndex()).getFertility(), 1);
-		
-		
 		ShaderManager.useShader(hexagonBorderModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
 		
 		hexagonBorderMesh.display(TileSelecter.getHoveredTileIndex());
@@ -204,13 +197,6 @@ public class ModelManager {
 	public static Matrix44f getModelMatrix() {
 		
 		return geoMapModelMatrix;
-	
-	}
-	
-	
-	public static Vector3f[] getTileCenterVertices() {
-		
-		return hexagonBorderMesh.getCenterVertices();
 	
 	}
 	

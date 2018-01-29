@@ -52,47 +52,13 @@ public class TileSelecter {
 		rayDirection = invertedViewMatrix33f.times(rayDirection);
 		rayDirection = rayDirection.normalize();
 		
-		hoveredTileIndex = getTileIndex(rayOrigin, rayDirection, centerVertices);
+		hoveredTileIndex = Distances.getClosestPointToLine(rayOrigin, rayDirection, centerVertices);
 		
 		if (MouseInputManager.isLeftMouseButtonPressed()) {
 			selectedTileIndex = hoveredTileIndex;
 		}
 		
-	}	
-	
-	
-	
-	/**
-	 * This algorithm searches the vertex that is the closest to the ray defined by origin and direction
-	 * 
-	 * @param origin The origin of the ray
-	 *  
-	 * @param direction The direction of the ray
-	 *
-	 * @return Returns the index of the closest vertex to the ray
-	 * 
-	 */
-	private static int getTileIndex(Vector3f origin, Vector3f direction, Vector3f[] vertices) {
-		
-		float distance;
-		int bestCandidateIndex = 0;
-		float bestCandidateDistance = Float.MAX_VALUE;
-		
-		for (int i=0; i<vertices.length; i++) {
-			
-			distance = Distances.distanceLinePoint(origin, direction, vertices[i]);
-			
-			if (distance < bestCandidateDistance) {
-				bestCandidateDistance = distance;
-				bestCandidateIndex = i;
-			}
-			
-		}
-		
-		return bestCandidateIndex;
-		
 	}
-
 	
 	
 	public static void processInput() {
