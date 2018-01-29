@@ -8,6 +8,7 @@ import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
 import graphics.Camera;
 import graphics.matrices.Matrices;
+import graphics.matrices.TransformationMatrix;
 import graphics.shaders.ShaderManager;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -117,9 +118,9 @@ public class ModelManager {
 		
 		
 		//The model matrix for the map (as we only move the map the model matrix won't change)	
-	//	geoMapModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
+		geoMapModelMatrix = new TransformationMatrix();
 	
-	//	hexagonBorderModelMatrix = MatrixManager.generateModelMatrix(new Vector3f(0f, 0f, 0.01f), new Vector3f(0f, 0f, 0f), 1f);
+		hexagonBorderModelMatrix = new TransformationMatrix();
 		
 		//TODO: Figure out better values for the material
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);

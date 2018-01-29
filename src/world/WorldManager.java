@@ -25,13 +25,17 @@ public class WorldManager {
 		vertices = boardModels.getVertices();
 		tileCenterIndices = boardModels.getTileCenters();
 		
+		ModelManager.init(lengthInHexagons, widthInHexagons);
+		
 	}
 	
 	//*************************** render ****************************
 	
 	public static void render() {
 		
-		boardModels.render();
+	//	boardModels.render();
+		
+		ModelManager.render();
 		
 	}
 	
