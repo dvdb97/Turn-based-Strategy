@@ -9,7 +9,6 @@ import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
 import visualize.FontTest;
-import world.ModelManager;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;

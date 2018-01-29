@@ -87,6 +87,10 @@ public class BoardModels {
 		
 		ShaderManager.disableLightShader();
 		
+		renderSelectedTile();
+		
+		renderHoveredTile();
+		
 		tileBorders.displayAll();
 		
 		//render hexagon borders, sea, and co-system
@@ -99,10 +103,6 @@ public class BoardModels {
 		RenderEngine.draw(coSystem, null);
 		
 		ShaderManager.disableShader();
-		
-		renderHoveredTile();
-		
-		renderSelectedTile();
 		
 	}
 	

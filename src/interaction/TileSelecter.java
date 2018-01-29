@@ -35,7 +35,7 @@ public class TileSelecter {
 		selectedTileIndex = 0;
 		
 		TileSelecter.centerVertices = centerVertices;
-		
+		System.out.println(centerVertices.length);
 	}
 	
 	
@@ -67,6 +67,7 @@ public class TileSelecter {
 	
 	
 	public static int getHoveredTileIndex() {
+	//	System.out.println(hoveredTileIndex);
 		return hoveredTileIndex;
 	}
 	

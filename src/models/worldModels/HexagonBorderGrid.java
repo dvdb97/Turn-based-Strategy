@@ -223,72 +223,8 @@ public class HexagonBorderGrid extends Element_Model{
 		return hexCenterIndices;
 		
 	}
-	
-	//Compute a center point for every vertex. Will be used to compute the selectedTile
-	public Vector3f[] getCenterVertices() {
 		
-		Vector3f[] centerVertices = new Vector3f[indexBuffer.capacity() / 7];
-		
-		float x = 0f;
-		float y = 0f;
-		float z = 0f;
-		
-		for (int i = 0; i < indexBuffer.capacity(); ++i) {
-			
-			int vertexIndex = indexBuffer.get(i);
-			
-			if(vertexIndex == PRI) {
-				
-				centerVertices[i / 7] = new Vector3f(x / 6, y / 6, z / 6);
-				
-				x = 0f;
-				y = 0f;
-				z = 0f;
-				
-				continue;
-				
-			}
-			
-			x += vertices.get(vertexIndex).getA();
-			y += vertices.get(vertexIndex).getB();
-			z += vertices.get(vertexIndex).getC();
-
-			
-		}
-		
-		return centerVertices;
-		
-	}
-	
-	
-	private int[] getIndexArrayByID(int index) {
-		
-		if (index < 0) {
-			return getIndexArrayByID(0);
-		}
-		
-		
-		if (index >= hexLength * hexWidth) {
-			return getIndexArrayByID(hexLength * hexWidth - 1);
-		}
-		
-		
-		int[] indices = new int[7];
-		
-		int positionInElementArray = index * 7;
-		
-		
-		for (int i = 0; i < 7; ++i) {
-			
-			indices[i] = indexBuffer.get(positionInElementArray + i);
-			
-		}
-		
-		
-		return indices;
-		
-	}
-	
+	//***************************** display... ***************************************
 	
 	public void display(int index) {
 		
@@ -320,8 +256,9 @@ public class HexagonBorderGrid extends Element_Model{
 		this.setElementArrayData(this.indexBuffer);
 	}
 	
+	//*********************************************************************************
 	
-	
+	@Override
 	public void onDrawStart() {
 		super.onDrawStart();
 		
@@ -331,13 +268,14 @@ public class HexagonBorderGrid extends Element_Model{
 		glPrimitiveRestartIndex(PRI);
 	}
 	
-	
+	@Override
 	public void onDrawStop() {
 		super.onDrawStop();
 		
 		glDisable(GL_PRIMITIVE_RESTART);
 		
 	}
+	
 	
 	private Vertex[] vertexListToArray() {
 		
@@ -350,5 +288,33 @@ public class HexagonBorderGrid extends Element_Model{
 		return array;
 		
 	}
-
+	
+	
+	private int[] getIndexArrayByID(int index) {
+		
+		if (index < 0) {
+			return getIndexArrayByID(0);
+		}
+		
+		
+		if (index >= indexBuffer.capacity()/7) {
+			return getIndexArrayByID(indexBuffer.capacity()/7 - 1);
+		}
+		
+		int[] indices = new int[7];
+		
+		int positionInElementArray = index * 7;
+		
+		
+		for (int i = 0; i < 7; ++i) {
+			
+			indices[i] = indexBuffer.get(positionInElementArray + i);
+			
+		}
+		
+		
+		return indices;
+		
+	}
+	
 }
