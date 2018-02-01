@@ -68,7 +68,7 @@ public class Application {
 		
 		//TODO: Add a main menu
 		
-		Game game = new Game(1, 10, 10);
+		Game game = new Game(1, 50, 50);
 		
 		close();
 		

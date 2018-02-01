@@ -1,30 +1,27 @@
 package models.worldModels;
 
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
-import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
 import utils.CustomBufferUtils;
 
-public class HexagonBorderGrid extends Element_Model{
+public class HexagonBorderGrid extends Element_Model {
+	
+	private int length, width;
 	
 	private int elr;			//edge length relation = edgeLengthHexagons / edgeLengthTriangles
 	
@@ -66,11 +63,15 @@ public class HexagonBorderGrid extends Element_Model{
 		this.yOffset = halfYOffset;
 		this.elr = (int)Math.pow(2, log2EdgeLengthRelation);
 		
+		
 		triGridVertLength = triangleGrid.getLength();
 		
 		hexLength =  (triGridVertLength - 2 * xOffset - 1) / elr + 1;
 		hexWidth  = ((triangleGrid.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
 		
+		length = hexLength / 2 - 1;
+		width  = hexWidth -1;
+
 		vertices = new ArrayList<>(hexLength*hexWidth);
 		
 		processVertices(triangleGrid);
@@ -111,7 +112,7 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	private void processHexCenterIndices() {
 		
-		hexagonCenterIndices = new ArrayList<Integer>((hexLength / 2 - 1) * (hexWidth - 1));
+		hexagonCenterIndices = new ArrayList<Integer>(length * width);
 		
 		for (int y=0; y<hexWidth; y++) {
 			
@@ -131,24 +132,15 @@ public class HexagonBorderGrid extends Element_Model{
 	
 	private void createIndexBuffer() {
 		
-		indexBuffer = BufferUtils.createIntBuffer((hexLength / 2 - 1) * (hexWidth - 1) * 7 );
+		indexBuffer = BufferUtils.createIntBuffer(length * width * 7 );
 		
-		for (int y=0; y<hexWidth-1; y++) {
+		for (int y=0; y<width; y++) {
 			
-			if(y%2 == 0) {
-				for (int x=0; x<hexLength/2 - 1; x++) {
-					
-					indexBuffer.put(getHexagonIndexArray(x, y, 0));
-					indexBuffer.put(PRI);
-					
-				}
-			} else {	// y%2 == 1
-				for (int x=0; x<hexLength/2 - 1; x++) {
-					
-					indexBuffer.put(getHexagonIndexArray(x, y, 1));
-					indexBuffer.put(PRI);
-					
-				}
+			for (int x=0; x<length; x++) {
+				
+				indexBuffer.put(getHexagonIndexArray(x, y, y%2));
+				indexBuffer.put(PRI);
+				
 			}
 			
 		}
@@ -226,6 +218,7 @@ public class HexagonBorderGrid extends Element_Model{
 		
 	//***************************** display... ***************************************
 	
+	
 	public void display(int index) {
 		
 		IntBuffer elementBuffer = CustomBufferUtils.createIntBuffer(getIndexArrayByID(index));
@@ -255,6 +248,8 @@ public class HexagonBorderGrid extends Element_Model{
 	public void displayAll() {
 		this.setElementArrayData(this.indexBuffer);
 	}
+	
+	
 	
 	//*********************************************************************************
 	
@@ -315,6 +310,22 @@ public class HexagonBorderGrid extends Element_Model{
 		
 		return indices;
 		
+	}
+	
+	//************************************ get *****************************
+	
+	/**
+	 * @return the length of this grid in hexagons
+	 */
+	public int getLength() {
+		return length;
+	}
+	
+	/**
+	 * @return the width of this grid in hexagons
+	 */
+	public int getWidth() {
+		return width;
 	}
 	
 }

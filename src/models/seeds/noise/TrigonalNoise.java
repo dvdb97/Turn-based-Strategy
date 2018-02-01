@@ -1,5 +1,6 @@
 package models.seeds.noise;
 
+//TODO: refactor - move, noise is not only needed for model creation process
 
 public class TrigonalNoise {
 	
@@ -207,4 +208,6 @@ public class TrigonalNoise {
 		return values[x][y];
 		
 	}
+	
+	
 }

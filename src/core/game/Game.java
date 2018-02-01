@@ -33,7 +33,7 @@ public class Game {
 		CameraOperator.init();
 		
 		//Init tile selecter
-		TileSelecter.init(WorldManager.getTileCenterPos());
+		TileSelecter.init();
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();

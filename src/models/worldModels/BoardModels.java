@@ -16,12 +16,13 @@ import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
 import visualize.CoordinateSystem;
+import world.WorldManager;
 
 public class BoardModels {
 	
 	//measurements
-	private int lengthInHexagons;
-	private int widthInHexagons;
+	private int lengthInTiles;
+	private int widthInTiles;
 	
 	//models
 	private TriangleGrid terrain;
@@ -64,6 +65,9 @@ public class BoardModels {
 		this.sea = sea;
 		this.coSystem = coSystem;
 		
+		lengthInTiles = tileBorders.getLength();
+		widthInTiles = tileBorders.getWidth();
+		
 		hardCode();
 		
 		createVertexArray();
@@ -71,7 +75,38 @@ public class BoardModels {
 		boardModelMatrix = new TransformationMatrix();
 		
 	}
+	
+	//*****************************************
+	
+	
+	private void hardCode() {
+		
+		//TODO: no hard coding!
+		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
+		
+		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
+		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
+		
+		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
+		
+		selectedTileColor = new Color(1f, 0f, 0f, 1f);
+		
+	}
 
+	private void createVertexArray() {
+		
+		Vector3f[] positions = terrain.getPosArray();
+		ColorFunction terrainCol = new TerrainCol();
+		
+		vertices = new Vertex[positions.length];
+		for (int v=0; v<vertices.length; v++) {
+			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
+		}
+		
+	}
+
+	
+	
 	
 	//***************************** render ********************************
 	
@@ -80,20 +115,32 @@ public class BoardModels {
 	 */
 	public void render() {
 		
-		//render terrain
+		renderTerrain();
+		
+		renderSelectedTile();
+		
+		renderHoveredTile();
+		
+		renderBordersSeaCOS();
+		
+	}
+	
+	//*********************************
+	
+	private void renderTerrain() {
+		
 		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.draw(terrain, null);
 		
 		ShaderManager.disableLightShader();
 		
-		renderSelectedTile();
-		
-		renderHoveredTile();
+	}
+	
+	private void renderBordersSeaCOS() {
 		
 		tileBorders.displayAll();
 		
-		//render hexagon borders, sea, and co-system
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
 		RenderEngine.draw(tileBorders, null);
@@ -105,7 +152,6 @@ public class BoardModels {
 		ShaderManager.disableShader();
 		
 	}
-	
 	
 	private void renderHoveredTile() {
 		
@@ -131,33 +177,7 @@ public class BoardModels {
 		
 	}
 	
-	//**********************************************************************
 	
-	private void createVertexArray() {
-		
-		Vector3f[] positions = terrain.getPosArray();
-		ColorFunction terrainCol = new TerrainCol();
-		
-		vertices = new Vertex[positions.length];
-		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
-		}
-		
-	}
-	
-	private void hardCode() {
-		
-		//TODO: no hard coding!
-		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
-		
-		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
-		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
-		
-		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
-		
-		selectedTileColor = new Color(1f, 0f, 0f, 1f);
-		
-	}
 	
 	//**************************** get *************************************
 	
@@ -178,4 +198,19 @@ public class BoardModels {
 		return tileBorders.getHexCenterIndices();
 		
 	}
+	
+	/**
+	 * @return the game board's length in tiles
+	 */
+	public int getLength() {
+		return lengthInTiles;
+	}
+	
+	/**
+	 * @return the game board's width in tiles
+	 */
+	public int getWidth() {
+		return widthInTiles;
+	}
+	
 }
