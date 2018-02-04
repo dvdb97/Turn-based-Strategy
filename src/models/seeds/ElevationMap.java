@@ -16,7 +16,6 @@ public class ElevationMap {
 	private float[][] elevation;
 	
 	private TrigonalNoise eleNoise;
-	private TrigonalNoise expNoise;
 	
 	
 	/************************************************************
@@ -33,7 +32,6 @@ public class ElevationMap {
 		int extra = (int)Math.pow(2, maxOctave);
 		
 		eleNoise = new TrigonalNoise(length+extra, width+extra, 0, 7);
-		expNoise = new TrigonalNoise(length+extra, width+extra, 5, 7);
 		
 		elevation = new float[length][width];
 		

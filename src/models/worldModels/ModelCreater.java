@@ -5,6 +5,7 @@ import assets.meshes.geometry.Color;
 import math.vectors.Vector3f;
 import models.TerrainCol;
 import models.seeds.ElevationMap;
+import models.seeds.SuperGrid;
 import visualize.CoordinateSystem;
 
 public class ModelCreater {
@@ -18,20 +19,19 @@ public class ModelCreater {
 	private int triLength;
 	private int triWidth;
 	
-	private int xOffset;
-	private int yOffset;
-	
-	private int elr;		//edgeLengthRelation
-	
 	
 	//hard code
-	private static float hexEdgeLength = 0.1f;
+	private final int xOffset = 2;
+	private final int yOffset = 2;
 	
-	private static final int halfXOffset = 2;
-	private static final int halfYOffset = 2;
+	private final int elr = 2;			//edgeLengthRelation
 	
-	private static final int log2EdgeLengthRelation = 1;
+	private static float triEdgeLength = 0.1f;
 	
+	//seed
+	private ElevationMap terrainData;
+	
+	private SuperGrid superGrid;
 	
 	//models
 	private TriangleGrid terrain;
@@ -42,8 +42,11 @@ public class ModelCreater {
 	
 	private CoordinateSystem coSystem;
 	
+	
 	//others
 	private Vector3f[] hexMeshVertices;
+	
+	
 	
 	//********************************** initialization ************************
 	
@@ -69,6 +72,7 @@ public class ModelCreater {
 	 */
 	public BoardModels createModels() {
 		
+		createSuperGrid();
 		createTerrain();
 		createTileBorders();
 		createSea();
@@ -80,16 +84,22 @@ public class ModelCreater {
 	
 	//********************************* prime methods **************************
 	
+	private void createSuperGrid() {
+		
+		terrainData = new ElevationMap(triLength, triWidth);
+		superGrid = new SuperGrid(lengthInHex, widthInHex, xOffset, yOffset, triEdgeLength, elr, terrainData.getElevationArray());
+		
+	}
+	
 	private void createTerrain() {
 		
-		ElevationMap terrainData = new ElevationMap(triLength, triWidth);
-		terrain = new TriangleGrid(hexEdgeLength, terrainData.getElevationArray(), new TerrainCol(), new StandardMaterial());
-
+		terrain = new TriangleGrid(triEdgeLength, terrainData.getElevationArray(), new TerrainCol(), new StandardMaterial());
+		
 	}
 	
 	private void createTileBorders() {
 		
-		tileBorders = new HexagonBorderGrid(terrain, halfXOffset, halfYOffset, log2EdgeLengthRelation);
+		tileBorders = new HexagonBorderGrid(terrain, xOffset, yOffset, elr);
 		
 		hexMeshVertices = tileBorders.getVertices();
 		
@@ -111,14 +121,20 @@ public class ModelCreater {
 	
 	private void calculations() {
 		
-		xOffset = 2 * halfXOffset;
-		yOffset = 2 * halfYOffset;
+		triLength = (lengthInHex*2 + 2)*elr + 2*xOffset;
+		triWidth  = (widthInHex*3/2 + 1)*elr + 1 + 2*yOffset;
 		
-		elr = (int)Math.pow(2, log2EdgeLengthRelation);
 		
-		triLength = (((lengthInHex + 1) * 2)-1)*elr + 2*xOffset + 1;
-		triWidth  = (widthInHex*3/2 + 1)*elr + 2*yOffset;
+	//	triLength = (lengthInHex*2 + 1)*elr + 2*xOffset + 1;
+	//	triWidth  = (widthInHex*3/2 + 1)*elr + 2*yOffset;
 		
 	}
 	
+	//******************************* get ******************************************
+	
+	public SuperGrid getSuperGrid() {
+		
+		return superGrid;
+		
+	}
 }

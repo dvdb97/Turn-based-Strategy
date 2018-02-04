@@ -2,6 +2,7 @@ package world;
 
 import assets.meshes.geometry.Vertex;
 import math.vectors.Vector3f;
+import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
@@ -12,10 +13,9 @@ public class WorldManager {
 	private static int lengthInTiles, widthInTiles;
 	
 	private static BoardModels boardModels;
+	private static SuperGrid superGrid;
 	
-	private static Vertex[] vertices;
 	private static float[] fertility;
-	private static int[] tileCenterIndices;
 	
 	//*************************** init ******************************
 	
@@ -24,9 +24,7 @@ public class WorldManager {
 		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
 		
 		boardModels = modelCreater.createModels();
-		
-		vertices = boardModels.getVertices();
-		tileCenterIndices = boardModels.getTileCenters();
+		superGrid   = modelCreater.getSuperGrid();
 		
 		WorldManager.lengthInTiles = boardModels.getLength();
 		WorldManager.widthInTiles  = boardModels.getWidth();
@@ -47,15 +45,18 @@ public class WorldManager {
 	
 	public static Vector3f[] getTileCenterPos() {
 		
-		Vector3f[] hexCenterVectors = new Vector3f[tileCenterIndices.length];
+		int[] tileCenterIndices = superGrid.getHexcenterIndices();
+		Vector3f[] vectors = superGrid.getVectors();
 		
-		for (int i=0; i<hexCenterVectors.length; i++) {
+		Vector3f[] tileCenterPositions = new Vector3f[tileCenterIndices.length];
+		
+		for (int c=0; c<tileCenterPositions.length; c++) {
 			
-			hexCenterVectors[i] = vertices[tileCenterIndices[i]].getPosition();
+			tileCenterPositions[c] = vectors[tileCenterIndices[c]];
 			
 		}
 		
-		return hexCenterVectors;
+		return tileCenterPositions;
 		
 	}
 	

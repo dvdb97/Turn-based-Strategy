@@ -46,23 +46,21 @@ public class HexagonBorderGrid extends Element_Model {
 	/**
 	 * 
 	 * @param triangleGrid TriangleGrid this hexagonal grid is based on
-	 * @param halfXOffset the xOffset divided by two, to avoid odd numbers
-	 * @param halfYOffset the yOffset divided by two, to avoid odd numbers
-	 * @param log2EdgeLengthRelation the base 2 logarithm of the edge length relation, to make sure it's a power of 2
-	 * , edgeLengthRelation = edge length of hexagons / edge length of triangles
+	 * @param xOffset
+	 * @param yOffset 
+	 * @param edgeLengthRelation edge length of hexagons / edge length of triangles
 	 */
-	public HexagonBorderGrid(TriangleGrid triangleGrid, int halfXOffset, int halfYOffset, int log2EdgeLengthRelation) {
+	public HexagonBorderGrid(TriangleGrid triangleGrid, int xOffset, int yOffset, int edgeLengthRelation) {
 		
 		super(GL_LINE_LOOP);
-		//TODO: maybe log2EdgeLengthRelation < 1
-		if (log2EdgeLengthRelation < 0 || triangleGrid == null || xOffset < 0 || yOffset < 0) {
+		
+		if (edgeLengthRelation < 1 || triangleGrid == null || xOffset < 0 || yOffset < 0) {
 			throw new IllegalArgumentException();
 		}
 		
-		this.xOffset = halfXOffset;
-		this.yOffset = halfYOffset;
-		this.elr = (int)Math.pow(2, log2EdgeLengthRelation);
-		
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		this.elr = edgeLengthRelation;
 		
 		triGridVertLength = triangleGrid.getLength();
 		
@@ -85,6 +83,7 @@ public class HexagonBorderGrid extends Element_Model {
 	
 	
 	//********************************** prime methods ***********************************
+	
 	private void processVertices(TriangleGrid triangleGrid) {
 		
 		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);

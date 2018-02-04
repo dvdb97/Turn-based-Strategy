@@ -102,7 +102,7 @@ public class Game {
 		
 		WorldManager.render();
 		
-		//TODo: temp
+		//TODO: temp
 		ShaderManager.useFontShader(new Matrix44f());
 		
 		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());

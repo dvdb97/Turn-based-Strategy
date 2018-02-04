@@ -16,12 +16,10 @@ import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
 import assets.meshes.geometry.Color;
-import assets.models.Element_Model;
 import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
 import utils.Const;
 import utils.CustomBufferUtils;
-import models.PosCol;
 import models.seeds.ColorFunction;
 
 public class TriangleGrid extends Illuminated_Model {
@@ -362,7 +360,7 @@ public class TriangleGrid extends Illuminated_Model {
 		return width;
 	}
 	
-	//TODO: bad methods names
+	//TODO: bad method names
 	//TODO: java doc
 	public float getTotalWidth() {
 		return width * edgeLength;
