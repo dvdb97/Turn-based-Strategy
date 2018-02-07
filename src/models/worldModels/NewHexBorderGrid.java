@@ -1,131 +1,141 @@
 package models.worldModels;
 
-import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
-import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glDisable;
-
-
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
-import assets.material.Material;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
-import utils.Const;
-import utils.CustomBufferUtils;
-import models.seeds.ColorFunction;
+import models.seeds.SuperGrid;
+
+import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
+import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 public class NewHexBorderGrid extends Element_Model {
 	
-	private int length, width;
+	SuperGrid superGrid;
 	
-	private int lengthMod2;
+	//dimensions
+	private int length;
+	private int width;
 	
-	private float edgeLength;
-	private float triangleAltitude;
+	private ArrayList<Vector3f> vectors;
 	
-	private float[][] elevation;
+	private Color color;
 	
-	ColorFunction colorFunc;
+	private IntBuffer elementBuffer;
 	
-	private final int PRI = -1;			//primitive restart index
+	//TODO: implement an array that contains every hexagon's element buffer, helpful for section "display"
+	private int[][] elementArrays;
 	
-	private ArrayList<Vector3f> positions;
+	private static final int PRI = -1;
 	
 	
+	//******************** constructor ***************************
 	
-	//************************************** constructor *************************************	
-	
-	private NewHexBorderGrid(Vertex[] vertices) {
+	public NewHexBorderGrid(SuperGrid superGrid, Color color) {
 		
-		super(GL_LINE_STRIP);
+		super(GL_LINE_LOOP);
 		
-		processGrid();
+		this.superGrid = superGrid;
 		
-	}
-	
-	//*************************************** prime method ****************************************
-	
-	private void processGrid() {
+		length = superGrid.getLengthInHexagons();
+		width  = superGrid.getWidthInHexagons();
 		
-		processPositionAndColor();
+		this.color = color;
 		
-		processElementArray();
+		processPositionsAndElementBuffer();
 		
 	}
 	
 	
+	//********************
 	
-	//*************************************** secondary methods **********************************
 	
-	private void processPositionAndColor() {
+	private void processPositionsAndElementBuffer() {
 		
-		positions = new ArrayList<>(length * width * 3);
-		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(length * width * 4);
+		vectors = new ArrayList<>((length+1)*2 * (width+1));
 		
-		for (int y=0; y<width; y++) {
-			
-			for (int x=0; x<length; x++) {
+		elementBuffer = BufferUtils.createIntBuffer(length*width*7);
+		
+		for (int x=0; x<length; x++) {
+			for (int y=0; y<width; y++) {
 				
-				positions.add(new Vector3f(x*triangleAltitude, (y+0.5f*(x%2))*edgeLength, elevation[x][y]));
-				
-				colBuffer.put(colorFunc.color(x, y, elevation[x][y]).toArray());
+				addHexagon(x, y);
 				
 			}
+		}
+		
+		Vertex[] vertices = new Vertex[vectors.size()];
+		
+		for (int v=0; v<vertices.length; v++) {
+			
+			vertices[v] = new Vertex(vectors.get(v), color);
 			
 		}
 		
-		
-		colBuffer.flip();
-		
-		this.setVertexPositionData(CustomBufferUtils.createFloatBuffer(positions), 3, GL_STATIC_DRAW);
-		this.setVertexColorData(colBuffer, 4, GL_STATIC_DRAW);
+		setData(vertices, elementBuffer);
 		
 	}
 	
 	
-	private void processElementArray() {
+	private void addHexagon(int x, int y) {
 		
-		IntBuffer elementBuffer = BufferUtils.createIntBuffer( (width*2+1)*(length-1));
+		Vector3f[] hexBorderPositions = superGrid.getHexBorder(y*length + x);
+		Vector3f vec;
 		
-		for (int col=0; col<length-1; col++) {
+		for (int v=0; v<hexBorderPositions.length; v++) {
 			
-			for (int row=0; row<width; row++) {
-				
-				elementBuffer.put(col+row*length);
-				elementBuffer.put(col+row*length+1);
-				
+			vec = hexBorderPositions[v];
+			
+			if (vectors.contains(vec)) {
+				vectors.add(vec);
 			}
 			
-			elementBuffer.put(PRI);
+			elementBuffer.put(vectors.indexOf(vec));
+			
 			
 		}
 		
-		elementBuffer.flip();
-		
-		this.setElementArrayData(elementBuffer);
+		elementBuffer.put(PRI);
 		
 	}
 	
 	
+	//******************** display *******************************
 	
-	//********************************** other stuff **********************************************
+	public void display(int index) {
+		
+		
+	}
+	
+	public void displayAll() {
+		
+		
+		
+	}
+	
+	
+	//******************** others *********************************
+	
+	@Override
 	public void onDrawStart() {
 		super.onDrawStart();
+		
+		glLineWidth(0.1f);
 		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
 	}
 	
-	
+	@Override
 	public void onDrawStop() {
 		super.onDrawStop();
 		
@@ -133,31 +143,24 @@ public class NewHexBorderGrid extends Element_Model {
 		
 	}
 	
-	//******************************************** get & set **************************************
+	
+	
+	//************************************ get *****************************
 	
 	/**
-	 * @return the length of the mesh in knots (vertices)
+	 * @return the length of this grid in hexagons
 	 */
 	public int getLength() {
 		return length;
 	}
-
+	
 	/**
-	 * @return the width of the mesh in knots (vertices)
+	 * @return the width of this grid in hexagons
 	 */
 	public int getWidth() {
 		return width;
 	}
 	
-	//TODO: bad methods names
-	//TODO: java doc
-	public float getTotalWidth() {
-		return width * edgeLength;
-	}
-	
-	public float getTotalHeight() {
-		return length * edgeLength;
-	}
 	
 	
 }

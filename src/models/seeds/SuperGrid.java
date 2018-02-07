@@ -10,15 +10,15 @@ public class SuperGrid {
 	private int lengthInHexagons;
 	private int widthInHexagons;
 	
-	private int xOffset;
-	private int yOffset;
+	private int xOffset;				//must be even
+	private int yOffset;				//must be even
 	
 	private float triEdgeLength;
-	private int elr;                //edge length relation = hexaong's edge length / triangle's edge length
+	private int elr;                	//must be a power of 2 and > 1          //edge length relation = hexaong's edge length / triangle's edge length
 	private float triangleAltitude;
 	
-	private int gridLength;
-	private int gridWidth;
+	private int lengthInVectors;
+	private int widthInVectors;
 
 	//data
 	private float[][] elevation;
@@ -53,8 +53,8 @@ public class SuperGrid {
 	
 	private void calculations() {
 		
-		gridLength = (lengthInHexagons*2 + 2)*elr + 2*xOffset;
-		gridWidth  = (widthInHexagons*3/2 + 1)*elr + 1 + 2*yOffset;
+		lengthInVectors = (lengthInHexagons*2 + 2)*elr + 2*xOffset;
+		widthInVectors  = (widthInHexagons*3/2 + 1)*elr + 1 + 2*yOffset;
 		
 		triangleAltitude = 0.5f * Const.SQRT3 * triEdgeLength;
 		
@@ -62,13 +62,13 @@ public class SuperGrid {
 
 	private void processVectors() {
 		
-		positionVectors = new Vector3f[gridLength*gridWidth];
+		positionVectors = new Vector3f[lengthInVectors*widthInVectors];
 		
-		for (int y=0; y<gridWidth; y++) {
+		for (int y=0; y<widthInVectors; y++) {
 			
-			for (int x=0; x<gridLength; x++) {
+			for (int x=0; x<lengthInVectors; x++) {
 				
-				positionVectors[y*gridLength + x] = new Vector3f(x*triangleAltitude, (y+0.5f*(x%2))*triEdgeLength, elevation[x][y]);
+				positionVectors[y*lengthInVectors + x] = new Vector3f(x*triangleAltitude, (y+0.5f*(x%2))*triEdgeLength, elevation[x][y]);
 				
 			}
 			
@@ -81,7 +81,7 @@ public class SuperGrid {
 		for (int x=0; x<lengthInHexagons; x++) {
 			for (int y=0; y<widthInHexagons; y++) {
 				
-				hexCenterIndices[y*gridLength + x] = (yOffset + elr + y*elr*3/2)*gridLength + (xOffset + elr + x*2*elr + (y%2)*elr  );
+				hexCenterIndices[y*lengthInVectors + x] = (yOffset + elr + y*elr*3/2)*lengthInVectors + (xOffset + elr + x*2*elr + (y%2)*elr  );
 				
 			}
 		}
@@ -90,7 +90,13 @@ public class SuperGrid {
 	
 	//************************** hexagons **************************************
 	
-	private Vector3f[] getHexBorder(int indexOfTheHexagon) {
+	private Vector3f getHexCenter(int indexOfTheHexagon) {
+		
+		return positionVectors[hexCenterIndices[indexOfTheHexagon]];
+		
+	}
+	
+	public Vector3f[] getHexBorder(int indexOfTheHexagon) {
 		
 		Vector3f[] border = new Vector3f[6];
 		
@@ -106,17 +112,37 @@ public class SuperGrid {
 		
 	}
 	
+	/**
+	 *  starting at the bottom and then counterclockwise
+	 * @param indexOfTheHexagon requested hexagons's index in "int[] hexcenterIndices"
+	 * @return an array containing the indices of the vertices of the border of the hexagons
+	 */
 	private int[] getHexBorderIndices(int indexOfTheHexagon) {
 		
 		int[] hexBorderIndices = new int[6];
 		
-		//TODO
+		int center = hexCenterIndices[indexOfTheHexagon];
+		
+		hexBorderIndices[0] = center - elr   * lengthInVectors;
+		hexBorderIndices[1] = center - elr/2 * lengthInVectors + elr;
+		hexBorderIndices[2] = center + elr/2 * lengthInVectors + elr;
+		hexBorderIndices[3] = center + elr   * lengthInVectors;
+		hexBorderIndices[4] = center + elr/2 * lengthInVectors - elr;
+		hexBorderIndices[5] = center - elr/2 * lengthInVectors - elr;
 		
 		return hexBorderIndices;
 		
 	}
 	
 	//************************** get *******************************************
+	
+	public int getLengthInHexagons() {
+		return lengthInHexagons;
+	}
+	
+	public int getWidthInHexagons() {
+		return widthInHexagons;
+	}
 	
 	public Vector3f[] getVectors() {
 		

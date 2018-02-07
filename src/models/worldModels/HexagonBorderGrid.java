@@ -176,7 +176,7 @@ public class HexagonBorderGrid extends Element_Model {
 		
 	}
 	
-	public int[] getHexagonIndexArray(int x, int y, int yMod2) {
+	private int[] getHexagonIndexArray(int x, int y, int yMod2) {
 		
 		return new int[] {	0           + 2*x + hexLength*y + yMod2,
 							1           + 2*x + hexLength*y + yMod2,
