@@ -1,6 +1,6 @@
-package gui.font;
+package fontRendering.font.classic;
 
-import fontRendering.texture.FontTexture;
+import fontRendering.font.texture.FontTexture;
 
 public class TimesNewRoman extends FontTexture {
 
