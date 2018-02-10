@@ -1,12 +1,8 @@
 package fontRendering.generation;
 
 import assets.models.Element_Model;
-<<<<<<< HEAD
 import fontRendering.font.FontTexture;
-=======
->>>>>>> parent of d0e5031... labeled elements
 import fontRendering.generation.functions.FontFunction;
-import fontRendering.texture.FontTexture;
 import math.vectors.Vector3f;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;

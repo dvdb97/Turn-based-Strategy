@@ -2,11 +2,7 @@ package fontRendering.rendering;
 
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
-<<<<<<< HEAD
 import fontRendering.font.FontTexture;
-=======
-import fontRendering.texture.FontTexture;
->>>>>>> parent of d0e5031... labeled elements
 
 import static org.lwjgl.opengl.GL11.*;
 
