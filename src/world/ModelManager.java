@@ -12,7 +12,6 @@ import graphics.matrices.Matrices;
 import graphics.shaders.ShaderManager;
 import gui.test.ImplementedWindow;
 import gui_core.GUIManager;
-import gui_core.GUIShaderCollection;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
@@ -206,16 +205,25 @@ public class ModelManager {
 		
 		ShaderManager.useFontShader(new Matrix44f(), true);
 		
+<<<<<<< HEAD
 		RenderEngine.draw(TextureTests.getTestModel(), TextureTests.getTexture());
 		
 		ShaderManager.disableFontShader();
 		
 		
+=======
+		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
+		
+		ShaderManager.disableFontShader();
+		
+>>>>>>> parent of d0e5031... labeled elements
 		hexagonBorderMap.displayAll();
+		
 		
 		//Draw the gui
 		GUIManager.update(Application.getCursorX(), Application.getCursorY(), false, false);
-				
+		
+		
 	}
 	
 	

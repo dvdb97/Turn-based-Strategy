@@ -1,10 +1,14 @@
-package fontRendering.font.classic;
+package gui.font;
 
+<<<<<<< HEAD:gui_lib/fontRendering/font/classic/TimesNewRoman.java
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
 import fontRendering.font.FontTexture;
+=======
+import fontRendering.texture.FontTexture;
+>>>>>>> parent of d0e5031... labeled elements:src/gui/font/TimesNewRoman.java
 
 public class TimesNewRoman extends FontTexture {
 

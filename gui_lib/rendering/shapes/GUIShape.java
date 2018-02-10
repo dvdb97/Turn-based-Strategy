@@ -9,7 +9,6 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import gui_core.GUIManager;
-import gui_core.GUIShaderCollection;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
@@ -75,14 +74,14 @@ public abstract class GUIShape extends Element_Model {
 	public void render(Texture2D texture, Vector4f color, Matrix44f matrix) {
 		
 		if (texture != null) {
-			GUIShaderCollection.useGuiShader(matrix);
+			GUIManager.useGuiShader(matrix);
 		} else {
-			GUIShaderCollection.useGuiShader(matrix, color);
+			GUIManager.useGuiShader(matrix, color);
 		}
 		
 		RenderEngine.draw(this, texture);
 		
-		GUIShaderCollection.disableGuiShader();
+		GUIManager.disableGuiShader();
 		
 	}
 

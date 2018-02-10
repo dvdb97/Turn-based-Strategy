@@ -1,17 +1,23 @@
-layout(location = 0) in vec3 vPosition;
-layout(location = 2) in vec2 vTexCoords;
+#version 330 core
 
-uniform mat4 u_Matrix;
+layout(location = 0) in vec2 vPosition;
+layout(location = 2) in vec2 vTexPos;
 
-out vec2 texCoords;
+uniform mat3 u_Matrix;
+uniform vec4 u_Color;
+uniform sampler2D sampler;
+uniform int u_textured;
 
+out vec2 out_textureCoords;
+out vec4 out_color;
 
 void main() {
 
-	texCoords = vTexCoords;
+	vec3 pos = u_Matrix * vec3(vPosition, 1);
 
-	vec4 pos = u_Matrix * vec4(vPosition, 1.0);
-
-	gl_Position = pos;
+	gl_Position = vec4(pos.x, pos.y, 1.0, 1.0);
+	
+	out_textureCoords = vTexPos;
+	out_color = u_Color;
 
 }
