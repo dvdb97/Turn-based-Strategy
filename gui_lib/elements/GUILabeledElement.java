@@ -5,7 +5,7 @@ import assets.textures.Texture2D;
 import fontRendering.font.GUIFontCollection;
 import fontRendering.font.FontTexture;
 import fontRendering.generation.TextGenerator;
-import gui_core.GUIShaderCollection;
+import gui_core.GUIManager;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 import rendering.shapes.GUIShape;
@@ -38,12 +38,12 @@ public abstract class GUILabeledElement extends GUIElement {
 		
 		super.render();
 		
-		GUIShaderCollection.useGuiShader(this.getRenderingMatrix());
+		GUIManager.useGuiShader(this.getRenderingMatrix());
 		
 		//TODO: Only works when fonts have the same layout!
 		RenderEngine.draw(label, font);
 		
-		GUIShaderCollection.disableGuiShader();
+		GUIManager.disableGuiShader();
 	}
 	
 
