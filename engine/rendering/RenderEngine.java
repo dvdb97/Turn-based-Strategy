@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import assets.models.abstractModels.Renderable;
+import assets.textures.ArrayTexture2D;
 import assets.textures.Texture2D;
 import interaction.Window;
 import math.matrices.Matrix44f;
@@ -67,6 +68,33 @@ public class RenderEngine {
 	
 	
 	public static void draw(Renderable model, Texture2D texture) {
+		
+		if (texture != null) {
+			texture.bind();
+		}
+		
+
+		model.onDrawStart();
+		
+		model.activateAttributes();
+		
+		
+		model.render();
+		
+		
+		model.deactivateAttributes();
+		
+		model.onDrawStop();
+		
+		
+		if (texture != null) {
+			texture.unbind();
+		}
+		
+	}
+	
+	
+	public static void drawArrayTexturedModel(Renderable model, ArrayTexture2D texture) {
 		
 		if (texture != null) {
 			texture.bind();

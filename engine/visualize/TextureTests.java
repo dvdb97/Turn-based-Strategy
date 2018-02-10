@@ -65,7 +65,7 @@ public class TextureTests {
 		
 		texturedModel.setElementArrayData(indexBuffer);
 		
-		texture = new Texture2D(texturePath, 1, Texture.LINEAR, Texture.REPEAT);
+		texture = new Texture2D(texturePath, 1000, 1000);
 		
 	}
 	

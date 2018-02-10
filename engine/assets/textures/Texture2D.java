@@ -2,52 +2,37 @@ package assets.textures;
 
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL42.*;
+import java.nio.IntBuffer;
+
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
+import utils.CustomBufferUtils;
 
 
 public class Texture2D extends Texture {	
+
 	
-	private int width;
-	
-	private int height;
-	
-	private int mipmapLevels;
-	
-	
-	public Texture2D(String path, int mipmapLevels, int filter, int wrapMode) {
-		super(GL_TEXTURE_2D);
+	public Texture2D(String path, int width, int height) {
+		super(GL_TEXTURE_2D, width, height);
 		
-		setImageData(path, mipmapLevels, filter, wrapMode);
+		setImageData(path);
 	}
 	
 	
 	public Texture2D(int width, int height) {
-		super(GL_TEXTURE_2D);
+		super(GL_TEXTURE_2D, width, height);
 	}
 	
 	
-	public void setImageData(String imagePath, int mipmapLevels, int filter, int wrapMode) {
+	public void setImageData(String path) {
 		bind();
 		
-		if (mipmapLevels < 1) {
-			mipmapLevels = 1;
-		}		
+		this.setFilter(this.getFilterMode());
+		this.setTextureWrap(this.getWrapMode());
 		
-		Image image = ImageLoader.loadImageRGBA(imagePath);
+		IntBuffer buffer = CustomBufferUtils.createIntBuffer(ImageLoader.loadImageDataAsRGBAInt(path));
 		
-		this.width = image.getWidth();
-		this.height = image.getHeight();
-		this.mipmapLevels = mipmapLevels;
-		
-		this.setFilter(filter);
-		this.setTextureWrap(wrapMode);
-		
-		glTexImage2D(getType(), 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
-		
-		glGenerateMipmap(getType());
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_INT, buffer);
 		
 		unbind();
 	}

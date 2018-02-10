@@ -1,7 +1,7 @@
 package fontRendering.generation;
 
 import assets.models.Element_Model;
-import fontRendering.font.texture.FontTexture;
+import fontRendering.font.FontTexture;
 import fontRendering.generation.functions.FontFunction;
 import math.vectors.Vector3f;
 
@@ -39,14 +39,14 @@ public class TextGenerator {
 	};
 	
 	
-	public static Element_Model generateTextModel(String text, float x, float y, float z, float width, float height, FontTexture font, FontFunction func) {
+	public static Element_Model generateTextModel(String text, float x, float y, float z, float charSize, float width, float height, FontTexture font, FontFunction func) {
 		
-		return generateTextModel(text.toCharArray(), x, y, z, width, height, font, func);
+		return generateTextModel(text.toCharArray(), x, y, z, charSize, width, height, font, func);
 		
 	}
 	
 	
-	public static Element_Model generateTextModel(char[] text, float x, float y, float z, float width, float height, FontTexture font, FontFunction func) {
+	public static Element_Model generateTextModel(char[] text, float x, float y, float z, float charSize, float width, float height, FontTexture font, FontFunction func) {
 		
 		final int QUAD_VERTICES = 4;
 		final int QUAD_INDICES = 6;
@@ -66,18 +66,18 @@ public class TextGenerator {
 		int rowIndex = 0;
 		
 		//The width and height of a char
-		float charWidth = width / text.length;
-		float charHeight = height / getNumberOfRows(text);
+		float charWidth = charSize;
+		float charHeight = charSize;
 		
-		//The position of the subtexture on the texture in uv-coords
-		float texPosXOffset, texPosYOffset;
-		
-		//The width of a subtexture on the texture in uv-coords
 		float texCharWidth = font.getCharWidth();
 		float texCharHeight = font.getCharHeight();
 		
+		//The position of the subtexture on the texture in uv-coords
+		float texPosXOffset, texPosYOffset;
+				
 		//The texCoords adapted to the subtexture size
 		float[] convertedTexCoords = adaptToCharSize(texCharWidth, texCharHeight);
+		
 		
 		for (int letterIndex = 0; letterIndex < text.length; ++letterIndex) {
 			
@@ -85,32 +85,41 @@ public class TextGenerator {
 			
 			char letter = text[letterIndex];
 			
+			texPosXOffset = font.getXPosition(letter);
+			texPosYOffset = font.getYPosition(letter);
+			
 			if (letter == '\n') {
 				row++;
 				rowIndex = 0;
 			}
 			
-			texPosXOffset = font.getXPosition(letter);
-			texPosYOffset = font.getYPosition(letter);
 			
 			xPos = x + rowIndex * charWidth;
+			
+			if (xPos + charSize > x + width) {
+				row++;
+				rowIndex = 0;
+				
+				xPos = x + rowIndex * charWidth;
+			}
+			
 			yPos = y - row * charHeight;
+			
 			
 			for (int vertex = 0; vertex < QUAD_VERTICES; ++vertex) {
 				
 				texCoordsBuffer.put(texPosXOffset + convertedTexCoords[vertex * TEX_COORD_DATA_SIZE]);
 				texCoordsBuffer.put(texPosYOffset + convertedTexCoords[vertex * TEX_COORD_DATA_SIZE + 1]);
-							
-				Vector3f position = new Vector3f(xPos + charWidth * coords[vertex * 2], yPos + charHeight * coords[vertex * 2 + 1], z);
-				positionBuffer.put(position.toArray());
+
+				positionBuffer.put(xPos + charWidth * coords[vertex * 2]);
+				positionBuffer.put(yPos + charHeight * coords[vertex * 2 + 1]);
+				positionBuffer.put(z);
 				
 			}
 			
 			for (int index = 0; index < indices.length; ++index) {
 				indexBuffer.put(letterIndex * QUAD_VERTICES + indices[index]);
-			}
-			
-			
+			}	
 			
 		}
 		
@@ -127,24 +136,6 @@ public class TextGenerator {
 		return model;
 		
 	}
-	
-	
-	private static int getNumberOfRows(char[] s) {
-		
-		int numOfRows = 1;
-		
-		for (int i = 0; i < s.length; ++i) {
-			
-			if (s[i] == '\n') {
-				numOfRows++;
-			}
-			
-		}
-		
-		return numOfRows;
-		
-	}
-	
 	
 	
 	private static float[] adaptToCharSize(float width, float height) {

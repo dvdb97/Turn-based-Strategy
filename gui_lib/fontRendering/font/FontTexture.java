@@ -1,42 +1,37 @@
-package fontRendering.font.texture;
+package fontRendering.font;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.nio.IntBuffer;
+
+import javax.imageio.ImageIO;
+
+import assets.textures.ArrayTexture2D;
 import assets.textures.Texture;
 import assets.textures.Texture2D;
+import assets.textures.utils.ImageLoader;
+import assets.textures.utils.ImageUtils;
 
 public class FontTexture extends Texture2D {
+
+	
+	private char[] chars;
 	
 	private int charsPerRow;
 	
 	private int charsPerCol;
 	
-	private char[] correspondingChars;
-	
-	
-	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol) {
-		super(path, mipmapLevels, Texture.NEAREST, Texture.CLAMP_TO_BORDER);
+
+	public FontTexture(String path, int width, int height, int charsPerRow, int charsPerCol) {
+		super(path, width, height);
+		
+		this.setFilter(Texture.CLAMP_TO_BORDER);
+		this.setTextureWrap(Texture.LINEAR);
 		
 		this.charsPerRow = charsPerRow;
-		
 		this.charsPerCol = charsPerCol;
 		
-		
-		
 	}
-	
-	
-	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol, char[] correspondingChars) {
-		this(path, mipmapLevels, charsPerRow, charsPerCol);
-		
-		setCorrespondingChars(correspondingChars);
-	}
-	
-	
-	public void setCorrespondingChars(char[] correspondingChars) {
-		this.correspondingChars = correspondingChars;
-	}
-	
-	
-	//******************************* look up functions *******************************
 	
 	
 	public float getXPosition(char c) {
@@ -51,9 +46,9 @@ public class FontTexture extends Texture2D {
 	
 	private int getCharIndex(char c) {
 		
-		for (int i = 0; i < correspondingChars.length; ++i) {
+		for (int i = 0; i < chars.length; ++i) {
 			
-			if (correspondingChars[i] == c) {
+			if (chars[i] == c) {
 				return i;
 			}
 			
@@ -93,6 +88,16 @@ public class FontTexture extends Texture2D {
 	
 	public float getCharHeight() {
 		return 1.0f / charsPerCol;
+	}
+
+
+	public char[] getChars() {
+		return chars;
+	}
+
+
+	public void setChars(char[] chars) {
+		this.chars = chars;
 	}
 
 }

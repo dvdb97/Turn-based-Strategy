@@ -3,7 +3,7 @@ package fontRendering.font;
 import java.util.HashMap;
 
 import fontRendering.font.classic.TimesNewRoman;
-import fontRendering.font.texture.FontTexture;
+import fontRendering.font.FontTexture;
 
 public class GUIFontCollection {
 	

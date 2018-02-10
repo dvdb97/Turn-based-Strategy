@@ -2,7 +2,7 @@ package fontRendering.rendering;
 
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
-import fontRendering.font.texture.FontTexture;
+import fontRendering.font.FontTexture;
 
 import static org.lwjgl.opengl.GL11.*;
 

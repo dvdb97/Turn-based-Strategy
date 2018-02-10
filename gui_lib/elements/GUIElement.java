@@ -41,7 +41,7 @@ public abstract class GUIElement implements Clickable {
 	//Have there been any changes to this elements position and size?
 	private boolean changed;
 		
-		
+	
 	
 	private GUIElement(GUIShape shape, Texture2D texture, Vector4f color, float x, float y, float width, float height) {
 		
@@ -101,6 +101,7 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 	
+	//TODO: Only save some computations by making sure the matrices are only updated when there were changes to the element
 	public void update() {
 		
 		Matrix44f parentMatrix = new Matrix44f();
@@ -154,6 +155,14 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 	
+	/**
+	 * 
+	 * Resizes the element. Will only have an effect 
+	 * when resizable is set to true.
+	 * 
+	 * @param width
+	 * @param height
+	 */
 	public void resize(float width, float height) {
 		
 		if (!resizable) {
@@ -169,6 +178,14 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 	
+	/**
+	 * 
+	 * Changes the element's position. Will only have an effect
+	 * when movable is set to true.
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public void reposition(float x, float y) {
 		
 		if (!movable) {
@@ -184,6 +201,17 @@ public abstract class GUIElement implements Clickable {
 	}
 	
 
+	/**
+	 * 
+	 * Saves a reference to the parent element of this element.
+	 * This method will be used automatically when this element
+	 * is put in a container element. 
+	 * 
+	 * Using this method outside of the library can be risky
+	 * and is not recommended.
+	 * 
+	 * @param element A reference to the container element that contains this element.
+	 */
 	public void setParent(GUIContainerElement element) {
 		this.parent = element;
 	}

@@ -1,11 +1,15 @@
 package fontRendering.font.classic;
 
-import fontRendering.font.texture.FontTexture;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import fontRendering.font.FontTexture;
 
 public class TimesNewRoman extends FontTexture {
 
 	public TimesNewRoman() {
-		super("res/fonts/Font.png", 2, 10, 10);
+		super("res/fonts/Font.png", 1000, 1000, 10, 10);
 		// TODO Auto-generated constructor stub
 		
 		char[] correspondingChars = {
@@ -20,7 +24,8 @@ public class TimesNewRoman extends FontTexture {
 			'_', '"', '%', '&', '(', ')', '.'
 		};
 		
-		this.setCorrespondingChars(correspondingChars);
+		this.setChars(correspondingChars);
+		
 	}
 
 }

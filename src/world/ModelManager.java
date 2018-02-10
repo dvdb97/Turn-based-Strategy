@@ -21,6 +21,7 @@ import rendering.RenderEngine;
 import rendering.shapes.implemented.GUIQuad;
 import visualize.CoordinateSystem;
 import visualize.FontTest;
+import visualize.TextureTests;
 import core.Application;
 import core.saves.GameScore;
 import models.seeds.ColorFunction;
@@ -137,7 +138,7 @@ public class ModelManager {
 		coordinates = new CoordinateSystem(100.0f);
 		
 		
-		FontTest.init("The quick brown fox \njumps over the lazy dog!");
+		TextureTests.init("res/fonts/Font.png");
 		
 		
 		
@@ -201,6 +202,14 @@ public class ModelManager {
 		RenderEngine.draw(hexagonBorderMap, null);
 		
 		ShaderManager.disableShader();
+		
+		
+		ShaderManager.useFontShader(new Matrix44f(), true);
+		
+		RenderEngine.draw(TextureTests.getTestModel(), TextureTests.getTexture());
+		
+		ShaderManager.disableFontShader();
+		
 		
 		hexagonBorderMap.displayAll();
 		
