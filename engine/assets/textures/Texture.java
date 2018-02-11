@@ -50,6 +50,10 @@ public abstract class Texture {
 	public Texture(int type, int width, int height) {
 		ID = glGenTextures();
 
+		this.width = width;
+		
+		this.height = height;
+		
 		this.TYPE = type;
 	}
 	

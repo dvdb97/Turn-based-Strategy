@@ -121,7 +121,7 @@ public class TextGenerator {
 				indexBuffer.put(letterIndex * QUAD_VERTICES + indices[index]);
 			}	
 			
-		}
+		}		
 		
 		positionBuffer.flip();
 		texCoordsBuffer.flip();
