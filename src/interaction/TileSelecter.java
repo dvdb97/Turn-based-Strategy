@@ -57,8 +57,8 @@ public class TileSelecter {
 	private static void refreshVariables() {
 		invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
 		
-		cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
-		cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
+		cursorX = CursorPosInput.getXPosAsOpenglCoord();
+		cursorY = CursorPosInput.getYPosAsOpenglCoord();
 		
 		rayOrigin = Camera.getPosition();
 		rayDirection = new Vector3f(cursorX, cursorY/Matrices.getProjectionMatrix().getWidthOverHeight(), -1f);

@@ -40,7 +40,7 @@ public class Application {
 		//Set the input
 		window.setKeyInputCallback(new KeyInput());
 		window.setMouseInputCallback(new MouseInputManager());
-		window.setMousePosInput(new CursorPosInput());
+		window.setMousePosInput(new CursorPosInput(window));
 		
 	}
 	
@@ -95,20 +95,6 @@ public class Application {
 	public static int getWindowWidth() {
 		
 		return window.getWidth();
-		
-	}
-	
-	
-	public static float toOpenglXCoords(double xPos) {
-		
-		return window.toNormalizedXCoordinates(xPos);
-		
-	}
-	
-	
-	public static float toOpenglYCoords(double yPos) {
-		
-		return window.toNormalizedYCoordinates(yPos);
 		
 	}
 
