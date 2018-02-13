@@ -8,46 +8,6 @@ public class TestElement extends GUILabeledElement {
 
 	public TestElement() {
 		super(new GUIQuad(), new Vector4f(1f, 1f, 0f, 1f), 0.01f, -0.01f, 0.8f, 0.8f);
-		
-		this.setLabel("Hallo! Hallo!\nHallo! Hallo!\nHallo! Hallo!");
-	}
-
-	@Override
-	public void onClick() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onHover() {
-		
-		System.out.println("Hovered!");
-		
-		this.setColor(new Vector4f(1f, 1f, 1f, 1f));
-	}
-
-	@Override
-	public void onEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDrag() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onClose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onOpen() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

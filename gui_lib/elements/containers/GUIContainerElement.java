@@ -6,6 +6,7 @@ import assets.textures.Texture;
 import assets.textures.Texture2D;
 import elements.Clickable;
 import elements.GUIElement;
+import elements.GUIElementBase;
 import gui_core.GUIManager;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
@@ -14,20 +15,20 @@ import rendering.shapes.GUIShape;
 public abstract class GUIContainerElement extends GUIElement {
 	
 	
-	private LinkedList<GUIElement> children;
+	private LinkedList<GUIElementBase> children;
 	
 
 	public GUIContainerElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
-		children = new LinkedList<GUIElement>();
+		children = new LinkedList<GUIElementBase>();
 	}
 	
 	
 	public GUIContainerElement(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
-		children = new LinkedList<GUIElement>();
+		children = new LinkedList<GUIElementBase>();
 	}
 	
 	
@@ -40,7 +41,7 @@ public abstract class GUIContainerElement extends GUIElement {
 		
 		super.render();
 		
-		for (GUIElement element : children) {
+		for (GUIElementBase element : children) {
 			element.render();
 		}
 		
@@ -52,7 +53,7 @@ public abstract class GUIContainerElement extends GUIElement {
 		
 		super.update();
 		
-		for (GUIElement element : children) {
+		for (GUIElementBase element : children) {
 			element.update();
 		}
 		
@@ -69,7 +70,7 @@ public abstract class GUIContainerElement extends GUIElement {
 		
 		if (this.getShape().isHit(vec.getA(), vec.getB())) {
 			
-			for (GUIElement child : children) {
+			for (GUIElementBase child : children) {
 				
 				if (child.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
 					return true;
@@ -96,13 +97,13 @@ public abstract class GUIContainerElement extends GUIElement {
 	}
 
 
-	public void add(GUIElement element) {
+	public void add(GUIElementBase element) {
 		children.add(element);
 		element.setParent(this);
 	}
 	
 	
-	public void remove(GUIElement element) {
+	public void remove(GUIElementBase element) {
 		if (children.contains(element)) {
 			children.remove(element);
 		}

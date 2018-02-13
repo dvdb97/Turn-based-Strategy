@@ -22,9 +22,6 @@ public class TileSelecter {
 	
 	private static TileBuffer tileBuffer;
 	
-	private static Matrix44f invertedProjectionMatrix;
-	private static Matrix33f invertedProjectionMatrix33f;
-	
 	private static int hoveredTileIndex;
 	
 	private static int selectedTileIndex;
@@ -35,12 +32,6 @@ public class TileSelecter {
 		hoveredTileIndex = 0;
 		selectedTileIndex = 0;
 		
-		//Generate the inverse of the 4x4 projection matrix
-		invertedProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(Matrices.getProjectionMatrix());
-		
-		//Generate the inverse of the 3x3 projection matrix
-		invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
-		
 		tileBuffer = new TileBuffer(centerVertices, new Vector3f(-0.1f, -0.1f, 0.1f));
 		
 	}
@@ -48,12 +39,10 @@ public class TileSelecter {
 	
 	private static void computeSelectedTileIndex() {
 		
-		Matrix44f invertedViewMatrix44f = MatrixInversion44f.generateMultiplicativeInverse(CameraOperator.getViewMatrix());
 		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
-		Matrix33f invertedProjectionMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(Matrices.getProjectionMatrix()));
 		
-		float cursorX = Application.toOpenglXCoords(CursorPosInput.getXPos());
-		float cursorY = Application.toOpenglYCoords(CursorPosInput.getYPos());
+		float cursorX = CursorPosInput.getXPosAsOpengl();
+		float cursorY = CursorPosInput.getYPosAsOpengl();
 		
 		Vector3f rayOrigin = Camera.getPosition();
 		
@@ -61,11 +50,7 @@ public class TileSelecter {
 		
 		rayDirection = invertedViewMatrix33f.times(rayDirection);
 		
-		
-		
 		rayDirection = rayDirection.normalize();
-		
-		
 		
 		hoveredTileIndex = tileBuffer.getTileIndex(rayOrigin, rayDirection);	
 		

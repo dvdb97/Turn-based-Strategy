@@ -6,8 +6,6 @@ public interface Clickable {
 	
 	public abstract void onHover();
 	
-	public abstract void onEnter();
-	
 	public abstract void onDrag();
 	
 	public abstract void onClose();

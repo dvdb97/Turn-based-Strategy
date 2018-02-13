@@ -13,7 +13,6 @@ import utils.CustomBufferUtils;
 
 public class Texture2D extends Texture {	
 
-	
 	public Texture2D(String path, int width, int height) {
 		super(GL_TEXTURE_2D, width, height);
 		
@@ -31,12 +30,12 @@ public class Texture2D extends Texture {
 		
 		this.setFilter(this.getFilterMode());
 		this.setTextureWrap(this.getWrapMode());
-		
-		//IntBuffer buffer = CustomBufferUtils.createIntBuffer(ImageLoader.loadImageDataAsRGBAInt(path));
-		
+
 		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
 		
 		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		
+		generateMipMapLevels();
 		
 		unbind();
 	}

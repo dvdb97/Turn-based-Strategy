@@ -15,40 +15,5 @@ public class ImplementedWindow extends GUIWindow {
 		this.add(container);
 		
 	}
-
-	@Override
-	public void onClick() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onHover() {
-		System.out.println("window hovered!");
-	}
-
-	@Override
-	public void onEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDrag() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onClose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onOpen() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

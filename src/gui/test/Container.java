@@ -12,39 +12,4 @@ public class Container extends GUIContainerElement {
 	
 	}
 
-	@Override
-	public void onClick() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onHover() {
-		System.out.println("inner container hovered!");		
-	}
-
-	@Override
-	public void onEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDrag() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onClose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onOpen() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

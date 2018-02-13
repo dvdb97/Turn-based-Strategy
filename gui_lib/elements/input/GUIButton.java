@@ -2,19 +2,19 @@ package elements.input;
 
 import assets.textures.Texture;
 import assets.textures.Texture2D;
-import elements.GUIElement;
-import elements.functions.GUIFunc;
+import elements.GUIElementBase;
+import elements.functions.GUIEventHandler;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 import timer.Cooldown;
 
-public abstract class GUIButton extends GUIElement {
+public abstract class GUIButton extends GUIElementBase {
 	
 	private String label;
 	
 	private Cooldown clickCooldown;
 	
-	private GUIFunc func;
+	private GUIEventHandler func;
 
 	public GUIButton(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
@@ -29,7 +29,7 @@ public abstract class GUIButton extends GUIElement {
 	}
 	
 	
-	public GUIButton(GUIShape shape, Texture2D texture, float x, float y, float width, float height, GUIFunc func) {
+	public GUIButton(GUIShape shape, Texture2D texture, float x, float y, float width, float height, GUIEventHandler func) {
 		this(shape, texture, x, y, width, height);
 		
 		this.func = func;
@@ -49,7 +49,7 @@ public abstract class GUIButton extends GUIElement {
 	}
 	
 	
-	public GUIButton(GUIShape shape, Vector4f color, float x, float y, float width, float height, GUIFunc func) {
+	public GUIButton(GUIShape shape, Vector4f color, float x, float y, float width, float height, GUIEventHandler func) {
 		this(shape, color, x, y, width, height);
 		
 		this.func = func;
@@ -66,7 +66,7 @@ public abstract class GUIButton extends GUIElement {
 	}
 	
 	
-	public void setOnclickFunction(GUIFunc func) {
+	public void setOnclickFunction(GUIEventHandler func) {
 		this.func = func;
 	}
 	
