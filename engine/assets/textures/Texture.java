@@ -5,8 +5,10 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 
+import assets.GLObject;
 
-public class Texture {
+
+public class Texture extends GLObject {
 	
 	//Linear filtering
 	public static final int LINEAR = GL_LINEAR;
@@ -24,19 +26,8 @@ public class Texture {
 	public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
 	
 	
-	
-	//The opengl ID of this texture
-	private final int ID;
-	
-	//The type of the texture
-	private final int TYPE;
-	
-	
 	public Texture(int type) {
-		ID = glGenTextures();
-
-		
-		this.TYPE = type;
+		super(glGenTextures(), type);
 	}
 	
 	
@@ -57,27 +48,17 @@ public class Texture {
 	
 	
 	public void bind() {
-		glBindTexture(TYPE, ID);
+		glBindTexture(getType(), getID());
 	}
 	
 	
 	public void unbind() {
-		glBindTexture(TYPE, 0);
+		glBindTexture(getType(), 0);
 	}
 	
 	
 	public void delete() {
-		glDeleteTextures(ID);
-	}
-	
-	
-	public int getType() {
-		return TYPE;
-	}
-	
-	
-	public int getID() {
-		return ID;
+		glDeleteTextures(getID());
 	}
 
 }

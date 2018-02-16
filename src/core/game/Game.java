@@ -105,7 +105,7 @@ public class Game {
 		//TODo: temp
 		ShaderManager.useFontShader(new Matrix44f());
 		
-		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
+		RenderEngine.render(FontTest.getModel(), FontTest.getTexture());
 		
 		ShaderManager.disableTexturedMeshShader();
 

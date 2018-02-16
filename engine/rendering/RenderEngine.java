@@ -17,6 +17,7 @@ import assets.textures.Texture2D;
 import interaction.Window;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
+import rendering.framebuffers.FrameBuffer;
 
 
 public class RenderEngine {
@@ -66,7 +67,34 @@ public class RenderEngine {
 	}
 	
 	
-	public static void draw(Renderable model, Texture2D texture) {
+	public static void render(Renderable model, Texture2D texture) {
+		
+		if (texture != null) {
+			texture.bind();
+		}
+		
+
+		model.onDrawStart();
+		
+		model.activateAttributes();
+		
+		
+		model.render();
+		
+		
+		model.deactivateAttributes();
+		
+		model.onDrawStop();
+		
+		
+		if (texture != null) {
+			texture.unbind();
+		}
+		
+	}
+	
+	
+	public static void render(FrameBuffer frameBuffer, Renderable model, Texture2D texture) {
 		
 		if (texture != null) {
 			texture.bind();
@@ -100,44 +128,6 @@ public class RenderEngine {
 		System.out.println("FPS: " + fps);
 		
 		timer = glfwGetTime();
-		
-	}
-	
-	
-	public static void takeScreenshot(String fileName) {
-		
-		int[] pixels = new int[window.getFrameBufferHeight() * window.getFrameBufferWidth()];
-		
-		glReadPixels(0, 0, window.getFrameBufferWidth(), window.getFrameBufferHeight(), GL_RGBA, GL_INT, pixels);
-		
-		
-		BufferedImage image = new BufferedImage(window.getFrameBufferWidth(), window.getFrameBufferHeight(), BufferedImage.TYPE_INT_ARGB);
-		
-		
-		for (int y = 0; y < window.getFrameBufferHeight(); ++y) {
-			
-			for (int x = 0; x < window.getFrameBufferWidth(); ++x) {
-				
-				/*
-				 * Take the bits for the alpha channel and put them at the first byte of the rgba color
-				 * thus making it argb
-				 */
-				int alpha = (byte)pixels[y * window.getFrameBufferWidth() + x];
-				
-				int argb = (pixels[y * window.getFrameBufferWidth() + x] >> 8) | (alpha << 24);
-				
-				image.setRGB(x, y, argb);
-				
-			}
-			
-		}
-		
-		
-		try {
-			ImageIO.write(image, "jpg", new File(fileName));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 	}
 	

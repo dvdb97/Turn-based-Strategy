@@ -51,5 +51,10 @@ public class Texture2D extends Texture {
 		
 		unbind();
 	}
+	
+	
+	public void renderToTexture() {
+		
+	}
 
 }

@@ -131,7 +131,7 @@ public class BoardModels {
 		
 		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
-		RenderEngine.draw(terrain, null);
+		RenderEngine.render(terrain, null);
 		
 		ShaderManager.disableLightShader();
 		
@@ -143,11 +143,11 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
-		RenderEngine.draw(sea, null);
+		RenderEngine.render(sea, null);
 		
-		RenderEngine.draw(coSystem, null);
+		RenderEngine.render(coSystem, null);
 		
 		ShaderManager.disableShader();
 		
@@ -159,7 +159,7 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
 		ShaderManager.disableShader();
 		
@@ -171,7 +171,7 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
 		ShaderManager.disableShader();
 		

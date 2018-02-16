@@ -79,7 +79,7 @@ public abstract class GUIElement extends Element_Model implements Clickable {
 			GUIManager.useGuiShader(renderingMatrix, color);
 		}
 		
-		RenderEngine.draw(this, texture);
+		RenderEngine.render(this, texture);
 		
 		GUIManager.disableGuiShader();
 		
