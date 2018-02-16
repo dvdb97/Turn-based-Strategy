@@ -11,6 +11,8 @@ public class TestElement extends GUILabeledElement {
 		
 		this.setOnclickFunc(new OnHoverHandler());
 		
+		this.setLabel("Hello!");
+		
 	}
 
 }

@@ -31,10 +31,10 @@ public abstract class Texture3D extends Texture {
 	public void setTexStorage() {
 		this.bind();
 		
+		glTexStorage3D(this.getType(), this.getMipMapLevels(), GL_RGBA8, this.getWidth(), this.getHeight(), depth);
+		
 		this.setFilter(getFilterMode());
 		this.setTextureWrap(this.getWrapMode());
-		
-		glTexStorage3D(this.getType(), this.getMipMapLevels(), GL_RGBA8, this.getWidth(), this.getHeight(), depth);
 		
 		this.setStorageAllocated(true);
 		
