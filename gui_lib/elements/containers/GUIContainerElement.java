@@ -64,7 +64,7 @@ public abstract class GUIContainerElement extends GUIElement {
 	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
 		
 		//Compute the local space coordinates of the cursor position
-		Vector4f vec = new Vector4f(cursorX, cursorY, 0.9f, 1f);
+		Vector4f vec = new Vector4f(cursorX, cursorY, 1f, 1f);
 		vec = this.getInvertedRenderingMatrix().times(vec);
 		
 		

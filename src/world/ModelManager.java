@@ -1,6 +1,8 @@
 package world;
 
 import interaction.CameraOperator;
+import interaction.input.CursorPosInput;
+import interaction.input.MouseInputManager;
 import interaction.tileSelection.TileSelecter;
 import assets.light.LightSource;
 import assets.material.Material;
@@ -214,7 +216,7 @@ public class ModelManager {
 		hexagonBorderMap.displayAll();
 		
 		//Draw the gui
-		GUIManager.update(Application.getCursorX(), Application.getCursorY(), false, false);
+		GUIManager.update();
 				
 	}
 	

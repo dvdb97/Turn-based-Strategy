@@ -7,6 +7,8 @@ import assets.textures.Texture2D;
 import elements.containers.GUIWindow;
 import fontRendering.font.GUIFontCollection;
 import graphics.matrices.Matrices;
+import interaction.input.CursorPosInput;
+import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
@@ -47,7 +49,13 @@ public class GUIManager {
 	}
 	
 	
-	public static void update(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public static void update() {
+		
+		float cursorX = CursorPosInput.getXPosAsOpengl();
+		float cursorY = CursorPosInput.getYPosAsOpengl();
+		
+		boolean leftMouseButtonDown = MouseInputManager.isLeftMouseButtonPressed();
+		boolean rightMouseButtonDown = MouseInputManager.isRightMouseButtonPressed();
 		
 		for (GUIWindow window : windows) {
 			
@@ -55,7 +63,6 @@ public class GUIManager {
 			window.update();
 			
 			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
-				
 				break;
 			}
 			

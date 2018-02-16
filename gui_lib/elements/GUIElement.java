@@ -4,10 +4,13 @@ import assets.textures.Texture2D;
 import elements.functions.GUIEventHandler;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
+import timer.Cooldown;
 
 public abstract class GUIElement extends GUIElementBase {
 	
 	private GUIEventHandler onclickFunc = null;
+	
+	private Cooldown onclickCooldown;
 	
 	private GUIEventHandler onHoverFunc = null;
 	
@@ -21,17 +24,34 @@ public abstract class GUIElement extends GUIElementBase {
 	public GUIElement(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
+		onclickCooldown = new Cooldown(0.4);
+		
 	}
 
 	public GUIElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
+		
+		onclickCooldown = new Cooldown(0.4);
 		
 	}
 	
 	
 	@Override
 	public void onClick() {
-		onclickFunc.function(this);		
+		
+		if (onclickFunc == null) {
+			return;
+		}
+		
+		if (!onclickCooldown.isFinished()) {
+			System.out.println("Onclick is still on cooldown!");
+			return;
+		}
+		
+		onclickFunc.function(this);
+		
+		onclickCooldown.start();
+		
 	}
 	
 	
@@ -47,7 +67,13 @@ public abstract class GUIElement extends GUIElementBase {
 
 	@Override
 	public void onHover() {
-		onHoverFunc.function(this);		
+		
+		if (onHoverFunc == null) {
+			return;
+		}
+		
+		onHoverFunc.function(this);	
+		
 	}
 	
 	
@@ -63,7 +89,13 @@ public abstract class GUIElement extends GUIElementBase {
 
 	@Override
 	public void onDrag() {
-		onDragFunc.function(this);		
+		
+		if (onDragFunc == null) {
+			return;
+		}
+		
+		onDragFunc.function(this);
+		
 	}
 	
 	
@@ -79,7 +111,13 @@ public abstract class GUIElement extends GUIElementBase {
 	
 	@Override
 	public void onClose() {
-		onCloseFunc.function(this);		
+		
+		if (onCloseFunc == null) {
+			return;
+		}
+		
+		onCloseFunc.function(this);
+		
 	}
 	
 	
@@ -95,7 +133,13 @@ public abstract class GUIElement extends GUIElementBase {
 
 	@Override
 	public void onOpen() {
-		onOpenFunc.function(this);		
+		
+		if (onOpenFunc == null) {
+			return;
+		}
+		
+		onOpenFunc.function(this);
+		
 	}
 	
 

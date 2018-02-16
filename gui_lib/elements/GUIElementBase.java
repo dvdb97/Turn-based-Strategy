@@ -135,7 +135,7 @@ public abstract class GUIElementBase implements Clickable {
 	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
 		
 		//Compute the local space coordinates of the cursor position
-		Vector4f vec = new Vector4f(cursorX, cursorY, 0.9f, 1f);
+		Vector4f vec = new Vector4f(cursorX, cursorY, 1f, 1f);
 		vec = this.getInvertedRenderingMatrix().times(vec);
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
@@ -153,7 +153,6 @@ public abstract class GUIElementBase implements Clickable {
 		return false;
 		
 	}
-	
 	
 
 	/**
@@ -219,6 +218,11 @@ public abstract class GUIElementBase implements Clickable {
 	
 	public void setColor(Vector4f color) {
 		this.color = color;
+	}
+	
+	
+	public Vector4f getColor() {
+		return color;
 	}
 
 
