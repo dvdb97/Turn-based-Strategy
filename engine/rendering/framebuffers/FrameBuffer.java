@@ -1,12 +1,16 @@
 package rendering.framebuffers;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+
+import org.lwjgl.BufferUtils;
 
 import assets.GLObject;
 import assets.textures.Texture2D;
 
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL20.glDrawBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
@@ -76,6 +80,8 @@ public class FrameBuffer extends GLObject {
 			return false;
 		}
 		
+		glDrawBuffers(colorBufferList());
+		
 		unbind();
 		
 		return true;
@@ -104,9 +110,26 @@ public class FrameBuffer extends GLObject {
 			return false;
 		}
 		
+		glDrawBuffers(colorBufferList());
+		
 		unbind();
 		
 		return true;
+	}
+	
+	
+	private IntBuffer colorBufferList() {
+		
+		IntBuffer buffer = BufferUtils.createIntBuffer(colorAttachments.size());
+		
+		for (GLObject object : colorAttachments) {
+			buffer.put(object.getID());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+		
 	}
 	
 	

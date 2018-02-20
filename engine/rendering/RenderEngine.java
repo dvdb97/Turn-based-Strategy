@@ -96,6 +96,8 @@ public class RenderEngine {
 	
 	public static void render(FrameBuffer frameBuffer, Renderable model, Texture2D texture) {
 		
+		frameBuffer.bind();
+		
 		if (texture != null) {
 			texture.bind();
 		}
@@ -117,6 +119,8 @@ public class RenderEngine {
 		if (texture != null) {
 			texture.unbind();
 		}
+		
+		frameBuffer.unbind();
 		
 	}
 	
