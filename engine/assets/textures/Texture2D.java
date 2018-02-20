@@ -2,13 +2,8 @@ package assets.textures;
 
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
 import assets.textures.utils.ImageLoader;
-import utils.CustomBufferUtils;
 
 
 public class Texture2D extends Texture {	
