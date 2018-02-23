@@ -59,6 +59,7 @@ public class FrameBuffer extends GLObject {
 	
 	public boolean addDepthAttachment(Texture2D texture) {
 		bind();
+		texture.bind();
 		
 		depthAttachment = texture;
 		
@@ -67,10 +68,12 @@ public class FrameBuffer extends GLObject {
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a depth component to the FrameBuffer!");
 			
+			texture.unbind();
 			unbind();
 			return false;
 		}
 		
+		texture.unbind();
 		unbind();
 		
 		return true;
@@ -90,6 +93,7 @@ public class FrameBuffer extends GLObject {
 	public boolean addColorAttachment(int width, int height) {
 		bind();
 		
+		
 		if (colorAttachments.size() == 15) {
 			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
 			
@@ -97,9 +101,11 @@ public class FrameBuffer extends GLObject {
 			return false;
 		}
 		
+		
 		colorAttachments.add(RenderBuffer.generateColorRenderBuffer(width, height));
 		
 		glFramebufferRenderbuffer(getType(), ATTACHMENT_PARAM + colorAttachments.size(), GL_RENDERBUFFER, colorAttachments.get(colorAttachments.size() - 1).getID());
+		
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a color component to the FrameBuffer!");
@@ -107,6 +113,7 @@ public class FrameBuffer extends GLObject {
 			unbind();
 			return false;
 		}
+		
 		
 		glDrawBuffers(colorBufferList());
 		
@@ -123,27 +130,35 @@ public class FrameBuffer extends GLObject {
 	 */
 	public boolean addColorAttachment(Texture2D texture) {
 		bind();
+		texture.bind();
+		
 		
 		if (colorAttachments.size() == 15) {
 			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
 			
+			texture.unbind();
 			unbind();
 			return false;
 		}
+		
 		
 		colorAttachments.add(texture);
 		
 		glFramebufferTexture(getType(), ATTACHMENT_PARAM + colorAttachments.size(), texture.getID(), 0);
 		
+		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a color component to the FrameBuffer!");
 			
+			texture.unbind();
 			unbind();
 			return false;
 		}
 		
+		
 		glDrawBuffers(colorBufferList());
 		
+		texture.unbind();
 		unbind();
 		
 		return true;
@@ -176,7 +191,7 @@ public class FrameBuffer extends GLObject {
 	
 	
 	public void unbind() {
-		glBindFramebuffer(getType(), getID());
+		glBindFramebuffer(getType(), 0);
 	}
 	
 	

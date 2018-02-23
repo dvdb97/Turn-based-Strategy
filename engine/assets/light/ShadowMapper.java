@@ -55,6 +55,7 @@ public class ShadowMapper {
 		frameBuffer = new FrameBuffer();
 		frameBuffer.addDepthAttachment(texture);
 		frameBuffer.disableColorBuffer();
+		frameBuffer.unbind();
 	}
 	
 	

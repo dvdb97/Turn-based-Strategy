@@ -2,6 +2,8 @@ package assets.textures;
 
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT16;
+
 import java.nio.ByteBuffer;
 
 import assets.textures.utils.Image;
@@ -48,7 +50,7 @@ public class Texture2D extends Texture {
 	
 	
 	/**
-	 * Generates an empty 2D texture with the given width and height.
+	 * Generates an empty 2D texture for storing depth values with the given width and height.
 	 * 
 	 * @param width The width of the texture
 	 * @param height The height of the texture
@@ -64,7 +66,7 @@ public class Texture2D extends Texture {
 		
 		bind();
 		
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(getType(), 0, GL_DEPTH_COMPONENT16, this.getWidth(), this.getHeight(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 		
 		generateMipMapLevels();
 		
