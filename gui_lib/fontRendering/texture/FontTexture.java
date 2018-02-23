@@ -1,6 +1,5 @@
 package fontRendering.texture;
 
-import assets.textures.Texture;
 import assets.textures.Texture2D;
 
 public class FontTexture extends Texture2D {
@@ -12,20 +11,21 @@ public class FontTexture extends Texture2D {
 	private char[] correspondingChars;
 	
 	
-	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol) {
-		super(path, mipmapLevels, Texture.NEAREST, Texture.CLAMP_TO_BORDER);
+	public FontTexture(String path, int charsPerRow, int charsPerCol) {
+		super(path);
 		
 		this.charsPerRow = charsPerRow;
 		
 		this.charsPerCol = charsPerCol;
 		
-		
-		
 	}
 	
 	
 	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol, char[] correspondingChars) {
-		this(path, mipmapLevels, charsPerRow, charsPerCol);
+		super(path, mipmapLevels);
+		
+		this.charsPerRow = charsPerRow;
+		this.charsPerCol = charsPerCol;
 		
 		setCorrespondingChars(correspondingChars);
 	}

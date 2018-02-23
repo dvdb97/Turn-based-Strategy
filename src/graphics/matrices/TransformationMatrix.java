@@ -43,6 +43,13 @@ public class TransformationMatrix extends Matrix44f{
 		updateData();
 		
 	}
+	
+	
+	public TransformationMatrix(Vector3f translation, Vector3f rotation, float scale) {
+		this(translation.getA(), translation.getB(), translation.getC(), rotation.getA(), rotation.getB(), rotation.getC(), scale);		
+	}
+	
+	
 	//only trans and one scale
 	public TransformationMatrix(float transX, float transY, float transZ, float scale) {
 		

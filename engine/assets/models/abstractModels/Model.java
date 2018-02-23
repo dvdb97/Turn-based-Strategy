@@ -48,9 +48,6 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	private int vaoID;
 	
 	
-	private Matrix44f transformationMatrix;
-	
-	
 	//The buffers
 	private int positionBufferID = 0;
 		

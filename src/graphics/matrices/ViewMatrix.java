@@ -19,7 +19,7 @@ public class ViewMatrix extends TransformationMatrix {
 		
 	}
 	
-	public 	void refresh() {
+	public void refresh() {
 		
 		//setAll() is a method of the superclass TransformationMatrix
 		setAll(	 Camera.getPosition().negated(), -Camera.getPitch(),

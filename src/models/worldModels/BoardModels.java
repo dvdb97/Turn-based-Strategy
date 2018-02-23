@@ -1,6 +1,7 @@
 package models.worldModels;
 
 import assets.light.LightSource;
+import assets.light.ShadowMapper;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
@@ -126,6 +127,14 @@ public class BoardModels {
 	}
 	
 	//*********************************
+	
+	
+	private void generateShadowMap() {
+		
+		//ShadowMapper.generateShadowMap(terrain, boardModelMatrix, sun, lightPosition)
+		
+	}
+	
 	
 	private void renderTerrain() {
 		

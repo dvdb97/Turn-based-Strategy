@@ -49,7 +49,7 @@ public abstract class PrimitiveModel {
 	
 	public void setTransformationMatrix(TransformationMatrix matrix) {
 		
-		this.transformationMatrix = transformationMatrix;
+		this.transformationMatrix = matrix;
 		
 	}
 	

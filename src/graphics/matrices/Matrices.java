@@ -1,14 +1,14 @@
 package graphics.matrices;
 
 import interaction.Window;
-import graphics.matrices.ProjectionMatrix;
+import rendering.matrices.projectionMatrices.ProjectionMatrix;
 
 public class Matrices {
 	
 	private static ProjectionMatrix projectionMatrix;
 
 	public static void initProjectionMatrix(Window window) {
-		projectionMatrix = new ProjectionMatrix(-1, 1, -1, 1, 1, -10.0f, window.getProportions());
+		projectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
 	}
 	
 	

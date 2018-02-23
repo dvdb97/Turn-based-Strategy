@@ -10,6 +10,7 @@ import assets.textures.Texture2D;
 
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL11.GL_NONE;
 import static org.lwjgl.opengl.GL20.glDrawBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
@@ -45,12 +46,35 @@ public class FrameBuffer extends GLObject {
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a depth component to the FrameBuffer!");
+			
+			unbind();
 			return false;
 		}
 		
 		unbind();
 		
 		return true;
+	}
+	
+	
+	public boolean addDepthAttachment(Texture2D texture) {
+		bind();
+		
+		depthAttachment = texture;
+		
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.getID(), 0);
+		
+		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
+			System.out.println("Failed attaching a depth component to the FrameBuffer!");
+			
+			unbind();
+			return false;
+		}
+		
+		unbind();
+		
+		return true;
+		
 	}
 	
 	
@@ -68,6 +92,8 @@ public class FrameBuffer extends GLObject {
 		
 		if (colorAttachments.size() == 15) {
 			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
+			
+			unbind();
 			return false;
 		}
 		
@@ -77,6 +103,8 @@ public class FrameBuffer extends GLObject {
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a color component to the FrameBuffer!");
+			
+			unbind();
 			return false;
 		}
 		
@@ -98,6 +126,8 @@ public class FrameBuffer extends GLObject {
 		
 		if (colorAttachments.size() == 15) {
 			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
+			
+			unbind();
 			return false;
 		}
 		
@@ -107,6 +137,8 @@ public class FrameBuffer extends GLObject {
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a color component to the FrameBuffer!");
+			
+			unbind();
 			return false;
 		}
 		
@@ -115,6 +147,11 @@ public class FrameBuffer extends GLObject {
 		unbind();
 		
 		return true;
+	}
+	
+	
+	public void disableColorBuffer() {
+		glDrawBuffers(GL_NONE);
 	}
 	
 	

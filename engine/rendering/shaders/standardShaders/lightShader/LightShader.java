@@ -1,8 +1,5 @@
 package rendering.shaders.standardShaders.lightShader;
 
-
-import java.util.LinkedList;
-
 import assets.light.LightSource;
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -14,12 +11,9 @@ import utils.FileUtils;
 
 public class LightShader extends ShaderProgram {
 	
-	//A constant for loading the files because I'm lazy to type it 4 times ¯\_(ツ)_/¯
+	//A constant for loading the files because I'm lazy to type it 4 times
 	private static final String path = "Shaders/LightShaders/";
 
-	//The list of LightSources to be rendered next render call
-	private LinkedList<LightSource> lightSources = new LinkedList<LightSource>();
-	
 	private LightSource lightSource = new LightSource(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
 	
 	

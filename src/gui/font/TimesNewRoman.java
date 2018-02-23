@@ -5,8 +5,7 @@ import fontRendering.texture.FontTexture;
 public class TimesNewRoman extends FontTexture {
 
 	public TimesNewRoman() {
-		super("res/fonts/Font.png", 2, 10, 10);
-		// TODO Auto-generated constructor stub
+		super("res/fonts/Font.png", 10, 10);
 		
 		char[] correspondingChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

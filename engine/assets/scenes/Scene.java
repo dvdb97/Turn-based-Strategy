@@ -9,7 +9,6 @@ import assets.models.abstractModels.Renderable;
 
 public class Scene implements Renderable {
 	
-	
 	private LinkedList<Illuminated_Model> models;
 	
 	private LinkedList<LightSource> lights;

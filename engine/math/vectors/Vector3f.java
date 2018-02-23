@@ -149,6 +149,17 @@ public class Vector3f extends Vectorf {
 		return this;
 	}
 	
+	
+	/**
+	 * Negation
+	 * 
+	 * @return a copy of itself, multiplicated with -1
+	 */
+	public Vector3f negatedCopy() {
+		return this.times(-1f);
+	}
+	
+	
 	/**
 	 * Cross product (vector product)
 	 * 

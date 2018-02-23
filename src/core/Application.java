@@ -1,5 +1,6 @@
 package core;
 
+import assets.light.ShadowMapper;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
@@ -53,6 +54,9 @@ public class Application {
 		RenderEngine.setSwapInterval(1);
 		
 		Matrices.initProjectionMatrix(window);
+		
+		//Initializes the ShadowMapper that is later used for generating a shadow map
+		ShadowMapper.init(window, Matrices.getProjectionMatrix());
 		
 	}
 	
