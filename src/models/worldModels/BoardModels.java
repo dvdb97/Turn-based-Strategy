@@ -190,14 +190,6 @@ public class BoardModels {
 		
 	}
 	
-	/**
-	 * @return an array containing the vertex-array-indices of all tile's center
-	 */
-	public int[] getTileCenters() {
-		
-		return tileBorders.getHexCenterIndices();
-		
-	}
 	
 	/**
 	 * @return the game board's length in tiles

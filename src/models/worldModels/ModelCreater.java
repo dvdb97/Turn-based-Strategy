@@ -43,10 +43,6 @@ public class ModelCreater {
 	private CoordinateSystem coSystem;
 	
 	
-	//others
-	private Vector3f[] hexMeshVertices;
-	
-	
 	
 	//********************************** initialization ************************
 	
@@ -99,9 +95,7 @@ public class ModelCreater {
 	
 	private void createTileBorders() {
 		
-		tileBorders = new HexagonBorderGrid(terrain, xOffset, yOffset, elr);
-		
-		hexMeshVertices = tileBorders.getVertices();
+		tileBorders = new HexagonBorderGrid(superGrid, new Color(0, 0, 0, 1));
 		
 	}
 	

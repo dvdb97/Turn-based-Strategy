@@ -78,10 +78,12 @@ public class SuperGrid {
 	
 	private void processHexCenters() {
 		
+		hexCenterIndices = new int[lengthInHexagons*widthInHexagons];
+		
 		for (int x=0; x<lengthInHexagons; x++) {
 			for (int y=0; y<widthInHexagons; y++) {
 				
-				hexCenterIndices[y*lengthInVectors + x] = (yOffset + elr + y*elr*3/2)*lengthInVectors + (xOffset + elr + x*2*elr + (y%2)*elr  );
+				hexCenterIndices[y*lengthInHexagons + x] = (yOffset + elr + y*elr*3/2)*lengthInVectors + (xOffset + elr + x*2*elr + (y%2)*elr  );
 				
 			}
 		}

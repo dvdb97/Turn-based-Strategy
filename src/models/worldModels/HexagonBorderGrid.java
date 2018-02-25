@@ -1,5 +1,17 @@
 package models.worldModels;
 
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+
+import org.lwjgl.BufferUtils;
+
+import assets.meshes.geometry.Color;
+import assets.meshes.geometry.Vertex;
+import assets.models.Element_Model;
+import math.vectors.Vector3f;
+import models.seeds.SuperGrid;
+import utils.CustomBufferUtils;
+
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -7,234 +19,112 @@ import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
-
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.BufferUtils;
-import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
-import assets.models.Element_Model;
-import math.vectors.Vector3f;
-import utils.CustomBufferUtils;
+//TODO: shift the tile borders in positive z direction to avoid collision of this model with the terrain model
 
 public class HexagonBorderGrid extends Element_Model {
 	
-	private int length, width;
+	SuperGrid superGrid;
 	
-	private int elr;			//edge length relation = edgeLengthHexagons / edgeLengthTriangles
+	//dimensions
+	private int length;
+	private int width;
 	
-	private int xOffset, yOffset;
+	private ArrayList<Vector3f> vectors;
 	
-	private final int PRI = -1;					//primitive restart index
+	private Color color;
 	
-	private int hexLength, hexWidth;			//length and width measured in for a hexagon grid relevant vertices
+	private IntBuffer elementBuffer;
+	private int[][] elementArrays;
 	
-	private int triGridVertLength;
+	private static final int PRI = -1;
 	
-	private IntBuffer indexBuffer;
 	
-	private List<Vertex> vertices;
+	//******************** constructor ***************************
 	
-	private List<Integer> hexagonCenterIndices;
-	
-	private final Color color = new Color(0.2f, 0.2f, 0.2f, 1);
-	
-	//********************************** constructor ************************************
-	
-	/**
-	 * 
-	 * @param triangleGrid TriangleGrid this hexagonal grid is based on
-	 * @param xOffset
-	 * @param yOffset 
-	 * @param edgeLengthRelation edge length of hexagons / edge length of triangles
-	 */
-	public HexagonBorderGrid(TriangleGrid triangleGrid, int xOffset, int yOffset, int edgeLengthRelation) {
+	public HexagonBorderGrid(SuperGrid superGrid, Color color) {
 		
 		super(GL_LINE_LOOP);
 		
-		if (edgeLengthRelation < 1 || triangleGrid == null || xOffset < 0 || yOffset < 0) {
-			throw new IllegalArgumentException();
-		}
+		this.superGrid = superGrid;
 		
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		this.elr = edgeLengthRelation;
+		length = superGrid.getLengthInHexagons();
+		width  = superGrid.getWidthInHexagons();
 		
-		triGridVertLength = triangleGrid.getLength();
+		this.color = color;
 		
-		hexLength =  (triGridVertLength - 2 * xOffset - 1) / elr + 1;
-		hexWidth  = ((triangleGrid.getWidth()  - 2 * yOffset    ) / elr - 1)*2/3 + 1;
-		
-		length = hexLength / 2 - 1;
-		width  = hexWidth -1;
-
-		vertices = new ArrayList<>(hexLength*hexWidth);
-		
-		processVertices(triangleGrid);
-		processHexCenterIndices();
-		createIndexBuffer();
-		
-		//TODO: Element_Model should accept a list of vertices instead of just arrays
-		setData(vertexListToArray(), indexBuffer);
+		processVerticesAndElementBuffer();
 		
 	}
 	
 	
-	//********************************** prime methods ***********************************
-	
-	private void processVertices(TriangleGrid triangleGrid) {
-		
-		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
-		
-		for (int y=0; y<hexWidth; y++) {
-			
-			for (int x=0; x<hexLength; x++) {
-				
-				if (x%2 == y%2) {   //(x%2 == 0 && y%2 == 0) || (x%2 == 1 && y%2 == 1)
-					
-					vertices.add(triGridVertices[(xOffset + x*elr) + (yOffset + y*elr*3/2 + elr/2)*triGridVertLength]);
-					
-				} else {            //(x%2 == 1 && y%2 == 0) || (x%2 == 0 && y%2 == 1)
-					
-					vertices.add(triGridVertices[(xOffset + x*elr) + (yOffset + y*elr*3/2        )*triGridVertLength]);
-				}
-				
-			}
-			
-		}
-		
-	}
+	//********************
 	
 	
-	
-	private void processHexCenterIndices() {
+	private void processVerticesAndElementBuffer() {
 		
-		hexagonCenterIndices = new ArrayList<Integer>(length * width);
+		vectors = new ArrayList<>((length+1)*2 * (width+1));
 		
-		for (int y=0; y<hexWidth; y++) {
-			
-			for (int x=1; x<hexLength-1; x++) {
-				
-				if (x%2 != y%2) {
-					hexagonCenterIndices.add((xOffset + x*elr) + (yOffset + y*elr*3/2 + elr  )*triGridVertLength);
-				}
-				
-			}
-			
-		}
-		
-	}
-	
-	
-	
-	private void createIndexBuffer() {
-		
-		indexBuffer = BufferUtils.createIntBuffer(length * width * 7 );
+		elementArrays = new int[length*width][6];
 		
 		for (int y=0; y<width; y++) {
-			
 			for (int x=0; x<length; x++) {
 				
-				indexBuffer.put(getHexagonIndexArray(x, y, y%2));
-				indexBuffer.put(PRI);
+				addHexagon(x, y);
 				
 			}
+		}
+		
+		Vertex[] vertices = new Vertex[vectors.size()];
+		
+		for (int v=0; v<vertices.length; v++) {
+			
+			vertices[v] = new Vertex(vectors.get(v), color);
 			
 		}
 		
-		indexBuffer.flip();
+		setData(vertices, elementBuffer);
 		
-	}	
+	}
 	
-	//********************************** util methods *********************************************
 	
-	private Vertex[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
+	private void addHexagon(int x, int y) {
 		
-		Vector3f[] triGridPos = triangleGrid.getPosArray();
-		Vertex[] triGridVertices = new Vertex[triGridPos.length];
+		Vector3f[] hexBorderPositions = superGrid.getHexBorder(y*length + x);
+		Vector3f vec;
 		
-		float delta = 0.005f*elr;
-		
-		for (int i=0; i<triGridVertices.length; i++) {
+		for (int v=0; v<hexBorderPositions.length; v++) {
 			
-			triGridVertices[i] = new Vertex(triGridPos[i], color);
+			vec = hexBorderPositions[v];
 			
-			float c;
-			float d = triGridVertices[i].getC();
-			if (d < 0) {
-				c = delta;
-			} else {
-				c = d + delta;
+			if (!vectors.contains(vec)) {
+				vectors.add(vec);
 			}
-			triGridVertices[i].setC(c);
+			
+			elementArrays[y*length + x][v] = vectors.indexOf(vec);
+			
 			
 		}
 		
-		return triGridVertices;
-		
 	}
 	
-	private int[] getHexagonIndexArray(int x, int y, int yMod2) {
-		
-		return new int[] {	0           + 2*x + hexLength*y + yMod2,
-							1           + 2*x + hexLength*y + yMod2,
-							2           + 2*x + hexLength*y + yMod2,
-							hexLength+2 + 2*x + hexLength*y + yMod2,
-							hexLength+1 + 2*x + hexLength*y + yMod2,
-							hexLength   + 2*x + hexLength*y + yMod2
-		};
-		
-	}
 	
-	//********************************** other stuff **********************************************
-	
-	public Vector3f[] getVertices() {
-		
-		Vector3f[] posData = new Vector3f[vertices.size()];
-		
-		for (int i=0; i<posData.length; i++) {
-			posData[i] = vertices.get(i).getPosition();
-		}
-		
-		return posData;
-	}
-	
-	/** 
-	 * the vertex of a hexagon's center has an index in the vertex-array of the triangle grid
-	 * @return an array containing all these indices
-	 */
-	public int[] getHexCenterIndices() {
-		
-		int[] hexCenterIndices = new int[hexagonCenterIndices.size()];
-		for (int i=0; i<hexCenterIndices.length; i++) {
-			hexCenterIndices[i] = hexagonCenterIndices.get(i);
-		}
-		return hexCenterIndices;
-		
-	}
-		
-	//***************************** display... ***************************************
-	
+	//******************** display *******************************
 	
 	public void display(int index) {
 		
-		IntBuffer elementBuffer = CustomBufferUtils.createIntBuffer(getIndexArrayByID(index));
+		elementBuffer = CustomBufferUtils.createIntBuffer(elementArrays[index]);
 		
 		this.setElementArrayData(elementBuffer);
 		
 	}
 	
-	
-	public void display(int[] tiles) {
+	public void displayAll() {
 		
-		IntBuffer elementBuffer = BufferUtils.createIntBuffer(tiles.length * 7);
+		elementBuffer = BufferUtils.createIntBuffer(length*width*7);
 		
-		for (int index : tiles) {
-			
-			elementBuffer.put(getIndexArrayByID(index));
-			
+		for (int h=0; h<length*width; h++) {
+			elementBuffer.put(elementArrays[h]);
+			elementBuffer.put(PRI);
 		}
 		
 		elementBuffer.flip();
@@ -244,13 +134,7 @@ public class HexagonBorderGrid extends Element_Model {
 	}
 	
 	
-	public void displayAll() {
-		this.setElementArrayData(this.indexBuffer);
-	}
-	
-	
-	
-	//*********************************************************************************
+	//******************** others *********************************
 	
 	@Override
 	public void onDrawStart() {
@@ -271,45 +155,6 @@ public class HexagonBorderGrid extends Element_Model {
 	}
 	
 	
-	private Vertex[] vertexListToArray() {
-		
-		Vertex[] array = new Vertex[vertices.size()];
-		
-		for (int v=0; v<array.length; v++) {
-			array[v] = vertices.get(v);
-		}
-		
-		return array;
-		
-	}
-	
-	
-	private int[] getIndexArrayByID(int index) {
-		
-		if (index < 0) {
-			return getIndexArrayByID(0);
-		}
-		
-		
-		if (index >= indexBuffer.capacity()/7) {
-			return getIndexArrayByID(indexBuffer.capacity()/7 - 1);
-		}
-		
-		int[] indices = new int[7];
-		
-		int positionInElementArray = index * 7;
-		
-		
-		for (int i = 0; i < 7; ++i) {
-			
-			indices[i] = indexBuffer.get(positionInElementArray + i);
-			
-		}
-		
-		
-		return indices;
-		
-	}
 	
 	//************************************ get *****************************
 	
@@ -326,5 +171,7 @@ public class HexagonBorderGrid extends Element_Model {
 	public int getWidth() {
 		return width;
 	}
+	
+	
 	
 }
