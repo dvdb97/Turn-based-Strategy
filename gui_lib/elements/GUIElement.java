@@ -8,9 +8,9 @@ import timer.Cooldown;
 
 public abstract class GUIElement extends GUIElementBase {
 	
-	private GUIEventHandler onclickFunc = null;
+	private GUIEventHandler onClickFunc = null;
 	
-	private Cooldown onclickCooldown;
+	private Cooldown onClickCooldown;
 	
 	private GUIEventHandler onHoverFunc = null;
 	
@@ -24,14 +24,14 @@ public abstract class GUIElement extends GUIElementBase {
 	public GUIElement(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
-		onclickCooldown = new Cooldown(0.4);
+		onClickCooldown = new Cooldown(0.4);
 		
 	}
 
 	public GUIElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
-		onclickCooldown = new Cooldown(0.4);
+		onClickCooldown = new Cooldown(0.4);
 		
 	}
 	
@@ -39,29 +39,29 @@ public abstract class GUIElement extends GUIElementBase {
 	@Override
 	public void onClick() {
 		
-		if (onclickFunc == null) {
+		if (onClickFunc == null) {
 			return;
 		}
 		
-		if (!onclickCooldown.isFinished()) {
+		if (!onClickCooldown.isFinished()) {
 			System.out.println("Onclick is still on cooldown!");
 			return;
 		}
 		
-		onclickFunc.function(this);
+		onClickFunc.function(this);
 		
-		onclickCooldown.start();
+		onClickCooldown.start();
 		
 	}
 	
 	
 	public GUIEventHandler getOnclickFunc() {
-		return onclickFunc;
+		return onClickFunc;
 	}
 	
 
 	public void setOnclickFunc(GUIEventHandler onclickFunc) {
-		this.onclickFunc = onclickFunc;
+		this.onClickFunc = onclickFunc;
 	}
 	
 
