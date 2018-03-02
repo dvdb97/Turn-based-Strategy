@@ -10,6 +10,8 @@ public class ImplementedWindow extends GUIWindow {
 	public ImplementedWindow(Vector4f color, float x, float y, float width, float height) {
 		super(new GUIQuad(), color, x, y, width, height);
 		
+		this.add(new TestToggleButton());
+		
 	}
 	
 }
