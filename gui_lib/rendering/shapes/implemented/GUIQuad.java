@@ -17,10 +17,10 @@ public class GUIQuad extends GUIShape {
 	
 	
 	private static final float[] texData = {
-		0.0f, 1.0f,
-		1.0f, 1.0f,
 		0.0f, 0.0f,
-		1.0f, 0.0f	
+		1.0f, 0.0f,	
+		0.0f, 1.0f,
+		1.0f, 1.0f
 	};
 	
 	

@@ -133,7 +133,7 @@ public class ModelManager {
 		//The color of the currently selected tile
 		selectedTileColor = new Vector4f(1f, 0f, 0f, 1f);
 		
-		window = new ImplementedWindow(new Vector4f(1f, 0f, 0f, 1f), -0.8f, 0f, 0.8f, 0.8f);
+		window = new ImplementedWindow(new Vector4f(0f, 1f, 0f, 1f), 0f, 0f, 0.8f, 0.8f);
 
 		
 		//A coordinate system that is mostly used for testing

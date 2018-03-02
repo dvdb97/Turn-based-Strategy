@@ -24,6 +24,33 @@ public class GUIShaderCollection {
 		
 	}
 	
+	
+	public static void useFontShader(Matrix44f renderingMatrix) {
+	
+		if (!initialized) {
+			init();
+		}
+		
+		guiShader.use();
+		
+		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
+		guiShader.setUniform1i("u_textured", 1);
+		guiShader.setUniform1i("u_fontRendering", 1);
+		
+	}
+	
+	
+	public static void disableFontShader() {
+		
+		if (!initialized) {
+			init();
+		}
+		
+		guiShader.disable();
+		
+	}
+	
+	
 	/**
 	 * 
 	 * Enables the gui shader for textured rendering
@@ -40,6 +67,7 @@ public class GUIShaderCollection {
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 1);
+		guiShader.setUniform1i("u_fontRendering", 0);
 		
 	}
 	
@@ -61,6 +89,7 @@ public class GUIShaderCollection {
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 0);
+		guiShader.setUniform1i("u_fontRendering", 0);
 		guiShader.setUniformVector4f("u_Color", color);
 		
 	}

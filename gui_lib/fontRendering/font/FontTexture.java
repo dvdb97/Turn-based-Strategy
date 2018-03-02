@@ -1,16 +1,7 @@
 package fontRendering.font;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.nio.IntBuffer;
-
-import javax.imageio.ImageIO;
-
-import assets.textures.ArrayTexture2D;
 import assets.textures.Texture;
 import assets.textures.Texture2D;
-import assets.textures.utils.ImageLoader;
-import assets.textures.utils.ImageUtils;
 
 public class FontTexture extends Texture2D {
 

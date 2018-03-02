@@ -216,6 +216,11 @@ public abstract class GUIElementBase implements Clickable {
 	public Vector4f getColor() {
 		return color;
 	}
+	
+	
+	public void setTexture(Texture2D texture) {
+		this.texture = texture;
+	}
 
 
 	public float getX() {

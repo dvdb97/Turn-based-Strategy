@@ -42,11 +42,11 @@ public abstract class GUILabeledElement extends GUIElement {
 			return;
 		}
 		
-		GUIShaderCollection.useGuiShader(this.getRenderingMatrix());
+		GUIShaderCollection.useFontShader(this.getRenderingMatrix());
 		
 		RenderEngine.draw(label, font);
 		
-		GUIShaderCollection.disableGuiShader();
+		GUIShaderCollection.disableFontShader();
 		
 	}
 	
