@@ -5,10 +5,14 @@ import assets.textures.Texture2D;
 import fontRendering.font.GUIFontCollection;
 import fontRendering.font.FontTexture;
 import fontRendering.generation.TextGenerator;
+import gui_core.GUIMatrixManager;
 import gui_core.GUIShaderCollection;
+import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 import rendering.shapes.GUIShape;
+
+import static styles.GUIConst.*;
 
 public abstract class GUILabeledElement extends GUIElement {
 	
@@ -18,11 +22,15 @@ public abstract class GUILabeledElement extends GUIElement {
 	
 	private Element_Model label = null;
 	
+	private Position labelPosition = Position.CENTER;
+	
+	private Matrix44f labelMatrix;
+	
 
 	public GUILabeledElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
-		this.font = GUIFontCollection.getFont("NewTimesRoman");
+		this.setFont("NewTimesRoman");
 	}
 	
 	
@@ -66,6 +74,11 @@ public abstract class GUILabeledElement extends GUIElement {
 	
 	public String getLabel() {
 		return labelText;
+	}
+	
+	
+	public void setLabelPosition(Position position) {
+		
 	}
 	
 	
