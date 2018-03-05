@@ -17,10 +17,6 @@ vec4 fetchTexels() {
 
 	if (u_fontRendering == 1) {
 
-		if (length(color) >= length(vec4(0.3, 0.3, 0.3, 1.0))) {
-			color = vec4(u_Color.r, u_Color.g, u_Color.b, 0.0);
-		}
-
 		return color;
 
 	}
