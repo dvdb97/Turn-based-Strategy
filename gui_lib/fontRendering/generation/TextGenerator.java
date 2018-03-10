@@ -16,6 +16,13 @@ import org.lwjgl.BufferUtils;
 
 public class TextGenerator {
 	
+	private static final float[] data = {
+			0.0f,  0.0f, -1.0f,
+			1.0f,  0.0f, -1.0f,
+			0.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f		
+		};
+	
 	//A template of texture coordinates for easy texture mapping
 	private static final Vector3f[] texCoords = {
 		new Vector3f(0.0f, 0.0f, 1.0f),
@@ -26,10 +33,10 @@ public class TextGenerator {
 	
 	//A template of vertex positions to generate 
 	private static final Vector4f[] coords = {
-		new Vector4f(0.0f, 1.0f, -0.96f, 1.0f),
-		new Vector4f(1.0f, 1.0f, -0.96f, 1.0f),
-		new Vector4f(0.0f, 0.0f, -0.96f, 1.0f),
-		new Vector4f(1.0f, 0.0f, -0.96f, 1.0f)		
+		new Vector4f(0.0f,  0.0f, -1.0f, 1.0f),
+		new Vector4f(1.0f,  0.0f, -1.0f, 1.0f),
+		new Vector4f(0.0f, -1.0f, -1.0f, 1.0f),
+		new Vector4f(1.0f, -1.0f, -1.0f, 1.0f)		
 	};
 	
 	
@@ -133,3 +140,20 @@ public class TextGenerator {
 	}
 
 }
+
+
+/*
+private static final Vector3f[] texCoords = {
+		new Vector3f(0.0f, 0.0f, 1.0f),
+		new Vector3f(1.0f, 0.0f, 1.0f),
+		new Vector3f(0.0f, 1.0f, 1.0f),
+		new Vector3f(1.0f, 1.0f, 1.0f),
+	};
+	
+	//A template of vertex positions to generate 
+	private static final Vector4f[] coords = {
+		new Vector4f(0.0f, 1.0f, -1.0f, 1.0f),
+		new Vector4f(1.0f, 1.0f, -1.0f, 1.0f),
+		new Vector4f(0.0f, 0.0f, -1.0f, 1.0f),
+		new Vector4f(1.0f, 0.0f, -1.0f, 1.0f)		
+	};*/

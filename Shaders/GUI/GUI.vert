@@ -13,7 +13,7 @@ void main() {
 
 	texCoords = vTexCoords;
 
-	vec4 pos = u_Matrix * u_ProjectionMatrix * vec4(vPosition, 1.0);
+	vec4 pos = u_ProjectionMatrix * u_Matrix * vec4(vPosition, 1.0);
 
 	gl_Position = pos;
 

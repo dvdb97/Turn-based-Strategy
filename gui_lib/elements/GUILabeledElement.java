@@ -50,18 +50,12 @@ public abstract class GUILabeledElement extends GUIElement {
 			return;
 		}
 		
-		GUIShaderCollection.useFontShader(this.labelMatrix);
+		GUIShaderCollection.useFontShader(this.getRenderingMatrix().times(this.labelMatrix));
 		
 		RenderEngine.draw(label, font);
 		
 		GUIShaderCollection.disableFontShader();
 		
-	}
-	
-
-	@Override
-	public void update() {
-		super.update();
 	}
 
 
@@ -75,7 +69,7 @@ public abstract class GUILabeledElement extends GUIElement {
 		
 		this.label = TextGenerator.generateTextModel(labelText, font, null);
 		
-		this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, 0f, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());		
+		this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getWidth() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());		
 		
 	}
 	

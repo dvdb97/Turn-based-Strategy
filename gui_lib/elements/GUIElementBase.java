@@ -42,11 +42,6 @@ public abstract class GUIElementBase implements Clickable {
 	
 	private GUIElementBase(GUIShape shape, Texture2D texture, Vector4f color, float x, float y, float width, float height) {
 		
-		//If the GUIManager isn't initialized yet, do it now.
-		if (!GUIManager.isInitialized()) {
-			GUIManager.init();
-		}
-		
 		this.parent = null;
 		
 		this.x = x;

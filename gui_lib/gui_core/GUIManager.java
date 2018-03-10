@@ -7,6 +7,7 @@ import assets.textures.Texture2D;
 import elements.containers.GUIWindow;
 import fontRendering.font.GUIFontCollection;
 import graphics.matrices.Matrices;
+import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
@@ -30,13 +31,13 @@ public class GUIManager {
 		
 	}
 	
-	public static void init() {
+	public static void init(Window window) {
 		
 		if (initialized) {
 			return;
 		}
 		
-		GUIShaderCollection.init();
+		GUIShaderCollection.init(window);
 		
 		GUIFontCollection.init();
 		

@@ -60,7 +60,7 @@ public class Application {
 	
 	private static void initGuiCore(StartParams params) {
 		
-		GUIManager.init();
+		GUIManager.init(window);
 		
 	}
 	

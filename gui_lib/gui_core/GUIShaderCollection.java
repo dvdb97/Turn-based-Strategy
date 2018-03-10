@@ -1,7 +1,9 @@
 package gui_core;
 
+import interaction.Window;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
+import rendering.matrices.projection.ProjectionMatrix;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
@@ -11,14 +13,16 @@ public class GUIShaderCollection {
 	
 	private static ShaderProgram guiShader;
 	
-	//private static final Matrix44f projectionMatrix = 
+	private static ProjectionMatrix projectionMatrix;
 	
 	
-	public static void init() {
+	public static void init(Window window) {
 		
 		if (initialized) {
 			return;
 		}
+		
+		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions());
 		
 		guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
 		
@@ -30,12 +34,13 @@ public class GUIShaderCollection {
 	public static void useFontShader(Matrix44f renderingMatrix) {
 	
 		if (!initialized) {
-			init();
+			return;
 		}
 		
 		guiShader.use();
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
+		guiShader.setUniformMatrix4fv("u_ProjectionMatrix", projectionMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 1);
 		guiShader.setUniform1i("u_fontRendering", 1);
 		
@@ -45,7 +50,7 @@ public class GUIShaderCollection {
 	public static void disableFontShader() {
 		
 		if (!initialized) {
-			init();
+			return;
 		}
 		
 		guiShader.disable();
@@ -62,12 +67,13 @@ public class GUIShaderCollection {
 	public static void useGuiShader(Matrix44f renderingMatrix) {
 		
 		if (!initialized) {
-			init();
+			return;
 		}
 		
 		guiShader.use();
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
+		guiShader.setUniformMatrix4fv("u_ProjectionMatrix", projectionMatrix.toArray());
 		guiShader.setUniform1i("u_textured", 1);
 		guiShader.setUniform1i("u_fontRendering", 0);
 		
@@ -84,12 +90,13 @@ public class GUIShaderCollection {
 	public static void useGuiShader(Matrix44f renderingMatrix, Vector4f color) {
 		
 		if (!initialized) {
-			init();
+			return;
 		}
 		
 		guiShader.use();
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
+		guiShader.setUniformMatrix4fv("u_ProjectionMatrix", projectionMatrix);
 		guiShader.setUniform1i("u_textured", 0);
 		guiShader.setUniform1i("u_fontRendering", 0);
 		guiShader.setUniformVector4f("u_Color", color);
@@ -105,7 +112,7 @@ public class GUIShaderCollection {
 	public static void disableGuiShader() {
 		
 		if (!initialized) {
-			init();
+			return;
 		}
 		
 		guiShader.disable();

@@ -3,19 +3,21 @@ package rendering.shapes.implemented;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 import utils.CustomBufferUtils;
 
-public class GUIQuad extends GUIShape {
-		
+public class GUIQuad extends GUIShape {	
+	
 	private static final float[] data = {
-		0.0f,  0.0f, -0.90f,
-		1.0f,  0.0f, -0.90f,
-		0.0f, -1.0f, -0.90f,
-		1.0f, -1.0f, -0.90f		
+		0.0f,  0.0f, -1.0f,
+		1.0f,  0.0f, -1.0f,
+		0.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f		
 	};
-	
-	
+
+
 	private static final float[] texData = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,	

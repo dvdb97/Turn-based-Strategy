@@ -28,21 +28,21 @@ public class GUIRoundedQuad extends GUIShape {
 		float b = 1.0f - cornerEdgeLength;
 		
 		float[] positionData = {
-			a   , -0.0f, 0.9f, //0
-			0.0f, -a   , 0.9f, //1
-			a   , -a   , 0.9f, //2
+			a   , -0.0f, -1.0f, //0
+			0.0f, -a   , -1.0f, //1
+			a   , -a   , -1.0f, //2
 			
-			b   , -0.0f, 0.9f, //3
-			0.0f, -a   , 0.9f, //4
-			b   , -a   , 0.9f, //5
+			b   , -0.0f, -1.0f, //3
+			0.0f, -a   , -1.0f, //4
+			b   , -a   , -1.0f, //5
 			
-			a   , -1.0f, 0.9f, //6
-			0.0f, -b   , 0.9f, //7
-			a   , -b   , 0.9f, //8
+			a   , -1.0f, -1.0f, //6
+			0.0f, -b   , -1.0f, //7
+			a   , -b   , -1.0f, //8
 			
-			b   , -1.0f, 0.9f, //9
-			1.0f, -b   , 0.9f, //10
-			b   , -b   , 0.9f  //11
+			b   , -1.0f, -1.0f, //9
+			1.0f, -b   , -1.0f, //10
+			b   , -b   , -1.0f  //11
 		};
 		
 		return CustomBufferUtils.createFloatBuffer(positionData);
