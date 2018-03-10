@@ -34,7 +34,7 @@ public class ProjectionMatrix extends Matrix44f {
 		
 		this.near = 1f;
 		
-		this.far = -10f;
+		this.far = -1f;
 		
 		this.widthHeightRelation = widthHeightRelation;
 		
