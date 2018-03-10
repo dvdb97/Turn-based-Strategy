@@ -11,6 +11,8 @@ public class GUIShaderCollection {
 	
 	private static ShaderProgram guiShader;
 	
+	//private static final Matrix44f projectionMatrix = 
+	
 	
 	public static void init() {
 		

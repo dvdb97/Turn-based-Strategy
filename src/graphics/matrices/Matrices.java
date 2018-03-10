@@ -8,7 +8,7 @@ public class Matrices {
 	private static ProjectionMatrix projectionMatrix;
 
 	public static void initProjectionMatrix(Window window) {
-		projectionMatrix = new ProjectionMatrix(-1, 1, -1, 1, 1, -10.0f, window.getProportions());
+		projectionMatrix = new ProjectionMatrix(-1, 1, -1, 1, 1, -1f, window.getProportions());
 	}
 	
 	

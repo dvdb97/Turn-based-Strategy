@@ -1,5 +1,6 @@
 package gui_core;
 
+import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 
 public class GUIMatrixManager {
@@ -27,6 +28,21 @@ public class GUIMatrixManager {
 		
 		
 		return translationMatrix.times(scalingMatrix);
+		
+	}
+	
+	
+	public static Matrix33f generateTransformationMatrix(float xPos, float yPos, float width, float height) {
+		
+		Matrix33f scalingMatrx = new Matrix33f(width, 0, 0,
+											   0, height, 0,
+											   0, 0, 1f);
+		
+		Matrix33f translationMatrix = new Matrix33f(1, 0, xPos,
+													0, 1, yPos,
+													0, 0, 1);
+		
+		return translationMatrix.times(scalingMatrx);
 		
 	}
 

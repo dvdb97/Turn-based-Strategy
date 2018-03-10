@@ -19,7 +19,7 @@ public class FontTest {
 		
 		texture = new TimesNewRoman();
 		
-		model = TextGenerator.generateTextModel(text, -0.8f, 0.0f, -1.0f, 0.1f, 1.6f, 0.1f, texture, new TempFunction());
+		//model = TextGenerator.generateTextModel(text, -0.8f, 0.0f, -1.0f, 0.1f, 1.6f, 0.1f, texture, new TempFunction());
 		
 	}
 	

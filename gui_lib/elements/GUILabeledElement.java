@@ -1,10 +1,10 @@
 package elements;
 
-import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import fontRendering.font.GUIFontCollection;
 import fontRendering.font.FontTexture;
 import fontRendering.generation.TextGenerator;
+import fontRendering.rendering.TextModel;
 import gui_core.GUIMatrixManager;
 import gui_core.GUIShaderCollection;
 import math.matrices.Matrix44f;
@@ -20,7 +20,7 @@ public abstract class GUILabeledElement extends GUIElement {
 	
 	private FontTexture font = null;
 	
-	private Element_Model label = null;
+	private TextModel label = null;
 	
 	private Position labelPosition = Position.CENTER;
 	
@@ -50,7 +50,7 @@ public abstract class GUILabeledElement extends GUIElement {
 			return;
 		}
 		
-		GUIShaderCollection.useFontShader(this.getRenderingMatrix());
+		GUIShaderCollection.useFontShader(this.labelMatrix);
 		
 		RenderEngine.draw(label, font);
 		
@@ -58,6 +58,12 @@ public abstract class GUILabeledElement extends GUIElement {
 		
 	}
 	
+
+	@Override
+	public void update() {
+		super.update();
+	}
+
 
 	public void setLabel(String text) {
 		
@@ -67,7 +73,9 @@ public abstract class GUILabeledElement extends GUIElement {
 		
 		this.labelText = text;	
 		
-		this.label = TextGenerator.generateTextModel(labelText, this.getX(), this.getY(), -0.9f, 0.1f, this.getWidth(), this.getWidth() / labelText.length(), font, null);
+		this.label = TextGenerator.generateTextModel(labelText, font, null);
+		
+		this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, 0f, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());		
 		
 	}
 	
