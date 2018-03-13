@@ -1,13 +1,23 @@
 package gui.test;
 
+import elements.GUIElementBase;
+import elements.functions.GUIEventHandler;
 import elements.input.GUIToggleButton;
 
 
 public class TestToggleButton extends GUIToggleButton {
 
 	public TestToggleButton() {
-		super(0.01f, -0.01f, 0.8f, 0.8f, "Inactive");
+		super(0.01f, -0.01f, 0.8f, 0.8f, "Click me!");
 		// TODO Auto-generated constructor stub
+		
+		this.setOnclickFunc(new GUIEventHandler() {
+			@Override
+			public void function(GUIElementBase element) {
+				setLabel(isActivated() ? "Nice!" : "Click me!");				
+			}
+		});
+		
 	}
 
 }

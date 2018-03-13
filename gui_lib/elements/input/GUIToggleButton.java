@@ -34,13 +34,6 @@ public class GUIToggleButton extends GUIButton {
 			}
 		});
 		
-		this.setOnclickFunc(new GUIEventHandler() {
-			@Override
-			public void function(GUIElementBase element) {
-				setLabel(activated ? "active" : "inactive");				
-			}
-		});
-		
 	}
 	
 	
@@ -65,6 +58,16 @@ public class GUIToggleButton extends GUIButton {
 		super.setHeight(height);
 		
 		super.setWidth(height * sizeRelation);
+	}
+	
+	
+	public boolean isActivated() {
+		return activated;
+	}
+	
+	
+	public void setActivated(boolean value) {
+		this.activated = value;
 	}
 
 }

@@ -101,7 +101,7 @@ public class TextGenerator {
 			texPosYOffset = font.getYPosition(letter);
 			
 			//The transformation matrix to put the next vertex into the right position
-			letterTM = GUIMatrixManager.generateRenderingMatrix(posInLine, line, 1, 1);
+			letterTM = GUIMatrixManager.generateRenderingMatrix(posInLine, -line, 1, 1);
 			
 			//The transformation matrix to transform the tex coords to display a specific letter
 			textureTM = GUIMatrixManager.generateTransformationMatrix(texPosXOffset, texPosYOffset, texCharWidth, texCharHeight);
