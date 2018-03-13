@@ -3,6 +3,7 @@ package gui.test;
 import elements.GUIElementBase;
 import elements.functions.GUIEventHandler;
 import elements.input.GUIToggleButton;
+import styles.GUIConst;
 
 
 public class TestToggleButton extends GUIToggleButton {
@@ -14,7 +15,8 @@ public class TestToggleButton extends GUIToggleButton {
 		this.setOnclickFunc(new GUIEventHandler() {
 			@Override
 			public void function(GUIElementBase element) {
-				setLabel(isActivated() ? "Nice!" : "Click me!");				
+				setLabel(isActivated() ? "Nice!" : "Click me!");
+				setLabelPosition(GUIConst.Position.CENTER);
 			}
 		});
 		

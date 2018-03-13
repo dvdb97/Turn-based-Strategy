@@ -69,7 +69,7 @@ public abstract class GUILabeledElement extends GUIElement {
 		
 		this.label = TextGenerator.generateTextModel(labelText, font, null);
 		
-		this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getWidth() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());		
+		generateLabelMatrix();
 		
 	}
 	
@@ -80,7 +80,24 @@ public abstract class GUILabeledElement extends GUIElement {
 	
 	
 	public void setLabelPosition(Position position) {
+		this.labelPosition = position;
 		
+		generateLabelMatrix();
+	}
+	
+	
+	private void generateLabelMatrix() {
+		if (labelPosition == Position.CENTER || labelPosition  == Position.LEFT || labelPosition == Position.RIGHT) {
+			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getHeight() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+		}
+		
+		if (labelPosition == Position.TOP) {
+			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -0.05f, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+		}
+		
+		if (labelPosition == Position.BOTTOM) {
+			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getHeight(), 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+		}
 	}
 	
 	
