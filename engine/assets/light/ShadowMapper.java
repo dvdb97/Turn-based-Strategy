@@ -12,7 +12,13 @@ import rendering.framebuffers.FrameBuffer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import rendering.shaders.standardShaders.shadowShader.ShadowMappingShader;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class ShadowMapper {
+	
+	private static final int SHADOW_MAP_WIDTH = 1024;
+	
+	private static final int SHADOW_MAP_HEIGHT = 1024;
 	
 	private static ShadowMappingShader shader;
 	
@@ -25,7 +31,7 @@ public class ShadowMapper {
 	private static boolean initialized = false;
 
 	
-	public static void init(int width, int height, ProjectionMatrix matrix) {
+	public static void init(Matrix44f projectionMatrix) {
 		
 		if(initialized) {
 			return;
@@ -33,9 +39,9 @@ public class ShadowMapper {
 		
 		shader = new ShadowMappingShader();
 		
-		projectionMatrix = matrix;
+		ShadowMapper.projectionMatrix = projectionMatrix;
 		
-		texture = new Texture2D(width, height);
+		texture = Texture2D.generateEmptyTexture(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 		
 		setUpFrameBuffer();
 		
@@ -44,18 +50,10 @@ public class ShadowMapper {
 	}
 	
 	
-	public static void init(Window window, ProjectionMatrix matrix) {
-		
-		init(window.getWidth(), window.getHeight(), matrix);
-		
-	}
-	
-	
 	private static void setUpFrameBuffer() {
 		frameBuffer = new FrameBuffer();
 		frameBuffer.addDepthAttachment(texture);
 		frameBuffer.disableColorBuffer();
-		frameBuffer.unbind();
 	}
 	
 	
@@ -68,17 +66,22 @@ public class ShadowMapper {
 	 */
 	public static Texture2D generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Vector3f lightPosition) {
 		
-		TransformationMatrix lightViewMatrix = new TransformationMatrix(lightPosition.negatedCopy(), light.getDirection().negatedCopy(), 1.0f);
+		glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 		
-		Matrix44f mvpMatrix = lightViewMatrix.times(modelMatrix);
+		frameBuffer.bind();
+		
+		RenderEngine.clear(GL_DEPTH_BUFFER_BIT);
+		
+		//TODO: Configure matrices
 		
 		shader.use();
+		shader.prepareForRendering(null);
 		
-		shader.prepareForRendering(mvpMatrix);
-		
-		RenderEngine.render(frameBuffer, model, null);
+			RenderEngine.render(frameBuffer, model, null);
 		
 		shader.disable();
+		
+		frameBuffer.unbind();
 		
 		return texture;
 		

@@ -138,7 +138,7 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
 		RenderEngine.render(terrain, null);
 		
@@ -150,7 +150,7 @@ public class BoardModels {
 		
 		tileBorders.displayAll();
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
 		
 		RenderEngine.render(tileBorders, null);
 		
@@ -166,7 +166,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
 		
 		RenderEngine.render(tileBorders, null);
 		
@@ -178,7 +178,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
 		
 		RenderEngine.render(tileBorders, null);
 		

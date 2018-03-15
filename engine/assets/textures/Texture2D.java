@@ -1,8 +1,7 @@
 package assets.textures;
 
-
+import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT16;
 
 import java.nio.ByteBuffer;
 
@@ -57,23 +56,23 @@ public class Texture2D extends Texture {
 	 */
 	public Texture2D(int width, int height) {
 		super(GL_TEXTURE_2D, width, height);
-		
-		generateEmptyTexture();
 	}
 	
 	
-	public void generateEmptyTexture() {
+	public static Texture2D generateEmptyTexture(int width, int height) {
 		
-		bind();
+		Texture2D texture = new Texture2D(width, height);
 		
-		glTexImage2D(getType(), 0, GL_DEPTH_COMPONENT16, this.getWidth(), this.getHeight(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+		texture.bind();
 		
-		generateMipMapLevels();
+		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 		
-		this.setFilter(this.getFilterMode());
-		this.setTextureWrap(this.getWrapMode());
+		texture.setFilter(GL_NEAREST);
+		texture.setTextureWrap(GL_REPEAT);
 		
-		unbind();
+		texture.unbind();
+		
+		return texture;
 		
 	}
 	

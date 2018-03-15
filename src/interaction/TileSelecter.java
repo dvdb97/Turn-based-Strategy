@@ -61,7 +61,7 @@ public class TileSelecter {
 		cursorY = CursorPosInput.getYPosAsOpenglCoord();
 		
 		rayOrigin = Camera.getPosition();
-		rayDirection = new Vector3f(cursorX, cursorY/Matrices.getProjectionMatrix().getWidthHeightRelation(), -1f);
+		rayDirection = new Vector3f(cursorX, cursorY/Matrices.getWindowProportions(), -1f);
 		
 		rayDirection = invertedViewMatrix33f.times(rayDirection);
 		rayDirection = rayDirection.normalize();

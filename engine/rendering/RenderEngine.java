@@ -61,6 +61,11 @@ public class RenderEngine {
 	}
 	
 	
+	public static void clear(int bits) {
+		glClear(bits);
+	}
+	
+	
 	public static void swapBuffers() {
 		glfwPollEvents();
 		glfwSwapBuffers(window.getWindowID());

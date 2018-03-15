@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
 import static org.lwjgl.opengl.GL11.GL_NONE;
 import static org.lwjgl.opengl.GL20.glDrawBuffers;
+import static org.lwjgl.opengl.GL11.glReadBuffer;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
@@ -63,17 +64,15 @@ public class FrameBuffer extends GLObject {
 		
 		depthAttachment = texture;
 		
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.getID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.getType(), texture.getID(), 0);
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed attaching a depth component to the FrameBuffer!");
 			
-			texture.unbind();
 			unbind();
 			return false;
 		}
-		
-		texture.unbind();
+
 		unbind();
 		
 		return true;
@@ -166,7 +165,10 @@ public class FrameBuffer extends GLObject {
 	
 	
 	public void disableColorBuffer() {
+		this.bind();
 		glDrawBuffers(GL_NONE);
+		glReadBuffer(GL_NONE);
+		this.unbind();
 	}
 	
 	

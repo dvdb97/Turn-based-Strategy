@@ -56,7 +56,7 @@ public class Application {
 		Matrices.initProjectionMatrix(window);
 		
 		//Initializes the ShadowMapper that is later used for generating a shadow map
-		ShadowMapper.init(window, Matrices.getProjectionMatrix());
+		ShadowMapper.init(Matrices.getOrthographicProjectionMatrix());
 		
 	}
 	
