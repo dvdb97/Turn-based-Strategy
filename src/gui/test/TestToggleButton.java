@@ -9,7 +9,7 @@ import styles.GUIConst;
 public class TestToggleButton extends GUIToggleButton {
 
 	public TestToggleButton() {
-		super(0f, 0f, 0.8f, 0.8f, "Click me!");
+		super(0.1f, -0.1f, 0.8f, 0.8f, "Click me!");
 		// TODO Auto-generated constructor stub
 		
 		this.setOnclickFunc(new GUIEventHandler() {
