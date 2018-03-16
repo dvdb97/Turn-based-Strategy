@@ -16,6 +16,7 @@ import assets.models.abstractModels.Renderable;
 import assets.textures.Texture2D;
 import interaction.Window;
 import math.matrices.Matrix44f;
+import math.vectors.Vector2i;
 import math.vectors.Vector4f;
 import rendering.framebuffers.FrameBuffer;
 
@@ -150,6 +151,35 @@ public class RenderEngine {
 	
 	
 	//****************************** Settings Stuff ******************************
+	
+	
+	public static void setViewport(int x, int y, int width, int height) {
+		glViewport(x, y, width, height);
+	}
+	
+	
+	public static void setViewport(Vector2i position, Vector2i size) {
+		glViewport(position.getX(), position.getY(), size.getX(), size.getY());
+	}
+	
+	
+	public static Vector2i getViewportSize() {
+		int[] values = new int[4];
+		
+		glGetIntegerv(GL_VIEWPORT, values);
+		
+		return new Vector2i(values[2], values[3]);
+		
+	}
+	
+	
+	public static Vector2i getViewPortPosition() {
+		int[] values = new int[4];
+		
+		glGetIntegerv(GL_VIEWPORT, values);
+		
+		return new Vector2i(values[0], values[1]);
+	}
 	
 	
 	public static void enableDepthTest() {

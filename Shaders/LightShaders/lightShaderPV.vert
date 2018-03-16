@@ -32,13 +32,8 @@ uniform mat4 projectionMatrix;
 
 //Light uniforms:
 uniform vec3 ambientLight;
-
 uniform Material material;
 uniform LightSource light;
-
-
-//Output:
-out vec4 color;
 
 
 void main() {

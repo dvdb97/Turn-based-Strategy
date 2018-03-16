@@ -55,6 +55,7 @@ public class ShaderProgram {
 	}
 	
 	private void compileShader(String sourceCode, int id) {
+		
 		glShaderSource(id, sourceCode);
 		glCompileShader(id);
 		

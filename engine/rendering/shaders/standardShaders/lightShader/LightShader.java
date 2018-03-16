@@ -77,6 +77,42 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
+	public void prepareForRendering(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projMatrix, Vector3f cameraPosition, LightSource light, Vector3f ambient, boolean shadowsActive, Matrix44f lightViewMatrix, Material mat) {
+		
+		this.setModelMatrix(modelMatrix);
+		this.setViewMatrix(viewMatrix);
+		this.setProjectionMatrix(projMatrix);
+		
+		this.setCameraPosition(cameraPosition);
+		
+		if (light == null) {
+			this.setLightSource(this.lightSource);
+		} else {
+			this.lightSource = light;
+		
+			this.setLightSource(light);
+		}
+		
+		setAmbientLight(ambient);
+		
+		if (shadowsActive) {
+			this.setUniform1i("shadowsActive", 1);
+			this.setUniformMatrix4fv("lightViewMatrix", lightViewMatrix);
+		} else {
+			this.setUniform1i("shadowsActive", 0);
+			this.setUniformMatrix4fv("lightViewMatrix", lightViewMatrix);
+		}
+		
+		
+		
+		if (mat == null) {
+			this.setMaterial(standardMaterial);
+		} else{
+			this.setMaterial(mat);	
+		}		
+	}
+	
+	
 	//*********************************** uniform setting *********************************
 	
 	

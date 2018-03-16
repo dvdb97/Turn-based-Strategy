@@ -2,15 +2,12 @@ package assets.light;
 
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
-import graphics.matrices.TransformationMatrix;
-import interaction.Window;
 import math.matrices.Matrix44f;
-import math.matrices.advanced.MatrixInversion44f;
-import math.vectors.Vector3f;
+import math.vectors.Vector2i;
 import rendering.RenderEngine;
 import rendering.framebuffers.FrameBuffer;
-import rendering.matrices.projectionMatrices.ProjectionMatrix;
-import rendering.shaders.standardShaders.shadowShader.ShadowMappingShader;
+import rendering.shaders.ShaderLoader;
+import rendering.shaders.ShaderProgram;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,7 +17,7 @@ public class ShadowMapper {
 	
 	private static final int SHADOW_MAP_HEIGHT = 1024;
 	
-	private static ShadowMappingShader shader;
+	private static ShaderProgram shader;
 	
 	private static Matrix44f projectionMatrix;
 	
@@ -37,7 +34,7 @@ public class ShadowMapper {
 			return;
 		}
 		
-		shader = new ShadowMappingShader();
+		shader = ShaderLoader.loadShader("Shaders/ShadowMappingShader/ShadowMappingShader.vert", "Shaders/ShadowMappingShader/ShadowMappingShader.frag");
 		
 		ShadowMapper.projectionMatrix = projectionMatrix;
 		
@@ -64,24 +61,27 @@ public class ShadowMapper {
 	 * @param lightPosition
 	 * @param viewMatrix
 	 */
-	public static Texture2D generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Vector3f lightPosition) {
+	public static Texture2D generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light) {
 		
-		glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+		Vector2i viewportPos = RenderEngine.getViewPortPosition();
+		Vector2i viewportSize = RenderEngine.getViewportSize();
+		
+		RenderEngine.setViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 		
 		frameBuffer.bind();
 		
 		RenderEngine.clear(GL_DEPTH_BUFFER_BIT);
 		
-		//TODO: Configure matrices
-		
 		shader.use();
-		shader.prepareForRendering(null);
+		shader.setUniformMatrix4fv("u_mvpMatrx", projectionMatrix.times(light.generateLightViewMatrix()).times(modelMatrix));
 		
-			RenderEngine.render(frameBuffer, model, null);
+		RenderEngine.render(model, null);
 		
 		shader.disable();
 		
 		frameBuffer.unbind();
+		
+		RenderEngine.setViewport(viewportPos, viewportSize);
 		
 		return texture;
 		

@@ -2,6 +2,7 @@ package graphics.shaders;
 
 import assets.light.LightSource;
 import assets.material.Material;
+import assets.textures.Texture2D;
 import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -70,6 +71,22 @@ public class ShaderManager {
 		
 		lightShader.use();
 		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, mat);
+		
+	}
+	
+	
+	public static void useLightShaderShadowRendering(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, Vector3f camPos, LightSource light, Vector3f ambient, Material mat) {
+		
+		if (!initialized) {
+			
+			System.err.println("ShaderManager hasn't been initialized yet!");
+			
+			return;
+			
+		}
+		
+		lightShader.use();
+		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, true, light.generateLightViewMatrix(), mat);
 		
 	}
 	
