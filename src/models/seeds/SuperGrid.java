@@ -92,7 +92,7 @@ public class SuperGrid {
 	
 	//************************** hexagons **************************************
 	
-	private Vector3f getHexCenter(int indexOfTheHexagon) {
+	public Vector3f getHexCenter(int indexOfTheHexagon) {
 		
 		return positionVectors[hexCenterIndices[indexOfTheHexagon]];
 		
@@ -146,6 +146,23 @@ public class SuperGrid {
 		return widthInHexagons;
 	}
 	
+	/**
+	 * @return the lengthInVectors
+	 */
+	public int getLengthInVectors() {
+		return lengthInVectors;
+	}
+	
+	
+	/**
+	 * @return the widthInVectors
+	 */
+	public int getWidthInVectors() {
+		return widthInVectors;
+	}
+
+
+
 	public Vector3f[] getVectors() {
 		
 		return positionVectors;

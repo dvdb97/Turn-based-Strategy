@@ -46,8 +46,6 @@ public class BoardModels {
 	
 	private static Color selectedTileColor;
 	
-	private Vertex[] vertices;
-	
 	//***************************** constructor ********************************
 	
 	/**
@@ -70,8 +68,6 @@ public class BoardModels {
 		
 		hardCode();
 		
-		createVertexArray();
-		
 		boardModelMatrix = new TransformationMatrix();
 		
 	}
@@ -92,20 +88,6 @@ public class BoardModels {
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 	}
-
-	private void createVertexArray() {
-		
-		Vector3f[] positions = terrain.getPosArray();
-		ColorFunction terrainCol = new TerrainCol();
-		
-		vertices = new Vertex[positions.length];
-		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
-		}
-		
-	}
-
-	
 	
 	
 	//***************************** render ********************************
@@ -180,16 +162,6 @@ public class BoardModels {
 	
 	
 	//**************************** get *************************************
-	
-	/**
-	 * @return an array containing all terrains vertices
-	 */
-	public Vertex[] getVertices() {
-		
-		return vertices;
-		
-	}
-	
 	
 	/**
 	 * @return the game board's length in tiles

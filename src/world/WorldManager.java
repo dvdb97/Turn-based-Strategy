@@ -1,6 +1,5 @@
 package world;
 
-import assets.meshes.geometry.Vertex;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
@@ -45,15 +44,10 @@ public class WorldManager {
 	
 	public static Vector3f[] getTileCenterPos() {
 		
-		int[] tileCenterIndices = superGrid.getHexcenterIndices();
-		Vector3f[] vectors = superGrid.getVectors();
+		Vector3f[] tileCenterPositions = new Vector3f[lengthInTiles*widthInTiles];
 		
-		Vector3f[] tileCenterPositions = new Vector3f[tileCenterIndices.length];
-		
-		for (int c=0; c<tileCenterPositions.length; c++) {
-			
-			tileCenterPositions[c] = vectors[tileCenterIndices[c]];
-			
+		for (int v=0; v<tileCenterPositions.length; v++) {
+			tileCenterPositions[v] = superGrid.getHexCenter(v);
 		}
 		
 		return tileCenterPositions;

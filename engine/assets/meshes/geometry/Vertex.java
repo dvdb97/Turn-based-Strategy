@@ -209,6 +209,10 @@ public class Vertex extends Vector3f {
 	}
 	
 	
+	public void setNormalVector(Vector3f normalVec) {
+		this.normalVec = normalVec;
+	}
+	
 	//********************************************** print ******************************************
 	public void printColor() {
 		System.out.println(getRed() + " | " + getGreen() + " | " + getBlue() + " | " + getAlpha());

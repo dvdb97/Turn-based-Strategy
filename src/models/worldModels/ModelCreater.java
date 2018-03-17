@@ -89,7 +89,7 @@ public class ModelCreater {
 	
 	private void createTerrain() {
 		
-		terrain = new TriangleGrid(triEdgeLength, terrainData.getElevationArray(), new TerrainCol(), new StandardMaterial());
+		terrain = new TriangleGrid(superGrid, new TerrainCol(), new StandardMaterial(), false);
 		
 	}
 	
@@ -101,7 +101,7 @@ public class ModelCreater {
 	
 	private void createSea() {
 		
-		sea = new TriangleGrid(0.1f, new float[triLength][triWidth], new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial());
+		sea = new TriangleGrid(superGrid, new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial(), true);
 		
 	}
 	

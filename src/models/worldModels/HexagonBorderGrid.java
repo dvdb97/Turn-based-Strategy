@@ -19,11 +19,12 @@ import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
-//TODO: shift the tile borders in positive z direction to avoid collision of this model with the terrain model
 
 public class HexagonBorderGrid extends Element_Model {
 	
-	SuperGrid superGrid;
+	private final float Z_SHIFT = 0.02f;
+	
+	private SuperGrid superGrid;
 	
 	//dimensions
 	private int length;
@@ -76,14 +77,17 @@ public class HexagonBorderGrid extends Element_Model {
 		
 		Vertex[] vertices = new Vertex[vectors.size()];
 		
+		Vector3f zShift = new Vector3f(0, 0, Z_SHIFT);
+		
 		for (int v=0; v<vertices.length; v++) {
 			
-			vertices[v] = new Vertex(vectors.get(v), color);
+			vertices[v] = new Vertex(vectors.get(v).plusEQ(zShift), color);
 			
 		}
 		
 		setData(vertices, elementBuffer);
 		
+		vectors = null;
 	}
 	
 	
