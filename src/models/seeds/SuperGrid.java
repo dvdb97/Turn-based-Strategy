@@ -94,7 +94,7 @@ public class SuperGrid {
 	
 	public Vector3f getHexCenter(int indexOfTheHexagon) {
 		
-		return positionVectors[hexCenterIndices[indexOfTheHexagon]];
+		return positionVectors[hexCenterIndices[indexOfTheHexagon]].copyOf();
 		
 	}
 	
@@ -106,7 +106,7 @@ public class SuperGrid {
 		
 		for (int i=0; i<border.length; i++) {
 			
-			border[i] = positionVectors[hexBorderIndices[i]];
+			border[i] = positionVectors[hexBorderIndices[i]].copyOf();
 			
 		}
 		
@@ -165,7 +165,11 @@ public class SuperGrid {
 
 	public Vector3f[] getVectors() {
 		
-		return positionVectors;
+		Vector3f[] copyOfPositionVectors = new Vector3f[positionVectors.length];
+		for (int v=0; v<positionVectors.length; v++) {
+			copyOfPositionVectors[v] = positionVectors[v].copyOf();
+		}
+		return copyOfPositionVectors;
 		
 	}
 	

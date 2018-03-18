@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 public class HexagonBorderGrid extends Element_Model {
 	
-	private final float Z_SHIFT = 0.02f;
+	private static final float Z_SHIFT = 0.02f;
 	
 	private SuperGrid superGrid;
 	
@@ -65,31 +65,60 @@ public class HexagonBorderGrid extends Element_Model {
 		
 		vectors = new ArrayList<>((length+1)*2 * (width+1));
 		
+		extractVectorsFromSuperGrid();
+		
+		Vertex[] vertices = createVertices();
+		
+		adjustToTerrainAndSea(vertices);
+		
+		vectors = null;
+		
+		setData(vertices, elementBuffer);
+		
+		
+		
+	}
+	
+	private void extractVectorsFromSuperGrid() {
+				
 		elementArrays = new int[length*width][6];
 		
 		for (int y=0; y<width; y++) {
 			for (int x=0; x<length; x++) {
-				
 				addHexagon(x, y);
-				
 			}
 		}
+	}
+	
+	private Vertex[] createVertices() {
 		
 		Vertex[] vertices = new Vertex[vectors.size()];
+		
+		for (int v=0; v<vertices.length; v++) {
+			vertices[v] = new Vertex(vectors.get(v), color);
+		}
+		
+		return vertices;
+		
+	}
+	
+	private void adjustToTerrainAndSea(Vertex[] vertices) {
 		
 		Vector3f zShift = new Vector3f(0, 0, Z_SHIFT);
 		
 		for (int v=0; v<vertices.length; v++) {
 			
-			vertices[v] = new Vertex(vectors.get(v).plusEQ(zShift), color);
+			if (vertices[v].getC() < 0) {
+				vertices[v].setC(0);
+			}
+			
+			vertices[v].plusEQ(zShift);
 			
 		}
 		
-		setData(vertices, elementBuffer);
-		
-		vectors = null;
 	}
 	
+	//********************
 	
 	private void addHexagon(int x, int y) {
 		
@@ -174,6 +203,14 @@ public class HexagonBorderGrid extends Element_Model {
 	 */
 	public int getWidth() {
 		return width;
+	}
+
+
+	/**
+	 * @return the z_SHIFT
+	 */
+	public static float getZ_SHIFT() {
+		return Z_SHIFT;
 	}
 	
 	
