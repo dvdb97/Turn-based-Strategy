@@ -139,6 +139,12 @@ public class Vector3f extends Vectorf {
 		return this;
 	}
 	
+	
+	public Vector3f normalizedCopy() {		
+		return this.copyOf().normalize();	
+	}
+	
+	
 	/**
 	 * Negation
 	 * 

@@ -22,19 +22,19 @@ public class ProjectionMatrix extends Matrix44f {
 	private Matrix44f multiplicativeInverse;
 	
 	
-	private ProjectionMatrix(float widthHeightRelation) {
+	private ProjectionMatrix(float widthHeightRelation, float factor) {
 		
-		this.left = -1f;
+		this.left = -1f * factor;
 		
-		this.right = 1f;
+		this.right = 1f * factor;
 		
-		this.bottom = -1f;
+		this.bottom = -1f * factor;
 		
-		this.top = 1f;
+		this.top = 1f * factor;
 		
-		this.near = 1f;
+		this.near = 1f * factor;
 		
-		this.far = -1f;
+		this.far = -1f * factor;
 		
 		this.widthHeightRelation = widthHeightRelation;
 		
@@ -80,7 +80,12 @@ public class ProjectionMatrix extends Matrix44f {
 	 * @return Returns a projection matrix for perspective rendering
 	 */
 	public static ProjectionMatrix generatePerspectiveProjectionMatrix(float widthHeightRelation) {
-		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation);
+		return generatePerspectiveProjectionMatrix(widthHeightRelation, 1.0f);
+	}
+	
+	
+	public static ProjectionMatrix generatePerspectiveProjectionMatrix(float widthHeightRelation, float factor) {
+		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation, factor);
 		
 		matrix.generatePerspectiveMatrix();
 		
@@ -96,7 +101,12 @@ public class ProjectionMatrix extends Matrix44f {
 	 * @return Returns a projection matrix for orthographic rendering
 	 */
 	public static ProjectionMatrix generateOrthographicProjectionMatrix(float widthHeightRelation) {
-		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation);
+		return generateOrthographicProjectionMatrix(widthHeightRelation, 1.0f);
+	}
+	
+	
+	public static ProjectionMatrix generateOrthographicProjectionMatrix(float widthHeightRelation, float factor) {
+		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation, factor);
 		
 		matrix.generateOrthographicMatrix();
 		

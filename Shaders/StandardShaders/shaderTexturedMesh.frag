@@ -8,6 +8,9 @@ out vec4 pass_color;
 
 void main() {
 
-	pass_color = texture(tex, pass_tex_pos);
+	//TODO: Temporary for testing purposes
+	float d = texture(tex, pass_tex_pos).r;
+
+	pass_color = vec4(d, d, d, 1.0);
 
 }

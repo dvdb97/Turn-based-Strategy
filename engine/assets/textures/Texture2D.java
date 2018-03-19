@@ -1,10 +1,8 @@
 package assets.textures;
 
-import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.nio.ByteBuffer;
-
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
 
@@ -65,7 +63,7 @@ public class Texture2D extends Texture {
 		
 		texture.bind();
 		
-		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
 		
 		texture.setFilter(GL_NEAREST);
 		texture.setTextureWrap(GL_REPEAT);

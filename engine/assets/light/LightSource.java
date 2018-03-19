@@ -1,13 +1,20 @@
 package assets.light;
 
 
+import math.MathUtils;
+import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
+import graphics.matrices.TransformationMatrix;
 
 
 public class LightSource {
 	
 	private Vector3f direction;
+	
 	private Vector3f color;
+	
+	private Matrix44f lightViewMatrix;
+	private boolean changes;
 	
 	//****************************** constructor **************************************************
 	
@@ -15,7 +22,10 @@ public class LightSource {
 	public LightSource(Vector3f direction, Vector3f color) {
 		
 		this.direction = direction;
+		this.direction.normalize();
 		this.color = color;
+		
+		changes = true;
 	}
 	
 	
@@ -32,10 +42,34 @@ public class LightSource {
 	
 	public void setDirection(Vector3f direction) {
 		this.direction = direction;
+		changes = true;
 	}
 	
 	public void setColor(Vector3f color) {
 		this.color = color;
+		changes = true;
+	}
+	
+	
+	/**
+	 * 
+	 * Generates a view matrix for this light source. As it is a directional light without a position
+	 * it will place the lights position at the boundary of the view box
+	 * 
+	 * @return Returns a view matrix for this light source. 
+	 */
+	public Matrix44f generateLightViewMatrix() {
+		
+		if (!changes) {
+			return lightViewMatrix;
+		}
+		
+		lightViewMatrix = new TransformationMatrix(direction, direction.negatedCopy(), 1f);
+		
+		changes = false;
+		
+		return lightViewMatrix;
+		
 	}
 	
 }

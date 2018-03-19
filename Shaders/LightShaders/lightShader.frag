@@ -17,68 +17,98 @@ struct LightSource {
 };
 
 
-//Input variables:
-in vec4 color;
-in vec3 fPosition;
-in vec3 texturePosition;
-in vec3 normal;
-in mat3 out_viewMatrix;
+//Incoming variables variables:
+in VS_OUT {
+	vec3 fragCoord;
+	vec4 fragCoordLightSpace;
+	vec4 fragColor;
+	vec3 fragTexPos;
+	vec3 fragNormal;
+	mat3 fragViewMatrix;
+} fs_in;
 
 
 //Uniform variables:
-uniform sampler2D texture;
 uniform vec3 cameraPosition;
 
-uniform vec3 ambientLight;
 
+//Light information
+uniform vec3 ambientLight;
 uniform Material material;
 uniform LightSource light;
+
+
+//Shadow information
+uniform int shadowsActive;
+uniform sampler2D shadowMap;
 
 
 out vec4 fColor;
 
 
-void main() {
-
+vec3 computeDiffuseLight() {
 	vec3 lightDirection = normalize(light.direction);
-	
-	//************ Scattered lighting ************
 
-	
-	float diffuse = max(0.0, dot(lightDirection, normal));
-	
-	vec3 scatteredLight = ambientLight * material.ambient + light.color * material.diffuse * diffuse;
-	
+	float diffuse = max(0.0, dot(lightDirection, normalize(fs_in.fragNormal)));
 
-	//************ Reflected lighting ************
+	return diffuse * material.diffuse * light.color;
+}
 
+
+vec3 computeAmbientLight() {
+	return ambientLight * material.ambient;
+}
+
+
+vec3 computeSpecularLight() {
 	
+	vec3 lightDirection = normalize(light.direction);
+
 	/*
 	 * The vector from the fragment's position to the camera. Will be used for reflection.
 	 * If the reflected light at this fragment matches this vector there will be maximum reflected light.
 	 */
-	vec3 optimalReflection = normalize(cameraPosition - fPosition);
+	vec3 viewDirection = normalize(cameraPosition - fs_in.fragCoord);
 	
 	//Reflect the incoming light
-	vec3 reflectionDirection = normalize(reflect(lightDirection, normal));
+	vec3 reflectionDirection = normalize(reflect(lightDirection, normalize(fs_in.fragNormal)));
 	
-	float specular = max(0.0, dot(optimalReflection, reflectionDirection));
+	float specular = max(0.0, dot(viewDirection, reflectionDirection));
 	
-	if (diffuse == 0) {
-		specular = 0;
-	} else {
-		specular *= 0.05; //TODO: Change it back!
+	return material.specular * pow(specular, 64.0f) * light.color;
+
+}
+
+
+float computeShadow() {
+
+	if (shadowsActive == 0) {
+		return 0.0f;
 	}
+
+	vec3 projCoords = (fs_in.fragCoordLightSpace.xyz / fs_in.fragCoordLightSpace.w) * 0.5f + 0.5f;
+
+	float shadowMapDepth = texture(shadowMap, projCoords.xy).r;
+
+	float currentDepth = projCoords.z;
+
+	return currentDepth > shadowMapDepth ? 1.0f : 0.0f;
+
+}
+
+
+void main() {
+
+	vec3 scatteredLight = computeDiffuseLight();
+
+	vec3 reflectedLight = computeSpecularLight();
 	
+	vec3 ambient = computeAmbientLight();
+
+	float shadow = computeShadow();
+
+	vec3 rgb = min(vec3(1.0, 1.0, 1.0), (ambient + (1.0 - shadow) * (scatteredLight + reflectedLight)) * fs_in.fragColor.rgb);
 	
-	vec3 reflectedLight = light.color * material.specular * specular;
-	
-	
-	//************ Compute the final light ************
-	
-	
-	vec3 rgb = min(color.rgb * scatteredLight + reflectedLight, vec3(1.0));
-	
-	fColor = vec4(rgb, color.a);
+	fColor = vec4(rgb, fs_in.fragColor.a);
 
 }
