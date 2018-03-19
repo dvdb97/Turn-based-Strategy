@@ -55,7 +55,7 @@ public class ViewMatrix extends TransformationMatrix {
 	
 	public Matrix44f getMultiplicativeInverse() {
 		
-		return new TransformationMatrix(camera.getPosition().getA(), camera.getPosition().getB(), camera.getPosition().getC(), camera.getPitch(), camera.getYaw(), camera.getRoll(), 1.0f / camera.getZoom());
+		return new TransformationMatrix(camera.getTranslation().getA(), camera.getTranslation().getB(), camera.getTranslation().getC(), camera.getPitch(), camera.getYaw(), camera.getRoll(), 1.0f / camera.getZoom());
 		
 	}
 }
