@@ -22,6 +22,7 @@ public class LightSource {
 	public LightSource(Vector3f direction, Vector3f color) {
 		
 		this.direction = direction;
+		this.direction.normalize();
 		this.color = color;
 		
 		changes = true;
@@ -63,12 +64,7 @@ public class LightSource {
 			return lightViewMatrix;
 		}
 		
-		float max = MathUtils.max(direction.getA(), direction.getB(), direction.getC());
-		float r = 1f / max;
-		
-		Vector3f lightPosition = direction.times(r).negatedCopy();
-		
-		lightViewMatrix = new TransformationMatrix(lightPosition.negatedCopy(), direction.negatedCopy(), 1f);
+		lightViewMatrix = new TransformationMatrix(direction, direction.negatedCopy(), 1f);
 		
 		changes = false;
 		

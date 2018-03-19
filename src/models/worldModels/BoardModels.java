@@ -20,6 +20,7 @@ import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
+import testing.TextureRenderer;
 import visualize.CoordinateSystem;
 import world.WorldManager;
 
@@ -91,9 +92,9 @@ public class BoardModels {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
+		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
-		sun = new LightSource(new Vector3f(1.0f, -1.0f, 0.0f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(-0.3f, 0.0f, -0.0001f), new Vector3f(0.5f, 0.5f, 0.3f));
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 		lightViewMatrix = new TransformationMatrix(new Vector3f(1f, 1f, 1f), sun.getDirection(), 1f);
@@ -104,6 +105,7 @@ public class BoardModels {
 		
 		//TODO: Temp
 		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Suzanne.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+		TextureRenderer.init();
 		
 	}
 
@@ -146,12 +148,13 @@ public class BoardModels {
 		
 		Texture2D shadowMap = ShadowMapper.generateShadowMap(shadowTest, boardModelMatrix, sun);
 		
-		ShaderManager.useLightShaderShadowRendering(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
-		RenderEngine.render(shadowTest, shadowMap);
+		RenderEngine.render(shadowTest, null);
 		
 		ShaderManager.disableLightShader();
 		
+		TextureRenderer.render(shadowMap);
 	}
 	
 	private void renderBordersSeaCOS() {

@@ -67,17 +67,21 @@ public class ShadowMapper {
 		Vector2i viewportSize = RenderEngine.getViewportSize();
 		
 		RenderEngine.setViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
-		
+
 		frameBuffer.bind();
+		
+		texture.bind();
 		
 		RenderEngine.clear(GL_DEPTH_BUFFER_BIT);
 		
 		shader.use();
-		shader.setUniformMatrix4fv("u_mvpMatrx", projectionMatrix.times(light.generateLightViewMatrix()).times(modelMatrix));
+		shader.setUniformMatrix4fv("u_mvpMatrix", projectionMatrix.times(light.generateLightViewMatrix()).times(modelMatrix));
 		
 		RenderEngine.render(model, null);
 		
 		shader.disable();
+		
+		texture.unbind();
 		
 		frameBuffer.unbind();
 		

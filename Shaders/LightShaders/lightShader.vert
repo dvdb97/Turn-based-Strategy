@@ -24,6 +24,7 @@ out VS_OUT {
 	vec4 fragColor;
 	vec3 fragTexPos;
 	vec3 fragNormal;
+	mat3 fragViewMatrix;
 } vs_out;
 
 
@@ -43,6 +44,9 @@ void main() {
 
 	//The light-space coordinates of the vertex
 	vs_out.fragCoordLightSpace = lightViewMatrix * vec4(vs_out.fragCoord, 1.0f);
+
+	//The view matrix to rotate the light direction into view space
+	vs_out.fragViewMatrix = mat3(viewMatrix);
 
 	//The projective space coordinates of the vertex
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vPosition, 1.0f);

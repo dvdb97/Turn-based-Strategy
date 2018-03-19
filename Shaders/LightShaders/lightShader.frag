@@ -24,6 +24,7 @@ in VS_OUT {
 	vec4 fragColor;
 	vec3 fragTexPos;
 	vec3 fragNormal;
+	mat3 fragViewMatrix;
 } fs_in;
 
 
@@ -50,7 +51,7 @@ vec3 computeDiffuseLight() {
 
 	float diffuse = max(0.0, dot(lightDirection, normalize(fs_in.fragNormal)));
 
-	return material.diffuse * diffuse * light.color;
+	return diffuse * material.diffuse * light.color;
 }
 
 
@@ -91,7 +92,7 @@ float computeShadow() {
 
 	float currentDepth = projCoords.z;
 
-	return currentDepth > shadowMapDepth ? 0.8f : 0.0f;
+	return currentDepth > shadowMapDepth ? 1.0f : 0.0f;
 
 }
 
@@ -106,7 +107,7 @@ void main() {
 
 	float shadow = computeShadow();
 
-	vec3 rgb = (ambient + (1.0 - shadow) * (scatteredLight + reflectedLight)) * fs_in.fragColor.rgb;
+	vec3 rgb = min(vec3(1.0, 1.0, 1.0), (ambient + (1.0 - shadow) * (scatteredLight + reflectedLight)) * fs_in.fragColor.rgb);
 	
 	fColor = vec4(rgb, fs_in.fragColor.a);
 
