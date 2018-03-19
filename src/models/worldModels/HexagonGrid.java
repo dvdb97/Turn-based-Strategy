@@ -84,12 +84,12 @@ public class HexagonGrid extends Element_Model {
 		
 		Vector3f[] hexBorderPositions = superGrid.getHexBorder(y*length + x);
 		
-		vectors.add(superGrid.getHexCenter(x+y*length));
+		vertices.add(superGrid.getHexCenter(x+y*length));
 		elementBuffer.put((x+y*length)*7);
 		
 		for (int v=0; v<hexBorderPositions.length; v++) {
 			
-			vectors.add(hexBorderPositions[v]);
+			vertices.add(hexBorderPositions[v]);
 			elementBuffer.put((x+y*length)*7 + v);
 			
 		}
