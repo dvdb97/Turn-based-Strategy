@@ -104,7 +104,7 @@ public class BoardModels {
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 		//TODO: Temp
-		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Suzanne.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Ball.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
 		TextureRenderer.init();
 		
 	}
