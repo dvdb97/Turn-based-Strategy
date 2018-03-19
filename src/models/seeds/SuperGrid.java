@@ -5,6 +5,7 @@ import utils.Const;
 
 public class SuperGrid {
 	
+	private static final float Z_SHIFT = 0.02f;
 	
 	//dimensions
 	private int lengthInHexagons;
@@ -133,6 +134,24 @@ public class SuperGrid {
 		hexBorderIndices[5] = center - elr/2 * lengthInVectors - elr;
 		
 		return hexBorderIndices;
+		
+	}
+	
+	//************************** util ******************************************
+	
+	public static void adjustToTerrainAndSea(Vector3f[] vertices) {
+		
+		Vector3f zShift = new Vector3f(0, 0, Z_SHIFT);
+		
+		for (int v=0; v<vertices.length; v++) {
+			
+			if (vertices[v].getC() < 0) {
+				vertices[v].setC(0);
+			}
+			
+			vertices[v].plusEQ(zShift);
+			
+		}
 		
 	}
 	

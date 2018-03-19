@@ -4,7 +4,6 @@ import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
-import models.worldModels.HexagonBorderGrid;
 import models.worldModels.ModelCreater;
 
 //TODO: 1. shitty name, 2. try to encapsulate graphic and logic
@@ -49,10 +48,9 @@ public class WorldManager {
 		
 		for (int v=0; v<tileCenterPositions.length; v++) {
 			tileCenterPositions[v] = superGrid.getHexCenter(v);
-			if (tileCenterPositions[v].getC() < 0)
-				tileCenterPositions[v].setC(0);
-			tileCenterPositions[v].plusEQ(new Vector3f(0, 0, HexagonBorderGrid.getZ_SHIFT()));
 		}
+		
+		SuperGrid.adjustToTerrainAndSea(tileCenterPositions);
 		
 		return tileCenterPositions;
 		

@@ -21,9 +21,7 @@ import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 
 public class HexagonBorderGrid extends Element_Model {
-	
-	private static final float Z_SHIFT = 0.02f;
-	
+		
 	private SuperGrid superGrid;
 	
 	//dimensions
@@ -69,13 +67,11 @@ public class HexagonBorderGrid extends Element_Model {
 		
 		Vertex[] vertices = createVertices();
 		
-		adjustToTerrainAndSea(vertices);
+		SuperGrid.adjustToTerrainAndSea(vertices);
 		
 		vectors = null;
 		
 		setData(vertices, elementBuffer);
-		
-		
 		
 	}
 	
@@ -99,22 +95,6 @@ public class HexagonBorderGrid extends Element_Model {
 		}
 		
 		return vertices;
-		
-	}
-	
-	private void adjustToTerrainAndSea(Vertex[] vertices) {
-		
-		Vector3f zShift = new Vector3f(0, 0, Z_SHIFT);
-		
-		for (int v=0; v<vertices.length; v++) {
-			
-			if (vertices[v].getC() < 0) {
-				vertices[v].setC(0);
-			}
-			
-			vertices[v].plusEQ(zShift);
-			
-		}
 		
 	}
 	
@@ -204,15 +184,6 @@ public class HexagonBorderGrid extends Element_Model {
 	public int getWidth() {
 		return width;
 	}
-
-
-	/**
-	 * @return the z_SHIFT
-	 */
-	public static float getZ_SHIFT() {
-		return Z_SHIFT;
-	}
-	
 	
 	
 }
