@@ -8,6 +8,7 @@ import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
+import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 import java.nio.FloatBuffer;
@@ -35,7 +36,7 @@ public class HexagonGrid extends Element_Model {
 	
 	public HexagonGrid(SuperGrid superGrid, Color[] colors) {
 		
-		super(GL_TRIANGLE_FAN);
+		super(GL_LINE_STRIP);
 		
 		this.superGrid = superGrid;
 		
@@ -52,29 +53,49 @@ public class HexagonGrid extends Element_Model {
 	
 	private void processVerticesAndElementBuffer() {
 		
-		vertices = new ArrayList<>(length*width*7);
+		vertices = new ArrayList<>(length*width*8);
 		
 		IntBuffer elementBuffer = extractVectorsFromSuperGrid();
 		
-		SuperGrid.adjustToTerrainAndSea(vertices);
+		Vertex[] verticesArray = verticesListToArray();
 		
-		vertices = null;
+		SuperGrid.adjustToTerrainAndSea(verticesArray);
 		
-		setData(vertices, elementBuffer);
+		setData(verticesArray, elementBuffer);
 		
 	}
 	
 	private IntBuffer extractVectorsFromSuperGrid() {
 		
-		IntBuffer elementBuffer = BufferUtils.createIntBuffer(length*width*8);
+		IntBuffer elementBuffer = BufferUtils.createIntBuffer(length*width*9);
 		
-		for (int y=0; y<width; y++) {
-			for (int x=0; x<length; x++) {
+		for (int y=0; y<1; y++) {
+			for (int x=0; x<1; x++) {
 				addHexagon(elementBuffer, x, y);
 			}
 		}
 		
+		elementBuffer.flip();
+		
 		return elementBuffer;
+		
+	}
+	
+	/**
+	 * this method sets vertices = null
+	 * @return an array containing all elements of the list vertices
+	 */
+	private Vertex[] verticesListToArray() {
+		
+		Vertex[] array = new Vertex[vertices.size()];
+		
+		for (int i=0; i<array.length; i++) {
+			array[i] = vertices.get(i);
+		}
+		
+		vertices = null;
+		
+		return array;
 		
 	}
 	
@@ -84,15 +105,18 @@ public class HexagonGrid extends Element_Model {
 		
 		Vector3f[] hexBorderPositions = superGrid.getHexBorder(y*length + x);
 		
-		vertices.add(superGrid.getHexCenter(x+y*length));
-		elementBuffer.put((x+y*length)*7);
+		vertices.add(new Vertex(superGrid.getHexCenter(x+y*length), colors[x+y*length]));
+		elementBuffer.put((x+y*length)*9);
 		
 		for (int v=0; v<hexBorderPositions.length; v++) {
 			
-			vertices.add(hexBorderPositions[v]);
-			elementBuffer.put((x+y*length)*7 + v);
+			vertices.add(new Vertex(hexBorderPositions[v], colors[x+y*length]));
+			elementBuffer.put((x+y*length)*9 + 1 + v);
 			
 		}
+		
+		vertices.add(new Vertex(hexBorderPositions[0], colors[x+y*length]));
+		elementBuffer.put((x+y*length)*9 + 8);
 		
 		elementBuffer.put(PRI);
 		

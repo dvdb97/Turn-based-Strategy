@@ -33,6 +33,8 @@ public class BoardModels {
 	
 	private CoordinateSystem coSystem;
 	
+	private HexagonGrid hex;
+	
 	//matrices
 	private TransformationMatrix boardModelMatrix;
 	
@@ -56,12 +58,14 @@ public class BoardModels {
 	 * @param coSystem
 	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
-			CoordinateSystem coSystem) {
+			CoordinateSystem coSystem, HexagonGrid hex) {
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.coSystem = coSystem;
+		
+		this.hex = hex;
 		
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
@@ -113,7 +117,7 @@ public class BoardModels {
 		
 		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
-		RenderEngine.draw(terrain, null);
+	//	RenderEngine.draw(terrain, null);
 		
 		ShaderManager.disableLightShader();
 		
@@ -125,11 +129,13 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
-		RenderEngine.draw(tileBorders, null);
+	//	RenderEngine.draw(tileBorders, null);
 		
-		RenderEngine.draw(sea, null);
+	//	RenderEngine.draw(sea, null);
 		
 		RenderEngine.draw(coSystem, null);
+		
+		RenderEngine.draw(hex, null);
 		
 		ShaderManager.disableShader();
 		

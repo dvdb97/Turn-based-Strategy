@@ -42,7 +42,7 @@ public class ModelCreater {
 	
 	private CoordinateSystem coSystem;
 	
-	
+	private HexagonGrid hex;
 	
 	//********************************** initialization ************************
 	
@@ -74,7 +74,7 @@ public class ModelCreater {
 		createSea();
 		createCoSystem();
 		
-		return new BoardModels(terrain, tileBorders, sea, coSystem);
+		return new BoardModels(terrain, tileBorders, sea, coSystem, hex);
 		
 	}
 	
@@ -96,7 +96,8 @@ public class ModelCreater {
 	private void createTileBorders() {
 		
 		tileBorders = new HexagonBorderGrid(superGrid, new Color(0, 0, 0, 1));
-		
+		Color[] colors = randomColors(lengthInHex, widthInHex);
+		hex = new HexagonGrid(superGrid, colors);
 	}
 	
 	private void createSea() {
@@ -122,6 +123,17 @@ public class ModelCreater {
 	//	triLength = (lengthInHex*2 + 1)*elr + 2*xOffset + 1;
 	//	triWidth  = (widthInHex*3/2 + 1)*elr + 2*yOffset;
 		
+	}
+	
+	private Color[] randomColors(int length, int width) {
+		
+		Color[] colors = new Color[length*width];
+		
+		for (int i=0; i<colors.length; i++) {
+			colors[i] = new Color(0.2f, (float)Math.random(), (float)Math.random(), 0.5f);
+		}
+		
+		return colors;
 	}
 	
 	//******************************* get ******************************************
