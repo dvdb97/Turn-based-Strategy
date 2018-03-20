@@ -20,16 +20,16 @@ public class WorldManager {
 	
 	public static void init(int lengthInTiles, int widthInTiles) {
 		
-		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
-		
-		boardModels = modelCreater.createModels();
-		superGrid   = modelCreater.getSuperGrid();
-		
-		WorldManager.lengthInTiles = boardModels.getLength();
-		WorldManager.widthInTiles  = boardModels.getWidth();
+		WorldManager.lengthInTiles = lengthInTiles;
+		WorldManager.widthInTiles  = widthInTiles;
 		
 		setUpFertility();
+
+		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
 		
+		boardModels = modelCreater.createModels(fertility);
+		superGrid   = modelCreater.getSuperGrid();
+				
 	}
 	
 	//*************************** render ****************************
@@ -60,7 +60,7 @@ public class WorldManager {
 	
 	private static void setUpFertility() {
 		
-		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 5, 5);
+		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 2, 2);
 		
 		fertility = new float[lengthInTiles*widthInTiles];
 		
@@ -72,6 +72,7 @@ public class WorldManager {
 			}
 			
 		}
+		
 		
 	}
 	

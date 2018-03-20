@@ -117,7 +117,7 @@ public class BoardModels {
 		
 		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
-	//	RenderEngine.draw(terrain, null);
+		RenderEngine.draw(terrain, null);
 		
 		ShaderManager.disableLightShader();
 		
@@ -129,9 +129,9 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
 		
-	//	RenderEngine.draw(tileBorders, null);
+		RenderEngine.draw(tileBorders, null);
 		
-	//	RenderEngine.draw(sea, null);
+		RenderEngine.draw(sea, null);
 		
 		RenderEngine.draw(coSystem, null);
 		

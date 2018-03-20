@@ -42,7 +42,7 @@ public class ModelCreater {
 	
 	private CoordinateSystem coSystem;
 	
-	private HexagonGrid hex;
+	private HexagonGrid hexagons;
 	
 	//********************************** initialization ************************
 	
@@ -66,15 +66,16 @@ public class ModelCreater {
 	 * creates all models needed to render the game board.
 	 * namely: terrain, sea, tile borders and an coordinate system
 	 */
-	public BoardModels createModels() {
+	public BoardModels createModels(float[] fertility) {
 		
 		createSuperGrid();
 		createTerrain();
 		createTileBorders();
 		createSea();
 		createCoSystem();
+		createHexagons(fertility);
 		
-		return new BoardModels(terrain, tileBorders, sea, coSystem, hex);
+		return new BoardModels(terrain, tileBorders, sea, coSystem, hexagons);
 		
 	}
 	
@@ -96,8 +97,6 @@ public class ModelCreater {
 	private void createTileBorders() {
 		
 		tileBorders = new HexagonBorderGrid(superGrid, new Color(0, 0, 0, 1));
-		Color[] colors = randomColors(lengthInHex, widthInHex);
-		hex = new HexagonGrid(superGrid, colors);
 	}
 	
 	private void createSea() {
@@ -112,17 +111,21 @@ public class ModelCreater {
 		
 	}
 	
+	private void createHexagons(float[] fertility) {
+		
+	//	Color[] colors = randomColors(lengthInHex, widthInHex);
+		Color[] colors = fertilityColors(lengthInHex, widthInHex, fertility);
+		hexagons = new HexagonGrid(superGrid, colors);
+		
+	}
+	
 	//******************************** calculations *******************************
 	
 	private void calculations() {
 		
 		triLength = (lengthInHex*2 + 2)*elr + 2*xOffset;
 		triWidth  = (widthInHex*3/2 + 1)*elr + 1 + 2*yOffset;
-		
-		
-	//	triLength = (lengthInHex*2 + 1)*elr + 2*xOffset + 1;
-	//	triWidth  = (widthInHex*3/2 + 1)*elr + 2*yOffset;
-		
+				
 	}
 	
 	private Color[] randomColors(int length, int width) {
@@ -130,10 +133,22 @@ public class ModelCreater {
 		Color[] colors = new Color[length*width];
 		
 		for (int i=0; i<colors.length; i++) {
-			colors[i] = new Color(0.2f, (float)Math.random(), (float)Math.random(), 0.5f);
+			colors[i] = new Color(0.2f, (float)Math.random(), (float)Math.random(), 0.1f);
 		}
 		
 		return colors;
+	}
+	
+	private Color[] fertilityColors(int length, int width, float[] fertility) {
+		
+		Color[] colors = new Color[length*width];
+		
+		for (int i=0; i<colors.length; i++) {
+			colors[i] = new Color(fertility[i]*0.13f, fertility[i]*0.55f, fertility[i]*0.13f, 0.8f);
+		}
+		
+		return colors;
+		
 	}
 	
 	//******************************* get ******************************************

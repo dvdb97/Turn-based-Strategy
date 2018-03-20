@@ -8,8 +8,13 @@ import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
+import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -25,7 +30,7 @@ public class HexagonGrid extends Element_Model {
 	//dimensions
 	private int length, width;
 	
-	private ArrayList<Vertex> vertices;
+	private Vertex[] vertices;
 	
 	//others
 	private Color[] colors;
@@ -36,7 +41,7 @@ public class HexagonGrid extends Element_Model {
 	
 	public HexagonGrid(SuperGrid superGrid, Color[] colors) {
 		
-		super(GL_LINE_STRIP);
+		super(GL_TRIANGLE_FAN);
 		
 		this.superGrid = superGrid;
 		
@@ -53,15 +58,13 @@ public class HexagonGrid extends Element_Model {
 	
 	private void processVerticesAndElementBuffer() {
 		
-		vertices = new ArrayList<>(length*width*8);
+		vertices = new Vertex[length*width*7];
 		
 		IntBuffer elementBuffer = extractVectorsFromSuperGrid();
 		
-		Vertex[] verticesArray = verticesListToArray();
+		SuperGrid.adjustToTerrainAndSea(vertices);
 		
-		SuperGrid.adjustToTerrainAndSea(verticesArray);
-		
-		setData(verticesArray, elementBuffer);
+		setData(vertices, elementBuffer);
 		
 	}
 	
@@ -69,9 +72,9 @@ public class HexagonGrid extends Element_Model {
 		
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer(length*width*9);
 		
-		for (int y=0; y<1; y++) {
-			for (int x=0; x<1; x++) {
-				addHexagon(elementBuffer, x, y);
+		for (int y=0; y<width; y++) {
+			for (int x=0; x<length; x++) {
+				addHexagon(elementBuffer, x + y*length);
 			}
 		}
 		
@@ -81,45 +84,27 @@ public class HexagonGrid extends Element_Model {
 		
 	}
 	
-	/**
-	 * this method sets vertices = null
-	 * @return an array containing all elements of the list vertices
-	 */
-	private Vertex[] verticesListToArray() {
-		
-		Vertex[] array = new Vertex[vertices.size()];
-		
-		for (int i=0; i<array.length; i++) {
-			array[i] = vertices.get(i);
-		}
-		
-		vertices = null;
-		
-		return array;
-		
-	}
 	
 	//********************
 	
-	private void addHexagon(IntBuffer elementBuffer, int x, int y) {
+	private void addHexagon(IntBuffer elementBuffer, int i) {
 		
-		Vector3f[] hexBorderPositions = superGrid.getHexBorder(y*length + x);
+		Vector3f[] hexBorderPositions = superGrid.getHexBorder(i);
 		
-		vertices.add(new Vertex(superGrid.getHexCenter(x+y*length), colors[x+y*length]));
-		elementBuffer.put((x+y*length)*9);
+		vertices[i*7] = new Vertex(superGrid.getHexCenter(i), colors[i]);
+		elementBuffer.put(i*7);
 		
 		for (int v=0; v<hexBorderPositions.length; v++) {
 			
-			vertices.add(new Vertex(hexBorderPositions[v], colors[x+y*length]));
-			elementBuffer.put((x+y*length)*9 + 1 + v);
-			
+			vertices[i*7 + v+1] = new Vertex(hexBorderPositions[v], colors[i]);
+			elementBuffer.put(i*7 + v+1);
+
 		}
 		
-		vertices.add(new Vertex(hexBorderPositions[0], colors[x+y*length]));
-		elementBuffer.put((x+y*length)*9 + 8);
-		
+		elementBuffer.put(i*7 + 1);
+
 		elementBuffer.put(PRI);
-		
+
 	}
 	
 	
@@ -172,5 +157,25 @@ public class HexagonGrid extends Element_Model {
 		}
 		updateColor();
 	}
+	
+	
+	//************************************ draw start stop ***************************
+	
+	@Override
+	public void onDrawStart() {
+		super.onDrawStart();
+		
+		glEnable(GL_PRIMITIVE_RESTART);
+		glPrimitiveRestartIndex(PRI);
+	}
+	
+	@Override
+	public void onDrawStop() {
+		super.onDrawStop();
+		
+		glDisable(GL_PRIMITIVE_RESTART);
+		
+	}
+	
 	
 }
