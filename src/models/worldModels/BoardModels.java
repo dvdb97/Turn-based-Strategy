@@ -33,6 +33,8 @@ public class BoardModels {
 	
 	private CoordinateSystem coSystem;
 	
+	private HexagonGrid hex;
+	
 	//matrices
 	private TransformationMatrix boardModelMatrix;
 	
@@ -46,8 +48,6 @@ public class BoardModels {
 	
 	private static Color selectedTileColor;
 	
-	private Vertex[] vertices;
-	
 	//***************************** constructor ********************************
 	
 	/**
@@ -58,19 +58,19 @@ public class BoardModels {
 	 * @param coSystem
 	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
-			CoordinateSystem coSystem) {
+			CoordinateSystem coSystem, HexagonGrid hex) {
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.coSystem = coSystem;
 		
+		this.hex = hex;
+		
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
 		
 		hardCode();
-		
-		createVertexArray();
 		
 		boardModelMatrix = new TransformationMatrix();
 		
@@ -92,20 +92,6 @@ public class BoardModels {
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 	}
-
-	private void createVertexArray() {
-		
-		Vector3f[] positions = terrain.getPosArray();
-		ColorFunction terrainCol = new TerrainCol();
-		
-		vertices = new Vertex[positions.length];
-		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
-		}
-		
-	}
-
-	
 	
 	
 	//***************************** render ********************************
@@ -149,6 +135,8 @@ public class BoardModels {
 		
 		RenderEngine.draw(coSystem, null);
 		
+		RenderEngine.draw(hex, null);
+		
 		ShaderManager.disableShader();
 		
 	}
@@ -180,24 +168,6 @@ public class BoardModels {
 	
 	
 	//**************************** get *************************************
-	
-	/**
-	 * @return an array containing all terrains vertices
-	 */
-	public Vertex[] getVertices() {
-		
-		return vertices;
-		
-	}
-	
-	/**
-	 * @return an array containing the vertex-array-indices of all tile's center
-	 */
-	public int[] getTileCenters() {
-		
-		return tileBorders.getHexCenterIndices();
-		
-	}
 	
 	/**
 	 * @return the game board's length in tiles

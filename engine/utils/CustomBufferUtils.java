@@ -50,22 +50,7 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
-	/**
-	 * 
-	 * creates and flips a FloatBuffer which contains all the elements of list
-	 * @param list ArrayList of Float wrapper
-	 * @return the buffer
-	 */
-	/*public static FloatBuffer createFloatBuffer(ArrayList<Float> list) {
-		
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(list.size());
-		for (Float f : list) {
-			buffer.put(f);
-		}
-		buffer.flip();
-		
-		return buffer;
-	}*/
+	
 	
 	public static FloatBuffer createFloatBuffer(ArrayList<Vector3f> list) {
 		

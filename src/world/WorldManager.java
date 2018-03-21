@@ -1,7 +1,7 @@
 package world;
 
-import assets.meshes.geometry.Vertex;
 import math.vectors.Vector3f;
+import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
@@ -12,27 +12,24 @@ public class WorldManager {
 	private static int lengthInTiles, widthInTiles;
 	
 	private static BoardModels boardModels;
+	private static SuperGrid superGrid;
 	
-	private static Vertex[] vertices;
 	private static float[] fertility;
-	private static int[] tileCenterIndices;
 	
 	//*************************** init ******************************
 	
 	public static void init(int lengthInTiles, int widthInTiles) {
 		
-		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
-		
-		boardModels = modelCreater.createModels();
-		
-		vertices = boardModels.getVertices();
-		tileCenterIndices = boardModels.getTileCenters();
-		
-		WorldManager.lengthInTiles = boardModels.getLength();
-		WorldManager.widthInTiles  = boardModels.getWidth();
+		WorldManager.lengthInTiles = lengthInTiles;
+		WorldManager.widthInTiles  = widthInTiles;
 		
 		setUpFertility();
+
+		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
 		
+		boardModels = modelCreater.createModels(fertility);
+		superGrid   = modelCreater.getSuperGrid();
+				
 	}
 	
 	//*************************** render ****************************
@@ -47,15 +44,15 @@ public class WorldManager {
 	
 	public static Vector3f[] getTileCenterPos() {
 		
-		Vector3f[] hexCenterVectors = new Vector3f[tileCenterIndices.length];
+		Vector3f[] tileCenterPositions = new Vector3f[lengthInTiles*widthInTiles];
 		
-		for (int i=0; i<hexCenterVectors.length; i++) {
-			
-			hexCenterVectors[i] = vertices[tileCenterIndices[i]].getPosition();
-			
+		for (int v=0; v<tileCenterPositions.length; v++) {
+			tileCenterPositions[v] = superGrid.getHexCenter(v);
 		}
 		
-		return hexCenterVectors;
+		SuperGrid.adjustToTerrainAndSea(tileCenterPositions);
+		
+		return tileCenterPositions;
 		
 	}
 	
@@ -63,7 +60,7 @@ public class WorldManager {
 	
 	private static void setUpFertility() {
 		
-		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 5, 5);
+		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 2, 2);
 		
 		fertility = new float[lengthInTiles*widthInTiles];
 		
@@ -75,6 +72,7 @@ public class WorldManager {
 			}
 			
 		}
+		
 		
 	}
 	
