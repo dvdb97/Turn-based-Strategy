@@ -144,7 +144,7 @@ public class ModelCreater {
 		Color[] colors = new Color[length*width];
 		
 		for (int i=0; i<colors.length; i++) {
-			colors[i] = new Color(fertility[i]*0.13f, fertility[i]*0.55f, fertility[i]*0.13f, 0.8f);
+			colors[i] = new Color(fertility[i]*0.13f, fertility[i]*0.55f, fertility[i]*0.13f, 0.2f);
 		}
 		
 		return colors;

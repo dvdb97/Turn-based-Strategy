@@ -2,10 +2,8 @@ package world;
 
 class GameBoard {
 	
-	//-------------------------------- fields --------------------------------
+	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;
-	
-	
 	
 	//-------------------------------- get & set -------------------------------
 	
@@ -14,11 +12,11 @@ class GameBoard {
 	 * @param tiles 
 	 * @return true if tiles was set, false if tiles has been set before (tiles can only be set once)
 	 */
-	public static boolean setTiles(Tile[] tileArray) {
+	public static boolean setTiles(Tile[] tiles) {
 		
 		if (tiles == null) {
 			
-			tiles = tileArray;
+			GameBoard.tiles = tiles;
 			return true;
 			
 		} else {

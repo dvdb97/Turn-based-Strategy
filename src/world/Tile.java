@@ -9,7 +9,7 @@ class Tile {
 	private float heightSTDV;
 	
 	private float fertility;
-	private float forest;
+	private float forest;		//Grad der Bewaldung
 	
 	//buildings
 	private int maxNumBuildings;
@@ -23,9 +23,24 @@ class Tile {
 		this.avgHeight = avgHeight;
 		this.heightSTDV = heightSTDV;
 		this.fertility = fertility;
+		
+		forest = calcForest();
+		
 	}
 	
+	//0.693147
 	
+	private float calcForest() {
+		
+		float a = 0.693147f;
+		
+		float h = avgHeight>a ? avgHeight/a : (avgHeight-a)/a;
+		float f = fertility;
+		
+	
+		return h*f;
+		
+	}
 	
 	
 	
