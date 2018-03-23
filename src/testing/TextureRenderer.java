@@ -2,9 +2,10 @@ package testing;
 
 import assets.models.Element_Model;
 import assets.textures.Texture2D;
-import graphics.shaders.ShaderManager;
+import graphics.matrices.Matrices;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
+import rendering.shaders.ShaderManager;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
@@ -57,7 +58,7 @@ public class TextureRenderer {
 	
 	
 	public static void render(Texture2D texture) {
-		ShaderManager.useTexturedMeshShaders(new Matrix44f());
+		ShaderManager.useTexturedMeshShaders(Matrices.getPerspectiveProjectionMatrix());
 		
 		RenderEngine.render(model, texture);
 		

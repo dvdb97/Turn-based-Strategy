@@ -1,7 +1,7 @@
 package interaction;
 
+import assets.cameras.CameraOperator;
 import core.Application;
-import graphics.Camera;
 import graphics.matrices.Matrices;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
@@ -55,12 +55,12 @@ public class TileSelecter {
 	}
 
 	private static void refreshVariables() {
-		invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
+		invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
 		
 		cursorX = CursorPosInput.getXPosAsOpenglCoord();
 		cursorY = CursorPosInput.getYPosAsOpenglCoord();
 		
-		rayOrigin = Camera.getPosition();
+		rayOrigin = PlayerCamera.getCameraPosition();
 		rayDirection = new Vector3f(cursorX, cursorY/Matrices.getWindowProportions(), -1f);
 		
 		rayDirection = invertedViewMatrix33f.times(rayDirection);

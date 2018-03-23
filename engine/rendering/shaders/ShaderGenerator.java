@@ -1,6 +1,5 @@
 package rendering.shaders;
 
-import graphics.shaders.ShaderManager;
 import utils.FileUtils;
 
 public class ShaderGenerator {

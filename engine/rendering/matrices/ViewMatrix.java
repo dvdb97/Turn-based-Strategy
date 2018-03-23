@@ -23,7 +23,7 @@ public class ViewMatrix extends TransformationMatrix {
 	public void refresh() {
 		
 		//setAll() is a method of the superclass TransformationMatrix
-		setAll(camera.getTranslation().negated(), -camera.getPitch(),
+		setAll(camera.getPosition().negated(), -camera.getPitch(),
 				-camera.getYaw(), -camera.getRoll(), camera.getZoom());
 		updateData();
 	}
@@ -44,8 +44,7 @@ public class ViewMatrix extends TransformationMatrix {
 		setC1(-scale*sRY);
 		setC2( scale*sRX);
 		setC3( scale*cRX*cRY);
-		setC4( scale*(-transX*sRY+transY*sRX+transZ*cRX*cRY));
-		
+		setC4( scale*(-transX*sRY+transY*sRX+transZ*cRX*cRY));		
 		
 	    //setD4( scale);
 		setD4( 1.0f);
@@ -55,7 +54,7 @@ public class ViewMatrix extends TransformationMatrix {
 	
 	public Matrix44f getMultiplicativeInverse() {
 		
-		return new TransformationMatrix(camera.getTranslation().getA(), camera.getTranslation().getB(), camera.getTranslation().getC(), camera.getPitch(), camera.getYaw(), camera.getRoll(), 1.0f / camera.getZoom());
+		return new TransformationMatrix(camera.getPosition().getA(), camera.getPosition().getB(), camera.getPosition().getC(), camera.getPitch(), camera.getYaw(), camera.getRoll(), 1.0f / camera.getZoom());
 		
 	}
 }

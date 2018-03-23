@@ -1,13 +1,13 @@
 package core.game;
 
 import core.saves.GameScore;
-import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
-import interaction.CameraOperator;
+import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
+import rendering.shaders.ShaderManager;
 import visualize.FontTest;
 import world.WorldManager;
 
@@ -26,11 +26,12 @@ public class Game {
 		//Init the shaders
 		ShaderManager.init();
 		
+		//Init the camera
+		PlayerCamera.init();
+		
+		
 		//Init world
 		WorldManager.init(boardLength, boardWidth);
-		
-		//Init the camera
-		CameraOperator.init();
 		
 		//Init tile selecter
 		TileSelecter.init();
@@ -80,7 +81,7 @@ public class Game {
 	
 	private void processInput() {
 		
-		CameraOperator.update();
+		PlayerCamera.update();
 		
 		TileSelecter.processInput();
 		

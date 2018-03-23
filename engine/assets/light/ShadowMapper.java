@@ -1,11 +1,15 @@
 package assets.light;
 
+import assets.cameras.Camera;
+import assets.cameras.CameraOperator;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
 import math.matrices.Matrix44f;
 import math.vectors.Vector2i;
+import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import rendering.framebuffers.FrameBuffer;
+import rendering.matrices.ViewMatrix;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
@@ -18,6 +22,7 @@ public class ShadowMapper {
 	private static final int SHADOW_MAP_HEIGHT = 1024;
 	
 	private static ShaderProgram shader;
+	
 	
 	private static Matrix44f projectionMatrix;
 	
@@ -60,8 +65,9 @@ public class ShadowMapper {
 	 * @param light
 	 * @param lightPosition
 	 * @param viewMatrix
+	 * @param cameraPos The position of the regular camera. TODO: Replace it with an actual reference to a camera
 	 */
-	public static Texture2D generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light) {
+	public static Texture2D generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Vector3f cameraPos) {
 		
 		Vector2i viewportPos = RenderEngine.getViewPortPosition();
 		Vector2i viewportSize = RenderEngine.getViewportSize();
@@ -75,7 +81,9 @@ public class ShadowMapper {
 		RenderEngine.clear(GL_DEPTH_BUFFER_BIT);
 		
 		shader.use();
-		shader.setUniformMatrix4fv("u_mvpMatrix", projectionMatrix.times(light.generateLightViewMatrix()).times(modelMatrix));
+		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
+		shader.setUniformMatrix4fv("viewMatrix", light.getLightViewMatrix());
+		shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix);
 		
 		RenderEngine.render(model, null);
 		
@@ -89,6 +97,11 @@ public class ShadowMapper {
 		
 		return texture;
 		
+	}
+	
+	
+	public static Matrix44f getProjectionmatrix() {
+		return projectionMatrix;
 	}
 
 }

@@ -1,6 +1,7 @@
 package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 import java.nio.ByteBuffer;
 import assets.textures.utils.Image;
@@ -66,7 +67,7 @@ public class Texture2D extends Texture {
 		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
 		
 		texture.setFilter(GL_NEAREST);
-		texture.setTextureWrap(GL_REPEAT);
+		texture.setTextureWrap(GL_CLAMP_TO_EDGE);
 		
 		texture.unbind();
 		

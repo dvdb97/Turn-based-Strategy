@@ -1,4 +1,4 @@
-package graphics.shaders;
+package rendering.shaders;
 
 import assets.light.LightSource;
 import assets.material.Material;
@@ -7,8 +7,6 @@ import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
 import rendering.shaders.standardShaders.lightShader.LightShader;
 
 public class ShaderManager {
@@ -75,7 +73,7 @@ public class ShaderManager {
 	}
 	
 	
-	public static void useLightShaderShadowRendering(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, Vector3f camPos, LightSource light, Vector3f ambient, Material mat) {
+	public static void useLightShaderShadowRendering(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, Vector3f camPos, LightSource light, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, Vector3f ambient, Material mat) {
 		
 		if (!initialized) {
 			
@@ -86,7 +84,7 @@ public class ShaderManager {
 		}
 		
 		lightShader.use();
-		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, true, light.generateLightViewMatrix(), mat);
+		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, true, lightViewMatrix, lightProjectionMatrix, mat);
 		
 	}
 	

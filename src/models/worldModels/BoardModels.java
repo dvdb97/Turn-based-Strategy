@@ -8,11 +8,9 @@ import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
-import graphics.Camera;
 import graphics.matrices.Matrices;
 import graphics.matrices.TransformationMatrix;
-import graphics.shaders.ShaderManager;
-import interaction.CameraOperator;
+import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -20,6 +18,7 @@ import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
+import rendering.shaders.ShaderManager;
 import testing.TextureRenderer;
 import visualize.CoordinateSystem;
 import world.WorldManager;
@@ -94,7 +93,8 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
-		sun = new LightSource(new Vector3f(-0.3f, 0.0f, -0.0001f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(-1f, -1f, 1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 		lightViewMatrix = new TransformationMatrix(new Vector3f(1f, 1f, 1f), sun.getDirection(), 1f);
@@ -146,11 +146,11 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		Texture2D shadowMap = ShadowMapper.generateShadowMap(shadowTest, boardModelMatrix, sun);
+		Texture2D shadowMap = ShadowMapper.generateShadowMap(shadowTest, boardModelMatrix, sun, PlayerCamera.getCameraPosition());
 		
-		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		ShaderManager.useLightShaderShadowRendering(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), PlayerCamera.getCameraPosition(), sun, sun.getLightViewMatrix(), ShadowMapper.getProjectionmatrix(), ambientLight, mapMaterial);
 		
-		RenderEngine.render(shadowTest, null);
+		RenderEngine.render(shadowTest, shadowMap);
 		
 		ShaderManager.disableLightShader();
 		
@@ -161,7 +161,7 @@ public class BoardModels {
 		
 		tileBorders.displayAll();
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
 		
 		RenderEngine.render(tileBorders, null);
 		
@@ -177,7 +177,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
 		
 		RenderEngine.render(tileBorders, null);
 		
@@ -189,7 +189,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
 		
 		RenderEngine.render(tileBorders, null);
 		

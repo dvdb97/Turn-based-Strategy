@@ -12,9 +12,9 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-
 //Shadow uniforms:
 uniform mat4 lightViewMatrix;
+uniform mat4 lightProjectionMatrix;
 
 
 //Outgoing variables
@@ -24,7 +24,6 @@ out VS_OUT {
 	vec4 fragColor;
 	vec3 fragTexPos;
 	vec3 fragNormal;
-	mat3 fragViewMatrix;
 } vs_out;
 
 
@@ -43,10 +42,7 @@ void main() {
 	vs_out.fragCoord = vec3(modelMatrix * vec4(vPosition, 1.0f));
 
 	//The light-space coordinates of the vertex
-	vs_out.fragCoordLightSpace = lightViewMatrix * vec4(vs_out.fragCoord, 1.0f);
-
-	//The view matrix to rotate the light direction into view space
-	vs_out.fragViewMatrix = mat3(viewMatrix);
+	vs_out.fragCoordLightSpace = lightProjectionMatrix * lightViewMatrix * modelMatrix * vec4(vs_out.fragCoord, 1.0f);
 
 	//The projective space coordinates of the vertex
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vPosition, 1.0f);

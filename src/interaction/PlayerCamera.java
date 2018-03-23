@@ -1,47 +1,30 @@
 package interaction;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
+
+import assets.cameras.CameraOperator;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
+import math.matrices.advanced.Determinant;
 import math.vectors.Vector3f;
 
-import static org.lwjgl.glfw.GLFW.*;
-
-import graphics.Camera;
-import graphics.matrices.ViewMatrix;
-
-
-public class CameraOperator {
+public class PlayerCamera {
+	
+	private static CameraOperator camera;
 	
 	//The Map shouldn't move in some cases. For example when you are in a menu
-	private static boolean cameraMovementDisabled;
-	
-	
-	private static ViewMatrix viewMatrix;
-	
+	private static boolean cameraMovementDisabled;	
 	
 	//TODO: The value is temporary
 	private static float cameraMovementSpeed = 0.1f;
 	private static float cameraRotationSpeed = 0.1f;
-	
+
 	
 	//Init the camera
 	public static void init() {
-		
-		cameraMovementDisabled = false;		
-		
-		viewMatrix = new ViewMatrix();
-		
-	}
-	
-	
-	//Init the camera with a starting position.
-	public static void init(Vector3f startingPosition, Vector3f startingRotation, float startingZoom) {
-		
-		cameraMovementDisabled = false;
-		
-		
-		viewMatrix = new ViewMatrix();
-		
+		cameraMovementDisabled = false;	
+		camera = new CameraOperator();
 	}
 	
 	
@@ -57,9 +40,6 @@ public class CameraOperator {
 		
 		processZoom();
 		
-		
-		viewMatrix.refresh();
-		
 	}
 	
 	
@@ -70,28 +50,28 @@ public class CameraOperator {
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationForward())) {
 			
-			Camera.move(0f, cameraMovementSpeed, 0f);
+			camera.move(0f, cameraMovementSpeed, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationBackward())) {
 			
-			Camera.move(0f, -cameraMovementSpeed, 0f);
+			camera.move(0f, -cameraMovementSpeed, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationRight())) {
 			
-			Camera.move(cameraMovementSpeed, 0f, 0f);
+			camera.move(cameraMovementSpeed, 0f, 0f);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationLeft())) {
 			
-			Camera.move(-cameraMovementSpeed, 0f, 0f);
+			camera.move(-cameraMovementSpeed, 0f, 0f);
 			
 		}
 		
@@ -106,31 +86,41 @@ public class CameraOperator {
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationDown())) {
 			
-			Camera.move(0f, 0f, -cameraMovementSpeed);
+			camera.move(0f, 0f, -cameraMovementSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(KeyBindings.getMapTranslationUp())) {
 			
-			Camera.move(0f, 0f, cameraMovementSpeed);
+			camera.move(0f, 0f, cameraMovementSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(GLFW_KEY_T)) {
 			
-			Camera.incrPitch(0.1f * cameraRotationSpeed);
+			camera.incrPitch(0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(GLFW_KEY_G)) {
 			
-			Camera.incrPitch(-0.1f * cameraRotationSpeed);
+			camera.incrPitch(-0.1f * cameraRotationSpeed);
 			
 		}
 		
+	}
+	
+	
+	public static void lookAt(Vector3f point) {
+		camera.lookAt(point);
+	}
+	
+	
+	public static void lookAt(Vector3f position, Vector3f point) {
+		camera.lookAt(position, point);
 	}
 	
 	
@@ -148,17 +138,22 @@ public class CameraOperator {
 	}
 	
 	
-	public static ViewMatrix getViewMatrix() {
+	public static Matrix44f getViewMatrix() {
 		
-		return viewMatrix;
+		return camera.getViewMatrix();
 		
 	}
 	
 	
 	public static Matrix44f getInvertedMatrix() {
 		
-		return viewMatrix.getMultiplicativeInverse();
+		return camera.getViewMatrix().getMultiplicativeInverse();
 		
 	}
 	
+	
+	public static Vector3f getCameraPosition() {
+		return camera.getPosition();
+	}
+
 }
