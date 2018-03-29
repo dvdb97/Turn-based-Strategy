@@ -2,7 +2,8 @@ package assets.models.abstractModels;
 
 
 import assets.textures.Texture;
-import math.matrices.TransformationMatrix;
+import math.matrices.Matrix44f;
+import rendering.matrices.transformation.TransformationMatrix;
 
 
 /*
@@ -54,7 +55,7 @@ public abstract class PrimitiveModel {
 	}
 	
 	
-	public TransformationMatrix getTransformationMatrix() {
+	public Matrix44f getTransformationMatrix() {
 		
 		return transformationMatrix;
 		

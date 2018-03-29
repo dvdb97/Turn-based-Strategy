@@ -9,6 +9,8 @@ import static math.MathUtils.*;
 
 public class CameraOperator extends Camera {
 	
+	private static final float PI = (float)Math.PI;
+	
 	public CameraOperator() {
 		super();
 	}
@@ -66,14 +68,16 @@ public class CameraOperator extends Camera {
 	
 	public void lookAt(Vector3f point) {
 		Vector3f pointViewSpace = this.getViewMatrix().times(new Vector4f(point, 1.0f)).toVector3f();
+		pointViewSpace.normalize();
 		
-		System.out.println("= atan(" + (pointViewSpace.getB() / pointViewSpace.getC()) + ")");
+		//pointViewSpace.print();
 		
-		float pitch = (float)Math.atan(pointViewSpace.getB() / pointViewSpace.getC());
-		float yaw = (float)Math.atan(pointViewSpace.getC() / pointViewSpace.getA());
+		//Minus PI because the vector (0, 0, -1) should be 0° pitch in our right-handed coordinate system
+		float pitch = (float)Math.atan2(pointViewSpace.getB(), pointViewSpace.getC()) - PI;
+		float yaw = (float)Math.atan2(pointViewSpace.getA(), pointViewSpace.getC());
 		
-		System.out.println(pitch + " = atan(" + (pointViewSpace.getB() / pointViewSpace.getC()) + ")");
-		System.out.println(yaw + " = atan(" + (pointViewSpace.getC() / pointViewSpace.getA()) + ")");
+		//System.out.println("Pitch: " + Math.toDegrees(pitch) + " bzw. " + (pitch / Math.PI) + " pi");
+		//System.out.println("Yaw: " + Math.toDegrees(yaw) + " bzw. " + (yaw / Math.PI) + " pi");
 		
 		this.setRotation(new Vector3f(pitch, yaw, 0.0f));
 	}

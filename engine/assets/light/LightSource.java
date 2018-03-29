@@ -5,7 +5,6 @@ import math.MathUtils;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import assets.cameras.CameraOperator;
-import graphics.matrices.TransformationMatrix;
 
 
 public class LightSource {
@@ -13,8 +12,6 @@ public class LightSource {
 	private Vector3f direction;
 	
 	private Vector3f color;
-	
-	private CameraOperator lightCamera;
 	
 	//****************************** constructor **************************************************
 	
@@ -25,8 +22,6 @@ public class LightSource {
 		this.direction.normalize();
 		this.color = color;
 		
-		this.lightCamera = new CameraOperator();
-		this.lightCamera.lookAt(direction.negatedCopy().times(2f), direction);
 	}
 	
 	
@@ -49,8 +44,5 @@ public class LightSource {
 		this.color = color;
 	}
 	
-	public Matrix44f getLightViewMatrix() {
-		return lightCamera.getViewMatrix();	
-	}
 	
 }

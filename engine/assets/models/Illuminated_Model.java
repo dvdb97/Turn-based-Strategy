@@ -26,4 +26,9 @@ public class Illuminated_Model extends Element_Model {
 		return material;
 	}
 	
+	
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+	
 }

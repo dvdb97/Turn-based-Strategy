@@ -1,6 +1,5 @@
 package core;
 
-import assets.light.ShadowMapper;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
@@ -11,6 +10,7 @@ import interaction.input.KeyInput;
 import interaction.input.MouseInputManager;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
+import rendering.lightRenderer.LightRenderer;
 
 public class Application {
 	
@@ -56,7 +56,7 @@ public class Application {
 		Matrices.initProjectionMatrix(window);
 		
 		//Initializes the ShadowMapper that is later used for generating a shadow map
-		ShadowMapper.init(Matrices.getOrthographicProjectionMatrix());
+		LightRenderer.init(window.getWidth(), window.getHeight());
 		
 	}
 	

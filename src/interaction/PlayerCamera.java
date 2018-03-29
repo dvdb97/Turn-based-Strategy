@@ -3,6 +3,7 @@ package interaction;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 
+import assets.cameras.Camera;
 import assets.cameras.CameraOperator;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
@@ -154,6 +155,11 @@ public class PlayerCamera {
 	
 	public static Vector3f getCameraPosition() {
 		return camera.getPosition();
+	}
+	
+	
+	public static Camera getCamera() {
+		return camera;
 	}
 
 }

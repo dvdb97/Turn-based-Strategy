@@ -1,6 +1,7 @@
 package rendering.shaders.standardShaders.lightShader;
 
 import assets.light.LightSource;
+import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import math.matrices.Matrix44f;
@@ -14,8 +15,8 @@ public class LightShader extends ShaderProgram {
 	//A constant for loading the files because I'm lazy to type it 4 times
 	private static final String path = "Shaders/LightShaders/";
 
-	private LightSource lightSource = new LightSource(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
 	
+	private LightSource lightSource = new LightSource(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
 	
 	private StandardMaterial standardMaterial = new StandardMaterial();
 	
@@ -25,8 +26,9 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
-	/*
-	 * @param returns a LightShader that does per vertex light computing
+	/**
+	 * 
+	 * @return returns a LightShader that does per vertex light computing
 	 */
 	public static LightShader createPerVertexLightShader() {
 		
@@ -37,8 +39,9 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
-	/*
-	 * @param returns a LightShader that does per fragment light computing
+	/**
+	 * 
+	 * @return returns a LightShader that does per fragment light computing
 	 */
 	public static LightShader createPerFragmentLightShader() {
 		
@@ -49,74 +52,15 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
-	
-	public void prepareForRendering(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projMatrix, Vector3f cameraPosition, LightSource light, Vector3f ambient, Material mat) {
-		
-		this.setModelMatrix(modelMatrix);
-		this.setViewMatrix(viewMatrix);
-		this.setProjectionMatrix(projMatrix);
-		
-		this.setCameraPosition(cameraPosition);
-		
-		if (light == null) {
-			this.setLightSource(this.lightSource);
-		} else {
-			this.lightSource = light;
-		
-			this.setLightSource(light);
-		}
-		
-		setAmbientLight(ambient);
-		
-		
-		if (mat == null) {
-			this.setMaterial(standardMaterial);
-		} else{
-			this.setMaterial(mat);	
-		}		
-	}
-	
-	
-	public void prepareForRendering(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projMatrix, Vector3f cameraPosition, LightSource light, Vector3f ambient, boolean shadowsActive, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, Material mat) {
-		
-		this.setModelMatrix(modelMatrix);
-		this.setViewMatrix(viewMatrix);
-		this.setProjectionMatrix(projMatrix);
-		
-		this.setCameraPosition(cameraPosition);
-		
-		if (light == null) {
-			this.setLightSource(this.lightSource);
-		} else {
-			this.lightSource = light;
-		
-			this.setLightSource(light);
-		}
-		
-		setAmbientLight(ambient);
-		
-		if (shadowsActive) {
-			this.setUniform1i("shadowsActive", 1);
-			this.setUniformMatrix4fv("lightViewMatrix", lightViewMatrix);
-			this.setUniformMatrix4fv("lightProjectionMatrix", lightProjectionMatrix);
-		} else {
-			this.setUniform1i("shadowsActive", 0);
-			this.setUniformMatrix4fv("lightProjectionMatrix", lightProjectionMatrix);
-		}
-		
-		
-		
-		if (mat == null) {
-			this.setMaterial(standardMaterial);
-		} else{
-			this.setMaterial(mat);	
-		}		
-	}
-	
-	
 	//*********************************** uniform setting *********************************
 	
 	
+	/**
+	 * 
+	 * Passes the model matrix as an uniform variable to the gpu
+	 * 
+	 * @param modelMatrix The model matrix
+	 */
 	public void setModelMatrix(Matrix44f modelMatrix) {
 		
 		this.setUniformMatrix4fv("modelMatrix", modelMatrix.toArray());
@@ -124,6 +68,12 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
+	/**
+	 * 
+	 * Passes the view matrix as an uniform variable to the gpu
+	 * 
+	 * @param viewMatrix The view matrix
+	 */
 	public void setViewMatrix(Matrix44f viewMatrix) {
 		
 		this.setUniformMatrix4fv("viewMatrix", viewMatrix.toArray());
@@ -131,10 +81,70 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
+	/**
+	 * 
+	 * Passes the projection matrix as an uniform variable to the gpu
+	 * 
+	 * @param projectionMatrix The projection matrix
+	 */
 	public void setProjectionMatrix(Matrix44f projectionMatrix) {
 		
 		this.setUniformMatrix4fv("projectionMatrix", projectionMatrix.toArray());
 		
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the model, view and projection matrix as an uniform variables to the gpu
+	 * 
+	 * @param modelMatrix The model matrix
+	 * @param viewMatrix The view matrix
+	 * @param projectionMatrix The projection matrix
+	 */
+	public void setMVPMatrix(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projectionMatrix) {
+		this.setModelMatrix(modelMatrix);
+		this.setViewMatrix(viewMatrix);
+		this.setProjectionMatrix(projectionMatrix);		
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the light view matrix as an uniform variable to the gpu
+	 * 
+	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
+	 */
+	public void setLightViewMatrix(Matrix44f lightViewMatrix) {
+		
+		this.setUniformMatrix4fv("lightViewMatrix", lightViewMatrix);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the light projection matrix as an uniform variable to the gpu
+	 * 
+	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
+	 */
+	public void setLightProjectionMatrix(Matrix44f lightProjectionMatrix) {
+		
+		this.setUniformMatrix4fv("lightProjectionMatrix", lightProjectionMatrix);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the view and projection matrix for the light source as an uniform variables to the gpu
+	 * 
+	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
+	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
+	 */
+	public void setLightVPMatrix(Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix) {
+		this.setLightViewMatrix(lightViewMatrix);
+		this.setLightProjectionMatrix(lightProjectionMatrix);
 	}
 	
 	
@@ -152,6 +162,12 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
+	/**
+	 * 
+	 * Sets the values of all the material-related uniform variables
+	 * 
+	 * @param mat The material
+	 */
 	public void setMaterial(Material mat) {
 		
 		this.setUniform3fv("material.emission", mat.emission.toArray());
@@ -167,11 +183,30 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
-	public void setLightSource(LightSource ls) {
+	/**
+	 * 
+	 * Sets the values of all the light source related uniform variables
+	 * 
+	 * @param ls The light source
+	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
+	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
+	 */
+	public void setLightSource(LightSource ls, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
 		
 		this.setUniform3fv("light.direction", ls.getDirection().toArray());
 		
 		this.setUniform3fv("light.color", ls.getColor().toArray());
+		
+		this.setLightVPMatrix(lightViewMatrix, lightProjectionMatrix);
+		
+		this.setUniform1i("shadowsActive", shadows ? 1 : 0);
+		
+	}
+	
+	
+	public void setShadowMapInformation(ShadowMap shadowMap) {
+		
+		this.setLightVPMatrix(shadowMap.getLightViewMatrix(), shadowMap.getLightProjectionMatrix());
 		
 	}
 

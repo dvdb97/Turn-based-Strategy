@@ -1,7 +1,6 @@
 package models.worldModels;
 
 import assets.light.LightSource;
-import assets.light.ShadowMapper;
 import assets.material.Material;
 import assets.meshes.fileLoaders.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
@@ -9,7 +8,6 @@ import assets.meshes.geometry.Vertex;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
-import graphics.matrices.TransformationMatrix;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import math.matrices.Matrix44f;
@@ -18,6 +16,8 @@ import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
+import rendering.lightRenderer.LightRenderer;
+import rendering.matrices.transformation.TransformationMatrix;
 import rendering.shaders.ShaderManager;
 import testing.TextureRenderer;
 import visualize.CoordinateSystem;
@@ -93,7 +93,7 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
-		sun = new LightSource(new Vector3f(-1f, -1f, 1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(-1f, 1f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
 		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
@@ -104,7 +104,9 @@ public class BoardModels {
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 		//TODO: Temp
-		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Ball.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Suzanne.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+		shadowTest.setTransformationMatrix(boardModelMatrix);
+		shadowTest.setMaterial(mapMaterial);
 		TextureRenderer.init();
 		
 	}
@@ -146,15 +148,8 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		Texture2D shadowMap = ShadowMapper.generateShadowMap(shadowTest, boardModelMatrix, sun, PlayerCamera.getCameraPosition());
+		LightRenderer.render(shadowTest, boardModelMatrix, sun, ambientLight, PlayerCamera.getCamera(), true);
 		
-		ShaderManager.useLightShaderShadowRendering(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), PlayerCamera.getCameraPosition(), sun, sun.getLightViewMatrix(), ShadowMapper.getProjectionmatrix(), ambientLight, mapMaterial);
-		
-		RenderEngine.render(shadowTest, shadowMap);
-		
-		ShaderManager.disableLightShader();
-		
-		TextureRenderer.render(shadowMap);
 	}
 	
 	private void renderBordersSeaCOS() {

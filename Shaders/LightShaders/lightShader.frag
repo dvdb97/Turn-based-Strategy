@@ -45,23 +45,44 @@ uniform sampler2D shadowMap;
 out vec4 fColor;
 
 
-vec3 computeDiffuseLight() {
-	vec3 lightDirection = normalize(light.direction);
-
-	float diffuse = max(0.0, -dot(lightDirection, normalize(fs_in.fragNormal)));
-
-	return diffuse * material.diffuse * light.color;
-}
-
-
 vec3 computeAmbientLight() {
 	return ambientLight * material.ambient;
 }
 
 
-vec3 computeSpecularLight() {
-	
+float computeShadow() {
+
+	if (shadowsActive == 0) {
+		return 1.0f;
+	}
+
+	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
+
+	float bias = 0.0f;//max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.005);
+
+	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
+
+	float currentDepth = projCoords.z;
+
+	return currentDepth > shadowMapDepth ? 0.2f : 1.0f;
+
+}
+
+
+vec3 computeLight() {
+
+	vec3 normalizedNormal = normalize(fs_in.fragNormal);
+
+	//********* diffuse light *********
+
 	vec3 lightDirection = normalize(light.direction);
+
+	float diffuse = max(0.0, -dot(lightDirection, normalizedNormal));
+
+	vec3 diffuseLight = diffuse * material.diffuse * light.color;
+
+
+	//********* specular light *********
 
 	/*
 	 * The vector from the fragment's position to the camera. Will be used for reflection.
@@ -70,46 +91,32 @@ vec3 computeSpecularLight() {
 	vec3 viewDirection = normalize(cameraPosition - fs_in.fragCoord);
 	
 	//Reflect the incoming light
-	vec3 reflectionDirection = normalize(reflect(lightDirection, normalize(fs_in.fragNormal)));
+	vec3 reflectionDirection = normalize(reflect(lightDirection, normalizedNormal));
 	
 	float specular = max(0.0, dot(viewDirection, reflectionDirection));
 	
-	return material.specular * pow(specular, 64.0f) * light.color;
-
-}
-
-
-float computeShadow() {
-
-	if (shadowsActive == 0) {
-		return 0.0f;
+	if (diffuse == 0) {
+		specular = 0;
 	}
 
-	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
+	vec3 specularLight = material.specular * pow(specular, 64.0f) * light.color;
 
-	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.005);
 
-	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
+	//********* final result *********
 
-	float currentDepth = projCoords.z;
 
-	return currentDepth > shadowMapDepth ? 0.1f : 1.0f;
+	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * fs_in.fragColor.rgb;
+
+
+	return min(vec3(1.0f, 1.0f, 1.0f), finalColor);
 
 }
 
 
 void main() {
 
-	vec3 scatteredLight = computeDiffuseLight();
-
-	vec3 reflectedLight = computeSpecularLight();
+	vec3 finalColor = computeLight();
 	
-	vec3 ambient = computeAmbientLight();
-
-	float shadow = computeShadow();
-
-	vec3 rgb = min(vec3(1.0, 1.0, 1.0), (ambient + shadow * (scatteredLight + reflectedLight)) * fs_in.fragColor.rgb);
-	
-	fColor = vec4(rgb, fs_in.fragColor.a);
+	fColor = vec4(finalColor, fs_in.fragColor.a);
 
 }

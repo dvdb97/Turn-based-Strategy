@@ -24,7 +24,7 @@ public class Matrices {
 		
 		invertedPerspProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(perspProjectionMatrix);
 		
-		orthProjectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions(), 3f);
+		orthProjectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions(), 10f);
 		
 		invertedOrthProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(orthProjectionMatrix);
 		

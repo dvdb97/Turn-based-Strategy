@@ -13,8 +13,6 @@ public class ShaderManager {
 	
 	private static boolean initialized = false;
 	
-	private static LightShader lightShader;
-	
 	//TODO: Maybe change the name
 	private static ShaderProgram shader;
 	
@@ -28,8 +26,6 @@ public class ShaderManager {
 	
 	public static void init(/* TODO: Graphics quality */) {
 		
-		lightShader = LightShader.createPerFragmentLightShader();
-		
 		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shader.vert", "Shaders/StandardShaders/shader.frag");
 		
 		shaderColorAsU = ShaderLoader.loadShader("Shaders/StandardShaders/shaderColorAsU.vert", "Shaders/StandardShaders/shaderColorAsU.frag");
@@ -39,67 +35,6 @@ public class ShaderManager {
 		fontShader = new TextRenderingShader();
 		
 		initialized = true;
-		
-	}
-	
-	
-	public static LightShader getLightShader() {
-		
-		if (!initialized) {
-			
-			System.err.println("ShaderManager hasn't been initialized yet!");
-			
-			return null;
-		}
-		
-		return lightShader;
-		
-	}
-	
-	
-	public static void useLightShader(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, Vector3f camPos, LightSource light, Vector3f ambient, Material mat) {
-		
-		if (!initialized) {
-			
-			System.err.println("ShaderManager hasn't been initialized yet!");
-			
-			return;
-			
-		}
-		
-		lightShader.use();
-		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, mat);
-		
-	}
-	
-	
-	public static void useLightShaderShadowRendering(Matrix44f mMatrix, Matrix44f vMatrix, Matrix44f pMatrix, Vector3f camPos, LightSource light, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, Vector3f ambient, Material mat) {
-		
-		if (!initialized) {
-			
-			System.err.println("ShaderManager hasn't been initialized yet!");
-			
-			return;
-			
-		}
-		
-		lightShader.use();
-		lightShader.prepareForRendering(mMatrix, vMatrix, pMatrix, camPos, light, ambient, true, lightViewMatrix, lightProjectionMatrix, mat);
-		
-	}
-	
-	
-	public static void disableLightShader() {
-		
-		if (!initialized) {
-			
-			System.err.println("ShaderManager hasn't been initialized yet!");
-			
-			return;
-			
-		}
-		
-		lightShader.disable();
 		
 	}
 	

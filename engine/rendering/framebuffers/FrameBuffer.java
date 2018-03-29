@@ -8,17 +8,14 @@ import org.lwjgl.BufferUtils;
 import assets.GLObject;
 import assets.textures.Texture2D;
 
-import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_NONE;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glDrawBuffers;
-import static org.lwjgl.opengl.GL11.glReadBuffer;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
 public class FrameBuffer extends GLObject {	
 	
-	private GLObject depthAttachment;
+	private GLObject depthAttachment = null;
 	
 	private ArrayList<GLObject> colorAttachments;
 	
@@ -188,6 +185,11 @@ public class FrameBuffer extends GLObject {
 		
 		return buffer;
 		
+	}
+	
+	
+	public void clear() {
+		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	}
 	
 	

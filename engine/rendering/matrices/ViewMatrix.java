@@ -1,8 +1,8 @@
 package rendering.matrices;
 
 import assets.cameras.Camera;
-import graphics.matrices.TransformationMatrix;
 import math.matrices.Matrix44f;
+import rendering.matrices.transformation.TransformationMatrix;
 
 //A ViewMatrix is a TransformationMatrix which represents the
 //opposite movement of the camera it is referring to
