@@ -50,7 +50,6 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
-<<<<<<< HEAD
 	public static IntBuffer createIntBuffer(int[][] array) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(array.length * array[0].length);
 
@@ -82,9 +81,7 @@ public class CustomBufferUtils {
 		
 		return buffer;
 	}*/
-=======
-	
->>>>>>> master
+
 	
 	public static FloatBuffer createFloatBuffer(ArrayList<Vector3f> list) {
 		

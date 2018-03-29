@@ -1,21 +1,14 @@
 package interaction.tileSelection;
 
-import core.Application;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import interaction.CameraOperator;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
-import math.matrices.Matrix44f;
-import math.matrices.RotationMatrix;
 import math.matrices.advanced.MatrixInversion33f;
-import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
-
-
-import static org.lwjgl.opengl.GL11.*;
+import utils.TileBuffer;
 
 
 public class TileSelecter {	
