@@ -3,12 +3,8 @@ package interaction;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import math.MatrixManager;
-
 
 import static org.lwjgl.glfw.GLFW.*;
-
-import java.awt.RenderingHints.Key;
 
 import graphics.Camera;
 import graphics.matrices.ViewMatrix;

@@ -49,7 +49,7 @@ public class Element_Model extends Model {
 			posBuffer.put(vertices[i].getPositionData());
 			
 			if (textured) {
-				texPosBuffer.put(vertices[i].getTexturePositions().toArray());
+								texPosBuffer.put(vertices[i].getTexturePositions().toArray());
 			} else {
 				colBuffer.put(vertices[i].getColorData());
 			}

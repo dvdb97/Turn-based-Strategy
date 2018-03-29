@@ -16,19 +16,21 @@ import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
 import assets.meshes.geometry.Color;
-import assets.models.Element_Model;
+import assets.meshes.geometry.Vertex;
 import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
 import utils.Const;
 import utils.CustomBufferUtils;
-import models.PosCol;
 import models.seeds.ColorFunction;
+import models.seeds.SuperGrid;
 
-public class TriangleMesh extends Illuminated_Model {
+public class TriangleGrid extends Illuminated_Model {
 	
 	private int length, width;
 	
-	private int lengthMod2, widthMod2;
+	private int lengthMod2;
+	
+	private SuperGrid superGrid;
 	
 	private float edgeLength;
 	private float triangleAltitude;
@@ -39,63 +41,98 @@ public class TriangleMesh extends Illuminated_Model {
 	
 	private final int PRI;			//primitive restart index
 	
-	private ArrayList<Vector3f> positions;
+	private Vertex[] vertices;
+	
+	private boolean sea;
 	
 	//************************************** constructor *************************************
-	public TriangleMesh(float edgeLength, float[][] elevation, ColorFunction colorFunc, Material material) {
+	
+	/**
+	 * @param colorFunc a function that gives a vertex a color depending on its position
+	 * @param material
+	 */
+	public TriangleGrid(SuperGrid superGrid, ColorFunction colorFunc, Material material, boolean sea) {
 		
-		super(GL_TRIANGLE_STRIP, material);
-		
-		length  = elevation.length;
-		width = elevation[0].length;
-		
-		lengthMod2 = length%2;
-		widthMod2  = width%2;
-		
-		PRI = length*width;
-		
-		this.edgeLength = edgeLength;
-		triangleAltitude = 0.5f * Const.SQRT3 * edgeLength;
-		
-		this.elevation = elevation;
+		this(superGrid, material, sea);
 		
 		this.colorFunc = colorFunc;
 		
 		processVertices();
 	}
 	
-	public TriangleMesh(float edgeLength, float[][] elevation, Material material) {
+	/**
+	 * @param color the color of the grid
+	 * @param material
+	 */
+	public TriangleGrid(SuperGrid superGrid, Color color, Material material, boolean sea) {
 		
-		this(edgeLength, elevation, new PosCol(elevation.length, elevation[0].length), material);
+		this(superGrid, material, sea);
+		
+		this.colorFunc = new ColorFunction() {
+			@Override
+			public Color color(int x, int y, float height) {
+				return color;
+			}
+		};
+		
+		processVertices();
 		
 	}
 	
+	
+	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
+		
+		super(GL_TRIANGLE_STRIP, material);
+		
+		length = superGrid.getLengthInVectors();
+		width  = superGrid.getWidthInVectors();
+		
+		lengthMod2 = length%2;
+		
+		PRI = -1;
+		
+		this.superGrid = superGrid;
+		
+		this.sea = sea;
+	}
+	
 	//*************************************** prime method ****************************************
+	
 	private void processVertices() {
 		
-		//position and color data
-		positions = new ArrayList<>(length * width * 3);
-		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(length * width * 4);
-		
+		Vector3f[] positions = superGrid.getVectors();
+		elevation = new float[length][width];
 		for (int y=0; y<width; y++) {
-			
 			for (int x=0; x<length; x++) {
 				
-				positions.add(new Vector3f(x*triangleAltitude, (y+0.5f*(x%2))*edgeLength, elevation[x][y]));
-				
-				colBuffer.put(colorFunc.color(x, y, elevation[x][y]).toArray());
+				if (sea) {
+					positions[y*length + x].setC(0);
+				}
+				elevation[x][y] = positions[y*length + x].getC();
 				
 			}
-			
 		}
 		
+		ArrayList<Vector3f> normals   = processNormalVectors();
 		
-		colBuffer.flip();
+		vertices = new Vertex[positions.length];
 		
-		this.setVertexPositionData(CustomBufferUtils.createFloatBuffer(positions), 3, GL_STATIC_DRAW);
-		this.setVertexColorData(colBuffer, 4, GL_STATIC_DRAW);
+		for (int v=0; v<vertices.length; v++) {
+			vertices[v] = new Vertex(positions[v], colorFunc.color(v%length, v/length, positions[v].getC()));
+			vertices[v].setNormalVector(normals.get(v));
+		}
 		
-		//element array
+		setData(vertices, processElementBuffer());
+		
+	}
+	
+	
+	
+	//*************************************** secondary methods **********************************
+	
+	
+	private IntBuffer processElementBuffer() {
+		
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer( (width*2+1)*(length-1));
 		
 		for (int col=0; col<length-1; col++) {
@@ -113,69 +150,74 @@ public class TriangleMesh extends Illuminated_Model {
 		
 		elementBuffer.flip();
 		
-		this.setElementArrayData(elementBuffer);
+		return elementBuffer;
 		
-		//normal vectors
-		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(length * width * 3);
+	}
+	
+	
+	private ArrayList<Vector3f> processNormalVectors() {
+		
+		ArrayList<Vector3f> normals = new ArrayList<>(length*width);
 		
 		//first row
 		
-		normalBuffer.put(avgNormal_IV(elevation[0][1], elevation[1][0], elevation[0][0]).toArray());
+		normals.add(avgNormal_IV(elevation[0][1], elevation[1][0], elevation[0][0]));
 		for (int x=1; x<length-1-lengthMod2; x++) {
-			normalBuffer.put(avgNormal_II_III_IV_V(elevation[x-1][0], elevation[x-1][1], elevation[x][1], elevation[x+1][1], elevation[x+1][0], elevation[x][0]).toArray());
+			normals.add(avgNormal_II_III_IV_V(elevation[x-1][0], elevation[x-1][1], elevation[x][1], elevation[x+1][1], elevation[x+1][0], elevation[x][0]));
 			x++;
-			normalBuffer.put(avgNormal_III_IV(elevation[x-1][0], elevation[x][1], elevation[x+1][0], elevation[x][0]).toArray());
+			normals.add(avgNormal_III_IV(elevation[x-1][0], elevation[x][1], elevation[x+1][0], elevation[x][0]));
 		}
 		if (lengthMod2 == 1) {
 			int x = length-2;
-			normalBuffer.put(avgNormal_II_III_IV_V(elevation[x-1][0], elevation[x-1][1], elevation[x][1], elevation[x+1][1], elevation[x+1][0], elevation[x][0]).toArray());
+			normals.add(avgNormal_II_III_IV_V(elevation[x-1][0], elevation[x-1][1], elevation[x][1], elevation[x+1][1], elevation[x+1][0], elevation[x][0]));
 		}
-		normalBuffer.put(avgNormal_II_III(elevation[length-2][0], elevation[length-2][1], elevation[length-1][1], elevation[length-1][0]).toArray());
+		normals.add(avgNormal_II_III(elevation[length-2][0], elevation[length-2][1], elevation[length-1][1], elevation[length-1][0]));
 		
 		
 		//middle rows
 		
 		for (int y=1; y<width-1; y++) {
 			
-			normalBuffer.put(avgNormal_IV_V_VI(elevation[0][y-1], elevation[0][y+1], elevation[1][y], elevation[1][y-1], elevation[0][y]).toArray());
+			normals.add(avgNormal_IV_V_VI(elevation[0][y-1], elevation[0][y+1], elevation[1][y], elevation[1][y-1], elevation[0][y]));
 			for (int x=1; x<length-1-lengthMod2; x++) {
-				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]).toArray());
+				normals.add(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]));
 				x++;
-				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y-1], elevation[x-1][y], elevation[x][y+1], elevation[x+1][y], elevation[x+1][y-1]).toArray());
+				normals.add(avgNormal(elevation[x][y-1], elevation[x-1][y-1], elevation[x-1][y], elevation[x][y+1], elevation[x+1][y], elevation[x+1][y-1]));
 			}
 			if (lengthMod2 == 1) {
 				int x = length-2;
-				normalBuffer.put(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]).toArray());
+				normals.add(avgNormal(elevation[x][y-1], elevation[x-1][y], elevation[x-1][y+1], elevation[x][y+1], elevation[x+1][y+1], elevation[x+1][y]));
 			}
 			
-			normalBuffer.put(avgNormal_I_II_III(elevation[length-1][y-1], elevation[length-1][y-lengthMod2], elevation[length-2][y+1-lengthMod2], elevation[length-1][y+1], elevation[length-1][y]).toArray());
+			normals.add(avgNormal_I_II_III(elevation[length-1][y-1], elevation[length-1][y-lengthMod2], elevation[length-2][y+1-lengthMod2], elevation[length-1][y+1], elevation[length-1][y]));
 		}
 		
 		
 		//last row
 		
-		normalBuffer.put(avgNormal_V_VI(elevation[0][width-2], elevation[1][width-1], elevation[1][width-2], elevation[0][width-1]).toArray());
+		normals.add(avgNormal_V_VI(elevation[0][width-2], elevation[1][width-1], elevation[1][width-2], elevation[0][width-1]));
 		for (int x=1; x<length-1-lengthMod2; x++) {
-			normalBuffer.put(avgNormal_VI_I(elevation[x][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x][width-1]).toArray());
+			normals.add(avgNormal_VI_I(elevation[x][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x][width-1]));
 			x++;
-			normalBuffer.put(avgNormal_I_II_V_VI(elevation[x][width-2], elevation[x-1][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x+1][width-2], elevation[x][width-1]).toArray());
+			normals.add(avgNormal_I_II_V_VI(elevation[x][width-2], elevation[x-1][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x+1][width-2], elevation[x][width-1]));
 		}
 		if (lengthMod2 == 1) {
 			int x = length-2;
-			normalBuffer.put(avgNormal_VI_I(elevation[x][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x][width-1]).toArray());
+			normals.add(avgNormal_VI_I(elevation[x][width-2], elevation[x-1][width-1], elevation[x+1][width-1], elevation[x][width-1]));
 		}
-		normalBuffer.put(avgNormal_I(elevation[length-1][width-2], elevation[length-2][width-1], elevation[length-1][width-1]).toArray());
+		normals.add(avgNormal_I(elevation[length-1][width-2], elevation[length-2][width-1], elevation[length-1][width-1]));
 		
-		normalBuffer.flip();
-		
-		this.setVertexNormalData(normalBuffer, GL_STATIC_DRAW);
+		return normals;
 		
 	}
+
+
 	
 	
 	
 	
 	//********************************** util methods *********************************************
+	
 	private Vector3f avgNormal(float a, float b, float c, float d, float e, float f) {
 		
 		Vector3f result = new Vector3f(edgeLength*(b+c-e-f)/4.0f,
@@ -308,7 +350,7 @@ public class TriangleMesh extends Illuminated_Model {
 		return width;
 	}
 	
-	//TODO: bad methods names
+	//TODO: bad method names
 	//TODO: java doc
 	public float getTotalWidth() {
 		return width * edgeLength;
@@ -316,25 +358,6 @@ public class TriangleMesh extends Illuminated_Model {
 	
 	public float getTotalHeight() {
 		return length * edgeLength;
-	}
-	
-	/**
-	 * this method deletes this objects ArrayList positions, because this list was only implemented
-	 * to realize this method
-	 * 
-	 * @return an array of floats containing the position of this meshs vertices
-	 */
-	public Vector3f[] getPosArray() {
-		
-		Vector3f[] posArray = new Vector3f[positions.size()];
-		for (int i=0; i<positions.size(); i++) {
-			posArray[i] = positions.get(i);
-		}
-		
-		positions = null;
-		
-		return posArray;
-		
 	}
 	
 }

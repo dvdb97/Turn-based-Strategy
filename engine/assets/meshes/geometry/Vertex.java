@@ -14,6 +14,7 @@ public class Vertex extends Vector3f {
 	 */
 	private int structuringIndex;
 	
+	//better save in this in form of Color
 	private float red;
 	private float green;
 	private float blue;
@@ -21,12 +22,12 @@ public class Vertex extends Vector3f {
 	
 	
 	private Vector2f texturePositions;
-	boolean textured = false;
+	boolean textured;
 	
 	
 	//the normal vector of the vertex is the average of the normals of its surrounding surfaces
-	private Vector3f normalVec = null;
-	private int numberOfSurfaceNormals = 0;
+	private Vector3f normalVec;
+	private int numberOfSurfaceNormals;
 	
 	//************************************** constructor **************************************
 	public Vertex(float x, float y, float z, float red, float green, float blue, float alpha) {
@@ -36,6 +37,10 @@ public class Vertex extends Vector3f {
 		this.green = green;
 		this.blue = blue;
 		this.alpha = alpha;
+		
+		normalVec = null;
+		textured = false;
+		numberOfSurfaceNormals = 0;
 		
 	}
 	
@@ -121,6 +126,9 @@ public class Vertex extends Vector3f {
 		return getA() + getB() + getC();
 	}
 	
+	public Vector3f getPosition() {
+		return new Vector3f(getA(), getB(), getC());
+	}
 	
 	public float[] getPositionData() {
 		float[] data = {
@@ -160,15 +168,30 @@ public class Vertex extends Vector3f {
 		return alpha;
 	}
 	
+	//*************************************** setter ************************************
 	
-	public void setColor(Color color) {
-		this.red = color.getA();
-		this.green = color.getB();
-		this.blue = color.getC();
-		this.alpha = color.getD();
+	
+	public void setColor(float r, float g, float b, float a) {
+		
+		red   = r;
+		green = g;
+		blue  = b;
+		alpha = a;
+		
 	}
-
-
+		public void setColor(Color color) {
+		
+		setColor(color.getA(), color.getB(), color.getC(), color.getD());
+		
+	}
+	
+		/**
+		 * alpha value is set to 1
+		 */
+	public void setColor(float r, float g, float b) {
+		setColor(r, g, b, 1);
+	}
+	
 	public void setTexturePositions(Vector2f texPos) {
 		this.texturePositions = texPos;
 		
@@ -185,6 +208,10 @@ public class Vertex extends Vector3f {
 		return textured;
 	}
 	
+	
+	public void setNormalVector(Vector3f normalVec) {
+		this.normalVec = normalVec;
+	}
 	
 	//********************************************** print ******************************************
 	public void printColor() {

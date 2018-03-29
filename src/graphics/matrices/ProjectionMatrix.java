@@ -19,7 +19,7 @@ public class ProjectionMatrix extends Matrix44f{
 	private Matrix44f multiplicativeInverse;
 	
 	
-	//---------------------- contructor --------------------------
+	//---------------------- constructor --------------------------
 	public ProjectionMatrix(float left, float right, float bottom, float top, float near, float far, float widthOverHeight) {
 		
 		super();

@@ -1,5 +1,6 @@
 package models.seeds.noise;
 
+//TODO: refactor - move, noise is not only needed for model creation process
 
 public class TrigonalNoise {
 	
@@ -85,9 +86,9 @@ public class TrigonalNoise {
 	
 	private void norm() {
 		
-		//everey value should lay between one and zero
+		//every value should lay between one and zero
 		
-		float a = (float)Math.pow(2, maxOctave+1) - (float)Math.pow(2, minOctave);
+		float a = (float)Math.pow(2, maxOctave+1) - (float)Math.pow(2, minOctave) + maxOctave - minOctave;
 		
 		for (int i=0; i<length; i++) {
 			for (int j=0; j<width; j++) {
@@ -150,6 +151,7 @@ public class TrigonalNoise {
 				if (col != 0 && x-col >= 0 && x-col < length && y+startRow+dRow >= 0 && y+startRow+dRow < width) {
 					temp[x-col][y+startRow+dRow] += factor*ran/wavelength;
 				}
+				
 			}
 			for (int dRow=wavelength; dRow<numRows; dRow++) {
 				
@@ -206,4 +208,6 @@ public class TrigonalNoise {
 		return values[x][y];
 		
 	}
+	
+	
 }

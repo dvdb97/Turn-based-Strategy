@@ -1,10 +1,9 @@
 package models.seeds;
 
 import models.seeds.noise.TrigonalNoise;
+import static utils.ArrayUtil.calcAverage;
 
-//TODO: rename, maybe call it seed, elevationMap, elevationSeed,
-//			don't forget to integrate vegetation
-public class Terrain implements Generator {
+public class ElevationMap {
 	
 	/************************************************************
 	 * 															*
@@ -17,7 +16,6 @@ public class Terrain implements Generator {
 	private float[][] elevation;
 	
 	private TrigonalNoise eleNoise;
-	private TrigonalNoise expNoise;
 	
 	
 	/************************************************************
@@ -25,7 +23,7 @@ public class Terrain implements Generator {
 	 * 						constructor							*
 	 * 															*
 	 ************************************************************/
-	public Terrain(int length, int width) {
+	public ElevationMap(int length, int width) {
 		
 		this.length  = length;
 		this.width = width;
@@ -34,7 +32,6 @@ public class Terrain implements Generator {
 		int extra = (int)Math.pow(2, maxOctave);
 		
 		eleNoise = new TrigonalNoise(length+extra, width+extra, 0, 7);
-		expNoise = new TrigonalNoise(length+extra, width+extra, 5, 7);
 		
 		elevation = new float[length][width];
 		
@@ -71,18 +68,8 @@ public class Terrain implements Generator {
 	
 	private void seaLevelToZero() {
 		
-		float averageElevation = 0;
-		
-		for (int x=0; x<length; x++) {
-			for (int y=0; y<width; y++) {
-				
-				averageElevation += elevation[x][y];
-				
-			}
-		}
-		
 		//because the "0.9f*" it's not the average height, but this name looks better
-		averageElevation = 0.9f*averageElevation/length/width;
+		float averageElevation = 0.9f*calcAverage(elevation);
 		
 		for (int x=0; x<length; x++) {
 			for (int y=0; y<width; y++) {

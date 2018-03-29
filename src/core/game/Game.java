@@ -4,10 +4,12 @@ import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
 import interaction.CameraOperator;
+import interaction.TileSelecter;
 import interaction.input.KeyInput;
-import interaction.tileSelection.TileSelecter;
+import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import world.ModelManager;
+import visualize.FontTest;
+import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -19,21 +21,23 @@ public class Game {
 	
 	
 	//Start a completely new game
-	public Game(int numberOfAgents, int boardWidth, int boardHeight) {
+	public Game(int numberOfAgents, int boardLength, int boardWidth) {
 		
 		//Init the shaders
 		ShaderManager.init();
 		
-		//Init the maps
-		ModelManager.init(boardWidth, boardHeight);
+		//Init world
+		WorldManager.init(boardLength, boardWidth);
 		
 		//Init the camera
 		CameraOperator.init();
 		
-		TileSelecter.init(ModelManager.getTileCenterVertices());
+		//Init tile selecter
+		TileSelecter.init();
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
+		FontTest.init("The quick brown fox \njumps over the lazy dog!");
 		
 		//Init Agents etc
 		
@@ -95,7 +99,22 @@ public class Game {
 	
 	
 	private void render() {
-		ModelManager.render();
+		
+		WorldManager.render();
+		
+		//TODO: temp
+	//	renderFontTest();
+
+		
+	}
+
+
+	private void renderFontTest() {
+		ShaderManager.useFontShader(new Matrix44f());
+		
+		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
+		
+		ShaderManager.disableTexturedMeshShader();
 	}
 	
 	
