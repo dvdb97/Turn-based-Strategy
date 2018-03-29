@@ -26,6 +26,10 @@ public class GUIManager {
 	
 	private static LinkedList<GUIWindow> windows;
 	
+	private static int width;
+	
+	private static int height;
+	
 	
 	private GUIManager() {
 		
@@ -46,6 +50,10 @@ public class GUIManager {
 		initialized = true;
 		
 		windows = new LinkedList<GUIWindow>();
+		
+		width = window.getWidth();
+		
+		height = window.getHeight();
 		
 	}
 	

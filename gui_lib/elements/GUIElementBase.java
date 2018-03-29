@@ -10,7 +10,7 @@ import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 
-public abstract class GUIElementBase implements Clickable {
+public abstract class GUIElementBase implements GUIClickable {
 	
 	//The parent of this element
 	private GUIContainerElement parent;

@@ -1,6 +1,6 @@
 package elements;
 
-public interface Clickable {
+public interface GUIClickable {
 	
 	public abstract void onClick();
 	

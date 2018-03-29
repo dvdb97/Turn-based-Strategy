@@ -41,6 +41,20 @@ public abstract class GUILabeledElement extends GUIElement {
 	}
 	
 	
+	public GUILabeledElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height, String text) {
+		this(shape, texture, x, y, width, height);
+		
+		this.setLabel(text);
+	}
+	
+	
+	public GUILabeledElement(GUIShape shape, Vector4f color, float x, float y, float width, float height, String text) {
+		this(shape, color, x, y, width, height);
+		
+		this.setLabel(text);
+	}
+	
+	
 	@Override
 	public void render() {
 		
@@ -65,6 +79,10 @@ public abstract class GUILabeledElement extends GUIElement {
 			return;
 		}
 		
+		if (text.equals("")) {
+			return;
+		}
+		
 		this.labelText = text;	
 		
 		this.label = TextGenerator.generateTextModel(labelText, font, null);
@@ -86,6 +104,7 @@ public abstract class GUILabeledElement extends GUIElement {
 	}
 	
 	
+	//Generates a matrix that positions the label according to the current state of "position"
 	private void generateLabelMatrix() {
 		if (labelPosition == Position.CENTER || labelPosition  == Position.LEFT || labelPosition == Position.RIGHT) {
 			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getHeight() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
