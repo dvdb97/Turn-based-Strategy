@@ -1,14 +1,11 @@
 package visualize;
 
-import assets.meshes.Mesh;
-import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
-import assets.textures.Texture2D;
+import assets.textures.ArrayTexture2D;
+import fontRendering.font.classic.TimesNewRoman;
+import fontRendering.font.FontTexture;
 import fontRendering.generation.TextGenerator;
 import fontRendering.generation.functions.TempFunction;
-import fontRendering.rendering.TextModel;
-import fontRendering.texture.FontTexture;
-import gui.font.TimesNewRoman;
 
 public class FontTest {
 	
@@ -22,12 +19,12 @@ public class FontTest {
 		
 		texture = new TimesNewRoman();
 		
-		model = TextGenerator.generateTextModel(text, -0.8f, 0.0f, 0.0f, 1.6f, 0.1f, texture, new TempFunction());
+		//model = TextGenerator.generateTextModel(text, -0.8f, 0.0f, -1.0f, 0.1f, 1.6f, 0.1f, texture, new TempFunction());
 		
 	}
 	
 	
-	public static Texture2D getTexture() {
+	public static FontTexture getTexture() {
 		return texture;
 	}
 	

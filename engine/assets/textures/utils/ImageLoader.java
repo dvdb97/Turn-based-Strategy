@@ -8,6 +8,51 @@ import javax.imageio.ImageIO;
 
 
 public class ImageLoader {
+	
+	public static int[][] loadImageDataAsRGBAInt(String path) {
+		
+		int imageWidth = 1000;
+		int imageHeight = 1000;
+		
+		int[][] convertedData = new int[imageHeight][imageWidth];
+		
+		try {
+			
+			BufferedImage image = ImageIO.read(new File(path));
+			
+			imageWidth = image.getWidth();
+			
+			imageHeight = image.getHeight();
+			
+			int[] imageData = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+			
+			convertedData = new int[imageHeight][imageWidth];
+			
+			for (int y = 0; y < image.getHeight(); ++y) {
+				
+                for (int x = 0; x < image.getWidth(); ++x) {
+                	
+                	convertedData[y][x] = imageData[y * image.getWidth() + x];
+                	
+                	byte pixelData = (byte)((byte)(convertedData[y][x] >> 24) & 0xFF);
+                	
+                	convertedData[y][x] = (imageData[y * image.getWidth() + x] << 8) + pixelData;
+                	
+                }
+                
+            }
+		
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+		return convertedData;
+		
+	}
+	
+	
 
 	public static Image loadImageRGBA(String path) {
 		

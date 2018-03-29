@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import interaction.Window;
 
 public class CursorPosInput extends GLFWCursorPosCallback {
-	
+		
 	private static Window window;
 
 	private static double xPos;
@@ -32,6 +32,16 @@ public class CursorPosInput extends GLFWCursorPosCallback {
 	
 	public static double getYPos() {
 		return yPos;
+	}	
+	
+	
+	public static float getXPosAsOpengl() {
+		return window.toNormalizedXCoordinates(getXPos());
+	}
+	
+	
+	public static float getYPosAsOpengl() {
+		return window.toNormalizedYCoordinates(getYPos());
 	}
 	
 	

@@ -198,7 +198,7 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	
 	
-	public void setTexturePositionData(FloatBuffer texturePositionDataBuffer, int vaIndex, int size, int accessibility) {
+	public void setVertexTexturePositionData(FloatBuffer texturePositionDataBuffer, int vaIndex, int size, int accessibility) {
 		
 		if (texturePositionBufferID != 0) {
 			System.out.println("There is already texture position data stored in " + this.toString() + "!" + 
@@ -228,7 +228,7 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	public void setVertexTexturePositionData(FloatBuffer texturePositionDataBuffer, int size, int accessibility) {
 		
-		setTexturePositionData(texturePositionDataBuffer, TEX_POS_ARRAY_INDEX, size, accessibility);		
+		setVertexTexturePositionData(texturePositionDataBuffer, TEX_POS_ARRAY_INDEX, size, accessibility);		
 		
 	}
 	

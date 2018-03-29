@@ -3,6 +3,7 @@ package core.game;
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
+import gui_core.GUIManager;
 import interaction.CameraOperator;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
@@ -102,19 +103,9 @@ public class Game {
 		
 		WorldManager.render();
 		
-		//TODO: temp
-	//	renderFontTest();
-
+		//Draw the gui
+		GUIManager.update();
 		
-	}
-
-
-	private void renderFontTest() {
-		ShaderManager.useFontShader(new Matrix44f());
-		
-		RenderEngine.draw(FontTest.getModel(), FontTest.getTexture());
-		
-		ShaderManager.disableTexturedMeshShader();
 	}
 	
 	
