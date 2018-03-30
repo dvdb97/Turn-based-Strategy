@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import assets.textures.Texture2D;
 import elements.GUIElement;
 import elements.GUIElementBase;
-import elements.containers.layouts.GUILayout;
-import elements.containers.layouts.GUIListLayout;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 
@@ -14,15 +12,11 @@ public abstract class GUIContainerElement extends GUIElement {
 	
 	private LinkedList<GUIElementBase> children;
 	
-	private GUILayout layout;
-	
 
 	public GUIContainerElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
 		children = new LinkedList<GUIElementBase>();
-		
-		layout = new GUIListLayout();
 	}
 	
 	
@@ -30,8 +24,6 @@ public abstract class GUIContainerElement extends GUIElement {
 		super(shape, color, x, y, width, height);
 		
 		children = new LinkedList<GUIElementBase>();
-		
-		layout = new GUIListLayout();
 	}
 	
 	
@@ -97,11 +89,6 @@ public abstract class GUIContainerElement extends GUIElement {
 		
 		return false;		
 		
-	}
-
-	
-	public void setLayout(GUILayout layout) {
-		this.layout = layout;
 	}
 	
 
