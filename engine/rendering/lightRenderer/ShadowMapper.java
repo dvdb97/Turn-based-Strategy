@@ -7,14 +7,13 @@ import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
 import math.matrices.Matrix44f;
+import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import rendering.framebuffers.FrameBuffer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import rendering.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 
 public class ShadowMapper {
-	
-	private static CameraOperator lightCamera;
 	
 	private static Matrix44f projectionMatrix;
 	
@@ -24,7 +23,7 @@ public class ShadowMapper {
 	
 	private static ShadowMap capsuledShadowMap;
 	
-	private static Texture2D shadowMap;					
+	private static Texture2D shadowMap;	
 	
 	
 	public static void init(int windowWidth, int windowHeight) {
@@ -33,8 +32,6 @@ public class ShadowMapper {
 		
 		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 10.0f);
 		
-		lightCamera = new CameraOperator();
-
 		createShadowMap(windowWidth, windowHeight);
 		
 	}
@@ -67,8 +64,6 @@ public class ShadowMapper {
 		
 		frameBuffer.unbind();
 		
-		
-		capsuledShadowMap.setLightViewMatrix(lightCamera.getViewMatrix());
 		capsuledShadowMap.setLightProjectionMatrix(projectionMatrix);
 		capsuledShadowMap.setShadowMap(shadowMap);
 		
@@ -79,17 +74,14 @@ public class ShadowMapper {
 	
 	private static void setUniformVariables(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Camera camera) {
 		
-		adjustLightViewCamera(light);
+		Matrix44f viewMatrix = CameraOperator.lookAt(light.getDirection().negatedCopy().times(3f), light.getDirection(), new Vector3f(0f, 1f, 0f));		
 		
 		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
-		shader.setUniformMatrix4fv("viewMatrix", lightCamera.getViewMatrix());
+		shader.setUniformMatrix4fv("viewMatrix", viewMatrix);
 		shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix);
 		
-	}
-	
-	
-	private static void adjustLightViewCamera(LightSource light) {
-		lightCamera.lookAt(light.getDirection().negatedCopy().times(5f), light.getDirection());
+		capsuledShadowMap.setLightViewMatrix(viewMatrix);
+		
 	}
 
 }

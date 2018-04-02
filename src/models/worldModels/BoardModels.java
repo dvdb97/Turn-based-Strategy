@@ -93,7 +93,7 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
-		sun = new LightSource(new Vector3f(-1f, 1f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
 		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		

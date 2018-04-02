@@ -8,6 +8,8 @@ import rendering.matrices.ViewMatrix;
 
 public class Camera {
 	
+	private static float PI = (float)Math.PI;
+	
 	//The initial position of the camera
 	private Vector3f position;
 	
@@ -281,7 +283,7 @@ public class Camera {
 	 * @param dPitch The pitch rotation
 	 * @param dYaw The yaw rotation
 	 */
-	public void rotate(float dRoll, float dPitch, float dYaw) {
+	public void rotate(float dPitch, float dYaw, float dRoll) {
 		this.incrRoll(dRoll);
 		this.incrPitch(dPitch);
 		this.incrYaw(dYaw);		
@@ -328,7 +330,7 @@ public class Camera {
 		float temp = getPitch() + dPitch;
 		
 		//check bc
-		if (temp > -HALF_PI && temp < HALF_PI) {
+		if (temp > -PI && temp < PI) {
 			setPitch(temp);
 		}
 	}
@@ -365,7 +367,7 @@ public class Camera {
 		float temp = getYaw() + dYaw;
 		
 		//check bc
-		if (temp > -HALF_PI && temp < HALF_PI) {
+		if (temp > -PI && temp < PI) {
 			setYaw(temp);
 		}
 	}
@@ -402,7 +404,7 @@ public class Camera {
 		float temp = getRoll() + dRoll;
 		
 		//check bc
-		if (temp > 0 && temp < HALF_PI) {
+		if (temp > -PI && temp < PI) {
 			setRoll(temp);
 		}
 	}
@@ -426,6 +428,6 @@ public class Camera {
 	 */
 	public float getRoll() {
 		return rotation.getC();
-	}	
+	}
 
 }

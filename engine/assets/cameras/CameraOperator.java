@@ -1,6 +1,8 @@
 package assets.cameras;
 
 import math.matrices.Matrix33f;
+import math.matrices.Matrix44f;
+import math.matrices.advanced.Determinant;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
@@ -68,18 +70,21 @@ public class CameraOperator extends Camera {
 	
 	public void lookAt(Vector3f point) {
 		Vector3f pointViewSpace = this.getViewMatrix().times(new Vector4f(point, 1.0f)).toVector3f();
-		pointViewSpace.normalize();
 		
-		//pointViewSpace.print();
+		pointViewSpace.print();
 		
 		//Minus PI because the vector (0, 0, -1) should be 0° pitch in our right-handed coordinate system
-		float pitch = (float)Math.atan2(pointViewSpace.getB(), pointViewSpace.getC()) - PI;
+		float pitch = (float)Math.atan2(pointViewSpace.getB(), pointViewSpace.getC());
 		float yaw = (float)Math.atan2(pointViewSpace.getA(), pointViewSpace.getC());
 		
-		//System.out.println("Pitch: " + Math.toDegrees(pitch) + " bzw. " + (pitch / Math.PI) + " pi");
-		//System.out.println("Yaw: " + Math.toDegrees(yaw) + " bzw. " + (yaw / Math.PI) + " pi");
+		System.out.println("Pitch: " + Math.toDegrees(pitch) + "° bzw. " + (pitch / Math.PI) + " pi");
+		System.out.println("Yaw: " + Math.toDegrees(yaw) + "° bzw. " + (yaw / Math.PI) + " pi");
 		
-		this.setRotation(new Vector3f(pitch, yaw, 0.0f));
+		//this.setRotation(new Vector3f(-pitch, -yaw, 0.0f));	
+		this.rotate(pitch, yaw, 0.0f);
+		
+		System.out.println("Determinant: " + Determinant.getDeterminant(getViewMatrix()));		
+		
 	}
 	
 	
@@ -107,5 +112,51 @@ public class CameraOperator extends Camera {
 		//Move the camera in the direction of the viewDirection
 		this.moveTo(viewDirection.times(distance));
 	}
+	
+	
+	//******************************** Rotation ********************************
+	
+	
+	public static Matrix44f lookAt(Vector3f eye, Vector3f center, Vector3f up) {
+		
+		Vector3f z = center.minus(eye).normalize();
+		
+		up.normalize();
+		
+		Vector3f x = z.cross(up).normalize();
+		
+		Vector3f y = x.cross(z).normalize();
+		
+		
+		Matrix44f orientation = new Matrix44f(x.getA(), x.getB(), x.getC(), 0f, 
+											  y.getA(), y.getB(), y.getC(), 0f, 
+											  z.getA(), z.getB(), z.getC(), 0f, 
+											  0f, 0f, 0f, 1f);
+		
+		Matrix44f translation = new Matrix44f(1f, 0f, 0f, -eye.getA(),
+											  0f, 1f, 0f, -eye.getB(),
+											  0f, 0f, 1f, -eye.getC(),
+											  0f, 0f, 0f, 1f);
+		
+		return orientation.times(translation);
+		
+	}
 
 }
+
+
+/*
+ Vector3f pointViewSpace = this.getViewMatrix().times(new Vector4f(point, 1.0f)).toVector3f();
+		pointViewSpace.normalize();
+		
+		//pointViewSpace.print();
+		
+		//Minus PI because the vector (0, 0, -1) should be 0° pitch in our right-handed coordinate system
+		float pitch = (float)Math.atan2(pointViewSpace.getB(), pointViewSpace.getC()) - PI;
+		float yaw = (float)Math.atan2(pointViewSpace.getA(), pointViewSpace.getC());
+		
+		//System.out.println("Pitch: " + Math.toDegrees(pitch) + " bzw. " + (pitch / Math.PI) + " pi");
+		//System.out.println("Yaw: " + Math.toDegrees(yaw) + " bzw. " + (yaw / Math.PI) + " pi");
+		
+		this.setRotation(new Vector3f(pitch, yaw, 0.0f));
+*/
