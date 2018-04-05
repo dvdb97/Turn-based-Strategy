@@ -5,6 +5,7 @@ import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
+import utils.ProvisionalUI;
 
 //TODO: 1. shitty name, 2. try to encapsulate graphic and logic
 public class WorldManager {
@@ -15,6 +16,8 @@ public class WorldManager {
 	private static SuperGrid superGrid;
 	
 	private static float[] fertility;
+	
+	private static ProvisionalUI ui;
 	
 	//*************************** init ******************************
 	
@@ -29,7 +32,17 @@ public class WorldManager {
 		
 		boardModels = modelCreater.createModels(fertility);
 		superGrid   = modelCreater.getSuperGrid();
-				
+		
+		
+		
+	}
+	
+	//*************************** update ****************************
+	
+	public static void update() {
+		
+		
+		
 	}
 	
 	//*************************** render ****************************

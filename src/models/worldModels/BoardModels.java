@@ -183,4 +183,10 @@ public class BoardModels {
 		return widthInTiles;
 	}
 	
+	//**************************** set ***************************************
+	
+	public void setHexColor(Color[] colors) {
+		hex.setColor(colors);
+	}
+	
 }
