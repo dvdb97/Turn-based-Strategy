@@ -58,7 +58,7 @@ float computeShadow() {
 
 	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
 
-	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.005);
+	float bias = 0.005f;//max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.005);
 
 	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
 
