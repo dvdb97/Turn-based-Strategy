@@ -4,6 +4,7 @@ import interaction.input.KeyInput;
 import world.MapModeManager;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static world.MapModeManager.*;
 
 public class ProvisionalUI {
 	
@@ -22,15 +23,15 @@ public class ProvisionalUI {
 	public void processInput() {
 		
 		if (KeyInput.keyPressed(GLFW_KEY_N)) {
-			mmm.changeModeTo(0);
+			mmm.changeModeTo(MM_BLANK);
 		}
 		
 		if (KeyInput.keyPressed(GLFW_KEY_M)) {
-			mmm.changeModeTo(1);
+			mmm.changeModeTo(MM_FERTILITY);
 		}
 		
 		if (KeyInput.keyPressed(GLFW_KEY_B)) {
-			mmm.changeModeTo(2);
+			mmm.changeModeTo(MM_FOREST);
 		}
 
 		

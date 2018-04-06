@@ -34,6 +34,8 @@ public class WorldManager {
 		superGrid   = modelCreater.getSuperGrid();
 		
 		
+		MapModeManager mmm = new MapModeManager(boardModels);
+		ui = new ProvisionalUI(mmm);
 		
 	}
 	
@@ -41,7 +43,7 @@ public class WorldManager {
 	
 	public static void update() {
 		
-		
+		ui.processInput();
 		
 	}
 	
