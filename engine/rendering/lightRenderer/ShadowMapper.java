@@ -1,11 +1,11 @@
 package rendering.lightRenderer;
 
 import assets.cameras.Camera;
-import assets.cameras.CameraOperator;
 import assets.light.LightSource;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
+import classes.CameraOperator;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;

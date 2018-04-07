@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 
 import assets.cameras.Camera;
-import assets.cameras.CameraOperator;
+import classes.CameraOperator;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import math.matrices.advanced.Determinant;
@@ -12,7 +12,7 @@ import math.vectors.Vector3f;
 
 public class PlayerCamera {
 	
-	private static CameraOperator camera;
+	private static Camera camera;
 	
 	//The Map shouldn't move in some cases. For example when you are in a menu
 	private static boolean cameraMovementDisabled;	
@@ -101,14 +101,14 @@ public class PlayerCamera {
 		
 		if (KeyInput.keyPressed(GLFW_KEY_T)) {
 			
-			camera.incrPitch(0.1f * cameraRotationSpeed);
+			camera.pitch(0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
 		if (KeyInput.keyPressed(GLFW_KEY_G)) {
 			
-			camera.incrPitch(-0.1f * cameraRotationSpeed);
+			camera.pitch(-0.1f * cameraRotationSpeed);
 			
 		}
 		
@@ -148,7 +148,7 @@ public class PlayerCamera {
 	
 	public static Matrix44f getInvertedMatrix() {
 		
-		return camera.getViewMatrix().getMultiplicativeInverse();
+		return camera.getInvertedViewMatrix();
 		
 	}
 	

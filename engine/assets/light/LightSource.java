@@ -1,10 +1,10 @@
 package assets.light;
 
 
+import classes.CameraOperator;
 import math.MathUtils;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import assets.cameras.CameraOperator;
 
 
 public class LightSource {

@@ -1,4 +1,4 @@
-package assets.cameras;
+package classes;
 
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
@@ -7,7 +7,11 @@ import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
 import static utils.Const.HALF_PI;
+
+import assets.cameras.Camera;
+
 import static math.MathUtils.*;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
 public class CameraOperator extends Camera {
 	
@@ -119,6 +123,8 @@ public class CameraOperator extends Camera {
 	
 	public static Matrix44f lookAt(Vector3f eye, Vector3f center, Vector3f up) {
 		
+		double timer = glfwGetTime();
+		
 		Vector3f z = center.minus(eye).normalize();
 		
 		up.normalize();
@@ -138,7 +144,11 @@ public class CameraOperator extends Camera {
 											  0f, 0f, 1f, -eye.getC(),
 											  0f, 0f, 0f, 1f);
 		
-		return orientation.times(translation);
+		Matrix44f result = orientation.times(translation);
+		
+		System.out.println("lookAt took " + (glfwGetTime() - timer));
+		
+		return result;
 		
 	}
 

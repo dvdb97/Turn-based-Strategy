@@ -1,98 +1,42 @@
 package assets.cameras;
 
-import static utils.Const.HALF_PI;
-
+import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import rendering.matrices.ViewMatrix;
+
+import static math.Trigonometry.*;
 
 public class Camera {
 	
-	private static float PI = (float)Math.PI;
-	
-	//The initial position of the camera
+	//The current position of the camera
 	private Vector3f position;
 	
-	/*
-	 * The rotation of this camera:
-	 * 
-	 * pitch: up and down
-	 * 
-	 * roll: tilt
-	 * 
-	 * yaw: right and left
-	 * 
-	 */
-	private Vector3f rotation;
+	//The current view direction of the camera
+	private Vector3f viewDirection;
 	
-	private float zoom;
-	
-	
-	private ViewMatrix viewMatrix;
-	private boolean updated;
+	//the current view matrix for this camera
+	private Matrix44f viewMatrix;
 	
 	
 	public Camera() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
-		this.rotation = new Vector3f(0.0f, 0.0f, 0.0f);
-		this.zoom = 1.0f;
-		
-		viewMatrix = new ViewMatrix(this);
-		updated = true;
+		this.viewDirection = new Vector3f(0.f, 0.0f, -1.0f);
 	}
 	
 	
-	public Camera(Vector3f position) {
-		//TODO
-		updated = true;
-	}
-	
-	
-	public Camera(Vector3f position, Vector3f rotation, float zoom) {
-		//TODO
-		updated = true;
+	public Camera(Vector3f position, Vector3f viewDirection) {
+		this.position = position.copyOf();
+		this.viewDirection = viewDirection.normalizedCopy();
 	}
 	
 	
 	//******************************** core functions ********************************
 	
 	
-	/**
-	 * 
-	 * @return Returns a reference to the view matrix for this camera
-	 */
-	public ViewMatrix getViewMatrix() {
-		if (!updated) {
-			viewMatrix.refresh();
-			updated = true;
-		}
-		
-		return viewMatrix;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the multiplicative inverse of the view matrix
-	 */
-	public Matrix44f getInvertedViewMatrix() {
-		return viewMatrix.getMultiplicativeInverse();
-	}
-	
-	
-	//******************************** Translation ********************************
-	
-	/**
-	 * 
-	 * Moves the camera in the given direction
-	 * 
-	 * @param dx The value by which the x translation shall be increased
-	 * @param dy The value by which the y translation shall be increased
-	 * @param dz The value by which the z translation shall be increased
-	 * 
-	 */
 	public void move(float dx, float dy, float dz) {
-		this.move(new Vector3f(dx, dy, dz));
+		this.position.setA(position.getA() + dx);
+		this.position.setB(position.getB() + dy);
+		this.position.setB(position.getC() + dz);
 	}
 	
 	
@@ -100,12 +44,10 @@ public class Camera {
 	 * 
 	 * Moves the camera in the given direction
 	 * 
-	 * @param direction The direction of the cameras movement
-	 * 
+	 * @param direction The direction of the camera movement
 	 */
 	public void move(Vector3f direction) {
-		position.plusEQ(direction);
-		this.updated = false;
+		this.position.plus(direction);
 	}
 	
 	
@@ -113,321 +55,204 @@ public class Camera {
 	 * 
 	 * Moves the camera to the given position
 	 * 
-	 * @param position The new position
+	 * @param position The new position of the camera
 	 */
 	public void moveTo(Vector3f position) {
-		this.position = position.copyOf();
-		this.updated = false;
+		if (!this.position.equals(position))
+			this.position = position.copyOf();
 	}
 	
 	
 	/**
 	 * 
-	 * @return Returns the current position of the camera
+	 * Turns the camera to look at the given point
+	 * 
+	 * @param point The new point the camera should look at
 	 */
+	public void lookAt(Vector3f point) {
+		this.viewDirection = point.minus(position).normalize();
+	}
+	
+	
+	/**
+	 *
+	 * Turns the camera to look in the given direction
+	 *  
+	 * @param viewDirection The new view direction of the camera
+	 */
+	public void lookInDir(Vector3f viewDirection) {
+		if (!this.position.equals(viewDirection))
+			this.viewDirection = viewDirection.normalizedCopy();		
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera to the given position and turns it so that is looks at the given point
+	 * 
+	 * @param position The new position of the camera 
+	 * @param point A point the camera should look at
+	 */
+	public void lookAt(Vector3f position, Vector3f point) {
+		this.moveTo(position);
+		this.lookAt(point);
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera to the given position and turns it so that is looks in the given direction
+	 * 
+	 * @param position The new position of the camera
+	 * @param viewDirection The new view direction of the camera
+	 */
+	public void lookInDir(Vector3f position, Vector3f viewDirection) {
+		moveTo(position);
+		lookInDir(viewDirection);
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the x-axis
+	 * 
+	 * @param radians The rotation in radians
+	 */
+	public void pitch(float radians) {
+		
+		Matrix33f rotationMatrix = new Matrix33f(1f, 0f, 0f, 0f, cos(radians), -sin(radians), 0f, sin(radians), cos(radians));
+		
+		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the x-axis
+	 * 
+	 * @param degrees The rotation in degrees
+	 */
+	public void pitch(int degrees) {
+		
+		float radians = (float)(degrees / 360) * 2 * PI;
+		
+		pitch(radians);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the y-axis
+	 * 
+	 * @param radians The rotation in radians
+	 */
+	public void yaw(float radians) {
+		
+		Matrix33f rotationMatrix = new Matrix33f(cos(radians), 0f, sin(radians), 0f, 1f, 0f, -sin(radians), 0f, cos(radians));
+	
+		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the y-axis
+	 * 
+	 * @param degrees The rotation in degrees
+	 */
+	public void yaw(int degrees) {
+		
+		float radians = (float)(degrees / 360) * 2 * PI;
+		
+		yaw(radians);
+		
+	}
+	
+	
+	public void rotate(float pitch, float yaw) {
+		pitch(pitch);
+		pitch(yaw);
+	}
+	
+	
 	public Vector3f getPosition() {
-		return position.copyOf();
+		return position;
+	}
+
+
+	public Vector3f getViewDirection() {
+		return viewDirection;
+	}
+	
+	
+	//****************************************** matrix handling ******************************************
+
+
+	/**
+	 *  
+	 * @return Generates a view matrix for this camera
+	 */
+	public Matrix44f getViewMatrix() {
+		return generateViewMatrixA(position, viewDirection, new Vector3f(0f, 1f, 0f));
 	}
 	
 	
 	/**
 	 * 
-	 * Increases the camera's x translation.
-	 * 
-	 * @param dx The value by which the x position shall be increased
+	 * @return Generates the multiplicative inverse of the view matrix
 	 */
-	public void incrX(float dx) {
-		setX(getX() + dx);
+	public Matrix44f getInvertedViewMatrix() {
+		return generateViewMatrixA(position.normalizedCopy(), viewDirection.negatedCopy(), new Vector3f(0f, 1f, 0f));
 	}
 	
 	
 	/**
 	 * 
-	 * Changes the x position of the camera
-	 * 
-	 * @param x The new x value
+	 * @param eye The position of the camera
+	 * @param viewDirection The view direction of the camera
+	 * @param up A global up vector
+	 * @return Returns a view matrix
 	 */
-	public void setX(float x) {
-		position.setA(x);
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current x position
-	 */
-	public float getX() {
-		return position.getA();
-	}
-	
-	
-	/**
-	 * 
-	 * Increases the camera's y position.
-	 * 
-	 * @param dy The value by which the y position shall be increased
-	 */
-	public void incrY(float dy) {
-		setY(getY() + dy);		
-	}
-	
-	
-	/**
-	 * 
-	 * Changes the y position of the camera
-	 * 
-	 * @param y The new y value
-	 */
-	public void setY(float y) {
-		position.setB(y);
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current y position
-	 */
-	public float getY() {
-		return position.getB();
-	}
-	
-	
-	/**
-	 * 
-	 * Increases the camera's z position.
-	 * 
-	 * @param dz The value by which the z position shall be increased
-	 */
-	public void incrZ(float dz) {
-		setZ(getZ() + dz);		
-	}
-	
-	
-	/**
-	 * 
-	 * Changes the z position of the camera
-	 * 
-	 * @param z The new z value
-	 */
-	public void setZ(float z) {
-		position.setC(z);
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current z position
-	 */
-	public float getZ() {
-		return position.getC();
-	}
-	
-	
-	//******************************** Zoom ********************************
-	
-	
-	/**
-	 * 
-	 * Increases the camera's zoom.
-	 * 
-	 * @param dZoom The value by which the zoom shall be increased
-	 */
-	public void incrZoom(float dZoom) {
-		float temp = zoom + dZoom;
+	public static Matrix44f generateViewMatrixA(Vector3f eye, Vector3f viewDirection, Vector3f up) {
 		
-		//check bc
-		if (temp > 0 && temp < 1) {
-			zoom = temp;
-		}
+		Vector3f z = viewDirection.normalizedCopy();
 		
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * Changes the zoom of the camera
-	 * 
-	 * @param zoom The new zoom value
-	 */
-	public void setZoom(float zoom) {		
-		//check bc
-		if (zoom > 0 && zoom < 1) {
-			this.zoom = zoom;
-		}
+		up = up.normalizedCopy();
 		
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current value of zoom
-	 */
-	public float getZoom() {
-		return zoom;
-	}
-	
-	
-	//******************************** Rotation ********************************
-	
-	
-	/**
-	 * 
-	 * Rotates the camera
-	 * 
-	 * @param dRoll The roll rotation
-	 * @param dPitch The pitch rotation
-	 * @param dYaw The yaw rotation
-	 */
-	public void rotate(float dPitch, float dYaw, float dRoll) {
-		this.incrRoll(dRoll);
-		this.incrPitch(dPitch);
-		this.incrYaw(dYaw);		
-	}
-	
-	
-	/**
-	 * 
-	 * Rotates the camera 
-	 * 
-	 * @param dRotation The rotation
-	 */
-	public void rotate(Vector3f dRotation) {
-		this.rotate(dRotation.getA(), dRotation.getB(), dRotation.getC());
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current rotation of the camera
-	 */
-	public Vector3f getRotation() {
-		return rotation;
-	}
-	
-	
-	/**
-	 * 
-	 * @param rotation The new value for the rotation
-	 */
-	public void setRotation(Vector3f rotation) {
-		this.rotation = rotation.copyOf();
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * Increases the camera's pitch.
-	 * 
-	 * @param dPitch The value by which the pitch shall be increased
-	 */
-	public void incrPitch(float dPitch) {
-		float temp = getPitch() + dPitch;
+		Vector3f x = z.cross(up).normalize();
 		
-		//check bc
-		if (temp > -PI && temp < PI) {
-			setPitch(temp);
-		}
-	}
-	
-	
-	/**
-	 * 
-	 * Changes the pitch of the camera
-	 * 
-	 * @param yaw The new roll value
-	 */
-	public void setPitch(float pitch) {
-		rotation.setA(pitch);	
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current value of pitch
-	 */
-	public float getPitch() {
-		return rotation.getA();
-	}
-	
-	
-	/**
-	 * 
-	 * Increases the camera's yaw.
-	 * 
-	 * @param dRoll The value by which the yaw shall be increased
-	 */
-	public void incrYaw(float dYaw) {
-		float temp = getYaw() + dYaw;
+		Vector3f y = x.cross(z).normalize();
 		
-		//check bc
-		if (temp > -PI && temp < PI) {
-			setYaw(temp);
-		}
-	}
-	
-	
-	/**
-	 * 
-	 * Changes the yaw of the camera
-	 * 
-	 * @param yaw The new roll value
-	 */
-	public void setYaw(float yaw) {
-		rotation.setB(yaw);
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current value of yaw
-	 */
-	public float getYaw() {
-		return rotation.getB();
-	}
-	
-	
-	/**
-	 * 
-	 * Increases the camera's roll.
-	 * 
-	 * @param dRoll The value by which the roll shall be increased
-	 */
-	public void incrRoll(float dRoll) {
-		float temp = getRoll() + dRoll;
 		
-		//check bc
-		if (temp > -PI && temp < PI) {
-			setRoll(temp);
-		}
+		Matrix44f orientation = new Matrix44f(x.getA(), x.getB(), x.getC(), 0f, 
+											  y.getA(), y.getB(), y.getC(), 0f, 
+											  z.getA(), z.getB(), z.getC(), 0f, 
+											  0f, 0f, 0f, 1f);
+		
+		Matrix44f translation = new Matrix44f(1f, 0f, 0f, -eye.getA(),
+											  0f, 1f, 0f, -eye.getB(),
+											  0f, 0f, 1f, -eye.getC(),
+											  0f, 0f, 0f, 1f);
+		
+		return orientation.times(translation);
+		
 	}
 	
 	
 	/**
 	 * 
-	 * Changes the roll of the camera
-	 * 
-	 * @param roll The new roll value
+	 * @param eye The position of the camera
+	 * @param center A point the camera looks at
+	 * @param up A global up vector
+	 * @return Returns a view matrix
 	 */
-	public void setRoll(float roll) {
-		rotation.setC(roll);
-		this.updated = false;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the current value of roll
-	 */
-	public float getRoll() {
-		return rotation.getC();
+	public static Matrix44f generateViewMatrixB(Vector3f eye, Vector3f center, Vector3f up) {
+		
+		return generateViewMatrixA(eye, center.minus(eye), up);
+		
 	}
 
 }
