@@ -10,6 +10,7 @@ import graphics.matrices.TransformationMatrix;
 import graphics.shaders.ShaderManager;
 import interaction.CameraOperator;
 import interaction.TileSelecter;
+import mapModes.MapMode;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import models.TerrainCol;
@@ -185,8 +186,8 @@ public class BoardModels {
 	
 	//**************************** set ***************************************
 	
-	public void setHexColor(Color[] colors) {
-		hex.setColor(colors);
+	public void setHexColor(MapMode mapMode) {
+		hex.setColor(mapMode);
 	}
 	
 }

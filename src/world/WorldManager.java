@@ -11,6 +11,7 @@ import utils.ProvisionalUI;
 public class WorldManager {
 	
 	private static int lengthInTiles, widthInTiles;
+	private static int NUM_TILES;
 	
 	private static BoardModels boardModels;
 	private static SuperGrid superGrid;
@@ -25,6 +26,8 @@ public class WorldManager {
 		
 		WorldManager.lengthInTiles = lengthInTiles;
 		WorldManager.widthInTiles  = widthInTiles;
+		
+		NUM_TILES = lengthInTiles*widthInTiles;
 		
 		setUpFertility();
 
@@ -89,6 +92,13 @@ public class WorldManager {
 		}
 		
 		
+	}
+	
+	/**
+	 * @return the number of tiles on the game board
+	 */
+	public static int getNumTiles() {
+		return NUM_TILES;
 	}
 	
 	/**
