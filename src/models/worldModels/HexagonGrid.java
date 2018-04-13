@@ -144,7 +144,7 @@ public class HexagonGrid extends Element_Model {
 	public void setColor(MapMode mapMode) {
 		
 		for (int i=0; i<length*width; i++) {
-			this.colors[i] = mapMode.get(i);
+			this.colors[i] = mapMode.getColor(i);
 		}
 		updateColor();
 	}

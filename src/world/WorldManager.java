@@ -1,5 +1,7 @@
 package world;
 
+import mapModes.MapModesCreater;
+import mapModes.MapModesManager;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
@@ -36,8 +38,7 @@ public class WorldManager {
 		boardModels = modelCreater.createModels(fertility);
 		superGrid   = modelCreater.getSuperGrid();
 		
-		
-		MapModeManager mmm = new MapModeManager(boardModels);
+		MapModesManager mmm = new MapModesManager(MapModesCreater.getMapModes(), boardModels);
 		ui = new ProvisionalUI(mmm);
 		
 	}

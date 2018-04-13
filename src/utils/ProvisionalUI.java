@@ -1,18 +1,17 @@
 package utils;
 
 import interaction.input.KeyInput;
-import world.MapModeManager;
+import mapModes.MapModesManager;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static world.MapModeManager.*;
 
 public class ProvisionalUI {
 	
-	private MapModeManager mmm;
+	private MapModesManager mmm;
 	
 	//**************************** cosntructor *************************
 	
-	public ProvisionalUI(MapModeManager mmm) {
+	public ProvisionalUI(MapModesManager mmm) {
 		
 		this.mmm = mmm;
 		
@@ -23,15 +22,18 @@ public class ProvisionalUI {
 	public void processInput() {
 		
 		if (KeyInput.keyPressed(GLFW_KEY_N)) {
-			mmm.changeModeTo(MM_BLANK);
+			mmm.changeModeTo(0);
+			System.out.println("changed to blank mode");
 		}
 		
 		if (KeyInput.keyPressed(GLFW_KEY_M)) {
-			mmm.changeModeTo(MM_FERTILITY);
+			mmm.changeModeTo(1);
+			System.out.println("changed to fertility mode");
 		}
 		
 		if (KeyInput.keyPressed(GLFW_KEY_B)) {
-			mmm.changeModeTo(MM_FOREST);
+			mmm.changeModeTo(2);
+			System.out.println("changed to forest mode");
 		}
 
 		

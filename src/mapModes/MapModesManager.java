@@ -16,6 +16,9 @@ public class MapModesManager {
 		this.modes = modes;
 		this.boardModels = boardModels;
 		
+		changeModeTo(0);
+		currentMode = 0;
+		
 	}
 	
 	

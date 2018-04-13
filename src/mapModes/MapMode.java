@@ -3,35 +3,14 @@ package mapModes;
 import assets.meshes.geometry.Color;
 import world.WorldManager;
 
-public class MapMode {
-	
-	private Color[] colors;
-	private ColorFunc2 colorFunc;
-	
-	
-	public MapMode(ColorFunc2 colorFunc2) {
-		
-		colorFunc = colorFunc2;
-		refreshColors();
-	}
-	
-	
-	public void refreshColors() {
-		
-		for (int i=0; i<WorldManager.getNumTiles(); i++) {
-			colors[i] = colorFunc.getColor(i);
-		}
-		
-	}
-	
+public interface MapMode {
 	
 	/**
 	 * @param i index of the requested tile
 	 * @return the color of the requested tile according to this map mode
 	 */
-	public Color get(int i) {
-		return colors[i];
-	}
+	public Color getColor(int i);
+	
 	
 	/*
 	 * With get(int i) you get the pointer of the object Color.
