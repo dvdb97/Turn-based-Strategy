@@ -20,7 +20,7 @@ public class Camera {
 	
 	public Camera() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
-		this.viewDirection = new Vector3f(0.f, 0.0f, -1.0f);
+		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 	}
 	
 	
@@ -33,10 +33,40 @@ public class Camera {
 	//******************************** core functions ********************************
 	
 	
+	/**
+	 * 
+	 * Moves the camera in the view direction (distance * viewDirection)
+	 * 
+	 * @param distance The distance
+	 */
+	public void forward(float distance) {
+		this.move(viewDirection.times(distance));
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera against the view direction (distance * -viewDirection)
+	 * 
+	 * @param distance
+	 */
+	public void backward(float distance) {
+		this.move(-viewDirection.getA() * distance, -viewDirection.getB() * distance, -viewDirection.getC() * distance);
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera in the given direction
+	 * 
+	 * @param dx The x direction
+	 * @param dy The y direction
+	 * @param dz The z direction
+	 */
 	public void move(float dx, float dy, float dz) {
 		this.position.setA(position.getA() + dx);
 		this.position.setB(position.getB() + dy);
-		this.position.setB(position.getC() + dz);
+		this.position.setC(position.getC() + dz);
 	}
 	
 	
@@ -47,7 +77,7 @@ public class Camera {
 	 * @param direction The direction of the camera movement
 	 */
 	public void move(Vector3f direction) {
-		this.position.plus(direction);
+		this.move(direction.getA(), direction.getB(), direction.getC());
 	}
 	
 	
@@ -172,6 +202,15 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * 
+	 * Rotates the camera around the x- and y-axis
+	 * 
+	 * TODO: Implement roll
+	 * 
+	 * @param pitch The degree of the rotation around the x-axis
+	 * @param yaw The degree of the rotation around the y-axis
+	 */
 	public void rotate(float pitch, float yaw) {
 		pitch(pitch);
 		pitch(yaw);
@@ -219,12 +258,13 @@ public class Camera {
 	public static Matrix44f generateViewMatrixA(Vector3f eye, Vector3f viewDirection, Vector3f up) {
 		
 		Vector3f z = viewDirection.normalizedCopy();
+		z.negated();
 		
 		up = up.normalizedCopy();
 		
-		Vector3f x = z.cross(up).normalize();
+		Vector3f x = up.cross(z).normalize();
 		
-		Vector3f y = x.cross(z).normalize();
+		Vector3f y = z.cross(x).normalize();
 		
 		
 		Matrix44f orientation = new Matrix44f(x.getA(), x.getB(), x.getC(), 0f, 

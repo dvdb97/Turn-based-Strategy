@@ -4,10 +4,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 
 import assets.cameras.Camera;
-import classes.CameraOperator;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
-import math.matrices.advanced.Determinant;
 import math.vectors.Vector3f;
 
 public class PlayerCamera {
@@ -25,7 +23,7 @@ public class PlayerCamera {
 	//Init the camera
 	public static void init() {
 		cameraMovementDisabled = false;	
-		camera = new CameraOperator();
+		camera = new Camera();
 	}
 	
 	

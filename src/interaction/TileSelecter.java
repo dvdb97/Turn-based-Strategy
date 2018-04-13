@@ -1,6 +1,5 @@
 package interaction;
 
-import classes.CameraOperator;
 import core.Application;
 import graphics.matrices.Matrices;
 import interaction.input.CursorPosInput;

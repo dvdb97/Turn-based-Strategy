@@ -5,7 +5,6 @@ import assets.light.LightSource;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
-import classes.CameraOperator;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
@@ -30,7 +29,7 @@ public class ShadowMapper {
 		
 		shader = ShadowMappingShader.generateShader();
 		
-		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 10.0f);
+		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 8.0f);
 		
 		createShadowMap(windowWidth, windowHeight);
 		
@@ -56,9 +55,14 @@ public class ShadowMapper {
 		
 		shader.use();
 		
-		setUniformVariables(model, modelMatrix, light, camera);
+		setUniformVariables(modelMatrix, light, camera);
+		
+		//TODO: Only works for closed objects
+		RenderEngine.cullFrontFace();
 		
 		RenderEngine.render(model, null);
+		
+		RenderEngine.cullBackFace();
 		
 		shader.disable();
 		
@@ -72,9 +76,9 @@ public class ShadowMapper {
 	}
 	
 	
-	private static void setUniformVariables(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Camera camera) {
+	private static void setUniformVariables(Matrix44f modelMatrix, LightSource light, Camera camera) {
 		
-		Matrix44f viewMatrix = CameraOperator.lookAt(light.getDirection().negatedCopy().times(3f), light.getDirection(), new Vector3f(0f, 1f, 0f));		
+		Matrix44f viewMatrix = Camera.generateViewMatrixB(light.getDirection().times(1), light.getDirection().negatedCopy(), new Vector3f(0f, 1f, 0f));		
 		
 		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
 		shader.setUniformMatrix4fv("viewMatrix", viewMatrix);

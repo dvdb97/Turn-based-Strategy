@@ -23,6 +23,8 @@ import testing.TextureRenderer;
 import visualize.CoordinateSystem;
 import world.WorldManager;
 
+import static math.Trigonometry.*;
+
 public class BoardModels {
 	
 	//measurements
@@ -56,6 +58,8 @@ public class BoardModels {
 	private static Color selectedTileColor;
 	
 	private Vertex[] vertices;
+	
+	private float t = 0.0f;
 	
 	//***************************** constructor ********************************
 	
@@ -93,7 +97,7 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
-		sun = new LightSource(new Vector3f(0f, 1f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new LightSource(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
 		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
@@ -149,6 +153,10 @@ public class BoardModels {
 	private void renderTerrain() {
 		
 		LightRenderer.render(shadowTest, boardModelMatrix, sun, ambientLight, PlayerCamera.getCamera(), true);
+		
+		sun.setDirection(new Vector3f(cos(t), 0.3f, sin(t)));
+		
+		t += PI / 120; 
 		
 	}
 	

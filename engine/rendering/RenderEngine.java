@@ -209,6 +209,16 @@ public class RenderEngine {
 	}
 	
 	
+	public static void cullBackFace() {
+		glCullFace(GL_BACK);
+	}
+	
+	
+	public static void cullFrontFace() {
+		glCullFace(GL_FRONT);
+	}
+	
+	
 	public static void setClearColor(float red, float green, float blue, float alpha) {
 		glClearColor(red, green, blue, alpha);
 	}
