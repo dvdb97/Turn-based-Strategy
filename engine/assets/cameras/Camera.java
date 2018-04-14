@@ -264,6 +264,10 @@ public class Camera {
 		
 		Vector3f x = up.cross(z).normalize();
 		
+		if (z.getC() < 0) {
+			x.negated();
+		}
+		
 		Vector3f y = z.cross(x).normalize();
 		
 		
