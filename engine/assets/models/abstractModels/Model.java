@@ -53,12 +53,16 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	//The buffers
 	private int positionBufferID = 0;
+	private int posBufferVertexSize = 3;
 		
 	private int colorBufferID = 0;
+	private int colorBufferVertexSize = 4;
 		
 	private int texturePositionBufferID = 0;
+	private int texPosBufferVertexSize = 2;
 	
 	private int normalBufferID = 0;
+	private int normalBufferVertexSize = 3;
 	
 	private int drawMode = 0;
 	
@@ -105,11 +109,16 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	//****************************** Data Management ******************************
 	
 	
-	/*  
-	 * positionDataBuffer - the actual data to be stored. Make sure that the buffer is actually flipped!
-	 *  size - how many values in this array do actually belong to one vertex?
-	 */
 	
+	/**
+	 * 
+	 * Stores position data for this model on the gpu
+	 * 
+	 * @param positionDataBuffer The data to be stored
+	 * @param vaIndex The index the buffer should have in the vertex array object
+	 * @param size The number of values that represent the position of one vertex
+	 * @param accessibilty The accessibility the data (GL_STATIC_DRAW, GL_STATIC_READ, etc)
+	 */
 	public void setVertexPositionData(FloatBuffer positionDataBuffer, int vaIndex, int size, int accessibilty) {
 		
 		if (positionBufferID != 0) {
@@ -140,9 +149,19 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 		
 		glBindVertexArray(0);
 		
+		this.posBufferVertexSize = size;
+		
 	}
 	
 	
+	/**
+	 * 
+	 * Stores position data for this model on the gpu
+	 * 
+	 * @param positionDataBuffer The data to be stored
+	 * @param size The number of values that represent the position of one vertex
+	 * @param accessibilty The accessibility the data (GL_STATIC_DRAW, GL_STATIC_READ, etc)
+	 */
 	public void setVertexPositionData(FloatBuffer positionDataBuffer, int size, int accessibilty) {
 		
 		setVertexPositionData(positionDataBuffer, POS_ARRAY_INDEX, size, accessibilty);
@@ -151,12 +170,45 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	
 	
+	/**
+	 * 
+	 * Replaces a block of data in the buffer with the given data
+	 * 
+	 * @param positionDataBuffer The data to replace the old data with
+	 * @param offset The starting position of the block in vertices
+	 */
+	public void setVertexPositionSubData(FloatBuffer positionDataBuffer, int offset) {
+		
+		if (positionBufferID == 0) {
+			System.err.println("Unable to replace subdata of a buffer as the requested buffer doesn't exist!");
+		}
+		
+		final int OFFSET_IN_BYTES = offset * posBufferVertexSize * Float.BYTES;
+		
+		glBindVertexArray(vaoID);
+		glBindBuffer(GL_ARRAY_BUFFER, positionBufferID);
+		
+		if (glGetBufferParameteri(GL_ARRAY_BUFFER, GL_BUFFER_SIZE) < OFFSET_IN_BYTES + positionDataBuffer.position() * Float.BYTES) {
+			System.err.println("The block of sub data to be replaced in the buffer exceeds the size of the buffer!");
+		}
+		
+		glBufferSubData(GL_ARRAY_BUFFER, OFFSET_IN_BYTES, positionDataBuffer);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
 	
-	/* 
-	 * colorDataBuffer - the actual data to be stored
-	 * size - the amount of values that belong to one vertex
-	 */	
 	
+	
+	/**
+	 * 
+	 * Stores color data for this model on the gpu
+	 * 
+	 * @param colorDataBuffer The data to be stored
+	 * @param vaIndex The index the buffer should have in the vertex array object
+	 * @param size The number of values that represent the position of one vertex
+	 * @param accessibility The accessibility the data (GL_STATIC_DRAW, GL_STATIC_READ, etc)
+	 */
 	public void setVertexColorData(FloatBuffer colorDataBuffer, int vaIndex, int size, int accessibility) {
 		
 		if (colorBufferID != 0) {
@@ -185,6 +237,8 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		glBindVertexArray(0);
+		
+		this.colorBufferVertexSize = size;
 		
 	}
 	
@@ -317,17 +371,7 @@ public abstract class Model extends PrimitiveModel implements Renderable {
 	
 	
 	
-	//The Offset is measured in vertices
-	public void setVertexPositionSubData(FloatBuffer positionDataBuffer, int offset) {
-		glBindVertexArray(vaoID);
-		glBindBuffer(GL_ARRAY_BUFFER, positionBufferID);
-		
-		glBufferSubData(GL_ARRAY_BUFFER, offset * 3 * Float.BYTES, positionDataBuffer);
-		//TODO: Maybe there is a vertex attribute pointer needed
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-	}
+	
 	
 	
 	
