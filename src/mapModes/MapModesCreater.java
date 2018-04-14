@@ -14,7 +14,7 @@ public class MapModesCreater {
 	
 	public static HashMap<Integer, MapMode> getMapModes() {
 		
-		HashMap<Integer, MapMode> modes = new HashMap<>(2);
+		HashMap<Integer, MapMode> modes = new HashMap<>(3);
 		modes.put(BLANK_MODE, getBlankColorFunc());
 		modes.put(FERTILITY_MODE, getFertilityColorFunc());
 		modes.put(FOREST_MODE, getForestColorFunc());
