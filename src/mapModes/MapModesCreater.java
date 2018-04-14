@@ -7,12 +7,17 @@ import world.WorldManager;
 
 public class MapModesCreater {
 	
+	public static final int BLANK_MODE = 0;
+	public static final int FERTILITY_MODE = 1;
+	public static final int FOREST_MODE = 2;
+	
+	
 	public static HashMap<Integer, MapMode> getMapModes() {
 		
 		HashMap<Integer, MapMode> modes = new HashMap<>(2);
-		modes.put(0, getBlankColorFunc());
-		modes.put(1, getFertilityColorFunc());
-		modes.put(2, getForestColorFunc());
+		modes.put(BLANK_MODE, getBlankColorFunc());
+		modes.put(FERTILITY_MODE, getFertilityColorFunc());
+		modes.put(FOREST_MODE, getForestColorFunc());
 		
 		return modes;
 	}
