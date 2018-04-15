@@ -15,7 +15,7 @@ public class Buffer extends GLTargetObject {
 	
 	/**
 	 * 
-	 * @author admin
+	 * @author Dario
 	 *
 	 * Custom exception to handle cases where the user tries to access empty
 	 * buffers
@@ -26,7 +26,7 @@ public class Buffer extends GLTargetObject {
 	
 	/**
 	 * 
-	 * @author admin
+	 * @author Dario
 	 *
 	 * Custom exception to handle cases where the user tries to change
 	 * immutable memory
