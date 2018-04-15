@@ -6,10 +6,10 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-import assets.GLObject;
+import assets.GLTargetObject;
 
 
-public abstract class Texture extends GLObject {
+public abstract class Texture extends GLTargetObject {
 
 	//Linear filtering
 	public static final int LINEAR = GL_LINEAR;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
-import assets.GLObject;
+import assets.GLTargetObject;
 import assets.textures.Texture2D;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -13,11 +13,11 @@ import static org.lwjgl.opengl.GL20.glDrawBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
-public class FrameBuffer extends GLObject {	
+public class FrameBuffer extends GLTargetObject {	
 	
-	private GLObject depthAttachment = null;
+	private GLTargetObject depthAttachment = null;
 	
-	private ArrayList<GLObject> colorAttachments;
+	private ArrayList<GLTargetObject> colorAttachments;
 	
 	private final int ATTACHMENT_PARAM = 36064;
 	
@@ -25,7 +25,7 @@ public class FrameBuffer extends GLObject {
 	public FrameBuffer() {
 		super(glGenFramebuffers(), GL_FRAMEBUFFER);
 		
-		colorAttachments = new ArrayList<GLObject>();
+		colorAttachments = new ArrayList<GLTargetObject>();
 	}
 	
 	
@@ -177,7 +177,7 @@ public class FrameBuffer extends GLObject {
 		
 		IntBuffer buffer = BufferUtils.createIntBuffer(colorAttachments.size());
 		
-		for (GLObject object : colorAttachments) {
+		for (GLTargetObject object : colorAttachments) {
 			buffer.put(object.getID());
 		}
 		
@@ -219,7 +219,7 @@ public class FrameBuffer extends GLObject {
  * framebuffer.
  * 
  */
-class RenderBuffer extends GLObject {	
+class RenderBuffer extends GLTargetObject {	
 	
 	private RenderBuffer() {
 		super(glGenRenderbuffers(), GL_RENDERBUFFER);
