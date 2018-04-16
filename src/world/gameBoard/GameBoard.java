@@ -1,9 +1,35 @@
-package world;
+package world.gameBoard;
+
+import java.util.HashMap;
+
+import world.city.City;
 
 class GameBoard {
 	
 	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;
+	private static HashMap<Tile, City> cities;
+	
+	
+	
+	public static boolean addCity(Tile tile, City city) {
+		
+		//TODO: maybe use exceptions here
+		if (cities.containsKey(tile)) {
+			System.out.println("can't place two cities on one tile");
+			return false;
+		}
+		
+		if (tile.isWater()) {
+			System.out.println("can't place a city on water");
+			return false;
+		}
+		
+		cities.put(tile, city);
+		city.setTile(tile);
+		return true;
+		
+	}
 	
 	//-------------------------------- get & set -------------------------------
 	
@@ -43,6 +69,7 @@ class GameBoard {
 	public static void reset() {
 		
 		tiles = null;
+		cities = null;
 		
 	}
 	

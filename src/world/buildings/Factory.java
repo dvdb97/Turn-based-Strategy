@@ -1,4 +1,4 @@
-package world;
+package world.buildings;
 
 class Factory implements Buyer {
 

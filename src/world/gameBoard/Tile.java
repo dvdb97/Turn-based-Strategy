@@ -1,6 +1,9 @@
-package world;
+package world.gameBoard;
 
-class Tile {
+import world.buildings.Building;
+import world.city.City;
+
+public class Tile {
 	
 	private int index;
 	
@@ -8,12 +11,16 @@ class Tile {
 	private float avgHeight;
 	private float heightSTDV;
 	
+	private boolean water;
+	
 	private float fertility;
 	private float forest;		//Grad der Bewaldung
 	
 	//buildings
 	private int maxNumBuildings;
 	private Building[] buildings;
+	
+	private City city;
 	
 	
 	//------------------------- constructor --------------------------
@@ -24,6 +31,12 @@ class Tile {
 		this.heightSTDV = heightSTDV;
 		this.fertility = fertility;
 		
+		if (avgHeight < 0) {
+			water = true;
+		} else {
+			water = false;
+		}
+		
 		forest = calcForest();
 		
 	}
@@ -32,13 +45,17 @@ class Tile {
 	
 	private float calcForest() {
 		
+		if (water) {
+			return 0;
+		}
+		
 		float a = 0.693147f;
 		
-		float h = avgHeight>a ? avgHeight/a : (avgHeight-a)/a;
-		float f = fertility;
+		float heightInfluence = avgHeight>a ? avgHeight/a : (avgHeight-a)/a;
+		float fertilityInfluence = fertility;
 		
-	
-		return h*f;
+		
+		return heightInfluence*fertilityInfluence;
 		
 	}
 	
@@ -47,7 +64,16 @@ class Tile {
 	//-------------------------- get & set ----------------------------
 	
 	/**
-	 * @return the avgHeight
+	 * 
+	 * @return true, if this tile is traded as a water tile (average height < 0)
+	 */
+	public boolean isWater() {
+		return water ? true : false;
+	}
+	
+	
+	/**
+	 * @return the average height
 	 */
 	public float getAvgHeight() {
 		return avgHeight;
@@ -55,7 +81,7 @@ class Tile {
 
 
 	/**
-	 * @param avgHeight the avgHeight to set
+	 * @param average height the avgHeight to set
 	 */
 	public void setAvgHeight(float avgHeight) {
 		this.avgHeight = avgHeight;
@@ -63,7 +89,7 @@ class Tile {
 
 
 	/**
-	 * @return the heightSTDV
+	 * @return the heights standard deviation
 	 */
 	public float getHeightSTDV() {
 		return heightSTDV;
@@ -71,7 +97,7 @@ class Tile {
 
 
 	/**
-	 * @param heightSTDV the heightSTDV to set
+	 * @param heightSTDV the heights standard deviation to set
 	 */
 	public void setHeightSTDV(float heightSTDV) {
 		this.heightSTDV = heightSTDV;
@@ -95,7 +121,7 @@ class Tile {
 
 
 	/**
-	 * @return the forest
+	 * @return the forest value (how much forest is on this tile), float between 0 and 1
 	 */
 	public float getForest() {
 		return forest;
@@ -103,7 +129,7 @@ class Tile {
 
 
 	/**
-	 * @param forest the forest to set
+	 * @param forest the forest value to set
 	 */
 	public void setForest(float forest) {
 		this.forest = forest;

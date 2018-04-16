@@ -7,6 +7,8 @@ import world.WorldManager;
 
 public class MapModesCreater {
 	
+	public static Color BLANK_COLOR = new Color(1, 1, 1, 0);
+	
 	public static final int BLANK_MODE = 0;
 	public static final int FERTILITY_MODE = 1;
 	public static final int FOREST_MODE = 2;
@@ -26,7 +28,7 @@ public class MapModesCreater {
 		
 		return new MapMode() {
 			
-			private Color blankColor = new Color(1, 1, 1, 0);
+			private Color blankColor = BLANK_COLOR;
 			
 			public Color getColor(int i) {
 				return blankColor;
@@ -35,8 +37,6 @@ public class MapModesCreater {
 		};
 		
 	}
-	
-	
 	
 	private static MapMode getFertilityColorFunc() {
 		
