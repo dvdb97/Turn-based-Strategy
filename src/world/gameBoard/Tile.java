@@ -52,8 +52,7 @@ public class Tile {
 		
 		float a = 0.693147f;
 		
-		Percentage heightInfluence = new Percentage(avgHeight>a ? avgHeight/a : (avgHeight-a)/a);
-		
+		Percentage heightInfluence = new Percentage(avgHeight<a ? avgHeight/a : (avgHeight<2*a ? (2-avgHeight/a) : 0 ));
 		
 		return heightInfluence.times(fertility);
 		

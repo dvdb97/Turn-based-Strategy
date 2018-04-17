@@ -19,11 +19,11 @@ public class Percentage implements Cloneable {
 	public Percentage(float value) {
 		
 		if (value < 0) {
-			throw new IllegalArgumentException("a percentage can't be negative");
+			throw new IllegalArgumentException("a percentage can't be negative: " + value);
 		}
 		
 		if (value > 1) {
-			throw new IllegalArgumentException("a percentage can't be greater than 1");
+			throw new IllegalArgumentException("a percentage can't be greater than 1: " + value);
 		}
 		
 		this.value = value;
