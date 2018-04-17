@@ -180,6 +180,9 @@ public class Buffer extends GLTargetObject {
 	}
 	
 	
+	//TODO: Changing data with mapping
+	
+	
 	/**
 	 * 
 	 * @return Returns the size of the buffer

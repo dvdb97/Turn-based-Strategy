@@ -41,10 +41,10 @@ public class VertexArrayObject extends GLObject {
 	 * @param buffer The buffer containing the vertex data
 	 * @param index The index of the pointer that should be set
 	 * @param size The size of the block of data that defines an attribute of one vertex
-	 * @param OffsetBetweenValues The offset in bytes between the blocks
-	 * @param byteOffset The staring position of the blocks in the buffer
+	 * @param stride The offset in bytes between the blocks
+	 * @param offset The staring position of the blocks in the buffer
 	 */
-	public void setVertexAttributePointer(ArrayBuffer buffer, int index, int size, int OffsetBetweenValues, int Offset) {
+	public void setVertexAttributePointer(ArrayBuffer buffer, int index, int size, int stride, int offset) {
 		
 		if(attributes.contains(index)) {
 			throw new GLDuplicateAttributeException();
@@ -56,17 +56,17 @@ public class VertexArrayObject extends GLObject {
 		//If the buffer contains float data
 		if(isFloat(buffer.getDataType())) {
 			
-			glVertexAttribPointer(index, size, buffer.getDataType(), false, OffsetBetweenValues, Offset);
+			glVertexAttribPointer(index, size, buffer.getDataType(), false, stride, offset);
 			
 			//If the buffer contains integer data
 		} else if(isInteger(buffer.getDataType())) {
 			
-			glVertexAttribIPointer(index, size, buffer.getDataType(), OffsetBetweenValues, Offset);
+			glVertexAttribIPointer(index, size, buffer.getDataType(), stride, offset);
 			
 			//If the buffer contains long data (double, long)
 		} else {
 			
-			glVertexAttribLPointer(index, size, buffer.getDataType(), OffsetBetweenValues, Offset);
+			glVertexAttribLPointer(index, size, buffer.getDataType(), stride, offset);
 			
 		}
 		

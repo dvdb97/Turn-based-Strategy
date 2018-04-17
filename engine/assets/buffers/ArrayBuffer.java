@@ -7,5 +7,7 @@ public class ArrayBuffer extends Buffer {
 	public ArrayBuffer(int dataType) {
 		super(GL_ARRAY_BUFFER, dataType);
 	}
+	
+	//TODO: Changing data with mapping
 
 }
