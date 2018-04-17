@@ -7,6 +7,7 @@ import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
+import utils.Calc;
 import utils.Percentage;
 import utils.ProvisionalUI;
 import world.gameBoard.Tile;
@@ -71,8 +72,11 @@ public class WorldManager {
 		Tile[] tiles = new Tile[NUM_TILES];
 		for (int t=0; t<NUM_TILES; t++) {
 			
-			float avgHeight = 0;
-			float heightSTDV = 0;
+			float[] heights = getHeights(t);
+			
+			float avgHeight = Calc.averageOf(heights);
+			float heightSTDV = Calc.standardDeviationOf(heights, avgHeight);
+			
 			tiles[t] = new Tile(t, avgHeight, heightSTDV, new Percentage(fertility[t]));
 			
 		}
@@ -83,6 +87,24 @@ public class WorldManager {
 		MapModesManager mmm = new MapModesManager(MapModesCreater.getMapModes(), boardModels);
 		ui = new ProvisionalUI(mmm);
 	}
+	
+	
+	
+	//*************************** utils  ****************************
+	
+	private static float[] getHeights(int indexOfTile) {
+		Vector3f center = superGrid.getHexCenter(indexOfTile);
+		Vector3f[] border = superGrid.getHexBorder(indexOfTile);
+		
+		float[] heights = new float[7];
+		heights[0] = center.getC();
+		for (int i=1; i<heights.length; i++) {
+			heights[i] = border[i-1].getC();
+		}
+		
+		return heights;
+	}
+	
 	
 	//*************************** update ****************************
 	
