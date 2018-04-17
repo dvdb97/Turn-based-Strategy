@@ -7,7 +7,9 @@ import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
+import utils.Percentage;
 import utils.ProvisionalUI;
+import world.gameBoard.Tile;
 
 //TODO: 1. shitty name, 2. try to encapsulate graphic and logic
 public class WorldManager {
@@ -31,16 +33,55 @@ public class WorldManager {
 		
 		NUM_TILES = lengthInTiles*widthInTiles;
 		
-		setUpFertility();
-
+		initModels();
+		initFertility();
+		initGameBoard();
+		initMapModes();
+		
+	}
+	
+	private static void initModels() {
+		
 		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
 		
-		boardModels = modelCreater.createModels(fertility);
+		boardModels = modelCreater.createModels();
 		superGrid   = modelCreater.getSuperGrid();
 		
+	}
+	
+	private static void initFertility() {
+		
+		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 2, 2);
+		
+		fertility = new float[lengthInTiles*widthInTiles];
+		
+		for (int x=0; x<lengthInTiles; x++) {
+			
+			for (int y=0; y<widthInTiles; y++) {
+				
+				fertility[x + y*lengthInTiles] = noise.getValue(x, y);
+			}
+			
+		}
+		
+	}
+	
+	private static void initGameBoard() {
+		
+		Tile[] tiles = new Tile[NUM_TILES];
+		for (int t=0; t<NUM_TILES; t++) {
+			
+			float avgHeight = 0;
+			float heightSTDV = 0;
+			tiles[t] = new Tile(t, avgHeight, heightSTDV, new Percentage(fertility[t]));
+			
+		}
+		
+	}
+	
+	private static void initMapModes() {
 		MapModesManager mmm = new MapModesManager(MapModesCreater.getMapModes(), boardModels);
 		ui = new ProvisionalUI(mmm);
-		
 	}
 	
 	//*************************** update ****************************
@@ -77,23 +118,6 @@ public class WorldManager {
 	
 	//*****************************************************************
 	
-	private static void setUpFertility() {
-		
-		TrigonalNoise noise = new TrigonalNoise(lengthInTiles, widthInTiles, 2, 2);
-		
-		fertility = new float[lengthInTiles*widthInTiles];
-		
-		for (int x=0; x<lengthInTiles; x++) {
-			
-			for (int y=0; y<widthInTiles; y++) {
-				
-				fertility[x + y*lengthInTiles] = noise.getValue(x, y);
-			}
-			
-		}
-		
-		
-	}
 	
 	/**
 	 * @return the number of tiles on the game board

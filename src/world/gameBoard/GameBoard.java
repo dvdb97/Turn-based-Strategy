@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import world.city.City;
 
-class GameBoard {
+public class GameBoard {
 	
 	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;

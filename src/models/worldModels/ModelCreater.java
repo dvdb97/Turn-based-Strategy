@@ -66,14 +66,14 @@ public class ModelCreater {
 	 * creates all models needed to render the game board.
 	 * namely: terrain, sea, tile borders and an coordinate system
 	 */
-	public BoardModels createModels(float[] fertility) {
+	public BoardModels createModels() {
 		
 		createSuperGrid();
 		createTerrain();
 		createTileBorders();
 		createSea();
 		createCoSystem();
-		createHexagons(fertility);
+		createHexagons();
 		
 		return new BoardModels(terrain, tileBorders, sea, coSystem, hexagons);
 		
@@ -111,10 +111,9 @@ public class ModelCreater {
 		
 	}
 	
-	private void createHexagons(float[] fertility) {
+	private void createHexagons() {
 		
-	//	Color[] colors = randomColors(lengthInHex, widthInHex);
-		Color[] colors = fertilityColors(lengthInHex, widthInHex, fertility);
+		Color[] colors = randomColors(lengthInHex, widthInHex);
 		hexagons = new HexagonGrid(superGrid, colors);
 		
 	}
@@ -138,19 +137,7 @@ public class ModelCreater {
 		
 		return colors;
 	}
-	
-	private Color[] fertilityColors(int length, int width, float[] fertility) {
 		
-		Color[] colors = new Color[length*width];
-		
-		for (int i=0; i<colors.length; i++) {
-			colors[i] = new Color(fertility[i]*0.13f, fertility[i]*0.55f, fertility[i]*0.13f, 0.2f);
-		}
-		
-		return colors;
-		
-	}
-	
 	//******************************* get ******************************************
 	
 	public SuperGrid getSuperGrid() {

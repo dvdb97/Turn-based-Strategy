@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import assets.meshes.geometry.Color;
 import world.WorldManager;
+import world.gameBoard.GameBoard;
 
 public class MapModesCreater {
 	
@@ -43,7 +44,7 @@ public class MapModesCreater {
 		return new MapMode() {
 			
 			public Color getColor(int i) {
-				return new Color(0.5f + WorldManager.getFertility(i)/2f, 0, 0, 0.5f);
+				return new Color(0.5f + GameBoard.getTile(i).getFertility().getValue()/2f, 0, 0, 0.5f);
 			}
 			
 		};
@@ -55,7 +56,7 @@ public class MapModesCreater {
 		return new MapMode() {
 			
 			public Color getColor(int i) {
-				return new Color(0.5f + WorldManager.getFertility(i)/2f, 0, 0, 0.5f);
+				return new Color(0.5f + GameBoard.getTile(i).getForest().getValue()/2f, 0, 0, 0.5f);
 			}
 			
 		};

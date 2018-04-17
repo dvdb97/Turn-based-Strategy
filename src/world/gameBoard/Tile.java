@@ -1,5 +1,6 @@
 package world.gameBoard;
 
+import utils.Percentage;
 import world.buildings.Building;
 import world.city.City;
 
@@ -13,8 +14,8 @@ public class Tile {
 	
 	private boolean water;
 	
-	private float fertility;
-	private float forest;		//Grad der Bewaldung
+	private Percentage fertility;
+	private Percentage forest;		//Grad der Bewaldung
 	
 	//buildings
 	private int maxNumBuildings;
@@ -24,7 +25,7 @@ public class Tile {
 	
 	
 	//------------------------- constructor --------------------------
-	public Tile(int index, float avgHeight, float heightSTDV, float fertility) {
+	public Tile(int index, float avgHeight, float heightSTDV, Percentage fertility) {
 		
 		this.index = index;
 		this.avgHeight = avgHeight;
@@ -43,19 +44,18 @@ public class Tile {
 	
 	//0.693147
 	
-	private float calcForest() {
+	private Percentage calcForest() {
 		
 		if (water) {
-			return 0;
+			return new Percentage();
 		}
 		
 		float a = 0.693147f;
 		
-		float heightInfluence = avgHeight>a ? avgHeight/a : (avgHeight-a)/a;
-		float fertilityInfluence = fertility;
+		Percentage heightInfluence = new Percentage(avgHeight>a ? avgHeight/a : (avgHeight-a)/a);
 		
 		
-		return heightInfluence*fertilityInfluence;
+		return heightInfluence.times(fertility);
 		
 	}
 	
@@ -107,7 +107,7 @@ public class Tile {
 	/**
 	 * @return the fertility
 	 */
-	public float getFertility() {
+	public Percentage getFertility() {
 		return fertility;
 	}
 
@@ -115,7 +115,7 @@ public class Tile {
 	/**
 	 * @param fertility the fertility to set
 	 */
-	public void setFertility(float fertility) {
+	public void setFertility(Percentage fertility) {
 		this.fertility = fertility;
 	}
 
@@ -123,7 +123,7 @@ public class Tile {
 	/**
 	 * @return the forest value (how much forest is on this tile), float between 0 and 1
 	 */
-	public float getForest() {
+	public Percentage getForest() {
 		return forest;
 	}
 
@@ -131,7 +131,7 @@ public class Tile {
 	/**
 	 * @param forest the forest value to set
 	 */
-	public void setForest(float forest) {
+	public void setForest(Percentage forest) {
 		this.forest = forest;
 	}
 	
