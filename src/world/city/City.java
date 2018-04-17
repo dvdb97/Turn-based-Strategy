@@ -6,16 +6,17 @@ public class City {
 	
 	private Tile tile;
 	
+	private Population population;
+	
 	//TODO: to implement
-	//population
 	//all trading related stuff
 	//sphere of influence?
 	//...
 	
 	//******************** contructor **********************
-	public City() {
+	public City(Population population) {
 		
-		
+		this.population = population;
 		
 	}
 	
