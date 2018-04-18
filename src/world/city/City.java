@@ -5,22 +5,24 @@ import world.gameBoard.Tile;
 public class City {
 	
 	private Tile tile;
+	private Tile[] SPOI;	//sphereofinfluence
+	private int SPOIRadius;
 	
 	private Population population;
 	
 	//TODO: to implement
 	//all trading related stuff
-	//sphere of influence?
 	//...
 	
-	//******************** contructor **********************
-	public City(Population population) {
+	//******************** contructor ***********************************
+	
+	public City(Population population, int SPOIRadius) {
 		
 		this.population = population;
-		
+		this.SPOIRadius = SPOIRadius;
 	}
 	
-	//******************** get & set ***********************
+	//******************** get & set ************************************
 	
 	/**
 	 * this method is only useful, when called the first time
@@ -35,7 +37,16 @@ public class City {
 		}
 		
 		this.tile = tile;
+		SPOI = getSPOI(tile, SPOIRadius);
 		return true;
+		
+	}
+	
+	
+	//TODO:
+	private Tile[] getSPOI(Tile tile, int SPOIRadius) {
+		//not implemented yet
+		return null;
 		
 	}
 	
