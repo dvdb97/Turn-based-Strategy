@@ -6,6 +6,8 @@ import world.city.City;
 
 public class GameBoard {
 	
+	private static int length, width;
+	
 	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;
 	private static HashMap<Tile, City> cities;
@@ -38,11 +40,13 @@ public class GameBoard {
 	 * @param tiles 
 	 * @return true if tiles was set, false if tiles has been set before (tiles can only be set once)
 	 */
-	public static boolean setTiles(Tile[] tiles) {
+	public static boolean setTiles(Tile[] tiles, int length, int width) {
 		
 		if (tiles == null) {
 			
-			GameBoard.tiles = tiles;
+			GameBoard.length = length;
+			GameBoard.width  = width;
+			GameBoard.tiles  = tiles;
 			return true;
 			
 		} else {
@@ -63,6 +67,22 @@ public class GameBoard {
 		return tiles[index];
 		
 	}
+	
+	/**
+	 * @return the length
+	 */
+	public static int getLength() {
+		return length;
+	}
+	
+	
+	/**
+	 * @return the width
+	 */
+	public static int getWidth() {
+		return width;
+	}
+	
 	
 	//-------------------------------------- reset -------------------------------
 	

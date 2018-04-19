@@ -10,6 +10,7 @@ import models.worldModels.ModelCreater;
 import utils.Calc;
 import utils.Percentage;
 import utils.ProvisionalUI;
+import world.gameBoard.GameBoard;
 import world.gameBoard.Tile;
 
 //TODO: 1. shitty name, 2. try to encapsulate graphic and logic
@@ -80,7 +81,7 @@ public class WorldManager {
 			tiles[t] = new Tile(t, avgHeight, heightSTDV, new Percentage(fertility[t]));
 			
 		}
-		
+		GameBoard.setTiles(tiles, lengthInTiles, widthInTiles);
 	}
 	
 	private static void initMapModes() {
