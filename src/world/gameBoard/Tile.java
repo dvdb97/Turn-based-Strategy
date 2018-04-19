@@ -62,6 +62,10 @@ public class Tile {
 	
 	//-------------------------- get & set ----------------------------
 	
+	public int getIndex() {
+		return index;
+	}
+	
 	/**
 	 * 
 	 * @return true, if this tile is traded as a water tile (average height < 0)

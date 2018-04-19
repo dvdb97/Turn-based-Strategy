@@ -1,5 +1,7 @@
 package world.city;
 
+import world.WorldManager;
+import world.gameBoard.GameBoard;
 import world.gameBoard.Tile;
 
 public class City {
@@ -45,9 +47,29 @@ public class City {
 	
 	//TODO:
 	private Tile[] getSPOI(Tile tile, int SPOIRadius) {
-		//not implemented yet
+		
+		int length = WorldManager.getLengthInTiles();
+		int index = tile.getIndex();
+		Tile[] spoi;
+		
+		if (SPOIRadius == 1 && index%2 == 1) {
+			
+			spoi = new Tile[SPOI_R1_LENGTH];
+			
+			for (int i=0; i<SPOI_R1_LENGTH; i++) {
+				
+				spoi[i] = GameBoard.getTile( (index%length + SPOI_R1_INDICES_DX[i]) + (index/length + SPOI_R1_INDICES_DY[i])*length );
+				
+			}
+			
+		}
+		
 		return null;
 		
 	}
+	
+	private static final int SPOI_R1_LENGTH = 6;
+	private static final int[] SPOI_R1_INDICES_DX = new int[] {1, 1, 0,-1, 0, 1};
+	private static final int[] SPOI_R1_INDICES_DY = new int[] {0, 1, 1, 0,-1,-1};
 	
 }

@@ -141,6 +141,7 @@ public class WorldManager {
 	//*****************************************************************
 	
 	
+	
 	/**
 	 * @return the number of tiles on the game board
 	 */
@@ -148,6 +149,20 @@ public class WorldManager {
 		return NUM_TILES;
 	}
 	
+	/**
+	 * @return the length in tiles
+	 */
+	public static int getLengthInTiles() {
+		return lengthInTiles;
+	}
+
+	/**
+	 * @return the width in tiles
+	 */
+	public static int getWidthInTiles() {
+		return widthInTiles;
+	}
+
 	/**
 	 * @param i index of requested tile
 	 * @return the fertilty of the requested tile
