@@ -32,7 +32,7 @@ public class SphereOfInfluence {
 			return false;
 		}
 		
-		tiles.add(processSPOIRing(getRadius()+1));
+		tiles.add(processSpoiRing(getRadius()+1));
 		
 		return true;
 		
@@ -55,31 +55,29 @@ public class SphereOfInfluence {
 	
 	//*********************************************************
 	
-	//TODO: a lot. this method works only in very few cases
-	
-	private ArrayList<Tile> processSPOIRing(int radius) {
+	private ArrayList<Tile> processSpoiRing(int radius) {
 		
-		ArrayList<Tile> ring = new ArrayList<>();
+		int length  = GameBoard.getLength();
+		int index   = getCenterTile().getIndex();
 		
-		int index = getCenterTile().getIndex();
-		int length = GameBoard.getLength();
+		ArrayList<Tile> spoi = new ArrayList<>(SPOI_LENGTH[radius]);
 		
-		if (radius == 1 && index%2 == 1) {
+		int x;
+		int y;
+		
+		for (int i=0; i<SPOI_LENGTH[radius]; i++) {
 			
-			ring = new ArrayList<>(SPOI_R1_LENGTH);
+			//TODO: check if tile exists
+			x = index%length + SPOI_INDICES_DX[index%2][radius][i];
+			y = index/length + SPOI_INDICES_DY[index%2][radius][i];
 			
-			for (int i=0; i<SPOI_R1_LENGTH; i++) {
-				
-				ring.add( GameBoard.getTile( (index%length + SPOI_R1_INDICES_DX[i]) + (index/length + SPOI_R1_INDICES_DY[i])*length ) );
-				
-			}
+			spoi.add(GameBoard.getTile(x + y*length));
 			
 		}
 		
-		return ring;
+		return spoi;
 		
 	}
-	
 	
 	
 	//********************* get & set *************************
@@ -97,16 +95,23 @@ public class SphereOfInfluence {
 		tiles = new ArrayList<>();
 		tiles.add(new ArrayList<>(1));
 		tiles.get(0).add(centerTile);
-
+		
 	}
 	
 	
-	//********************* spoi data **************************
+	//************************ spoi data ********************************
+	//TODO
 	
-	private static final int SPOI_R1_LENGTH = 6;
-	private static final int[] SPOI_R1_INDICES_DX = new int[] {1, 1, 0,-1, 0, 1};
-	private static final int[] SPOI_R1_INDICES_DY = new int[] {0, 1, 1, 0,-1,-1};
+	private static final int [] SPOI_LENGTH = new int[] {6, 12};
 	
+	private static final int[][][] SPOI_INDICES_DX = new int[][][] {
+			{{1, 1, 0,-1, 0, 1},{2, 2, 1, 0, 1,-1,-2,-1,-1, 0, 1, 2}},
+			{{},{}}
+	};
 	
+	private static final int[][][] SPOI_INDICES_DY = new int[][][] {
+			{{0, 1, 1, 0,-1,-1},{0, 1, 2, 2, 2, 1, 0,-1,-2,-2,-2,-1}},
+			{{},{}}
+	};	
 	
 }
