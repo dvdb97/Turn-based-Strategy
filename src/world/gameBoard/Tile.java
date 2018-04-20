@@ -1,5 +1,7 @@
 package world.gameBoard;
 
+import java.util.ArrayList;
+
 import utils.Percentage;
 import world.buildings.Building;
 import world.city.City;
@@ -19,12 +21,12 @@ public class Tile {
 	
 	//buildings
 	private int maxNumBuildings;
-	private Building[] buildings;
+	private ArrayList<Building> buildings;
 	
 	private City city;
 	
 	
-	//------------------------- constructor --------------------------
+	//*************************** constructor ***********************************
 	public Tile(int index, float avgHeight, float heightSTDV, Percentage fertility) {
 		
 		this.index = index;
@@ -60,10 +62,69 @@ public class Tile {
 	
 	
 	
-	//-------------------------- get & set ----------------------------
+	//*************************** city ******************************************
+	
+	
+	/**
+	 * 
+	 * @param city
+	 * @return false if city already has been set
+	 */
+	public boolean setCity(City city) {
+		
+		if (this.city != null) {
+			System.err.println("there can be only one city on a tile");
+			return false;
+		}
+		
+		this.city = city;
+		return true;
+		
+	}
+	
+	/**
+	 * 
+	 * @return true if has been removed, false if there wasn't a city to remove
+	 */
+	public boolean removeCity() {
+		
+		if (city == null) {
+			return false;
+		}
+		
+		city = null;
+		return true;
+		
+	}
+	
+	
+	//**************************** buildings *************************************
+	
+	public boolean addBuilding(Building building) {
+		
+		if (buildings.size() >= maxNumBuildings) {
+			return false;
+		}
+		
+		buildings.add(building);
+		return true;
+		
+	}
+	
+	public Building getBuilding(int i) {
+		return buildings.get(i);
+	}
+	
+	
+	
+	//**************************** get & set *************************************
 	
 	public int getIndex() {
 		return index;
+	}
+	
+	public int getNumBuildings() {
+		return buildings.size();
 	}
 	
 	/**
@@ -71,7 +132,7 @@ public class Tile {
 	 * @return true, if this tile is traded as a water tile (average height < 0)
 	 */
 	public boolean isWater() {
-		return water ? true : false;
+		return water;
 	}
 	
 	
