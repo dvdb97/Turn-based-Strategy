@@ -2,11 +2,14 @@ package interaction;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
 import assets.cameras.Camera;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
+import timer.Cooldown;
 
 public class PlayerCamera {
 	
@@ -18,12 +21,17 @@ public class PlayerCamera {
 	//TODO: The value is temporary
 	private static float cameraMovementSpeed = 0.1f;
 	private static float cameraRotationSpeed = 0.1f;
+	
+	private static double timer1;
 
 	
 	//Init the camera
 	public static void init() {
 		cameraMovementDisabled = false;	
 		camera = new Camera();
+		
+		timer1 = glfwGetTime();
+		
 	}
 	
 	
@@ -107,6 +115,26 @@ public class PlayerCamera {
 		if (KeyInput.keyPressed(GLFW_KEY_G)) {
 			
 			camera.pitch(-0.1f * cameraRotationSpeed);
+			
+		}
+		
+		
+		if (KeyInput.keyPressed(GLFW_KEY_ENTER)) {
+			
+			if (glfwGetTime() - timer1 <= 1.0) {
+				return;
+			}
+			
+			
+			System.out.println("View Direction:");
+			
+			camera.getViewDirection().print();
+			
+			System.out.println("View matrix:");
+			
+			camera.getViewMatrix().print();
+			
+			timer1 = glfwGetTime();
 			
 		}
 		

@@ -68,15 +68,16 @@ public class TestModel {
 	}
 	
 	
-	public void setVertexPositionData(FloatBuffer data, int size, int stride, int offset) {
+	public void setVertexPositionData(FloatBuffer data, int size, int stride, int offset, int flag) {
 		ArrayBuffer buffer = new ArrayBuffer(GL_FLOAT);
+		buffer.setBufferStorage(data, flag);
 		
 		this.setVertexPositionData(buffer, size, stride, offset);
 	}
 	
 	
-	public void setVertexPositionData(FloatBuffer data, int size) {
-		this.setVertexPositionData(data, size, 0, 0);
+	public void setVertexPositionData(FloatBuffer data, int size, int flag) {
+		this.setVertexPositionData(data, size, 0, 0, flag);
 	}
 	
 }

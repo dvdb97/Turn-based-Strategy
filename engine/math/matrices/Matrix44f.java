@@ -350,5 +350,24 @@ public class Matrix44f extends Matrixf {
 	private Vector4f getCol(int c) {
 		return new Vector4f(get(0+c*N), get(1+c*N), get(2+c*N), get(3+c*N));
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if(getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Matrix44f mat = (Matrix44f)obj;
+		
+		for (int i = 0; i < 16; i++) {
+			if(this.get(i) != mat.get(i)) {
+				return false;
+			}
+		}
+		
+		return true;
+		
+	}
 	
 }

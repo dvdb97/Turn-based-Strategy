@@ -78,7 +78,7 @@ public class ShadowMapper {
 	
 	private static void setUniformVariables(Matrix44f modelMatrix, LightSource light, Camera camera) {
 		
-		Matrix44f viewMatrix = Camera.generateViewMatrixB(light.getDirection().times(1), light.getDirection().negatedCopy(), new Vector3f(0f, 1f, 0f));		
+		Matrix44f viewMatrix = Camera.generateViewMatrixB(light.getDirection().times(3f), light.getDirection().negatedCopy(), new Vector3f(0f, 1f, 0f));		
 		
 		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
 		shader.setUniformMatrix4fv("viewMatrix", viewMatrix);

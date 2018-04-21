@@ -6,6 +6,10 @@ import math.vectors.Vector3f;
 
 import static math.Trigonometry.*;
 
+import interaction.input.KeyInput;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
+
 public class Camera {
 	
 	//The current position of the camera
@@ -14,6 +18,9 @@ public class Camera {
 	//The current view direction of the camera
 	private Vector3f viewDirection;
 	
+	//The up vector for creating a view matrix
+	private Vector3f upVector;
+	
 	//the current view matrix for this camera
 	private Matrix44f viewMatrix;
 	
@@ -21,12 +28,14 @@ public class Camera {
 	public Camera() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
+		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 	}
 	
 	
 	public Camera(Vector3f position, Vector3f viewDirection) {
 		this.position = position.copyOf();
 		this.viewDirection = viewDirection.normalizedCopy();
+		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 	}
 	
 	
@@ -154,6 +163,8 @@ public class Camera {
 		
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
 		
+		this.upVector = rotationMatrix.times(upVector);
+		
 	}
 	
 	
@@ -183,6 +194,8 @@ public class Camera {
 		Matrix33f rotationMatrix = new Matrix33f(cos(radians), 0f, sin(radians), 0f, 1f, 0f, -sin(radians), 0f, cos(radians));
 	
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
+		
+		this.upVector = rotationMatrix.times(upVector);
 		
 	}
 	
@@ -235,7 +248,7 @@ public class Camera {
 	 * @return Generates a view matrix for this camera
 	 */
 	public Matrix44f getViewMatrix() {
-		return generateViewMatrixA(position, viewDirection, new Vector3f(0f, 1f, 0f));
+		return generateViewMatrixA(position, viewDirection, upVector);
 	}
 	
 	
@@ -244,7 +257,7 @@ public class Camera {
 	 * @return Generates the multiplicative inverse of the view matrix
 	 */
 	public Matrix44f getInvertedViewMatrix() {
-		return generateViewMatrixA(position.normalizedCopy(), viewDirection.negatedCopy(), new Vector3f(0f, 1f, 0f));
+		return generateViewMatrixA(position.normalizedCopy(), viewDirection.negatedCopy(), upVector);
 	}
 	
 	
@@ -260,16 +273,11 @@ public class Camera {
 		Vector3f z = viewDirection.normalizedCopy();
 		z.negated();
 		
-		up = up.normalizedCopy();
+		up = up.normalizedCopy();		
 		
-		Vector3f x = up.cross(z).normalize();
-		
-		if (z.getC() < 0) {
-			x.negated();
-		}
+		Vector3f x = up.cross(z).normalize();;			
 		
 		Vector3f y = z.cross(x).normalize();
-		
 		
 		Matrix44f orientation = new Matrix44f(x.getA(), x.getB(), x.getC(), 0f, 
 											  y.getA(), y.getB(), y.getC(), 0f, 
@@ -280,7 +288,7 @@ public class Camera {
 											  0f, 1f, 0f, -eye.getB(),
 											  0f, 0f, 1f, -eye.getC(),
 											  0f, 0f, 0f, 1f);
-		
+				
 		return orientation.times(translation);
 		
 	}
