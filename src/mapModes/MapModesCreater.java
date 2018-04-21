@@ -18,49 +18,11 @@ public class MapModesCreater {
 	public static HashMap<Integer, MapMode> getMapModes() {
 		
 		HashMap<Integer, MapMode> modes = new HashMap<>(3);
-		modes.put(BLANK_MODE, getBlankColorFunc());
-		modes.put(FERTILITY_MODE, getFertilityColorFunc());
-		modes.put(FOREST_MODE, getForestColorFunc());
+		modes.put(BLANK_MODE,     (int i) -> BLANK_COLOR);
+		modes.put(FERTILITY_MODE, (int i) -> new Color(0.5f + GameBoard.getTile(i).getFertility().getValue()/2f, 0, 0, 0.5f));
+		modes.put(FOREST_MODE,    (int i) -> new Color(0.5f + GameBoard.getTile(i).getForest().getValue()/2f, 0, 0, 0.5f));
 		
 		return modes;
-	}
-	
-	private static MapMode getBlankColorFunc() {
-		
-		return new MapMode() {
-			
-			private Color blankColor = BLANK_COLOR;
-			
-			public Color getColor(int i) {
-				return blankColor;
-			}
-			
-		};
-		
-	}
-	
-	private static MapMode getFertilityColorFunc() {
-		
-		return new MapMode() {
-			
-			public Color getColor(int i) {
-				return new Color(0.5f + GameBoard.getTile(i).getFertility().getValue()/2f, 0, 0, 0.5f);
-			}
-			
-		};
-		
-	}
-	
-	private static MapMode getForestColorFunc() {
-		
-		return new MapMode() {
-			
-			public Color getColor(int i) {
-				return new Color(0.5f + GameBoard.getTile(i).getForest().getValue()/2f, 0, 0, 0.5f);
-			}
-			
-		};
-		
 	}
 	
 }

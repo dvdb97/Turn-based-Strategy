@@ -3,6 +3,7 @@ package mapModes;
 import assets.meshes.geometry.Color;
 import world.WorldManager;
 
+@FunctionalInterface
 public interface MapMode {
 	
 	/**
