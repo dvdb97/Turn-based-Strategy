@@ -1,6 +1,6 @@
 package rendering.shaders.standardShaders.lightShader;
 
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -16,7 +16,7 @@ public class LightShader extends ShaderProgram {
 	private static final String path = "Shaders/LightShaders/";
 
 	
-	private LightSource lightSource = new LightSource(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
+	private DirectionalLight lightSource = new DirectionalLight(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
 	
 	private StandardMaterial standardMaterial = new StandardMaterial();
 	
@@ -191,9 +191,9 @@ public class LightShader extends ShaderProgram {
 	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
 	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
 	 */
-	public void setLightSource(LightSource ls, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
+	public void setLightSource(DirectionalLight ls, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
 		
-		this.setUniform3fv("light.direction", ls.getDirection().toArray());
+		this.setUniform3fv("light.direction", ls.getViewDirection().toArray());
 		
 		this.setUniform3fv("light.color", ls.getColor().toArray());
 		

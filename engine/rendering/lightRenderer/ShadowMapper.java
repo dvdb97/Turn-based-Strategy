@@ -1,7 +1,7 @@
 package rendering.lightRenderer;
 
 import assets.cameras.Camera;
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
@@ -29,7 +29,7 @@ public class ShadowMapper {
 		
 		shader = ShadowMappingShader.generateShader();
 		
-		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 8.0f);
+		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 5.0f);
 		
 		createShadowMap(windowWidth, windowHeight);
 		
@@ -47,7 +47,7 @@ public class ShadowMapper {
 	
 	
 	
-	public static ShadowMap generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Camera camera) {
+	public static ShadowMap generateShadowMap(Illuminated_Model model, Matrix44f modelMatrix, DirectionalLight light, Camera camera) {
 		
 		frameBuffer.bind();
 		
@@ -76,9 +76,9 @@ public class ShadowMapper {
 	}
 	
 	
-	private static void setUniformVariables(Matrix44f modelMatrix, LightSource light, Camera camera) {
+	private static void setUniformVariables(Matrix44f modelMatrix, DirectionalLight light, Camera camera) {		
 		
-		Matrix44f viewMatrix = Camera.generateViewMatrixB(light.getDirection().times(3f), light.getDirection().negatedCopy(), new Vector3f(0f, 1f, 0f));		
+		Matrix44f viewMatrix = light.getViewMatrix();
 		
 		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
 		shader.setUniformMatrix4fv("viewMatrix", viewMatrix);

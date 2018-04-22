@@ -240,6 +240,11 @@ public class Camera {
 	}
 	
 	
+	protected Vector3f getUpVector() {
+		return upVector;
+	}
+	
+	
 	//****************************************** matrix handling ******************************************
 
 

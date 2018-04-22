@@ -1,6 +1,6 @@
 package rendering.shaders;
 
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.textures.Texture2D;
 import fontRendering.rendering.shader.TextRenderingShader;

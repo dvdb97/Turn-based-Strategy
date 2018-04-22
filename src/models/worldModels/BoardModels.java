@@ -1,6 +1,6 @@
 package models.worldModels;
 
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.fileLoaders.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
@@ -48,10 +48,8 @@ public class BoardModels {
 	//others
 	private static Material mapMaterial;
 	
-	private static LightSource sun;
+	private static DirectionalLight sun;
 	private static Vector3f ambientLight;
-	
-	private static Matrix44f lightViewMatrix;
 	
 	private static Color hoveredTileColor;
 	
@@ -97,11 +95,9 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
-		sun = new LightSource(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
 		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
-		
-		lightViewMatrix = new TransformationMatrix(new Vector3f(1f, 1f, 1f), sun.getDirection(), 1f);
 		
 		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
 		
@@ -154,7 +150,7 @@ public class BoardModels {
 		
 		LightRenderer.render(shadowTest, boardModelMatrix, sun, ambientLight, PlayerCamera.getCamera(), true);
 		
-		sun.setDirection(new Vector3f(cos(t), 0.3f, sin(t)));
+		sun.pitch(-0.005f);
 		
 		t += PI / 120; 
 		

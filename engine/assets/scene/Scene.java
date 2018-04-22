@@ -1,8 +1,8 @@
-package assets.scenes;
+package assets.scene;
 
 
 import java.util.LinkedList;
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.models.Illuminated_Model;
 import assets.models.abstractModels.Renderable;
 
@@ -11,19 +11,19 @@ public class Scene implements Renderable {
 	
 	private LinkedList<Illuminated_Model> models;
 	
-	private LinkedList<LightSource> lights;
+	private LinkedList<DirectionalLight> lights;
 	
 	
 	public Scene() {
 		
 		models = new LinkedList<Illuminated_Model>();
 		
-		lights = new LinkedList<LightSource>();
+		lights = new LinkedList<DirectionalLight>();
 		
 	}
 	
 	
-	public Scene(Illuminated_Model[] models, LightSource[] lights) {
+	public Scene(Illuminated_Model[] models, DirectionalLight[] lights) {
 		
 		this();
 		
@@ -34,7 +34,7 @@ public class Scene implements Renderable {
 		}
 		
 		
-		for (LightSource light : lights) {
+		for (DirectionalLight light : lights) {
 			
 			this.lights.add(light);
 			
@@ -86,14 +86,14 @@ public class Scene implements Renderable {
 	}
 	
 	
-	public void addLightSource(LightSource light) {
+	public void addLightSource(DirectionalLight light) {
 		
 		lights.add(light);
 		
 	}
 	
 	
-	public void removeLightSource(LightSource light) {
+	public void removeLightSource(DirectionalLight light) {
 		
 		lights.remove(light);
 		
@@ -128,7 +128,7 @@ public class Scene implements Renderable {
 	}
 	
 	
-	public LinkedList<LightSource> getLights() {
+	public LinkedList<DirectionalLight> getLights() {
 		return lights;
 	}
 

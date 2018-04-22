@@ -1,7 +1,7 @@
 package rendering.lightRenderer;
 
 import assets.cameras.Camera;
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
 import graphics.matrices.Matrices;
@@ -29,7 +29,7 @@ public class LightRenderer {
 	}
 	
 	
-	public static void render(Illuminated_Model model, Matrix44f modelMatrix, LightSource light, Vector3f ambientLight, Camera camera, boolean shadows) {
+	public static void render(Illuminated_Model model, Matrix44f modelMatrix, DirectionalLight light, Vector3f ambientLight, Camera camera, boolean shadows) {
 		
 		if (shadows) {
 			shadowMap = ShadowMapper.generateShadowMap(model, modelMatrix, light, camera);
@@ -47,7 +47,7 @@ public class LightRenderer {
 		
 		lightShader.setAmbientLight(ambientLight);
 		
-		lightShader.setLightSource(light, shadowMap.getLightViewMatrix(), shadowMap.getLightProjectionMatrix(), shadows);
+		lightShader.setLightSource(light, light.getViewMatrix(), shadowMap.getLightProjectionMatrix(), shadows);
 		
 		if (shadows)
 			shadowMap.getShadowMap().bind();
