@@ -57,8 +57,6 @@ public class BoardModels {
 	
 	private Vertex[] vertices;
 	
-	private float t = 0.0f;
-	
 	//***************************** constructor ********************************
 	
 	/**
@@ -95,7 +93,7 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
-		sun = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new DirectionalLight(new Vector3f(0f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f));
 		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
@@ -149,10 +147,6 @@ public class BoardModels {
 	private void renderTerrain() {
 		
 		LightRenderer.render(shadowTest, boardModelMatrix, sun, ambientLight, PlayerCamera.getCamera(), true);
-		
-		sun.pitch(-0.005f);
-		
-		t += PI / 120; 
 		
 	}
 	

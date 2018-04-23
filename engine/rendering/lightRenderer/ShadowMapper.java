@@ -29,7 +29,7 @@ public class ShadowMapper {
 		
 		shader = ShadowMappingShader.generateShader();
 		
-		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 5.0f);
+		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix((float)windowWidth / (float)windowHeight, 8.0f);
 		
 		createShadowMap(windowWidth, windowHeight);
 		
@@ -79,6 +79,12 @@ public class ShadowMapper {
 	private static void setUniformVariables(Matrix44f modelMatrix, DirectionalLight light, Camera camera) {		
 		
 		Matrix44f viewMatrix = light.getViewMatrix();
+		
+		System.out.println("Light Direction:");
+		light.getViewDirection().print();
+		System.out.println("view matrix: ");
+		viewMatrix.print();
+		
 		
 		shader.setUniformMatrix4fv("modelMatrix", modelMatrix);
 		shader.setUniformMatrix4fv("viewMatrix", viewMatrix);

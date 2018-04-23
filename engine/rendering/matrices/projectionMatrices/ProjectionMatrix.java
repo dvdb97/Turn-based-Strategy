@@ -59,12 +59,12 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	private void generateOrthographicMatrix() {
 		
-		setA1(2 / (right - left));
-		setB2(2 / (top - bottom));
+		setA1(2f / (right - left));
+		setA4(-((right + left) / (right - left)));
+		setB2(2f / (top - bottom));
+		setB4(-((top + bottom) / (top - bottom)));
 		setC3(-2 / (far - near));
-		setD1(-((right + left) / (right - left)));
-		setD2(-((top + bottom) / (top - bottom)));
-		setD3(-(far + near) / (far - near));	
+		setC4(-((far + near) / (far - near)));
 		setD4(1f);
 		
 		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);

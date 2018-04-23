@@ -1,7 +1,6 @@
 package assets.light;
 
 import assets.cameras.Camera;
-import math.MathUtils;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 
@@ -14,7 +13,7 @@ public class DirectionalLight extends Camera {
 	
 	
 	public DirectionalLight(Vector3f direction, Vector3f color) {
-		super(direction.negatedCopy(), direction);
+		super(direction.times(-1f), direction);
 		this.color = color;
 	}
 	
@@ -24,7 +23,7 @@ public class DirectionalLight extends Camera {
 	
 	@Override
 	public Matrix44f getViewMatrix() {
-		return generateViewMatrixA(getViewDirection().times(2f), getViewDirection().negatedCopy(), getUpVector());
+		return generateViewMatrixA(getPosition(), getViewDirection(), getUpVector());
 	}
 	
 	
