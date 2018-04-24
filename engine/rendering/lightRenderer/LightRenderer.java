@@ -32,7 +32,7 @@ public class LightRenderer {
 	public static void render(Illuminated_Model model, Matrix44f modelMatrix, DirectionalLight light, Vector3f ambientLight, Camera camera, boolean shadows) {
 		
 		if (shadows) {
-			shadowMap = ShadowMapper.generateShadowMap(model, modelMatrix, light, camera);
+			shadowMap = ShadowMapper.generateShadowMap(model, modelMatrix, light);
 		
 			TextureRenderer.render(shadowMap.getShadowMap());
 		}
@@ -47,7 +47,7 @@ public class LightRenderer {
 		
 		lightShader.setAmbientLight(ambientLight);
 		
-		lightShader.setLightSource(light, light.getViewMatrix(), shadowMap.getLightProjectionMatrix(), shadows);
+		lightShader.setLightSource(light, shadowMap.getLightViewMatrix(), shadowMap.getLightProjectionMatrix(), shadows);
 		
 		if (shadows)
 			shadowMap.getShadowMap().bind();

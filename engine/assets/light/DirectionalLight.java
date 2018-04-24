@@ -9,7 +9,14 @@ public class DirectionalLight extends Camera {
 	
 	private Vector3f color;
 	
+	
 	//****************************** constructor ******************************
+	
+	
+	public DirectionalLight(Vector3f color) {
+		super(new Vector3f(0f, 0f, 1f), new Vector3f(0f, 0f, -1f));
+		this.color = color;
+	}
 	
 	
 	public DirectionalLight(Vector3f direction, Vector3f color) {
