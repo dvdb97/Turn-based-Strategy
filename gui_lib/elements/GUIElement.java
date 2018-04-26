@@ -100,7 +100,7 @@ public abstract class GUIElement extends GUIElementBase {
 	}
 	
 	
-	protected void setNativeonclickFunc(GUIEventHandler nativeOnclickFunc) {
+	protected void setNativeOnclickFunc(GUIEventHandler nativeOnclickFunc) {
 		this.nativeOnClickFunc = nativeOnclickFunc;
 	}
 	
