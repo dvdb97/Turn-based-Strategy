@@ -62,6 +62,7 @@ public class WorldManager {
 			for (int y=0; y<widthInTiles; y++) {
 				
 				fertility[x + y*lengthInTiles] = noise.getValue(x, y);
+				
 			}
 			
 		}

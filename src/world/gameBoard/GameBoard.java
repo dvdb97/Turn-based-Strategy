@@ -42,7 +42,7 @@ public class GameBoard {
 	 */
 	public static boolean setTiles(Tile[] tiles, int length, int width) {
 		
-		if (tiles == null) {
+		if (GameBoard.tiles == null) {
 			
 			GameBoard.length = length;
 			GameBoard.width  = width;
