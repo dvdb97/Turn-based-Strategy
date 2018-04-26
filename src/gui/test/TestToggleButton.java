@@ -12,13 +12,10 @@ public class TestToggleButton extends GUIToggleButton {
 		super(0.1f, -0.1f, 0.8f, 0.8f, "");
 		// TODO Auto-generated constructor stub
 		
-		this.setOnclickFunc(new GUIEventHandler() {
-			@Override
-			public void function(GUIElementBase element) {
+		this.setOnclickFunc((GUIElementBase element) -> {
 				setLabel(isActivated() ? "Nice!" : "Click me!");
 				setLabelPosition(GUIConst.Position.CENTER);
-			}
-		});
+			});
 		
 	}
 
