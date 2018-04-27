@@ -104,11 +104,11 @@ public class BoardModels {
 		
 		renderTerrain();
 		
-		renderSelectedTile();
+		renderBordersSeaCOS();
 		
 		renderHoveredTile();
 		
-		renderBordersSeaCOS();
+		renderSelectedTile();
 		
 	}
 	
