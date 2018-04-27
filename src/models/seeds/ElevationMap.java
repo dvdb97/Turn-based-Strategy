@@ -59,11 +59,10 @@ public class ElevationMap {
 		for (int x=0; x<length; x++) {
 			for (int y=0; y<width; y++) {
 				
-				elevation[x][y] = -(float)Math.log( 1/(elevation[x][y]+0.5) - 1 );
+				elevation[x][y] = -(float)Math.log( 1/(elevation[x][y]+0.5f) - 1 );
 				
 			}
 		}
-		
 	}
 	
 	private void seaLevelToZero() {
@@ -78,6 +77,7 @@ public class ElevationMap {
 				
 			}
 		}
+		
 		
 	}
 	

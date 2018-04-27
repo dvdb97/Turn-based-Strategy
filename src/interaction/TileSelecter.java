@@ -1,6 +1,5 @@
 package interaction;
 
-import core.Application;
 import graphics.Camera;
 import graphics.matrices.Matrices;
 import interaction.input.CursorPosInput;
@@ -49,7 +48,7 @@ public class TileSelecter {
 		//TODO: move
 		if (MouseInputManager.isLeftMouseButtonPressed()) {
 			selectedTileIndex = hoveredTileIndex;
-			System.out.println(WorldManager.getFertility(selectedTileIndex));
+			System.out.println("fertility = " + WorldManager.getFertility(selectedTileIndex));
 		}
 		
 	}

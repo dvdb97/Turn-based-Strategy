@@ -1,4 +1,6 @@
-package world;
+package world.buildings;
+
+import world.GoodsVector;
 
 abstract class Company extends Building implements Seller {
 	

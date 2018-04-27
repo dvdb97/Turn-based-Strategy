@@ -1,5 +1,0 @@
-package world;
-
-interface Buyer {
-
-}

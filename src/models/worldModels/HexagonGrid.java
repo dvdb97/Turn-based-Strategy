@@ -3,6 +3,7 @@ package models.worldModels;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;
+import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
@@ -140,10 +141,10 @@ public class HexagonGrid extends Element_Model {
 		
 	}
 	
-	public void setColor(Color[] colors) {
+	public void setColor(MapMode mapMode) {
 		
-		for (int i=0; i<colors.length; i++) {
-			this.colors[i] = colors[i];
+		for (int i=0; i<length*width; i++) {
+			this.colors[i] = mapMode.getColor(i);
 		}
 		updateColor();
 	}

@@ -94,7 +94,7 @@ public class Game {
 	
 	private void update() {
 		
-		
+		WorldManager.update();
 		
 	}
 	
