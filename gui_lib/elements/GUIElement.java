@@ -68,7 +68,6 @@ public abstract class GUIElement extends GUIElementBase {
 	public void onClick() {
 		
 		if (!onClickCooldown.isFinished()) {
-			System.out.println("Onclick is still on cooldown!");
 			return;
 		}
 		
