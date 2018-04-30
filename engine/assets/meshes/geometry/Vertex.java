@@ -30,6 +30,18 @@ public class Vertex extends Vector3f {
 	private int numberOfSurfaceNormals;
 	
 	//************************************** constructor **************************************
+	
+	
+	public Vertex(float x, float y, float z) {
+		super(x, y, z);
+	}
+	
+	
+	public Vertex(Vector3f position) {
+		super(position.getA(), position.getB(), position.getC());
+	}
+	
+	
 	public Vertex(float x, float y, float z, float red, float green, float blue, float alpha) {
 		super(x, y, z);
 		

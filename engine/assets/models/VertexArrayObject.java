@@ -2,35 +2,69 @@ package assets.models;
 
 import assets.GLObject;
 import assets.buffers.ArrayBuffer;
+import assets.buffers.Buffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL41.glVertexAttribLPointer;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class VertexArrayObject extends GLObject {
-	
-	
+		
 	/**
 	 * 
 	 * @author Dario
 	 * 
-	 * An exception to handle the case when the user tries to set
-	 * an attribute pointer that is already used 
+	 * One vertex attribute of this vertex attribute object. This
+	 * vertex attribute stores a reference to the buffer containing
+	 * the data and information about the layout of the data
 	 *
 	 */
-	private class GLDuplicateAttributeException extends RuntimeException {}
+	private class VertexAttribute {
+		
+		private Buffer buffer;
+		
+		private int size, stride, offset;
+
+		public VertexAttribute(Buffer buffer, int size, int stride, int offset) {
+			
+			this.buffer = buffer;
+			this.size = size;
+			this.stride = stride;
+			this.offset = offset;
+		}
+
+		public Buffer getBuffer() {
+			return buffer;
+		}
+
+		public int getSize() {
+			return size;
+		}
+
+		public int getStride() {
+			return stride;
+		}
+
+		public int getOffset() {
+			return offset;
+		}
+		
+		
+		
+	}
 	
 	
-	private LinkedList<Integer> attributes;
-	
+	//A hashmap containing all vertex attribute
+	private VertexAttribute[] attributes;
 
 	public VertexArrayObject() {
 		super(glGenVertexArrays());
 		
-		this.attributes = new LinkedList<Integer>();
+		this.attributes = new VertexAttribute[16];
 	}
 	
 	
@@ -46,10 +80,6 @@ public class VertexArrayObject extends GLObject {
 	 */
 	public void setVertexAttributePointer(ArrayBuffer buffer, int index, int size, int stride, int offset) {
 		
-		if(attributes.contains(index)) {
-			throw new GLDuplicateAttributeException();
-		}
-		
 		this.bind();
 		buffer.bind();
 		
@@ -57,21 +87,34 @@ public class VertexArrayObject extends GLObject {
 		if(isFloat(buffer.getDataType())) {
 			
 			glVertexAttribPointer(index, size, buffer.getDataType(), false, stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
 			
-			//If the buffer contains integer data
+		//If the buffer contains integer data
 		} else if(isInteger(buffer.getDataType())) {
 			
 			glVertexAttribIPointer(index, size, buffer.getDataType(), stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
 			
-			//If the buffer contains long data (double, long)
+		//If the buffer contains long data (double, long)
 		} else {
 			
 			glVertexAttribLPointer(index, size, buffer.getDataType(), stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
 			
 		}
 		
 		buffer.unbind();
 		this.unbind();
+	}
+	
+	
+	/**
+	 * 
+	 * @param index The position of the requested vertex attribute in the vertex attribute array
+	 * @return Returns the vertex attribute or null if the slot isn't used yet.
+	 */
+	public VertexAttribute getVertexAttribute(int index) {
+		return attributes[index];
 	}
 	
 	
@@ -100,15 +143,17 @@ public class VertexArrayObject extends GLObject {
 	
 	
 	public void enableVertexAttribArray() {
-		for(int i : attributes) {
-			glEnableVertexAttribArray(i);
+		for (int i = 0; i < attributes.length; i++) {
+			if (attributes[i] != null)
+				glEnableVertexAttribArray(i);
 		}
 	}
 	
 	
 	public void disableVertexAttribArray() {
-		for (int i : attributes) {
-			glDisableVertexAttribArray(i);
+		for (int i = 0; i < attributes.length; i++) {
+			if (attributes[i] != null)
+				glDisableVertexAttribArray(i);
 		}
 	}
 	
