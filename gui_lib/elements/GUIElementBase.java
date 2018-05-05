@@ -89,13 +89,26 @@ public abstract class GUIElementBase implements GUIClickable {
 	
 	
 	//TODO: Only save some computations by making sure the matrices are only updated when there were changes to the element
+	
+	/**
+	 * updates rendering matrix (and its inversion)
+	 */
 	public void update() {
 		
+		updateRenderingMatrix();
+		
+	}
+	
+	
+	/**
+	 * updates rendering matrix (and its inversion)
+	 */
+	private void updateRenderingMatrix() {
 		Matrix44f parentMatrix = new Matrix44f();
 		Matrix44f invertedParentMatrix = new Matrix44f();
 		
 			
-		this.renderingMatrix = GUIMatrixManager.generateRenderingMatrix(x, y, width, height);
+		this.renderingMatrix = GUIMatrixManager.generateTransformationMatrix44(x, y, width, height);
 
 		
 		if (parent != null) {
@@ -105,7 +118,6 @@ public abstract class GUIElementBase implements GUIClickable {
 		
 		this.renderingMatrix = parentMatrix.times(renderingMatrix);
 		this.invertedRenderingMatrix = MatrixInversion44f.generateMultiplicativeInverse(renderingMatrix).times(invertedParentMatrix);
-		
 	}
 	
 	
@@ -268,7 +280,7 @@ public abstract class GUIElementBase implements GUIClickable {
 	}
 	
 	public void delete() {		
-		parent.remove(this);
+		parent.removeChild(this);
 				
 		onClose();
 		

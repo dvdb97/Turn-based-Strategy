@@ -63,42 +63,47 @@ public abstract class GUIContainerElement extends GUIElement {
 		vec = this.getInvertedRenderingMatrix().times(vec);
 		
 		
-		if (this.getShape().isHit(vec.getA(), vec.getB())) {
-			
-			for (GUIElementBase child : children) {
-				
-				if (child.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
-					return true;
-				}
-				
-			}
-			
-			if (leftMouseButtonDown) {
-				
-				onClick();
-				
-			} else {
-				
-				onHover();
-				
-			}
-			
-			return true;
-			
-		} 
+		if (!this.getShape().isHit(vec.getA(), vec.getB())) {
+			return false;
+		}
 		
-		return false;		
+		
+		//process childrens input
+		for (GUIElementBase child : children) {
+			
+			if (child.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
+				return true;
+			}
+			
+		}
+		//
+		
+		//process this' input
+		if (leftMouseButtonDown) {
+			
+			onClick();
+			
+		} else {
+			
+			onHover();
+			
+		}
+		//
+		
+		
+		return true;
+			
 		
 	}
 	
 
-	public void add(GUIElementBase element) {
+	public void addChild(GUIElementBase element) {
 		children.add(element);
 		element.setParent(this);
 	}
 	
 	
-	public void remove(GUIElementBase element) {
+	public void removeChild(GUIElementBase element) {
 		if (children.contains(element)) {
 			children.remove(element);
 		}

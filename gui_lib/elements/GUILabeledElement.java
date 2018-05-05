@@ -107,15 +107,15 @@ public abstract class GUILabeledElement extends GUIElement {
 	//Generates a matrix that positions the label according to the current state of "position"
 	private void generateLabelMatrix() {
 		if (labelPosition == Position.CENTER || labelPosition  == Position.LEFT || labelPosition == Position.RIGHT) {
-			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getHeight() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+			this.labelMatrix = GUIMatrixManager.generateTransformationMatrix44(0f, -this.getHeight() / 2, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
 		}
 		
 		if (labelPosition == Position.TOP) {
-			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -0.05f, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+			this.labelMatrix = GUIMatrixManager.generateTransformationMatrix44(0f, -0.05f, 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
 		}
 		
 		if (labelPosition == Position.BOTTOM) {
-			this.labelMatrix = GUIMatrixManager.generateRenderingMatrix(0f, -this.getHeight(), 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
+			this.labelMatrix = GUIMatrixManager.generateTransformationMatrix44(0f, -this.getHeight(), 1f / label.getMaxCharsPerRow(), 1f / label.getMaxCharsPerRow());
 		}
 	}
 	

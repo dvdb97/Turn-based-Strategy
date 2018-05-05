@@ -95,6 +95,7 @@ public class Game {
 	private void update() {
 		
 		WorldManager.update();
+		GUIManager.update();
 		
 	}
 	
@@ -102,9 +103,7 @@ public class Game {
 	private void render() {
 		
 		WorldManager.render();
-		
-		//Draw the gui
-		GUIManager.update();
+		GUIManager.render();
 		
 	}
 	

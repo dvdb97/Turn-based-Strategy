@@ -69,6 +69,7 @@ public class GUIManager {
 		for (GUIWindow window : windows) {
 			
 			//TODO: Only call it when there were changes
+			//updates rendering matrices (and its inversions)
 			window.update();
 			
 			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
@@ -77,6 +78,9 @@ public class GUIManager {
 			
 		}
 		
+	}
+
+	public static void render() {
 		
 		for (GUIWindow window : windows) {
 			

@@ -101,10 +101,10 @@ public class TextGenerator {
 			texPosYOffset = font.getYPosition(letter);
 			
 			//The transformation matrix to put the next vertex into the right position
-			letterTM = GUIMatrixManager.generateRenderingMatrix(posInLine, -line, 1, 1);
+			letterTM = GUIMatrixManager.generateTransformationMatrix44(posInLine, -line, 1, 1);
 			
 			//The transformation matrix to transform the tex coords to display a specific letter
-			textureTM = GUIMatrixManager.generateTransformationMatrix(texPosXOffset, texPosYOffset, texCharWidth, texCharHeight);
+			textureTM = GUIMatrixManager.generateTransformationMatrix33(texPosXOffset, texPosYOffset, texCharWidth, texCharHeight);
 			
 			
 			for (int vertexIndex = 0; vertexIndex < coords.length; ++vertexIndex) {
