@@ -10,7 +10,7 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.abstractModels.Model;
 import utils.CustomBufferUtils;
 
@@ -32,7 +32,7 @@ public class Element_Model extends Model {
 	//****************************** Data Management ******************************
 	
 	
-	public void setData(Vertex[] vertices, IntBuffer indexBuffer) {
+	public void setData(VertexLegacy[] vertices, IntBuffer indexBuffer) {
 		
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
@@ -84,7 +84,7 @@ public class Element_Model extends Model {
 	}
 	
 	
-	public void setData(Vertex[] vertices, int[] indexArray) {
+	public void setData(VertexLegacy[] vertices, int[] indexArray) {
 		
 		IntBuffer indexBuffer = CustomBufferUtils.createIntBuffer(indexArray);
 		

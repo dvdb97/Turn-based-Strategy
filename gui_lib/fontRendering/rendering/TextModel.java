@@ -1,6 +1,6 @@
 package fontRendering.rendering;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Element_Model;
 import fontRendering.texture.FontTexture;
 
@@ -15,7 +15,7 @@ public class TextModel extends Element_Model {
 	}
 	
 	
-	public TextModel(Vertex[] vertices, int[] indexArray, FontTexture font) {
+	public TextModel(VertexLegacy[] vertices, int[] indexArray, FontTexture font) {
 		this(font);
 		
 		this.setData(vertices, indexArray);

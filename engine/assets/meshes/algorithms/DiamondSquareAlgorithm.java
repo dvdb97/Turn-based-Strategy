@@ -12,7 +12,7 @@ import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
 
@@ -21,7 +21,7 @@ import math.vectors.Vector3f;
 public class DiamondSquareAlgorithm {
 	
 	
-	private static Vertex[] vertices;
+	private static VertexLegacy[] vertices;
 	
 	private static ArrayList<Integer> elementArray;
 	
@@ -37,7 +37,7 @@ public class DiamondSquareAlgorithm {
 		
 		dimension = (int)Math.sqrt(numberOfVertices);
 		
-		vertices = new Vertex[numberOfVertices];
+		vertices = new VertexLegacy[numberOfVertices];
 		
 		elementArray = new ArrayList<Integer>();
 		
@@ -57,7 +57,7 @@ public class DiamondSquareAlgorithm {
 	}
 	
 	
-	public static Vertex[] generateVertexArray(int iterations, float totalWidth, float totalHeight, float maxDepth) {
+	public static VertexLegacy[] generateVertexArray(int iterations, float totalWidth, float totalHeight, float maxDepth) {
 		
 		generate(iterations, totalWidth, totalHeight, maxDepth);
 		
@@ -103,7 +103,7 @@ public class DiamondSquareAlgorithm {
 					
 				}
 				
-				vertices[y * dimension + x] = new Vertex(vertX, vertY, vertZ, color);
+				vertices[y * dimension + x] = new VertexLegacy(vertX, vertY, vertZ, color);
 				
 			}
 			
@@ -253,7 +253,7 @@ public class DiamondSquareAlgorithm {
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer(elementArray.size());
 		
 		
-		for (Vertex vertex : vertices) {
+		for (VertexLegacy vertex : vertices) {
 			
 			posBuffer.put(vertex.getPositionData());
 			normalBuffer.put(vertex.getNormal().toArray());

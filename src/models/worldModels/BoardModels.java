@@ -4,7 +4,7 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.fileLoaders.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Illuminated_Model;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
@@ -55,7 +55,7 @@ public class BoardModels {
 	
 	private static Color selectedTileColor;
 	
-	private Vertex[] vertices;
+	private VertexLegacy[] vertices;
 	
 	//***************************** constructor ********************************
 	
@@ -114,9 +114,9 @@ public class BoardModels {
 		Vector3f[] positions = terrain.getPosArray();
 		ColorFunction terrainCol = new TerrainCol();
 		
-		vertices = new Vertex[positions.length];
+		vertices = new VertexLegacy[positions.length];
 		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
+			vertices[v] = new VertexLegacy(positions[v], terrainCol.color(0,0,positions[v].getC()));
 		}
 		
 	}
@@ -197,7 +197,7 @@ public class BoardModels {
 	/**
 	 * @return an array containing all terrains vertices
 	 */
-	public Vertex[] getVertices() {
+	public VertexLegacy[] getVertices() {
 		
 		return vertices;
 		

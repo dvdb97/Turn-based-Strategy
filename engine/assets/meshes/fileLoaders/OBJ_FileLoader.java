@@ -40,7 +40,7 @@ public class OBJ_FileLoader {
 	public static Illuminated_Model loadOBJ_File(String objPath, Material material, Color color) {
 		
 		//List of all vertices in this mesh
-		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+		ArrayList<VertexLegacy> vertices = new ArrayList<VertexLegacy>();
 		
 		
 		//List of normals in this mesh
@@ -60,7 +60,7 @@ public class OBJ_FileLoader {
 			String nextLine = "";
 			
 			ArrayList<FaceBuffer> faceBuffers;
-			Vertex vertex;
+			VertexLegacy vertex;
 			
 			while((nextLine = reader.readLine()) != null) {
 				
@@ -208,11 +208,11 @@ public class OBJ_FileLoader {
 	//*********************************** Convert ArrayLists to Buffers ***********************************
 	
 
-	private static FloatBuffer vertexPosToFloatBuffer(ArrayList<Vertex> list) {
+	private static FloatBuffer vertexPosToFloatBuffer(ArrayList<VertexLegacy> list) {
 		
 		FloatBuffer output = BufferUtils.createFloatBuffer(list.size() * 3);
 		
-		for (Vertex vert : list) {
+		for (VertexLegacy vert : list) {
 			
 			output.put(vert.getA());
 			output.put(vert.getB());
@@ -229,11 +229,11 @@ public class OBJ_FileLoader {
 	}
 	
 	
-	private static FloatBuffer vertexColToFloatBuffer(ArrayList<Vertex> list) {
+	private static FloatBuffer vertexColToFloatBuffer(ArrayList<VertexLegacy> list) {
 		
 		FloatBuffer output = BufferUtils.createFloatBuffer(list.size() * 4);
 		
-		for (Vertex vert : list) {
+		for (VertexLegacy vert : list) {
 			
 			output.put(vert.getRed());
 			output.put(vert.getGreen());
@@ -248,13 +248,13 @@ public class OBJ_FileLoader {
 	}
 	
 	
-	private static FloatBuffer vertexTexPosToFloatBuffer(ArrayList<Vertex> list) {
+	private static FloatBuffer vertexTexPosToFloatBuffer(ArrayList<VertexLegacy> list) {
 		
 		FloatBuffer output = BufferUtils.createFloatBuffer(list.size() * 2);
 		
 		Vector2f vec;
 		
-		for (Vertex vert : list) {
+		for (VertexLegacy vert : list) {
 			
 			if (!vert.isTextured()) {
 				return null;
@@ -275,13 +275,13 @@ public class OBJ_FileLoader {
 	}
 	
 	
-	private static FloatBuffer vertexNormalsToFloatBuffer(ArrayList<Vertex> list) {
+	private static FloatBuffer vertexNormalsToFloatBuffer(ArrayList<VertexLegacy> list) {
 		
 		FloatBuffer output = BufferUtils.createFloatBuffer(list.size() * 3);
 		
 		Vector3f vec;
 		
-		for (Vertex vert : list) {
+		for (VertexLegacy vert : list) {
 			
 			vec = vert.getNormal();
 			
@@ -319,9 +319,9 @@ public class OBJ_FileLoader {
 	//*********************************** Data extraction ***********************************
 	
 	
-	private static Vertex extractVertexPositionData(String line) {
+	private static VertexLegacy extractVertexPositionData(String line) {
 		
-		Vertex vertex = new Vertex();
+		VertexLegacy vertex = new VertexLegacy();
 		
 		int firstIndex = 2;
 		int lastIndex = 2;

@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.abstractModels.Model;
 
 
@@ -30,7 +30,7 @@ public class Array_Model extends Model {
 	}
 	
 	
-	public void setData(Vertex[] vertices) {
+	public void setData(VertexLegacy[] vertices) {
 		
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);

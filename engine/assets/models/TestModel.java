@@ -7,7 +7,7 @@ import java.util.prefs.BackingStoreException;
 
 import assets.buffers.ArrayBuffer;
 import assets.buffers.Buffer;
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -42,17 +42,17 @@ public class TestModel {
 	}
 	
 	
-	public void setVertexData(Vertex[] vertices, int[] inices) {
+	public void setVertexData(VertexLegacy[] vertices, int[] inices) {
 		//TODO
 	}
 	
 	
-	public void setVertexData(LinkedList<Vertex> vertices, int[] indices) {
+	public void setVertexData(LinkedList<VertexLegacy> vertices, int[] indices) {
 		//TODO
 	}
 	
 	
-	public void setVertexData(ArrayList<Vertex> vertices, int[] indices) {
+	public void setVertexData(ArrayList<VertexLegacy> vertices, int[] indices) {
 		//TODO
 	}
 	

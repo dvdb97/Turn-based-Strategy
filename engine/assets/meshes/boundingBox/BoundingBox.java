@@ -3,7 +3,7 @@ package assets.meshes.boundingBox;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import math.matrices.Matrix44f;
 
 /**
@@ -23,28 +23,28 @@ public class BoundingBox {
 	private float minZ, maxZ;
 	
 	
-	public BoundingBox(LinkedList<Vertex> vertices) {
+	public BoundingBox(LinkedList<VertexLegacy> vertices) {
 		computeBoundingBox(vertices);
 	}
 	
 	
-	public BoundingBox(ArrayList<Vertex> vertices) {
+	public BoundingBox(ArrayList<VertexLegacy> vertices) {
 		computeBoundingBox(vertices);
 	}
 	
 	
-	private void computeBoundingBox(Iterable<Vertex> iterable) {
+	private void computeBoundingBox(Iterable<VertexLegacy> iterable) {
 		minX = minY = minZ = Float.MAX_VALUE;
 		maxX = maxY = maxZ = Float.MIN_VALUE;
 		
-		for (Vertex vertex : iterable) {
+		for (VertexLegacy vertex : iterable) {
 			addPoint(vertex);
 		}
 		
 	}
 	
 	
-	public void addPoint(Vertex vertex) {
+	public void addPoint(VertexLegacy vertex) {
 		//X-Axis
 		if (vertex.getA() < minX) { minX = vertex.getA(); }
 		
@@ -62,7 +62,7 @@ public class BoundingBox {
 	}
 	
 	
-	public void removePoint(Vertex vertex) {
+	public void removePoint(VertexLegacy vertex) {
 		//TODO
 	}
 	

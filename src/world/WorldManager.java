@@ -1,6 +1,6 @@
 package world;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import math.vectors.Vector3f;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
@@ -13,7 +13,7 @@ public class WorldManager {
 	
 	private static BoardModels boardModels;
 	
-	private static Vertex[] vertices;
+	private static VertexLegacy[] vertices;
 	private static float[] fertility;
 	private static int[] tileCenterIndices;
 	

@@ -3,13 +3,20 @@ package assets.meshes.standardMeshes;
 import java.util.LinkedList;
 
 import assets.meshes.Mesh;
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 
+/**
+ * 
+ * @author Dario
+ *
+ * Creates a mesh to render a simple cube
+ *
+ */
 public class Cube extends Mesh {
 
 	public static Cube generate(float width, float height, float depth) {
 		
-		LinkedList<Vertex> vertices = new LinkedList<Vertex>();
+		LinkedList<VertexLegacy> vertices = new LinkedList<VertexLegacy>();
 		LinkedList<Integer> indices = new LinkedList<Integer>();
 		
 		
@@ -30,7 +37,7 @@ public class Cube extends Mesh {
 			float y = (i / 4) * height;
 			float z = ((i - (i % 2)) % 4 + 1) * depth;
 			
-			vertices.add(new Vertex(x, y, z));
+			vertices.add(new VertexLegacy(x, y, z));
 			
 		}	
 		
@@ -47,12 +54,12 @@ public class Cube extends Mesh {
 	}
 	
 	
-	private Cube(LinkedList<Vertex> vertices, LinkedList<Integer> indices) {
+	private Cube(LinkedList<VertexLegacy> vertices, LinkedList<Integer> indices) {
 		super(vertices, indices);
 	}
 	
 	
-	private Cube(LinkedList<Vertex> vertices, int[] indices) {
+	private Cube(LinkedList<VertexLegacy> vertices, int[] indices) {
 		super(vertices, indices);
 	}
 	

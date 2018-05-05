@@ -16,7 +16,7 @@ import org.lwjgl.BufferUtils;
 
 
 //Imports of our engine
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Element_Model;
 
 
@@ -55,7 +55,7 @@ public class PLY_FileLoader {
 			
 			String nextLine = "";
 			
-			Vertex vertex;
+			VertexLegacy vertex;
 			
 			boolean header = true;
 			
@@ -109,9 +109,9 @@ public class PLY_FileLoader {
 	}
 	
 	
-	private static Vertex convertToVertex(String line) {
+	private static VertexLegacy convertToVertex(String line) {
 		
-		Vertex vertex = new Vertex(0.0f, 0.0f, 0.0f, null);
+		VertexLegacy vertex = new VertexLegacy(0.0f, 0.0f, 0.0f, null);
 		
 		int lastStartingPosition = 0;
 		int numberCounter = 0;

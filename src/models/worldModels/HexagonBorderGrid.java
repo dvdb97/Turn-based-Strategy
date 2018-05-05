@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Element_Model;
 import math.vectors.Vector3f;
 import utils.CustomBufferUtils;
@@ -35,7 +35,7 @@ public class HexagonBorderGrid extends Element_Model {
 	
 	private IntBuffer indexBuffer;
 	
-	private List<Vertex> vertices;
+	private List<VertexLegacy> vertices;
 	
 	private List<Integer> hexagonCenterIndices;
 	
@@ -87,7 +87,7 @@ public class HexagonBorderGrid extends Element_Model {
 	//********************************** prime methods ***********************************
 	private void processVertices(TriangleGrid triangleGrid) {
 		
-		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
+		VertexLegacy[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
 		
 		for (int y=0; y<hexWidth; y++) {
 			
@@ -151,16 +151,16 @@ public class HexagonBorderGrid extends Element_Model {
 	
 	//********************************** util methods *********************************************
 	
-	private Vertex[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
+	private VertexLegacy[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
 		
 		Vector3f[] triGridPos = triangleGrid.getPosArray();
-		Vertex[] triGridVertices = new Vertex[triGridPos.length];
+		VertexLegacy[] triGridVertices = new VertexLegacy[triGridPos.length];
 		
 		float delta = 0.005f*elr;
 		
 		for (int i=0; i<triGridVertices.length; i++) {
 			
-			triGridVertices[i] = new Vertex(triGridPos[i], color);
+			triGridVertices[i] = new VertexLegacy(triGridPos[i], color);
 			
 			float c;
 			float d = triGridVertices[i].getC();
@@ -272,9 +272,9 @@ public class HexagonBorderGrid extends Element_Model {
 	}
 	
 	
-	private Vertex[] vertexListToArray() {
+	private VertexLegacy[] vertexListToArray() {
 		
-		Vertex[] array = new Vertex[vertices.size()];
+		VertexLegacy[] array = new VertexLegacy[vertices.size()];
 		
 		for (int v=0; v<array.length; v++) {
 			array[v] = vertices.get(v);
