@@ -334,16 +334,4 @@ public class Vertex {
 		
 	}
 	
-	
-	public static void main(String[] args) {
-		
-		Vertex vertex = new Vertex(new Vector3f(1f, 0f, 1f), new Vector4f(1f, 1f, 0f, 1f));
-		
-		float[] data = vertex.toDataBundle(generateLayout(4, 2, 2, 2));
-		
-		for (float value : data) {
-			System.out.println(value);
-		}
-		
-	}
 }
