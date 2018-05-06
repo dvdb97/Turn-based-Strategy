@@ -301,6 +301,61 @@ public class Vertex {
 	}
 	
 	
+	//*************************************** Getters and setters ***************************************
+	
+	
+	public int getPositionVectorSize() {
+		return position.length;
+	}
+	
+	
+	public float getXPos() {
+		
+		if (position != null) {
+			return 0f;
+		}
+		
+		return position[0];
+		
+	}
+	
+	
+	public float getYPos() {
+		
+		if (position != null) {
+			return 0f;
+		}
+		
+		if (position.length < 2) {
+			return 0f;
+		}
+		
+		return position[1];
+		
+	}
+	
+	
+	public float getZPos() {
+		
+		if (position != null) {
+			return 0f;
+		}
+		
+		if (position.length < 3) {
+			return 0f;
+		}
+		
+		return position[2];
+		
+	}
+	
+	
+	
+	
+	
+	//*************************************** Static methods ***************************************
+	
+	
 	public static byte[] getSizes(int layout) {
 		
 		int mask = 15;
