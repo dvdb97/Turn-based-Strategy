@@ -3,6 +3,7 @@ package assets.meshes.boundingBox;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import assets.meshes.geometry.Vertex;
 import assets.meshes.geometry.VertexLegacy;
 import math.matrices.Matrix44f;
 
@@ -23,46 +24,46 @@ public class BoundingBox {
 	private float minZ, maxZ;
 	
 	
-	public BoundingBox(LinkedList<VertexLegacy> vertices) {
+	public BoundingBox(LinkedList<Vertex> vertices) {
 		computeBoundingBox(vertices);
 	}
 	
 	
-	public BoundingBox(ArrayList<VertexLegacy> vertices) {
+	public BoundingBox(ArrayList<Vertex> vertices) {
 		computeBoundingBox(vertices);
 	}
 	
 	
-	private void computeBoundingBox(Iterable<VertexLegacy> iterable) {
+	private void computeBoundingBox(Iterable<Vertex> iterable) {
 		minX = minY = minZ = Float.MAX_VALUE;
 		maxX = maxY = maxZ = Float.MIN_VALUE;
 		
-		for (VertexLegacy vertex : iterable) {
+		for (Vertex vertex : iterable) {
 			addPoint(vertex);
 		}
 		
 	}
 	
 	
-	public void addPoint(VertexLegacy vertex) {
+	public void addPoint(Vertex vertex) {
 		//X-Axis
-		if (vertex.getA() < minX) { minX = vertex.getA(); }
+		if (vertex.getXPos() < minX) { minX = vertex.getXPos(); }
 		
-		if (vertex.getA() > maxX) { maxX = vertex.getA(); }
+		if (vertex.getXPos() > maxX) { maxX = vertex.getXPos(); }
 		
 		//Y-Axis
-		if (vertex.getB() < minY) { minX = vertex.getB(); }
+		if (vertex.getYPos() < minY) { minX = vertex.getYPos(); }
 		
-		if (vertex.getB() > maxY) { maxY = vertex.getB(); }
+		if (vertex.getYPos() > maxY) { maxY = vertex.getYPos(); }
 		
 		//Z-Axis
-		if (vertex.getC() < minZ) { minZ = vertex.getC(); }
+		if (vertex.getZPos() < minZ) { minZ = vertex.getZPos(); }
 		
-		if (vertex.getC() > maxZ) { maxZ = vertex.getC(); }
+		if (vertex.getZPos() > maxZ) { maxZ = vertex.getZPos(); }
 	}
 	
 	
-	public void removePoint(VertexLegacy vertex) {
+	public void removePoint(Vertex vertex) {
 		//TODO
 	}
 	

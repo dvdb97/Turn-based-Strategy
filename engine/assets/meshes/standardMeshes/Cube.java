@@ -54,7 +54,7 @@ public class Cube extends Mesh {
 	}
 	
 	
-	private Cube(LinkedList<VertexLegacy> vertices, LinkedList<Integer> indices) {
+	private Cube(LinkedList<Vertex> vertices, LinkedList<Integer> indices) {
 		super(vertices, indices);
 	}
 	

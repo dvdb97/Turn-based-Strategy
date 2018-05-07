@@ -1,7 +1,8 @@
 package assets.models;
 
 import assets.GLObject;
-import assets.buffers.ArrayBuffer;
+import assets.buffers.VertexBuffer;
+import assets.meshes.geometry.Vertex;
 import assets.buffers.Buffer;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -58,13 +59,49 @@ public class VertexArrayObject extends GLObject {
 	}
 	
 	
-	//A hashmap containing all vertex attribute
+	//An array containing all vertex attribute
 	private VertexAttribute[] attributes;
+	
+	private String[] labels;
 
 	public VertexArrayObject() {
 		super(glGenVertexArrays());
 		
 		this.attributes = new VertexAttribute[16];
+	}
+	
+	
+	public void setVertexAttributePointers(VertexBuffer buffer, int layout) {
+		
+		this.bind();
+		buffer.bind();
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		int stride = 0;
+		
+		for (byte b : sizes) {
+			stride += b * Float.BYTES;
+		}
+		
+		int offset = 0;
+		
+		for (int i = 0; i < sizes.length; ++i) {
+		
+			offset += sizes[i] * Float.BYTES;
+			
+			if (sizes[i] == 0) {
+				continue;
+			}
+			
+			glVertexAttribPointer(i, sizes[i], buffer.getDataType(), false, stride, offset);
+			this.attributes[i] = new VertexAttribute(buffer, sizes[i], stride, offset);
+			
+		}
+		
+		buffer.unbind();
+		this.unbind();
+		
 	}
 	
 	
@@ -78,7 +115,7 @@ public class VertexArrayObject extends GLObject {
 	 * @param stride The offset in bytes between the blocks
 	 * @param offset The staring position of the blocks in the buffer
 	 */
-	public void setVertexAttributePointer(ArrayBuffer buffer, int index, int size, int stride, int offset) {
+	public void setVertexAttributePointer(VertexBuffer buffer, int index, int size, int stride, int offset) {
 		
 		this.bind();
 		buffer.bind();

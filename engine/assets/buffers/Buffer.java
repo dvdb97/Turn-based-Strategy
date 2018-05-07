@@ -3,6 +3,7 @@ package assets.buffers;
 import assets.GLTargetObject;
 
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL44.*;
 
 import java.nio.FloatBuffer;
@@ -77,6 +78,37 @@ public class Buffer extends GLTargetObject {
 		this.dataStored = true;
 		
 		unbind();
+	}
+	
+	
+	/**
+	 * 
+	 * Copies this buffer's data stored on the gpu.
+	 * 
+	 * @param target The target buffer to put the copied data in.
+	 */
+	public void copy(Buffer target) {	
+		this.bind(GL_COPY_READ_BUFFER);
+		target.bind(GL_COPY_WRITE_BUFFER);
+		
+		glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, getSize());
+		
+		target.unbind(GL_COPY_WRITE_BUFFER);
+		this.unbind(GL_COPY_READ_BUFFER);		
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns a deep copy of this buffer
+	 */
+	public Buffer copy() {
+		Buffer buffer = new Buffer(getType(), getDataType());
+		buffer.setBufferStorage(null, this.flag);
+		
+		copy(buffer);
+		
+		return buffer;
 	}
 	
 	
@@ -185,7 +217,7 @@ public class Buffer extends GLTargetObject {
 	
 	/**
 	 * 
-	 * @return Returns the size of the buffer
+	 * @return Returns the size of the buffer measured in bytes
 	 */
 	public int getSize() {
 		bind();
@@ -212,6 +244,16 @@ public class Buffer extends GLTargetObject {
 	@Override
 	public void unbind() {
 		glBindBuffer(getType(), 0);		
+	}
+	
+	
+	public void bind(int target) {
+		glBindBuffer(target, getID());
+	}
+	
+	
+	public void unbind(int target) {
+		glBindBuffer(target, 0);
 	}
 	
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.prefs.BackingStoreException;
 
-import assets.buffers.ArrayBuffer;
+import assets.buffers.VertexBuffer;
 import assets.buffers.Buffer;
 import assets.meshes.geometry.VertexLegacy;
 
@@ -18,22 +18,22 @@ public class TestModel {
 	
 	private static final int POS_INDEX = 0;
 	
-	private ArrayBuffer posBuffer;
+	private VertexBuffer posBuffer;
 	private int posSize, posStride, posOffset;
 	
 	private static final int COL_INDEX = 1;
 
-	private ArrayBuffer colBuffer;
+	private VertexBuffer colBuffer;
 	private int colSize, colStride, colOffset;
 	
 	private static final int TEX_POS_INDEX = 2;
 	
-	private ArrayBuffer texPosBuffer;
+	private VertexBuffer texPosBuffer;
 	private int texPosSize, texPosStride, texPosOffset;
 	
 	private static final int NORMAL_INDEX = 3;
 	
-	private ArrayBuffer normalBuffer;
+	private VertexBuffer normalBuffer;
 	private int normalSize, normalStride, normalOffset;
 	
 	
@@ -57,7 +57,7 @@ public class TestModel {
 	}
 	
 	
-	public void setVertexPositionData(ArrayBuffer buffer, int size, int stride, int offset) {
+	public void setVertexPositionData(VertexBuffer buffer, int size, int stride, int offset) {
 		vao.setVertexAttributePointer(buffer, POS_INDEX, size, stride, offset);
 		
 		this.posSize = size;
@@ -69,7 +69,7 @@ public class TestModel {
 	
 	
 	public void setVertexPositionData(FloatBuffer data, int size, int stride, int offset, int flag) {
-		ArrayBuffer buffer = new ArrayBuffer(GL_FLOAT);
+		VertexBuffer buffer = new VertexBuffer(GL_FLOAT);
 		buffer.setBufferStorage(data, flag);
 		
 		this.setVertexPositionData(buffer, size, stride, offset);

@@ -304,6 +304,46 @@ public class Vertex {
 	//*************************************** Getters and setters ***************************************
 	
 	
+	public void putPositionData(FloatBuffer buffer) {
+		buffer.put(position);
+	}
+	
+	
+	public float[] getPositionData() {
+		return position;
+	}
+	
+	
+	public void putColorData(FloatBuffer buffer) {
+		buffer.put(color);
+	}
+	
+	
+	public float[] getColorData() {
+		return color;
+	}
+	
+	
+	public void putNormalData(FloatBuffer buffer) {
+		buffer.put(normal);
+	}
+	
+	
+	public float[] getNormalData() {
+		return normal;
+	}
+	
+	
+	public void putTexPosData(FloatBuffer buffer) {
+		buffer.put(texPos);
+	}
+	
+	
+	public float[] getTexPosData() {
+		return texPos;
+	}
+	
+	
 	public int getPositionVectorSize() {
 		return position.length;
 	}
@@ -350,7 +390,29 @@ public class Vertex {
 	}
 	
 	
-	
+	public int getDataSize() {
+		
+		int size = 0;
+		
+		if (position != null) {
+			size += position.length;
+		}
+		
+		if (color != null) {
+			size += color.length;
+		}
+		
+		if (texPos != null) {
+			size += texPos.length;
+		}
+		
+		if (normal != null) {
+			size += normal.length;
+		}
+		
+		return size;
+		
+	}
 	
 	
 	//*************************************** Static methods ***************************************
