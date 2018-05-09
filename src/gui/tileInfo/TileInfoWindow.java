@@ -4,8 +4,9 @@ import elements.TextBox;
 import elements.containers.GUIWindow;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
-import utils.Algebra;
 import world.gameBoard.Tile;
+
+import static gui.tileInfo.TileInfoStringIssuer.getTileInfoString;
 
 public class TileInfoWindow extends GUIWindow {
 	
@@ -31,8 +32,7 @@ public class TileInfoWindow extends GUIWindow {
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {
 		this.tile = tile;
-		test.setLabel(" index:     " + tile.getIndex() + "\n"
-		            + " fertility: " + tile.getFertility().getString());
+		test.setLabel(getTileInfoString(tile));
 		if(tile.isWater()) {
 			test.setColor(BLUE);
 		} else {
