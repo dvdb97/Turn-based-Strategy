@@ -28,7 +28,6 @@ public class KeyInput extends GLFWKeyCallback {
 		}
 				
 		if (action == GLFW_RELEASE) {
-			System.out.println("KeyInput: " + key);
 			keys[key] = false;
 		}
 		

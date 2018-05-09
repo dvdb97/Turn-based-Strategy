@@ -83,8 +83,6 @@ public class Game {
 		
 		CameraOperator.update();
 		
-		TileSelecter.processInput();
-		
 		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}
@@ -95,7 +93,9 @@ public class Game {
 	private void update() {
 		
 		WorldManager.update();
-		GUIManager.update();
+		if(!GUIManager.update()) {
+			TileSelecter.processInput();
+		}
 		
 	}
 	

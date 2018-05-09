@@ -11,9 +11,12 @@ public class ImplementedWindow extends GUIWindow {
 	public ImplementedWindow(Vector4f color, float x, float y, float width, float height) {
 		super(new GUIQuad(), color, x, y, width, height);
 		
-		this.addChild(new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.35f, "First!"));
+	//	this.addChild(new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.35f, "First!"));
 		
-		this.addChild(new GUIToggleButton(0.1f, -0.55f, 0.8f, 0.35f, "Second!"));
+	//	this.addChild(new GUIToggleButton(0.1f, -0.55f, 0.8f, 0.35f, "Second!"));
+		
+		
+		
 		
 	}
 	

@@ -58,7 +58,12 @@ public class GUIManager {
 	}
 	
 	
-	public static void update() {
+	//TODO: it's ugly, that update() isn't void
+	/**
+	 * 
+	 * @return true,  if some window is hit
+	 */
+	public static boolean update() {
 		
 		float cursorX = CursorPosInput.getXPosAsOpengl();
 		float cursorY = CursorPosInput.getYPosAsOpengl();
@@ -73,10 +78,12 @@ public class GUIManager {
 			window.update();
 			
 			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
-				break;
+				return true;
 			}
 			
 		}
+		
+		return false;
 		
 	}
 

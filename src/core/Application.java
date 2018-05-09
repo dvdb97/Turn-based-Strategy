@@ -64,7 +64,8 @@ public class Application {
 		GUIManager.init(window);
 		
 		//Disable this to remove the gui window from the screen
-		ImplementedWindow window = new ImplementedWindow(new Vector4f(0f, 1f, 0f, 1f), 0f, 0f, 0.8f, 0.8f);
+		ImplementedWindow window1 = new ImplementedWindow(new Vector4f(0.5f, 0.7f, 0.5f, 1f), -0.9f, 0.9f, 0.4f, 0.9f);
+		ImplementedWindow window2 = new ImplementedWindow(new Vector4f(0.7f, 0.5f, 0.5f, 1f),  0f, 0f, 0.2f, 0.2f);
 		
 	}
 	

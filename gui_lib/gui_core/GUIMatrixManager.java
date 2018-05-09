@@ -30,7 +30,14 @@ public class GUIMatrixManager {
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @param xPos The x position of the element
+	 * @param yPos The y position of the element
+	 * @param width The width of the element
+	 * @param height The height of the element
+	 * @return Returns a transformation matrix based on the parameters
+	 */	
 	public static Matrix33f generateTransformationMatrix33(float xPos, float yPos, float width, float height) {
 		
 		Matrix33f scalingMatrx = new Matrix33f(width, 0, 0,
