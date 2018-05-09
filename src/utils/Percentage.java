@@ -50,11 +50,12 @@ public class Percentage implements Cloneable {
 	
 	/**
 	 * 
-	 * @return value
+	 * @return value as a float
 	 */
 	public float getValue() {
 		return value;
 	}
+	
 	
 	/**
 	 * 

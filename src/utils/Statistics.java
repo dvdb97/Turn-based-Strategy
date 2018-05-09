@@ -1,6 +1,6 @@
 package utils;
 
-public class Calc {
+public class Statistics {
 	
 	/**
 	 * 
