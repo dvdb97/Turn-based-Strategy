@@ -19,11 +19,16 @@ public class KeyInput extends GLFWKeyCallback {
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		
+		if (key < 0 || key >= 400) {
+			return;
+		}
+		
 		if (action == GLFW_PRESS) {
 			keys[key] = true;
 		}
 				
 		if (action == GLFW_RELEASE) {
+			System.out.println("KeyInput: " + key);
 			keys[key] = false;
 		}
 		

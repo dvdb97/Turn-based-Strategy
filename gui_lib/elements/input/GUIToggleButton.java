@@ -27,7 +27,7 @@ public class GUIToggleButton extends GUIButton {
 		this.activated = false;
 		
 		this.setNativeOnclickFunc((GUIElementBase element) -> {
-			activated = activated ? false : true; element.setTexture(activated ? active : inactive);
+			activated = !activated; element.setTexture(activated ? active : inactive);
 		});
 		
 	}
