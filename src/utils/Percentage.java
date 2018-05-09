@@ -12,6 +12,8 @@ public class Percentage implements Cloneable {
 	
 	private float value;
 	
+	//********************************** constructor *****************************************
+	
 	/**
 	 * 
 	 * @param value must be greater than zero and smaller than one
@@ -37,6 +39,8 @@ public class Percentage implements Cloneable {
 		this(0);
 	}
 	
+	//**************************************** math ************************************************
+	
 	/**
 	 * 
 	 * @param factor percentage this percentage is multiplied with
@@ -48,6 +52,8 @@ public class Percentage implements Cloneable {
 		
 	}
 	
+	//**************************************** get & set ************************************************
+	
 	/**
 	 * 
 	 * @return value as a float
@@ -56,6 +62,22 @@ public class Percentage implements Cloneable {
 		return value;
 	}
 	
+	/**
+	 * 
+	 * @return a string in the form of "  5%" or " 62%"
+	 */
+	public String getString() {
+		
+		int rounded = Math.round(value*100);
+		String a = rounded >= 100 ? "" : " ";
+		String b = rounded >= 10 ? "" : " ";
+		
+		return a + b + rounded + "%";
+		
+	}
+	
+	
+	//*************************************** equals & clone ********************************************
 	
 	/**
 	 * 

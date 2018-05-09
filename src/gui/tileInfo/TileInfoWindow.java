@@ -31,8 +31,8 @@ public class TileInfoWindow extends GUIWindow {
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {
 		this.tile = tile;
-		test.setLabel("index: " + tile.getIndex() + "\n "
-				+ "fertility: " + Algebra.round(tile.getFertility().getValue(), 2));
+		test.setLabel(" index:     " + tile.getIndex() + "\n"
+		            + " fertility: " + tile.getFertility().getString());
 		if(tile.isWater()) {
 			test.setColor(BLUE);
 		} else {
