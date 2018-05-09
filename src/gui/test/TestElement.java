@@ -1,6 +1,6 @@
 package gui.test;
 
-import elements.GUILabeledElement;
+import elements.fundamental.GUILabeledElement;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
 

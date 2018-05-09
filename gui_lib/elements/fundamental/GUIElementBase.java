@@ -1,4 +1,4 @@
-package elements;
+package elements.fundamental;
 
 import assets.textures.Texture2D;
 import elements.containers.GUIContainerElement;

@@ -1,4 +1,4 @@
-package elements;
+package elements.fundamental;
 
 public interface GUIClickable {
 	

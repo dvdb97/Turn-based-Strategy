@@ -1,8 +1,8 @@
 package elements.input;
 
 import assets.textures.Texture2D;
-import elements.GUILabeledElement;
 import elements.functions.GUIEventHandler;
+import elements.fundamental.GUILabeledElement;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 

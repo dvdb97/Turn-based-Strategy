@@ -1,6 +1,6 @@
 package elements.functions;
 
-import elements.GUIElementBase;
+import elements.fundamental.GUIElementBase;
 
 @FunctionalInterface
 public interface GUIEventHandler {

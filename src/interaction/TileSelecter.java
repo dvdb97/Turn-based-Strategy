@@ -79,7 +79,6 @@ public class TileSelecter {
 	
 	
 	public static int getHoveredTileIndex() {
-	//	System.out.println(hoveredTileIndex);
 		return hoveredTileIndex;
 	}
 	

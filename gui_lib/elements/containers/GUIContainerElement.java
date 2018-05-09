@@ -2,8 +2,8 @@ package elements.containers;
 
 import java.util.LinkedList;
 import assets.textures.Texture2D;
-import elements.GUIElement;
-import elements.GUIElementBase;
+import elements.fundamental.GUIElement;
+import elements.fundamental.GUIElementBase;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 

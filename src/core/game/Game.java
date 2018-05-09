@@ -2,6 +2,7 @@ package core.game;
 
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
+import gui.GameGUIManager;
 import gui.font.FontCollection;
 import gui_core.GUIManager;
 import interaction.CameraOperator;
@@ -22,26 +23,17 @@ public class Game {
 	
 	
 	//Start a completely new game
-	public Game(int numberOfAgents, int boardLength, int boardWidth) {
+	public Game(int boardLength, int boardWidth) {
 		
-		//Init the shaders
 		ShaderManager.init();
 		
-		//Init world
 		WorldManager.init(boardLength, boardWidth);
 		
-		//Init the camera
 		CameraOperator.init();
 		
-		//Init tile selecter
 		TileSelecter.init();
 		
-		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
-		FontCollection.init();
-		FontTest.init("The quick brown fox \njumps over the lazy dog!");
-		
-		//Init Agents etc
-		
+		GameGUIManager.init();
 		
 		run();
 		
@@ -93,6 +85,7 @@ public class Game {
 	private void update() {
 		
 		WorldManager.update();
+		GameGUIManager.update();
 		if(!GUIManager.update()) {
 			TileSelecter.processInput();
 		}

@@ -1,8 +1,8 @@
 package elements.input;
 
 import assets.textures.Texture2D;
-import elements.GUIElementBase;
 import elements.functions.GUIEventHandler;
+import elements.fundamental.GUIElementBase;
 import rendering.shapes.GUIShape;
 import rendering.shapes.implemented.GUIQuad;
 

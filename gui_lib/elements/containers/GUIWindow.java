@@ -1,7 +1,7 @@
 package elements.containers;
 
 import assets.textures.Texture2D;
-import elements.GUITransformable;
+import elements.fundamental.GUITransformable;
 import gui_core.GUIManager;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
