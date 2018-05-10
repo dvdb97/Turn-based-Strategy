@@ -8,27 +8,38 @@ import rendering.shapes.implemented.GUIQuad;
 
 public class GUIToggleButton extends GUIButton {
 	
-	//The texture for the active button
-	private static final Texture2D active = new Texture2D("res/Icons/Button_Activated.png", 600, 200);
 	
-	//The texture for the inactive button
-	private static final Texture2D inactive = new Texture2D("res/Icons/Button_Inactive.png", 600, 200);
+	private static final Texture2D enabledTexture = new Texture2D("res/Icons/ToggleButton_Enabled.png", 600, 200);
+	
+	private static final Texture2D disabledTexture = new Texture2D("res/Icons/ToggleButton_Disabled.png", 600, 200);
 	
 	//The relation of the buttons width and height that should be maintained
 	private static final float sizeRelation = 6f / 2f;
 	
+	private GUIEventHandler enableFunc;
+	private GUIEventHandler disableFunc;
 	
-	private boolean activated;
+	private boolean enabled;
 	
 	//******************************* constructor **********************************************
 	
 	public GUIToggleButton(float x, float y, float width, float height) {
-		super(new GUIQuad(), inactive, x, y, width, height);
+		super(new GUIQuad(), disabledTexture, x, y, width, height);
 		
-		this.activated = false;
+		this.enabled = false;
 		
-		this.setNativeOnclickFunc((GUIElementBase element) -> {
-			activated = !activated; element.setTexture(activated ? active : inactive);
+		this.setNativeOnclickFunc((element) -> {
+			
+			enabled = !enabled; element.setTexture(enabled ? enabledTexture : disabledTexture);
+			
+			if(enabled) {
+				if(enableFunc != null)
+					enableFunc.function(element);
+			} else {
+				if(disableFunc != null)
+					disableFunc.function(element);
+			}
+			
 		});
 		
 	}
@@ -40,8 +51,22 @@ public class GUIToggleButton extends GUIButton {
 		this.setLabel(label);
 		
 	}
-
+	
+	
 	//****************************** get & set ****************************************************
+	
+	public void setEnableFunction(GUIEventHandler func) {
+		enableFunc = func;
+	}
+	
+	public void setDisableFunction(GUIEventHandler func) {
+		disableFunc = func;
+	}
+
+	@Override
+	public void setOnclickFunc(GUIEventHandler onclickFunc) {
+		//a toggle button has no onclick function, but an enable- and disable function instead
+	}
 	
 	@Override
 	public void setWidth(float width) {
@@ -59,13 +84,8 @@ public class GUIToggleButton extends GUIButton {
 	}
 	
 	
-	public boolean isActivated() {
-		return activated;
-	}
-	
-	
-	public void setActivated(boolean value) {
-		this.activated = value;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 }

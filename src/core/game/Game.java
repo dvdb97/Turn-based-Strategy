@@ -56,11 +56,11 @@ public class Game {
 			
 			RenderEngine.clear();
 			
-			processInput();
-			
 			update();
 			
 			render();
+			
+			processInput();
 			
 			RenderEngine.swapBuffers();
 			
@@ -73,12 +73,16 @@ public class Game {
 	
 	private void processInput() {
 		
-		CameraOperator.update();
-		
 		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}
+
+		CameraOperator.update();
 		
+		if(GUIManager.processInput()) {
+			TileSelecter.processInput();
+		}
+
 	}
 	
 	
@@ -86,9 +90,7 @@ public class Game {
 		
 		WorldManager.update();
 		GameGUIManager.update();
-		if(!GUIManager.update()) {
-			TileSelecter.processInput();
-		}
+		GUIManager.update();
 		
 	}
 	

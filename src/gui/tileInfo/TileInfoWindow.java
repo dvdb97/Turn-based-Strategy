@@ -28,12 +28,22 @@ public class TileInfoWindow extends GUIWindow {
 		super(new GUIQuad(), GREY, -0.9f, 0.9f, 0.4f, 0.9f);
 		
 		infoText = new GUITextField(GREEN, 0.1f, -0.25f, 0.8f, 0.65f, "index");
-		addChild(infoText);
 		
 		button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
+		button.setEnableFunction(  (element) -> enable()  );
+		button.setDisableFunction( (element) -> disable() );
 		addChild(button);
 		
 	}
+	
+	public void enable() {
+		addChild(infoText);
+	}
+	
+	public void disable() {
+		removeChild(infoText);
+	}
+
 	
 	
 	//************************ get & set *************************************

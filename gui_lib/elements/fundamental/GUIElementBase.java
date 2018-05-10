@@ -82,7 +82,11 @@ public abstract class GUIElementBase implements GUIClickable {
 		if (!visible) {
 			return;
 		}
-
+		
+		if(renderingMatrix == null) {
+			System.out.println("GUI-EB: rendermatrix == null " + this);
+		}
+		
 		shape.render(texture, color, renderingMatrix);
 		
 	}

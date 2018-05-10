@@ -57,13 +57,11 @@ public class GUIManager {
 		
 	}
 	
-	
-	//TODO: it's ugly, that update() isn't void
 	/**
 	 * 
 	 * @return true,  if some window is hit
 	 */
-	public static boolean update() {
+	public static boolean processInput() {
 		
 		float cursorX = CursorPosInput.getXPosAsOpengl();
 		float cursorY = CursorPosInput.getYPosAsOpengl();
@@ -73,10 +71,6 @@ public class GUIManager {
 		
 		for (GUIWindow window : windows) {
 			
-			//TODO: Only call it when there were changes
-			//updates rendering matrices (and its inversions)
-			window.update();
-			
 			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
 				return true;
 			}
@@ -84,6 +78,17 @@ public class GUIManager {
 		}
 		
 		return false;
+		
+	}
+	
+	public static void update() {
+		
+		for (GUIWindow window : windows) {
+			
+			//TODO: Only call it when there were changes
+			//updates rendering matrices (and its inversions)
+			window.update();
+		}
 		
 	}
 
