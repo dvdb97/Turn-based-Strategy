@@ -13,7 +13,7 @@ import math.matrices.advanced.MatrixInversion33f;
  * @author jona
  *
  */
-class TestMatrixInverstion33f {
+class TestMatrixInversion33f {
 	
 	double[] randomNumbers;
 	

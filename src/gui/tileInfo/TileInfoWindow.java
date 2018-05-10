@@ -1,7 +1,9 @@
 package gui.tileInfo;
 
-import elements.TextBox;
+import elements.GUITextField;
 import elements.containers.GUIWindow;
+import elements.input.GUIToggleButton;
+import gui.test.TestToggleButton;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
 import world.gameBoard.Tile;
@@ -16,15 +18,20 @@ public class TileInfoWindow extends GUIWindow {
 	
 	private Tile tile;
 	
-	private TextBox test;
+	private GUITextField infoText;
+	
+	private GUIToggleButton button;
+	
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
 		super(new GUIQuad(), GREY, -0.9f, 0.9f, 0.4f, 0.9f);
 		
-		test = new TextBox(GREEN, 0.1f, -0.1f, 0.8f, 0.8f, "index");
+		infoText = new GUITextField(GREEN, 0.1f, -0.25f, 0.8f, 0.65f, "index");
+		addChild(infoText);
 		
-		addChild(test);
+		button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
+		addChild(button);
 		
 	}
 	
@@ -32,11 +39,11 @@ public class TileInfoWindow extends GUIWindow {
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {
 		this.tile = tile;
-		test.setLabel(getTileInfoString(tile));
+		infoText.setLabel(getTileInfoString(tile));
 		if(tile.isWater()) {
-			test.setColor(BLUE);
+			infoText.setColor(BLUE);
 		} else {
-			test.setColor(GREEN);
+			infoText.setColor(GREEN);
 		}
 	}
 	

@@ -1,6 +1,5 @@
 package gui.test;
 
-import elements.functions.GUIEventHandler;
 import elements.fundamental.GUIElementBase;
 import elements.input.GUIToggleButton;
 import styles.GUIConst;

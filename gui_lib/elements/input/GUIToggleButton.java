@@ -20,7 +20,8 @@ public class GUIToggleButton extends GUIButton {
 	
 	private boolean activated;
 	
-
+	//******************************* constructor **********************************************
+	
 	public GUIToggleButton(float x, float y, float width, float height) {
 		super(new GUIQuad(), inactive, x, y, width, height);
 		
@@ -40,7 +41,8 @@ public class GUIToggleButton extends GUIButton {
 		
 	}
 
-
+	//****************************** get & set ****************************************************
+	
 	@Override
 	public void setWidth(float width) {
 		super.setWidth(width);

@@ -68,7 +68,7 @@ public abstract class GUIContainerElement extends GUIElement {
 		}
 		
 		
-		//process childrens input
+		//process childrens' input
 		for (GUIElementBase child : children) {
 			
 			if (child.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
@@ -78,7 +78,7 @@ public abstract class GUIContainerElement extends GUIElement {
 		}
 		//
 		
-		//process this' input
+		//process this's input
 		if (leftMouseButtonDown) {
 			
 			onClick();

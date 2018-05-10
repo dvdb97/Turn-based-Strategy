@@ -105,7 +105,6 @@ public abstract class GUIElementBase implements GUIClickable {
 	 */
 	private void updateRenderingMatrix() {
 		Matrix44f parentMatrix = new Matrix44f();
-		Matrix44f invertedParentMatrix = new Matrix44f();
 		
 			
 		this.renderingMatrix = GUIMatrixManager.generateTransformationMatrix44(x, y, width, height);
@@ -113,11 +112,10 @@ public abstract class GUIElementBase implements GUIClickable {
 		
 		if (parent != null) {
 			parentMatrix = parent.getRenderingMatrix();
-			invertedParentMatrix = parent.getInvertedRenderingMatrix();
 		}
 		
 		this.renderingMatrix = parentMatrix.times(renderingMatrix);
-		this.invertedRenderingMatrix = MatrixInversion44f.generateMultiplicativeInverse(renderingMatrix).times(invertedParentMatrix);
+		this.invertedRenderingMatrix = MatrixInversion44f.computeMultiplicativeInverse(renderingMatrix);
 	}
 	
 	
