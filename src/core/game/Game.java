@@ -79,7 +79,7 @@ public class Game {
 
 		CameraOperator.update();
 		
-		if(GUIManager.processInput()) {
+		if(!GUIManager.processInput()) {
 			TileSelecter.processInput();
 		}
 
