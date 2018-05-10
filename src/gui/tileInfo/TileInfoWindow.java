@@ -1,9 +1,8 @@
 package gui.tileInfo;
 
-import elements.GUITextField;
 import elements.containers.GUIWindow;
+import elements.displays.GUITextField;
 import elements.input.GUIToggleButton;
-import gui.test.TestToggleButton;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
 import world.gameBoard.Tile;
@@ -21,7 +20,6 @@ public class TileInfoWindow extends GUIWindow {
 	private GUITextField infoText;
 	
 	private GUIToggleButton button;
-	
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {

@@ -109,6 +109,9 @@ public abstract class GUIContainerElement extends GUIElement {
 		}
 	}
 	
+	public int indexOfChild(GUIElementBase element) {
+		return children.indexOf(element);
+	}
 	
 	public int getNumberOfChildren() {
 		return children.size();

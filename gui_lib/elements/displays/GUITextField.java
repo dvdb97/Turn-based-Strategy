@@ -1,4 +1,4 @@
-package elements;
+package elements.displays;
 
 import elements.fundamental.GUILabeledElement;
 import math.vectors.Vector4f;
