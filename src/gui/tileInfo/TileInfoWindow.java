@@ -2,7 +2,7 @@ package gui.tileInfo;
 
 import elements.containers.GUIWindow;
 import elements.displays.GUITextField;
-import elements.input.GUIToggleButton;
+import elements.input.buttons.GUIToggleButton;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
 import world.gameBoard.Tile;

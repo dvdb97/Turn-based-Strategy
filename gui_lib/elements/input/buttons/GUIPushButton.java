@@ -1,4 +1,4 @@
-package elements.input;
+package elements.input.buttons;
 
 import elements.functions.GUIEventHandler;
 import math.vectors.Vector4f;

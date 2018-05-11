@@ -5,7 +5,7 @@ import rendering.shapes.GUIShape;
 
 /**
  * 
- * GUITab is an arbitrary container (so far)
+ * GUITab is just an container (so far)
  * it has the name "tab", because i need an non-abstract element container to implement an tab menu
  * 
  * important (in relation to GUITabMenu): GUITab does not contain the button you switch to this tab

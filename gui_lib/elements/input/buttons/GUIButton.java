@@ -1,4 +1,4 @@
-package elements.input;
+package elements.input.buttons;
 
 import assets.textures.Texture2D;
 import elements.functions.GUIEventHandler;

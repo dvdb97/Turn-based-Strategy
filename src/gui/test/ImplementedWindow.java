@@ -1,7 +1,7 @@
 package gui.test;
 
 import elements.containers.GUIWindow;
-import elements.input.GUIToggleButton;
+import elements.input.buttons.GUIToggleButton;
 import fontRendering.font.classic.TimesNewRoman;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
