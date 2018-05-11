@@ -28,19 +28,7 @@ public class GUIToggleButton extends GUIButton {
 		
 		this.enabled = false;
 		
-		this.setNativeOnclickFunc((element) -> {
-			
-			enabled = !enabled; element.setTexture(enabled ? enabledTexture : disabledTexture);
-			
-			if(enabled) {
-				if(enableFunc != null)
-					enableFunc.function(element);
-			} else {
-				if(disableFunc != null)
-					disableFunc.function(element);
-			}
-			
-		});
+		this.setNativeOnclickFunc((element) -> toggle());
 		
 	}
 	
@@ -62,7 +50,22 @@ public class GUIToggleButton extends GUIButton {
 	public void setDisableFunction(GUIEventHandler func) {
 		disableFunc = func;
 	}
-
+	
+	public void toggle() {
+		
+		if (enabled) {
+			setTexture(disabledTexture);
+			if(disableFunc != null)
+				disableFunc.function(this);
+		} else {
+			setTexture(enabledTexture);
+			if(enableFunc != null)
+				enableFunc.function(this);
+		}
+		enabled = !enabled;
+		
+	}
+	
 	@Override
 	public void setOnclickFunc(GUIEventHandler onclickFunc) {
 		//a toggle button has no onclick function, but an enable- and disable function instead

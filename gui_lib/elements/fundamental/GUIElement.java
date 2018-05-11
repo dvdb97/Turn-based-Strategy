@@ -49,17 +49,20 @@ public abstract class GUIElement extends GUIElementBase {
 	public GUIElement(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
-		onClickCooldown = new Cooldown(0.4);
+		setUp();
 		
 	}
 
 	public GUIElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
-		onClickCooldown = new Cooldown(0.4);
+		setUp();
 		
 	}
 	
+	private void setUp() {
+		onClickCooldown = new Cooldown(0.2);
+	}
 	
 	//****************************************** onClick ******************************************
 	

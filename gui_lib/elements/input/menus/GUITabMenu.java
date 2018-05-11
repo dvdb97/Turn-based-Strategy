@@ -15,13 +15,15 @@ public class GUITabMenu extends GUIContainerElement {
 	
 	private int currentTab;
 	private ArrayList<GUITab> tabs;
-	
+	private ArrayList<GUIToggleButton> buttons;
 	
 	//************************* constructor **************************
 	
 	public GUITabMenu(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
+		tabs = new ArrayList<>();
+		buttons = new ArrayList<GUIToggleButton>();
 		currentTab = -1;
 		
 	}
@@ -32,20 +34,48 @@ public class GUITabMenu extends GUIContainerElement {
 	
 	private void changeToTab(int index) {
 		
+		toggleCurrentButton();
+		
+		if(index >= 0 && index < MAX_NUM_TABS) {
+			addChild(tabs.get(index));
+		}
 		currentTab = index;
 		
 	}
 	
+	private void changeToNoTab() {
+		
+		if(currentTab >= 0 && currentTab < MAX_NUM_TABS) {
+			removeChild(tabs.get(currentTab));
+		}
+		currentTab = -1;
+		
+		
+	}
+	
+	private void toggleCurrentButton() {
+		
+		if(currentTab >= 0 && currentTab < MAX_NUM_TABS) {
+			buttons.get(currentTab).toggle();
+		}
+		
+	}
 	
 	public void addTab(Vector4f color) {
 		
+		if(getNumTabs() >= MAX_NUM_TABS) {
+			return;
+		}
+		
 		GUITab tab = new GUITab(new GUIQuad(), color, 0.1f, -0.4f, 0.8f, 0.5f);
-		GUIToggleButton button = new GUIToggleButton(0.1f + getNumTabs()*0.2f, -0.1f, 0.2f, 0.2f, ""+getNumTabs());	//TODO: ugly string: ""+2
-		addChild(button);
 		tabs.add(tab);
 		
-		button.setEnableFunction(  (element) -> changeToTab(indexOfChild(element)) );
-		button.setDisableFunction( (element) -> changeToTab(-1) );
+		GUIToggleButton button = new GUIToggleButton(0.1f + buttons.size()*0.2f, -0.1f, 0.2f, 0.2f, ""+buttons.size());	//TODO: ugly string: ""+2
+		buttons.add(button);
+		button.setEnableFunction(  (element) -> changeToTab(buttons.indexOf(element)) );
+		button.setDisableFunction( (element) -> changeToNoTab() );
+		
+		addChild(button);
 		
 	}
 	
@@ -63,13 +93,14 @@ public class GUITabMenu extends GUIContainerElement {
 	@Override
 	public void render() {
 		
-		if (super.isVisible()) {
+		if (!super.isVisible()) {
 			return;
 		}
 		
 		super.render();
 		
-		tabs.get(currentTab).render();
+	//	if(currentTab != -1)
+	//		tabs.get(currentTab).render();
 		
 	}
 	
@@ -78,7 +109,9 @@ public class GUITabMenu extends GUIContainerElement {
 	public void update() {
 		
 		super.update();
-		tabs.get(currentTab).update();
+		
+	//	if(currentTab != -1)
+	//		tabs.get(currentTab).update();
 		
 	}
 	
@@ -89,7 +122,8 @@ public class GUITabMenu extends GUIContainerElement {
 			return false;
 		}
 		
-		tabs.get(currentTab).processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown);
+	//	if(currentTab != -1)
+	//		tabs.get(currentTab).processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown);
 		
 		return true;
 		
