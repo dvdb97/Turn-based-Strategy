@@ -1,14 +1,7 @@
 package assets.meshes;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.lwjgl.BufferUtils;
-
-import assets.buffers.Buffer;
-import assets.buffers.VertexBuffer;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.boundingBox.BoundingBox;

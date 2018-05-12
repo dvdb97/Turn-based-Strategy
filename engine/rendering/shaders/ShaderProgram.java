@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL20.*;
 import java.util.HashMap;
 import java.util.regex.*;
 
-import assets.GLObject;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
