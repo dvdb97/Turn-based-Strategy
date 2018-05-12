@@ -1,13 +1,8 @@
 package rendering.shaders;
 
-import assets.light.DirectionalLight;
-import assets.material.Material;
-import assets.textures.Texture2D;
 import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
-import math.vectors.Vector3f;
 import math.vectors.Vector4f;
-import rendering.shaders.standardShaders.lightShader.LightShader;
 
 public class ShaderManager {
 	

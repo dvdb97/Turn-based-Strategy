@@ -3,7 +3,9 @@ package rendering.shaders;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.util.HashMap;
+import java.util.regex.*;
 
+import assets.GLObject;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -13,6 +15,49 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 
 public class ShaderProgram {
 	
+	private class Uniform {
+		
+		final String identifier;
+		
+		final String type;
+		
+		final int shader;
+		
+		final int location;
+		
+		public Uniform(String identifier, String type, int shader, int location) {
+			this.identifier = identifier;
+			this.type = type;
+			this.location = location;
+			this.shader = shader;
+		}
+		
+	}
+	
+	private class Attribute {
+		
+		final String identifier;
+		
+		final String type;
+		
+		final int location;
+		
+		public Attribute(String identifier, String type, int location) {
+			this.identifier = identifier;
+			this.type = type;
+			this.location = location;
+		}
+		
+	}
+	
+	
+	private static String type = "(vec.|mat.|int|float)";
+	
+	private static Pattern uniformPattern = Pattern.compile("uniform " + type + " (([A-Za-z0-9]+));");
+	
+	private static Pattern attributePattern = Pattern.compile("layout.location[ ]?=[ ]?(\\d). in " + type + " (([a-zA-Z0-9]+));");
+	
+	
 	private int ID;
 	
 	private int vertShaderID;
@@ -20,11 +65,100 @@ public class ShaderProgram {
 	
 	
 	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Integer> uniformLocationMap = new HashMap<String, Integer>();
+	private HashMap<String, Uniform> uniforms;
+	
+	private HashMap<String, Attribute> attributes;
 	
 	
 	public ShaderProgram(String vertSource, String fragSource) {
 		init(vertSource, fragSource);
+	}
+	
+	
+	/**
+	 * 
+	 * Parses the code for uniform and attribute values
+	 * 
+	 * @param vertSource
+	 * @param fragSource
+	 */
+	private void parseCode(String vertSource, String fragSource) {
+		getUniforms(vertSource, fragSource);
+		getAttributes(vertSource);
+	}
+	
+	
+	/**
+	 * 
+	 * Stores all the information about the shader's uniform variables in
+	 * a hashmap.
+	 * 
+	 * @param vert
+	 * @param frag
+	 */
+	private void getUniforms(String vert, String frag) {
+		
+		this.uniforms = new HashMap<String, Uniform>();
+		
+		//Extract all the uniforms out of the vertex shader 
+		Matcher uniformMatcher = uniformPattern.matcher(vert);
+		
+		while (uniformMatcher.find()) {
+			
+			String type = uniformMatcher.group(1);
+			
+			String identifier = uniformMatcher.group(2);
+			
+			int location = getUniformLocation(identifier);
+			
+			uniforms.put(identifier, new Uniform(identifier, type, GL_VERTEX_SHADER, location));
+			
+		}
+		
+		
+		//Extract all the uniforms out of the fragment shader
+		uniformMatcher = uniformPattern.matcher(frag);
+		
+		while (uniformMatcher.find()) {
+			
+			String type = uniformMatcher.group(1);
+			
+			String identifier = uniformMatcher.group(2);
+			
+			int location = getUniformLocation(identifier);
+			
+			uniforms.put(identifier, new Uniform(identifier, type, GL_FRAGMENT_SHADER, location));
+			
+		}
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Stores all the information about the incoming attribute values in
+	 * a hashmap.
+	 * 
+	 * @param vert
+	 */
+	private void getAttributes(String vert) {
+		
+		this.attributes = new HashMap<String, Attribute>();
+		
+		Matcher attributeMatcher = attributePattern.matcher(vert);
+		
+		while (attributeMatcher.find()) {
+			
+			int location = Integer.parseInt(attributeMatcher.group(1));
+			
+			String type = attributeMatcher.group(2);
+			
+			String identifier = attributeMatcher.group(3);
+			
+			this.attributes.put(identifier, new Attribute(identifier, type, location));
+			
+		}
+		
 	}
 	
 	
@@ -49,8 +183,12 @@ public class ShaderProgram {
 			int logLength = glGetProgrami(ID, GL_INFO_LOG_LENGTH);
 			if (logLength > 1) {
 				System.out.println(glGetProgramInfoLog(ID, logLength));
+				
+				return;
 			}
 		}
+		
+		parseCode(vertSource, fragSource);
 		
 	}
 	
@@ -136,29 +274,94 @@ public class ShaderProgram {
 	 * Pass a 3x3 Matrix into the rendering pipeline
 	 * 
 	 * @param name The name of the uniform variable to address
-	 * @param value The value of the uniform variable should have
+	 * @param array The value for the uniform
 	 */
 	public void setUniform3fv(String name, float[] array) {
 		glUniform3fv(getUniformLocation(name), array);
 	}
 	
+	
+	/**
+	 * 
+	 * Pass a 3x3 Matrix into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address
+	 * @param matrix The value for the uniform 
+	 */
 	public void setUnifrom3fv(String name, Matrix33f matrix) {
 		setUniform3fv(name, matrix.toArray());
 	}
 	
 	
+	/**
+	 * 
+	 * Gets the uniform location in this shader programm
+	 * 
+	 * @param name The name of this uniform variable
+	 * @return Returns the uniform's location
+	 */
 	public int getUniformLocation(String name) {
 		
-		if (!uniformLocationMap.containsKey(name)) {
-			uniformLocationMap.put(name, glGetUniformLocation(ID, name));
+		if (!uniforms.containsKey(name)) {
+			return glGetUniformLocation(ID, name);
 		}
 		
-		return uniformLocationMap.get(name);
+		return uniforms.get(name).location;
 				
 	}
 	
+	
+	/**
+	 * 
+	 * Gets the uniform's type 
+	 * 
+	 * @param name The name of the uniform variable
+	 * @return Returns the type of the uniform as a String; Returns an empty String if the uniform doesn't exist.
+	 */
+	public String getUniformType(String name) {
+		
+		if (!uniforms.containsKey(name)) {
+			return "";
+		}
+		
+		return uniforms.get(name).type;
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Gets the attribute's location
+	 * 	
+	 * @param name The name of the attribute variable
+	 * @return Returns the attribute's location
+	 */
 	public int getAttributeLocation(String name) {
-		return glGetAttribLocation(ID, name);
+		
+		if (!attributes.containsKey(name)) {
+			return -1;
+		}
+		
+		return attributes.get(name).location;
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Gets the attribute's type 
+	 * 
+	 * @param name The name of the attribute variable
+	 * @return Returns the type of the attribute as a String; Returns an empty String if the uniform doesn't exist.
+	 */
+	public String getAttributeType(String name) {
+		
+		if (!attributes.containsKey(name)) {
+			return "";
+		}
+		
+		return attributes.get(name).type;
+		
 	}
 	
 	

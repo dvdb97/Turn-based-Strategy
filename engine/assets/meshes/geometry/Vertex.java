@@ -390,6 +390,10 @@ public class Vertex {
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns the size of all attribute data stored in this vertex
+	 */
 	public int getDataSize() {
 		
 		int size = 0;
