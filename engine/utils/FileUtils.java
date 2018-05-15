@@ -10,24 +10,20 @@ import java.io.IOException;
 public class FileUtils {
 
 	public static String loadShaderSourceCode(String path) {
-		String shaderSourceCode = "";
+		StringBuilder shaderSourceCode = new StringBuilder();
 		String line;
-		
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader(new File(path)));
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(new File(path)))) {
 			
 			while ((line = reader.readLine()) != null) {
-				shaderSourceCode += line + "\n";
+				shaderSourceCode.append(line + "\n");
 			}
 			
-			reader.close();			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return shaderSourceCode;
+		return shaderSourceCode.toString();
 	}
 	
 	

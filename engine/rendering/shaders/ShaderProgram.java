@@ -2,6 +2,7 @@ package rendering.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
@@ -47,6 +48,18 @@ public class ShaderProgram {
 			this.location = location;
 		}
 		
+		public int getDataSize() {
+			if (type.equals("vec3")) {
+				return 3;
+			}
+			
+			if (type.equals("vec4")) {
+				return 4;
+			}
+			
+			return 2;
+		}
+		
 	}
 	
 	
@@ -66,7 +79,11 @@ public class ShaderProgram {
 	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
 	private HashMap<String, Uniform> uniforms;
 	
+	//A hashmap we are going to store attribute locations in. Thus we don't have to look it up every time this uniform is used.
 	private HashMap<String, Attribute> attributes;
+	
+	//The layout of the data that a mesh needs to have to match the shaders requirements
+	private int layout;
 	
 	
 	public ShaderProgram(String vertSource, String fragSource) {
@@ -82,8 +99,9 @@ public class ShaderProgram {
 	 * @param fragSource
 	 */
 	private void parseCode(String vertSource, String fragSource) {
-		getUniforms(vertSource, fragSource);
-		getAttributes(vertSource);
+		parseUniforms(vertSource, fragSource);
+		parseAttributes(vertSource);
+		parseLayout();
 	}
 	
 	
@@ -95,7 +113,7 @@ public class ShaderProgram {
 	 * @param vert
 	 * @param frag
 	 */
-	private void getUniforms(String vert, String frag) {
+	private void parseUniforms(String vert, String frag) {
 		
 		this.uniforms = new HashMap<String, Uniform>();
 		
@@ -140,7 +158,7 @@ public class ShaderProgram {
 	 * 
 	 * @param vert
 	 */
-	private void getAttributes(String vert) {
+	private void parseAttributes(String vert) {
 		
 		this.attributes = new HashMap<String, Attribute>();
 		
@@ -157,6 +175,29 @@ public class ShaderProgram {
 			this.attributes.put(identifier, new Attribute(identifier, type, location));
 			
 		}
+		
+	}
+	
+	
+	private void parseLayout() {
+		
+		Collection<Attribute> attribCollection = attributes.values();
+		
+		int layout = 0;
+		
+		for (int i = 0; i < 8; ++i) {
+			
+			for (Attribute attrib : attribCollection) {
+				
+				if (attrib.location == i) {
+					layout |= attrib.getDataSize() << (i * 4);
+				}
+				
+			}
+			
+		}
+		
+		this.layout = layout;
 		
 	}
 	
@@ -361,6 +402,15 @@ public class ShaderProgram {
 		
 		return attributes.get(name).type;
 		
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the data layout required for this shader
+	 */
+	public int getLayout() {
+		return layout;
 	}
 	
 	
