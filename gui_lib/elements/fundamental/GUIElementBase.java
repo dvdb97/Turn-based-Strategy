@@ -281,8 +281,6 @@ public abstract class GUIElementBase implements GUIClickable {
 		parent.removeChild(this);
 				
 		onClose();
-		
-		this.delete();
 	}
 
 }

@@ -43,7 +43,7 @@ class TestMatrixInversion33f {
 		
 		Matrix33f matrix = new Matrix33f(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
 		
-		Matrix33f inverse = MatrixInversion33f.generateMultiplicativeInverse(matrix);
+		Matrix33f inverse = MatrixInversion33f.computeMultiplicativeInverse(matrix);
 		
 		float[] matrixTimesInverse = matrix.times(inverse).toArray();
 		float[] identity = new float[] {1,0,0, 0,1,0, 0,0,1};
@@ -65,7 +65,7 @@ class TestMatrixInversion33f {
 		
 		Matrix33f matrix = new Matrix33f(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
 		
-		Matrix33f inverse = MatrixInversion33f.generateMultiplicativeInverse(matrix);
+		Matrix33f inverse = MatrixInversion33f.computeMultiplicativeInverse(matrix);
 		
 		float[] matrixTimesInverse = matrix.times(inverse).toArray();
 		float[] identity = new float[] {1,0,0, 0,1,0, 0,0,1};
