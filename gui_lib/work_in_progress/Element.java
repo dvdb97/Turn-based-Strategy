@@ -8,13 +8,25 @@ import math.matrices.advanced.MatrixInversion44f;
 
 public abstract class Element implements ElementBase {
 	
-	protected GUIElementMatrix transformationMatrix;
-	protected GUIElementMatrix invertedTM;	
-	
 	protected Shape shape;
 	protected Color color;
 	
+	protected GUIElementMatrix transformationMatrix;
+	protected GUIElementMatrix invertedTM;	
+
+	//***************** constructor *************************
 	
+	protected Element(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
+		
+		this.shape = shape;
+		this.color = color;
+		
+		this.transformationMatrix = transformationMatrix;
+		this.invertedTM = transformationMatrix.getInverse();
+		
+	}
+
+
 	
 	//*******************************************************
 	
@@ -49,5 +61,6 @@ public abstract class Element implements ElementBase {
 		this.transformationMatrix = parentMatrix.times(transformationMatrix);
 		this.invertedTM = transformationMatrix.getInverse();
 	}
+
 
 }
