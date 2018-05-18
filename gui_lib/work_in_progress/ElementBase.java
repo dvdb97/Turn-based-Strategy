@@ -6,6 +6,6 @@ public interface ElementBase {
 	
 	void render();
 	
-	void processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown);
+	boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown);
 	
 }

@@ -24,12 +24,18 @@ public class ElementList extends ArrayList<ElementBase> implements ElementBase {
 		forEach((e) -> e.render());
 		
 	}
-
+	
 	@Override
-	public void processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
 		
-		forEach((e) -> e.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown));
+	//	forEach((e) -> e.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown));
 		
+		for(ElementBase e : this) {
+			if (e.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown))
+				return true;
+		}
+		
+		return false;
 	}
 
 }

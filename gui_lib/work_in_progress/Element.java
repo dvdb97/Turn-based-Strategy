@@ -5,6 +5,8 @@ import gui_core.GUIMatrixManager;
 import math.matrices.Matrix44f;
 import math.matrices.advanced.MatrixInversion33f;
 import math.matrices.advanced.MatrixInversion44f;
+import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 public abstract class Element implements ElementBase {
 	
@@ -43,7 +45,16 @@ public abstract class Element implements ElementBase {
 	}
 	
 	@Override
-	public void processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+		
+		Vector3f vec = new Vector3f(cursorX, cursorY, 1f);
+		vec = transformationMatrix.times(vec);
+		
+		if (shape.isHit(vec.getA(), vec.getB())) {
+			return true;
+		}
+		
+		return false;
 		
 	}
 
