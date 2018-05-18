@@ -12,6 +12,10 @@ public class GUIElementMatrix extends Matrix33f {
 		super(	xStretch, 0       , xShift,
 				0       , yStretch, yShift,
 				0       , 0       , 1     );
+
+		if(xStretch == 0 || yStretch == 0) {
+			throw new IllegalArgumentException();
+		}
 		
 	}
 	
