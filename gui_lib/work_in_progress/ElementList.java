@@ -26,12 +26,12 @@ public class ElementList extends ArrayList<ElementBase> implements ElementBase {
 	}
 	
 	@Override
-	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public boolean processInput() {
 		
-	//	forEach((e) -> e.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown));
+	//	forEach((e) -> e.processInput());
 		
 		for(ElementBase e : this) {
-			if (e.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown))
+			if (e.processInput())
 				return true;
 		}
 		

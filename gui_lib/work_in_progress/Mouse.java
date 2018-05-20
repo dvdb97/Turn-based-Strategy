@@ -2,8 +2,9 @@ package work_in_progress;
 
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
+import math.vectors.Vector3f;
 
-public class MouseConcept {
+public class Mouse {
 	
 	/*
 	 * ***************************************
@@ -35,83 +36,133 @@ public class MouseConcept {
 	
 	
 	//position
-	private float cursorX = CursorPosInput.getXPosAsOpengl();
-	private float cursorY = CursorPosInput.getYPosAsOpengl();
+	private static Vector3f cursorPosition;
 	
 	//buttons
-	private boolean rightButtonDown;
-	private boolean leftButtonDown;
+	private static boolean rightButtonDown;
+	private static boolean leftButtonDown;
 	
-	private boolean rightClicked;
-	private boolean rightReleased;
+	private static boolean rightClicked;
+	private static boolean rightReleased;
 	
-	private boolean leftClicked;
-	private boolean leftReleased;
+	private static boolean leftClicked;
+	private static boolean leftReleased;
 	
+	//****************************** init ********************************
+	
+	public static void init() {
+		
+		cursorPosition = new Vector3f(0, 0, 1);
+		
+	}
 	
 	//****************************** update ******************************
 	
-	public void update() {
+	public static void update() {
 		
-		cursorX = CursorPosInput.getXPosAsOpengl();
-		cursorY = CursorPosInput.getYPosAsOpengl();
+		updateCursorPosition();
 		
-		boolean newRightButtonDown = MouseInputManager.isRightMouseButtonPressed();
-		boolean newLeftButtonDown  = MouseInputManager.isLeftMouseButtonPressed();
-		
-		if (!rightButtonDown && newRightButtonDown)
-			rightClicked = true;
-		
-		
-		//usw...
+		updateLeft();
+		updateRight();
 		
 	}
+	
+	private static void updateCursorPosition() {
+		cursorPosition.setA(CursorPosInput.getXPosAsOpengl());
+		cursorPosition.setB(CursorPosInput.getYPosAsOpengl());
+	}
+
+	private static void updateLeft() {
+		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonDown)
+			toggleLeft();
+		else
+			leftClicked = false;
+			leftReleased = false;
+	}
+	
+	private static void updateRight() {
+		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonDown)
+			toggleRight();
+		else
+			rightClicked = false;
+			rightReleased = false;
+	}
+	
+	
+	
+	//********************************************************************
+	
+	private static void toggleRight() {
+		
+		if(rightButtonDown)
+			rightReleased = true;
+		else
+			rightClicked = true;
+		
+		rightButtonDown = !rightButtonDown;
+		
+	}
+	
+	private static void toggleLeft() {
+		
+		if(leftButtonDown)
+			leftReleased = true;
+		else
+			leftClicked = true;
+		
+		leftButtonDown = !leftButtonDown;
+		
+	}
+
 	
 	//****************************** get *********************************
 	
-	public float getCursorX() {
-		return cursorX;
+	public static float getCursorX() {
+		return cursorPosition.getA();
 	}
 	
-	public float getCursorY() {
-		return cursorY;
+	public static float getCursorY() {
+		return cursorPosition.getB();
 	}
-
+	
+	public static Vector3f getCursorPosititon() {
+		return cursorPosition.copyOf();
+	}
 	
 	/**
 	 * @return the rightButtonDown
 	 */
-	public boolean isRightButtonDown() {
+	public static boolean isRightButtonDown() {
 		return rightButtonDown;
 	}
 	/**
 	 * @return the leftButtonDown
 	 */
-	public boolean isLeftButtonDown() {
+	public static boolean isLeftButtonDown() {
 		return leftButtonDown;
 	}
 	/**
 	 * @return the richtClick
 	 */
-	public boolean isRichtClicked() {
+	public static boolean isRichtClicked() {
 		return rightClicked;
 	}
 	/**
 	 * @return the rightRelease
 	 */
-	public boolean isRightReleased() {
+	public static boolean isRightReleased() {
 		return rightReleased;
 	}
 	/**
 	 * @return the leftClick
 	 */
-	public boolean isLeftClicked() {
+	public static boolean isLeftClicked() {
 		return leftClicked;
 	}
 	/**
 	 * @return the leftRelease
 	 */
-	public boolean isLeftReleased() {
+	public static boolean isLeftReleased() {
 		return leftReleased;
 	}
 	

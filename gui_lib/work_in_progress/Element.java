@@ -15,7 +15,7 @@ public abstract class Element implements ElementBase {
 	
 	protected GUIElementMatrix transformationMatrix;
 	protected GUIElementMatrix invertedTM;	
-
+	
 	//***************** constructor *************************
 	
 	protected Element(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
@@ -27,8 +27,8 @@ public abstract class Element implements ElementBase {
 		this.invertedTM = transformationMatrix.getInverse();
 		
 	}
-
-
+	
+	
 	
 	//*******************************************************
 	
@@ -45,9 +45,9 @@ public abstract class Element implements ElementBase {
 	}
 	
 	@Override
-	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public boolean processInput() {
 		
-		Vector3f vec = new Vector3f(cursorX, cursorY, 1f);
+		Vector3f vec = Mouse.getCursorPosititon();
 		vec = transformationMatrix.times(vec);
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
@@ -57,7 +57,7 @@ public abstract class Element implements ElementBase {
 		return false;
 		
 	}
-
+	
 	
 	
 	//*********************************************************

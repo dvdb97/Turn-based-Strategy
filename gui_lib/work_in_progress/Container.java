@@ -36,13 +36,13 @@ public abstract class Container extends Element {
 	}
 	
 	@Override
-	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+	public boolean processInput() {
 		
-		if(super.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown) == false) {
+		if(super.processInput() == false) {
 			return false;
 		}
 		
-		children.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown);
+		children.processInput();
 		
 		return true;
 
