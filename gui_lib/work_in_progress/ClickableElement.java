@@ -5,6 +5,7 @@ import math.vectors.Vector3f;
 
 public abstract class ClickableElement extends Element implements Clickable {
 	
+	private boolean pressed;
 	
 	//******************** constructor *******************************
 	
@@ -15,5 +16,30 @@ public abstract class ClickableElement extends Element implements Clickable {
 	
 	//*****************************************************************
 	
-	
+	@Override
+	public boolean processInput() {
+		
+		Vector3f vec = Mouse.getCursorPosititon();
+		vec = transformationMatrix.times(vec);
+		
+		if (shape.isHit(vec.getA(), vec.getB())) {
+			
+			if (Mouse.isLeftPressed())
+				pressed = true;
+				onPress();
+			if (Mouse.isLeftReleased())
+				pressed = false;
+				onRelease();
+			
+			return true;
+			
+		} else {
+			
+			pressed = false;
+			return false;
+			
+		}
+		
+	}
+		
 }

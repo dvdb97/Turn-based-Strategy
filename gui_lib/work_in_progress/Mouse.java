@@ -42,10 +42,10 @@ public class Mouse {
 	private static boolean rightButtonDown;
 	private static boolean leftButtonDown;
 	
-	private static boolean rightClicked;
+	private static boolean rightPressed;
 	private static boolean rightReleased;
 	
-	private static boolean leftClicked;
+	private static boolean leftPressed;
 	private static boolean leftReleased;
 	
 	//****************************** init ********************************
@@ -76,7 +76,7 @@ public class Mouse {
 		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonDown)
 			toggleLeft();
 		else
-			leftClicked = false;
+			leftPressed = false;
 			leftReleased = false;
 	}
 	
@@ -84,7 +84,7 @@ public class Mouse {
 		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonDown)
 			toggleRight();
 		else
-			rightClicked = false;
+			rightPressed = false;
 			rightReleased = false;
 	}
 	
@@ -97,7 +97,7 @@ public class Mouse {
 		if(rightButtonDown)
 			rightReleased = true;
 		else
-			rightClicked = true;
+			rightPressed = true;
 		
 		rightButtonDown = !rightButtonDown;
 		
@@ -108,7 +108,7 @@ public class Mouse {
 		if(leftButtonDown)
 			leftReleased = true;
 		else
-			leftClicked = true;
+			leftPressed = true;
 		
 		leftButtonDown = !leftButtonDown;
 		
@@ -144,8 +144,8 @@ public class Mouse {
 	/**
 	 * @return the richtClick
 	 */
-	public static boolean isRichtClicked() {
-		return rightClicked;
+	public static boolean isRichtPressed() {
+		return rightPressed;
 	}
 	/**
 	 * @return the rightRelease
@@ -156,8 +156,8 @@ public class Mouse {
 	/**
 	 * @return the leftClick
 	 */
-	public static boolean isLeftClicked() {
-		return leftClicked;
+	public static boolean isLeftPressed() {
+		return leftPressed;
 	}
 	/**
 	 * @return the leftRelease
