@@ -5,6 +5,9 @@ import assets.meshes.geometry.Color;
 public abstract class Container extends Element {
 	
 	
+	protected ElementList children;
+	
+	
 	//******************** constructor *******************************
 	
 	protected Container(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
@@ -16,7 +19,6 @@ public abstract class Container extends Element {
 	//*****************************************************************
 	
 	
-	protected ElementList children;
 	
 	@Override
 	public void update(GUIElementMatrix parentMatrix) {
@@ -47,4 +49,5 @@ public abstract class Container extends Element {
 		return true;
 
 	}
+	
 }

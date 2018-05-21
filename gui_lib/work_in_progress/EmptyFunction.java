@@ -6,10 +6,10 @@ package work_in_progress;
  * @author jona
  *
  */
-class EmptyFunction implements Function {
+class EmptyFunction implements Function<Element> {
 	
 	@Override
-	public void execute(ElementBase element) {
+	public void execute(Element element) {
 		//do nothing
 	}
 
