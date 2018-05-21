@@ -14,7 +14,10 @@ public abstract class Element implements ElementBase {
 	protected Color color;
 	
 	protected GUIElementMatrix transformationMatrix;
-	protected GUIElementMatrix invertedTM;	
+	/**
+	 * inverted transformation matrix
+	 */
+	protected GUIElementMatrix invertedTM;
 	
 	//***************** constructor *************************
 	

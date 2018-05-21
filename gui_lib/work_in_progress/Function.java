@@ -6,3 +6,4 @@ public interface Function {
 	public abstract void execute(ElementBase element);
 	
 }
+
