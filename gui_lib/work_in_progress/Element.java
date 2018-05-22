@@ -13,11 +13,13 @@ public abstract class Element implements ElementBase {
 	protected Shape shape;
 	protected Color color;
 	
-	protected GUIElementMatrix transformationMatrix;
+	//TODO: shity names
+	protected GUIElementMatrix elementMatrix;
 	/**
 	 * inverted transformation matrix
 	 */
 	protected GUIElementMatrix invertedTM;
+	protected GUIElementMatrix TM;
 	
 	//***************** constructor *************************
 	
@@ -26,7 +28,7 @@ public abstract class Element implements ElementBase {
 		this.shape = shape;
 		this.color = color;
 		
-		this.transformationMatrix = transformationMatrix;
+		this.elementMatrix = transformationMatrix;
 		this.invertedTM = transformationMatrix.getInverse();
 		
 	}
@@ -43,7 +45,7 @@ public abstract class Element implements ElementBase {
 	@Override
 	public void render() {
 		
-		shape.render(null, color, transformationMatrix);
+		shape.render(null, color, TM);
 		
 	}
 	
@@ -51,7 +53,7 @@ public abstract class Element implements ElementBase {
 	public boolean processInput() {
 		
 		Vector3f vec = Mouse.getCursorPosititon();
-		vec = transformationMatrix.times(vec);
+		vec = invertedTM.times(vec);
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
 			return true;
@@ -72,8 +74,10 @@ public abstract class Element implements ElementBase {
 			
 	//TODO:	this.transformationMatrix = new GUIElementMatrix(xShift, yShift, xStretch, yStretch);
 		
-		this.transformationMatrix = parentMatrix.times(transformationMatrix);
-		this.invertedTM = transformationMatrix.getInverse();
+		this.TM = parentMatrix.times(elementMatrix);
+		
+		
+		this.invertedTM = TM.getInverse();
 	}
 
 
