@@ -63,7 +63,7 @@ public class GUIManager {
 	
 	/**
 	 * 
-	 * @return true,  if some window is hit
+	 * @return true,  if any window is hit
 	 */
 	public static boolean processInput() {
 		

@@ -23,11 +23,12 @@ public class Mouse {
 	private static boolean rightButtonPressed;
 	private static boolean leftButtonPressed;
 	
+	private static boolean leftClicked;
+	private static boolean leftReleased;
+
 	private static boolean rightClicked;
 	private static boolean rightReleased;
 	
-	private static boolean leftClicked;
-	private static boolean leftReleased;
 	
 	//****************************** init ********************************
 	
@@ -54,24 +55,38 @@ public class Mouse {
 	}
 
 	private static void updateLeft() {
-		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonPressed)
+		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonPressed) {
 			toggleLeft();
-		else
+		} else {
 			leftClicked = false;
 			leftReleased = false;
+		}
 	}
 	
 	private static void updateRight() {
-		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonPressed)
+		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonPressed) {
 			toggleRight();
-		else
+		} else {
 			rightClicked = false;
 			rightReleased = false;
+		}
 	}
 	
 	
 	
 	//********************************************************************
+	
+	private static void toggleLeft() {
+		
+		if(leftButtonPressed)
+			leftReleased = true;
+		else
+			leftClicked = true;
+		
+		leftButtonPressed = !leftButtonPressed;
+		
+	}
+	
 	
 	private static void toggleRight() {
 		
@@ -84,17 +99,7 @@ public class Mouse {
 		
 	}
 	
-	private static void toggleLeft() {
-		
-		if(leftButtonPressed)
-			leftReleased = true;
-		else
-			leftClicked = true;
-		
-		leftButtonPressed = !leftButtonPressed;
-		
-	}
-
+	
 	
 	//****************************** get *********************************
 	

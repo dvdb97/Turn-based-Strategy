@@ -21,6 +21,8 @@ public abstract class Element implements ElementBase {
 	protected GUIElementMatrix invertedTM;
 	protected GUIElementMatrix TM;
 	
+	
+	
 	//***************** constructor *************************
 	
 	protected Element(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
@@ -49,6 +51,9 @@ public abstract class Element implements ElementBase {
 		
 	}
 	
+	/**
+	 * returns true if hit
+	 */
 	@Override
 	public boolean processInput() {
 		

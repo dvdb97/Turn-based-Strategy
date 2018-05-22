@@ -26,7 +26,7 @@ public abstract class Container extends Element {
 	public void update(GUIElementMatrix parentMatrix) {
 		
 		super.update(parentMatrix);
-		children.update(this.transformationMatrix);
+		children.update(this.TM);
 		
 	}
 	
@@ -43,6 +43,7 @@ public abstract class Container extends Element {
 	public boolean processInput() {
 		
 		if(super.processInput() == false) {
+			
 			return false;
 		}
 		

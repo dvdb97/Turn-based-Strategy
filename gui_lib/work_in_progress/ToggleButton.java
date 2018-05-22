@@ -6,17 +6,15 @@ public abstract class ToggleButton extends ClickableElement {
 	
 	private boolean enabled;
 	
-	private Function enableFunc;
-	private Function disableFunc;
+	private Function<ToggleButton> enableFunc;
+	private Function<ToggleButton> disableFunc;
 	
-	protected ToggleButton(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
-		super(shape, color, transformationMatrix);
-		// TODO Auto-generated constructor stub
+	protected ToggleButton(Shape shape, Color color1, Color color2, GUIElementMatrix transformationMatrix) {
+		super(shape, color1, transformationMatrix);
 	}
 
 	@Override
 	public void onClick() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -31,7 +29,6 @@ public abstract class ToggleButton extends ClickableElement {
 	}
 	
 	public void toggle() {
-		
 		enabled = !enabled;
 		
 		if(enabled)
@@ -39,13 +36,14 @@ public abstract class ToggleButton extends ClickableElement {
 		else
 			disableFunc.execute(this);
 		
+		
 	}
 
-	protected void setEnableFunc(Function enableFunc) {
+	protected void setEnableFunc(Function<ToggleButton> enableFunc) {
 		this.enableFunc = enableFunc;
 	}
 
-	protected void setDisableFunc(Function disableFunc) {
+	protected void setDisableFunc(Function<ToggleButton> disableFunc) {
 		this.disableFunc = disableFunc;
 	}
 	

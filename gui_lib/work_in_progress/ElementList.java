@@ -12,7 +12,7 @@ public class ElementList extends ArrayList<ElementBase> implements ElementBase {
 	private static final long serialVersionUID = 1285077944138307000L;
 	
 	public ElementList() {
-		super(10);
+		super();
 	}
 	
 	public ElementList(int initialCapacity) {

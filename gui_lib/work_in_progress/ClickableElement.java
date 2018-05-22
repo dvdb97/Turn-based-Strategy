@@ -20,17 +20,19 @@ public abstract class ClickableElement extends Element implements Clickable {
 	public boolean processInput() {
 		
 		Vector3f vec = Mouse.getCursorPosititon();
-		vec = transformationMatrix.times(vec);
+		vec = TM.times(vec);
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
 			
-			if (Mouse.isLeftClicked())
+			if (Mouse.isLeftClicked()) {
 				pressed = true;
 				onClick();
-			if (Mouse.isLeftReleased())
+			}
+			if (Mouse.isLeftReleased()) {
 				if (pressed)
 					onRelease();
 				pressed = false;
+			}
 			
 			return true;
 			

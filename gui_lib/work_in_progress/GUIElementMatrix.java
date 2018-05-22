@@ -14,6 +14,7 @@ public class GUIElementMatrix extends Matrix33f {
 				0       , 0       , 1     );
 
 		if(xStretch == 0 || yStretch == 0) {
+			System.out.println("xStretch:  " + xStretch + " , xStretch:  " + yStretch);
 			throw new IllegalArgumentException();
 		}
 		
@@ -39,7 +40,7 @@ public class GUIElementMatrix extends Matrix33f {
 	
 	
 	public GUIElementMatrix getInverse() {
-		return new GUIElementMatrix(1/getXStretch(), 1/getYStretch(), -getXShift()/getXStretch(),  -getYShift()/getYStretch());
+		return new GUIElementMatrix(-getXShift()/getXStretch(),  -getYShift()/getYStretch(), 1/getXStretch(), 1/getYStretch());
 	}
 	
 	//****************************************************************
