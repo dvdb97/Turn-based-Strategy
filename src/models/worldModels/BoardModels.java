@@ -146,7 +146,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor.toVector4f());
 		
 		RenderEngine.draw(tileBorders, null);
 		
@@ -158,7 +158,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor.toVector4f());
 		
 		RenderEngine.draw(tileBorders, null);
 		

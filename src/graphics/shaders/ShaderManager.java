@@ -2,6 +2,7 @@ package graphics.shaders;
 
 import assets.light.LightSource;
 import assets.material.Material;
+import assets.meshes.geometry.Color;
 import fontRendering.rendering.shader.TextRenderingShader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;

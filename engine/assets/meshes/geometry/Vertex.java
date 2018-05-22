@@ -46,7 +46,7 @@ public class Vertex extends Vector3f {
 	
 	
 	public Vertex(float x, float y, float z, Color color) {
-		this(x, y, z, color.getA(), color.getB(), color.getC(), color.getD());
+		this(x, y, z, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 	
 	
@@ -181,7 +181,7 @@ public class Vertex extends Vector3f {
 	}
 		public void setColor(Color color) {
 		
-		setColor(color.getA(), color.getB(), color.getC(), color.getD());
+		setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 		
 	}
 	

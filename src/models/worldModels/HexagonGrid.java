@@ -117,10 +117,10 @@ public class HexagonGrid extends Element_Model {
 		
 		for (int i=0; i<colors.length; i++) {
 			
-			colorsF[i*4 + 0] = colors[i].getA();
-			colorsF[i*4 + 1] = colors[i].getB();
-			colorsF[i*4 + 2] = colors[i].getC();
-			colorsF[i*4 + 3] = colors[i].getD();
+			colorsF[i*4 + 0] = colors[i].getRed();
+			colorsF[i*4 + 1] = colors[i].getGreen();
+			colorsF[i*4 + 2] = colors[i].getBlue();
+			colorsF[i*4 + 3] = colors[i].getAlpha();
 			
 		}
 		

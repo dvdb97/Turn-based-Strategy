@@ -65,7 +65,7 @@ public abstract class Shape extends Element_Model {
 		if (texture != null) {
 			GUIShaderCollection.useGuiShader(matrix.toMatrix44f());
 		} else {
-			GUIShaderCollection.useGuiShader(matrix.toMatrix44f(), color);
+			GUIShaderCollection.useGuiShader(matrix.toMatrix44f(), color.toVector4f());
 		}
 		
 		RenderEngine.draw(this, texture);

@@ -1,10 +1,8 @@
 package gui.tileInfo;
 
-import elements.containers.GUIWindow_2;
 import elements.displays.GUITextField;
 import elements.input.buttons.GUIToggleButton;
 import elements.input.menus.GUITabMenu;
-import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
 import work_in_progress.GUIElementMatrix;
 import work_in_progress.GUIWindow;
@@ -36,20 +34,20 @@ public class TileInfoWindow extends GUIWindow {
 	public TileInfoWindow() {
 		super(new Quad(), GREY, new GUIElementMatrix(-0.9f, 0.9f, 0.4f, 0.9f));
 		
-		infoText = new GUITextField(GREEN, 0.1f, -0.25f, 0.8f, 0.65f, "index");
+		infoText = new GUITextField(GREEN.toVector4f(), 0.1f, -0.25f, 0.8f, 0.65f, "index");
 		
 	/*	button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
 		button.setEnableFunction(  (element) -> enable()  );
 		button.setDisableFunction( (element) -> disable() );
 		addChild(button);*/
 		
-		tabMenu = new GUITabMenu(new GUIQuad(), YELLOW, 0.1f, -0.1f, 0.8f, 0.8f);
+		tabMenu = new GUITabMenu(new GUIQuad(), YELLOW.toVector4f(), 0.1f, -0.1f, 0.8f, 0.8f);
 	//	children.add(tabMenu);
 		
-		tabMenu.addTab(BLUE);
-		tabMenu.addTab(GREEN);
-		tabMenu.addTab(BLACK);
-		tabMenu.addTab(WHITE);
+		tabMenu.addTab(BLUE.toVector4f());
+		tabMenu.addTab(GREEN.toVector4f());
+		tabMenu.addTab(BLACK.toVector4f());
+		tabMenu.addTab(WHITE.toVector4f());
 		
 	}
 	
@@ -68,9 +66,9 @@ public class TileInfoWindow extends GUIWindow {
 		this.tile = tile;
 		infoText.setLabel(getTileInfoString(tile));
 		if(tile.isWater()) {
-			infoText.setColor(BLUE);
+			infoText.setColor(BLUE.toVector4f());
 		} else {
-			infoText.setColor(GREEN);
+			infoText.setColor(GREEN.toVector4f());
 		}
 	}
 	
