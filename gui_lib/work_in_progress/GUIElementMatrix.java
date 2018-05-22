@@ -56,59 +56,59 @@ public class GUIElementMatrix extends Matrix33f {
 	//************************** get & set ***************************
 	
 	/**
-	 * @return the xShift
+	 * @return the xShift (a3)
 	 */
 	public float getXShift() {
-		return getA1();
+		return getA3();
 	}
 
 	/**
 	 * @param xShift the xShift to set
 	 */
 	public void setXShift(float xShift) {
-		setA1(xShift);
+		setA3(xShift);
 	}
 
 	/**
-	 * @return the yShift
+	 * @return the yShift (b3)
 	 */
 	public float getYShift() {
-		return getB2();
+		return getB3();
 	}
 
 	/**
 	 * @param yShift the yShift to set
 	 */
 	public void setYShift(float yShift) {
-		setB2(yShift);
+		setB3(yShift);
 	}
 
 	/**
-	 * @return the xStretch
+	 * @return the xStretch (a1)
 	 */
 	public float getXStretch() {
-		return getA3();
+		return getA1();
 	}
 
 	/**
 	 * @param xStretch the xStretch to set
 	 */
 	public void setXStretch(float xStretch) {
-		setA3(xStretch);
+		setA1(xStretch);
 	}
 
 	/**
-	 * @return the yStretch
+	 * @return the yStretch (b2)
 	 */
 	public float getYStretch() {
-		return getB3();
+		return getB2();
 	}
 
 	/**
 	 * @param yStretch the yStretch to set
 	 */
 	public void setYStretch(float yStretch) {
-		setB3(yStretch);
+		setB2(yStretch);
 	}
 	
 }
