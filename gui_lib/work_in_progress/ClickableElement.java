@@ -28,8 +28,9 @@ public abstract class ClickableElement extends Element implements Clickable {
 				pressed = true;
 				onPress();
 			if (Mouse.isLeftReleased())
+				if (pressed)
+					onRelease();
 				pressed = false;
-				onRelease();
 			
 			return true;
 			
