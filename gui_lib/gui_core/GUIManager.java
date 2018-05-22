@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import assets.textures.Texture;
 import assets.textures.Texture2D;
-import elements.containers.GUIWindow;
+import elements.containers.GUIWindow_2;
 import fontRendering.font.GUIFontCollection;
 import graphics.matrices.Matrices;
 import interaction.Window;
@@ -15,6 +15,8 @@ import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
+import work_in_progress.GUIWindow;
+import work_in_progress.Mouse;
 
 public class GUIManager {
 	
@@ -55,6 +57,8 @@ public class GUIManager {
 		
 		height = window.getHeight();
 		
+		Mouse.init();
+		
 	}
 	
 	/**
@@ -63,15 +67,11 @@ public class GUIManager {
 	 */
 	public static boolean processInput() {
 		
-		float cursorX = CursorPosInput.getXPosAsOpengl();
-		float cursorY = CursorPosInput.getYPosAsOpengl();
-		
-		boolean leftMouseButtonDown = MouseInputManager.isLeftMouseButtonPressed();
-		boolean rightMouseButtonDown = MouseInputManager.isRightMouseButtonPressed();
+		Mouse.update();
 		
 		for (GUIWindow window : windows) {
 			
-			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
+			if (window.processInput()) {
 				return true;
 			}
 			

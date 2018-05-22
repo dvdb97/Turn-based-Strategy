@@ -1,23 +1,28 @@
 package gui.tileInfo;
 
-import elements.containers.GUIWindow;
+import elements.containers.GUIWindow_2;
 import elements.displays.GUITextField;
 import elements.input.buttons.GUIToggleButton;
 import elements.input.menus.GUITabMenu;
 import math.vectors.Vector4f;
 import rendering.shapes.implemented.GUIQuad;
+import work_in_progress.GUIElementMatrix;
+import work_in_progress.GUIWindow;
+import work_in_progress.Quad;
 import world.gameBoard.Tile;
 
 import static gui.tileInfo.TileInfoStringIssuer.getTileInfoString;
 
+import assets.meshes.geometry.Color;
+
 public class TileInfoWindow extends GUIWindow {
 	
-	private static Vector4f GREEN = new Vector4f(0.7f, 0.9f, 0.7f, 1f);
-	private static Vector4f BLUE = new Vector4f(0.0f, 0.6f, 0.8f, 1f);
-	private static Vector4f GREY = new Vector4f(0.5f, 0.5f, 0.5f, 1f);
-	private static Vector4f YELLOW = new Vector4f(0.7f, 0.7f, 0.5f, 1f);
-	private static Vector4f WHITE = new Vector4f(1f, 1f, 1f, 1f);
-	private static Vector4f BLACK = new Vector4f(0f, 0f, 0f, 1f);
+	private static Color GREEN = new Color(0.7f, 0.9f, 0.7f, 1f);
+	private static Color BLUE = new Color(0.0f, 0.6f, 0.8f, 1f);
+	private static Color GREY = new Color(0.5f, 0.5f, 0.5f, 1f);
+	private static Color YELLOW = new Color(0.7f, 0.7f, 0.5f, 1f);
+	private static Color WHITE = new Color(1f, 1f, 1f, 1f);
+	private static Color BLACK = new Color(0f, 0f, 0f, 1f);
 	
 	private Tile tile;
 	
@@ -29,7 +34,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
-		super(new GUIQuad(), GREY, -0.9f, 0.9f, 0.4f, 0.9f);
+		super(new Quad(), GREY, new GUIElementMatrix(-0.9f, 0.9f, 0.4f, 0.9f));
 		
 		infoText = new GUITextField(GREEN, 0.1f, -0.25f, 0.8f, 0.65f, "index");
 		
@@ -39,7 +44,7 @@ public class TileInfoWindow extends GUIWindow {
 		addChild(button);*/
 		
 		tabMenu = new GUITabMenu(new GUIQuad(), YELLOW, 0.1f, -0.1f, 0.8f, 0.8f);
-		addChild(tabMenu);
+	//	children.add(tabMenu);
 		
 		tabMenu.addTab(BLUE);
 		tabMenu.addTab(GREEN);
@@ -49,11 +54,11 @@ public class TileInfoWindow extends GUIWindow {
 	}
 	
 	private void enable() {
-		addChild(infoText);
+	//	children.add(infoText);
 	}
 	
 	private void disable() {
-		removeChild(infoText);
+		children.remove(infoText);
 	}
 
 	
