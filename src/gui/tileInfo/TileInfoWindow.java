@@ -29,7 +29,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//private GUITextField infoText;
 	
-	private GUIToggleButton button;
+	//private GUIToggleButton button;
 	
 	private TabMenu tabMenu;
 	

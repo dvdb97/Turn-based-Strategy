@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
+import work_in_progress.Mouse;
+
 
 public class MouseInputManager extends GLFWMouseButtonCallback {
 
@@ -31,6 +33,7 @@ public class MouseInputManager extends GLFWMouseButtonCallback {
 		
 		if (action == GLFW_PRESS) {
 			buttons[button] = true;
+			Mouse.getCursorPosititon().print();
 		}
 				
 		if (action == GLFW_RELEASE) {
