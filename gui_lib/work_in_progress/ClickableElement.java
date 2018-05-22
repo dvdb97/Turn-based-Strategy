@@ -24,9 +24,9 @@ public abstract class ClickableElement extends Element implements Clickable {
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
 			
-			if (Mouse.isLeftPressed())
+			if (Mouse.isLeftClicked())
 				pressed = true;
-				onPress();
+				onClick();
 			if (Mouse.isLeftReleased())
 				if (pressed)
 					onRelease();
@@ -36,11 +36,20 @@ public abstract class ClickableElement extends Element implements Clickable {
 			
 		} else {
 			
-			pressed = false;
+			if(pressed)
+				reset();
 			return false;
 			
 		}
 		
 	}
+	
+	@Override
+	public void reset() {
+		pressed = false;
 		
+		//reset to original state
+		
+	}
+	
 }

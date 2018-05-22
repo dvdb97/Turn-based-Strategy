@@ -7,31 +7,12 @@ import math.vectors.Vector3f;
 public class Mouse {
 	
 	/*
-	 * ***************************************
-	 * mouse input is not trivial.
-	 * maybe a GUIButton should be pressed if you press the mouse button, not when the mouse button is down.
-	 * otherwise: if you press and hold the mouse button down and move the cursor over many buttons, every button would be clicked
+	 * TERMINOLOGY
 	 * 
-	 * problem:
-	 * when you update the boolean leftClicked continously (very often), the gui would ignore a mouse click happening on this GUIElement while the gui's attention
-	 * is on another GUIElement
+	 * not pressed:  xxxxxxxxxxxxx---------------------xxxxxxxxxxxxxxxxx
+	 *                          click               release
+	 * pressed:      -------------Xxxxxxxxxxxxxxxxxxxxx-----------------
 	 * 
-	 * when you update the boolean first and than do all the processInput() stuff, a ...
-	 * 
-	 * wait!
-	 * ****************************************
-	 * 
-	 * ****************************************
-	 * 
-	 * diese klasse speichert, ob mousebutton pressed ist oder nicht, und ob booleans click and release
-	 * A) GUIManager ruft zuerst die methode update() dieser klasse auf: Wenn der neue zustand eines mouse buttons anders ist als der zuletzt gespeicherte wird der entsprechende
-	 * boolean (click oder release) auf true gesetzt. Bleibt der zustand gleich, auf false.
-	 * B) GUIManager iteriert durch alle GUIElement. Diese checken dann, ob die maus auf ihm drauf ist und ob diese geklickt wurde (oder released, etc)
-	 * Dann render(), update(), dann wieder A dann B, usw...
-	 * 
-	 * so wird jeder klick erfasst.
-	 * es sei denn der user klickt und released wieder während der dauer eines game-loop-durchlaufs.
-	 * Das ist nicht möglich da diese dauer sehr kurz ist (deshalb haben wir  auch cooldown und so eingefügt
 	 */
 	
 	
@@ -39,13 +20,13 @@ public class Mouse {
 	private static Vector3f cursorPosition;
 	
 	//buttons
-	private static boolean rightButtonDown;
-	private static boolean leftButtonDown;
+	private static boolean rightButtonPressed;
+	private static boolean leftButtonPressed;
 	
-	private static boolean rightPressed;
+	private static boolean rightClicked;
 	private static boolean rightReleased;
 	
-	private static boolean leftPressed;
+	private static boolean leftClicked;
 	private static boolean leftReleased;
 	
 	//****************************** init ********************************
@@ -73,18 +54,18 @@ public class Mouse {
 	}
 
 	private static void updateLeft() {
-		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonDown)
+		if (MouseInputManager.isLeftMouseButtonPressed() != leftButtonPressed)
 			toggleLeft();
 		else
-			leftPressed = false;
+			leftClicked = false;
 			leftReleased = false;
 	}
 	
 	private static void updateRight() {
-		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonDown)
+		if (MouseInputManager.isRightMouseButtonPressed() != rightButtonPressed)
 			toggleRight();
 		else
-			rightPressed = false;
+			rightClicked = false;
 			rightReleased = false;
 	}
 	
@@ -94,23 +75,23 @@ public class Mouse {
 	
 	private static void toggleRight() {
 		
-		if(rightButtonDown)
+		if(rightButtonPressed)
 			rightReleased = true;
 		else
-			rightPressed = true;
+			rightClicked = true;
 		
-		rightButtonDown = !rightButtonDown;
+		rightButtonPressed = !rightButtonPressed;
 		
 	}
 	
 	private static void toggleLeft() {
 		
-		if(leftButtonDown)
+		if(leftButtonPressed)
 			leftReleased = true;
 		else
-			leftPressed = true;
+			leftClicked = true;
 		
-		leftButtonDown = !leftButtonDown;
+		leftButtonPressed = !leftButtonPressed;
 		
 	}
 
@@ -121,47 +102,42 @@ public class Mouse {
 		return cursorPosition.getA();
 	}
 	
+	
 	public static float getCursorY() {
 		return cursorPosition.getB();
 	}
+	
 	
 	public static Vector3f getCursorPosititon() {
 		return cursorPosition.copyOf();
 	}
 	
-	/**
-	 * @return the rightButtonDown
-	 */
-	public static boolean isRightButtonDown() {
-		return rightButtonDown;
+	
+	public static boolean isRightButtonPressed() {
+		return rightButtonPressed;
 	}
-	/**
-	 * @return the leftButtonDown
-	 */
-	public static boolean isLeftButtonDown() {
-		return leftButtonDown;
+	
+	
+	public static boolean isLeftButtonPressed() {
+		return leftButtonPressed;
 	}
-	/**
-	 * @return the richtClick
-	 */
-	public static boolean isRichtPressed() {
-		return rightPressed;
+	
+	
+	public static boolean isRightClicked() {
+		return rightClicked;
 	}
-	/**
-	 * @return the rightRelease
-	 */
+	
+	
 	public static boolean isRightReleased() {
 		return rightReleased;
 	}
-	/**
-	 * @return the leftClick
-	 */
-	public static boolean isLeftPressed() {
-		return leftPressed;
+	
+	
+	public static boolean isLeftClicked() {
+		return leftClicked;
 	}
-	/**
-	 * @return the leftRelease
-	 */
+	
+	
 	public static boolean isLeftReleased() {
 		return leftReleased;
 	}

@@ -1,12 +1,10 @@
 package work_in_progress;
 
-import java.util.ArrayList;
-
 import assets.meshes.geometry.Color;
 
 public abstract class RadioButton extends Container {
 	
-	private AdvancedElementList<ToggleButton> buttons;
+	private AdvancedElementList<PushButton> buttons;
 	private int currentButton;
 	
 	protected RadioButton(Shape shape, Color color, GUIElementMatrix transformationMatrix, int numButtons) {
@@ -17,14 +15,17 @@ public abstract class RadioButton extends Container {
 		
 	}
 	
-	protected void addButton(ToggleButton button) {
+	protected void addButton(PushButton button) {
 		
-		button.setEnableFunc( (e) -> {
-			buttons.get(currentButton).toggle();
+		button.setFunction((e) -> {
+			
+			if (currentButton != buttons.indexOf(e)) {
+				buttons.get(currentButton).reset();
+			}
+			
 			currentButton = buttons.indexOf(e);
-		} );
-		
-		button.setDisableFunc(new EmptyFunction());
+			
+		});
 		
 		buttons.add(button);
 		

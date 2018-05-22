@@ -15,7 +15,7 @@ public abstract class ToggleButton extends ClickableElement {
 	}
 
 	@Override
-	public void onPress() {
+	public void onClick() {
 		// TODO Auto-generated method stub
 
 	}
@@ -23,6 +23,11 @@ public abstract class ToggleButton extends ClickableElement {
 	@Override
 	public void onRelease() {
 		toggle();
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
 	}
 	
 	public void toggle() {
