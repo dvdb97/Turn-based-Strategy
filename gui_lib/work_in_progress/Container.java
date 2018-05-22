@@ -12,7 +12,9 @@ public abstract class Container extends Element {
 	
 	protected Container(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
 		super(shape, color, transformationMatrix);
-		// TODO Auto-generated constructor stub
+		
+		children = new ElementList();
+		
 	}
 	
 	
@@ -24,7 +26,7 @@ public abstract class Container extends Element {
 	public void update(GUIElementMatrix parentMatrix) {
 		
 		super.update(parentMatrix);
-		children.update(parentMatrix);
+		children.update(this.transformationMatrix);
 		
 	}
 	
