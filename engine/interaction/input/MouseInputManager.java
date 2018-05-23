@@ -33,7 +33,6 @@ public class MouseInputManager extends GLFWMouseButtonCallback {
 		
 		if (action == GLFW_PRESS) {
 			buttons[button] = true;
-			Mouse.getCursorPosititon().print();
 		}
 				
 		if (action == GLFW_RELEASE) {

@@ -19,7 +19,7 @@ public abstract class ClickableElement extends Element implements Clickable {
 	@Override
 	public boolean processInput() {
 		
-		Vector3f vec = TM.times(Mouse.getCursorPosititon());
+		Vector3f vec = invertedTM.times(Mouse.getCursorPosititon());
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
 			

@@ -57,8 +57,7 @@ public abstract class Element implements ElementBase {
 	@Override
 	public boolean processInput() {
 		
-		Vector3f vec = Mouse.getCursorPosititon();
-		vec = invertedTM.times(vec);
+		Vector3f vec = invertedTM.times(Mouse.getCursorPosititon());
 		
 		if (shape.isHit(vec.getA(), vec.getB())) {
 			return true;
@@ -82,7 +81,10 @@ public abstract class Element implements ElementBase {
 		this.TM = parentMatrix.times(elementMatrix);
 		
 		this.invertedTM = TM.getInverse();
-		
+	//	System.out.println("Element:");
+	//	TM.print();
+	//	System.out.println("Inverse:");
+	//	invertedTM.print();
 	}
 
 
