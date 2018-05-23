@@ -3,14 +3,8 @@ package work_in_progress.test;
 import java.util.ArrayList;
 
 import assets.meshes.geometry.Color;
-import elements.containers.GUITab;
-import elements.input.buttons.GUIToggleButton;
-import math.vectors.Vector4f;
-import rendering.shapes.GUIShape;
-import rendering.shapes.implemented.GUIQuad;
 import work_in_progress.AdvancedElementList;
 import work_in_progress.Container;
-import work_in_progress.ElementList;
 import work_in_progress.GUIElementMatrix;
 import work_in_progress.Quad;
 import work_in_progress.Shape;

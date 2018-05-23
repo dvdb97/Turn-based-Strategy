@@ -3,10 +3,10 @@ package rendering.shapes.implemented;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import rendering.shapes.GUIShape;
+//import rendering.shapes.GUIShape;
 import utils.CustomBufferUtils;
 
-public class GUIRoundedQuad extends GUIShape {
+public class GUIRoundedQuad {/*extends GUIShape {
 	
 	
 	private float cornerEdgeLength;
@@ -117,5 +117,5 @@ public class GUIRoundedQuad extends GUIShape {
 				
 		return true;
 	}
-
+*/
 }

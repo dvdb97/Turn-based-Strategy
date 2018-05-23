@@ -2,19 +2,8 @@ package gui_core;
 
 import java.util.LinkedList;
 
-import assets.textures.Texture;
-import assets.textures.Texture2D;
-import elements.containers.GUIWindow_2;
 import fontRendering.font.GUIFontCollection;
-import graphics.matrices.Matrices;
 import interaction.Window;
-import interaction.input.CursorPosInput;
-import interaction.input.MouseInputManager;
-import math.matrices.Matrix33f;
-import math.matrices.Matrix44f;
-import math.vectors.Vector4f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
 import work_in_progress.GUIWindow;
 import work_in_progress.Mouse;
 

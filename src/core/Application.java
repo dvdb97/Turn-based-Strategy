@@ -3,8 +3,6 @@ package core;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
-import gui.test.ImplementedWindow;
-import gui.tileInfo.TileInfoWindow;
 import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
