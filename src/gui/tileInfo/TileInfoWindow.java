@@ -1,9 +1,9 @@
 package gui.tileInfo;
 
-import elements.input.buttons.GUIToggleButton;
 import work_in_progress.GUIElementMatrix;
 import work_in_progress.GUIWindow;
 import work_in_progress.Quad;
+import work_in_progress.TextBox;
 import work_in_progress.test.TabMenu;
 import world.gameBoard.Tile;
 
@@ -27,7 +27,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	private Tile tile;
 	
-	//private GUITextField infoText;
+	private TextBox infoText;
 	
 	//private GUIToggleButton button;
 	
@@ -37,7 +37,9 @@ public class TileInfoWindow extends GUIWindow {
 	public TileInfoWindow() {
 		super(new Quad(), GREEN, new GUIElementMatrix(0f, 0.2f, 0.4f, 0.9f));
 		
-	//	infoText = new GUITextField(GREEN.toVector4f(), 0.1f, -0.25f, 0.8f, 0.65f, "index");
+		infoText = new TextBox(new Quad(), GREEN, new GUIElementMatrix(0.1f, -0.25f, 0.8f, 0.65f), "index");
+		
+		
 		
 	/*	button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
 		button.setEnableFunction(  (element) -> enable()  );
@@ -51,7 +53,7 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu.addTab(GIANTS_ORANGE);
 		tabMenu.addTab(TEAL_BLUE);
 		tabMenu.addTab(SAFFRON);
-		
+		children.add(infoText);
 	}
 	
 	private void enable() {
@@ -67,11 +69,11 @@ public class TileInfoWindow extends GUIWindow {
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {
 		this.tile = tile;
-	//	infoText.setLabel(getTileInfoString(tile));
+		infoText.setLabel(TileInfoStringIssuer.getTileInfoString(tile));
 		if(tile.isWater()) {
-	//		infoText.setColor(BLUE.toVector4f());
+			infoText.setColor(BLUE);
 		} else {
-	//		infoText.setColor(GREEN.toVector4f());
+			infoText.setColor(GREEN);
 		}
 	}
 	

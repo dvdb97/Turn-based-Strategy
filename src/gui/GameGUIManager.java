@@ -20,7 +20,7 @@ public class GameGUIManager {
 	
 	public static void update() {
 		
-	//	TIW.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
+		TIW.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
 		
 	}
 	
