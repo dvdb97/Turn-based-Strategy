@@ -1,13 +1,13 @@
 package gui.tileInfo;
 
-import work_in_progress.GUIElementMatrix;
-import work_in_progress.GUIWindow;
-import work_in_progress.Quad;
-import work_in_progress.TextBox;
 import work_in_progress.test.TabMenu;
 import world.gameBoard.Tile;
 
 import assets.meshes.geometry.Color;
+import container.GUIWindow;
+import dataType.GUIElementMatrix;
+import output.TextBox;
+import rendering.shapes.Quad;
 
 public class TileInfoWindow extends GUIWindow {
 	

@@ -1,11 +1,11 @@
 package work_in_progress.test;
 
 import assets.meshes.geometry.Color;
-import work_in_progress.Function;
-import work_in_progress.GUIElementMatrix;
-import work_in_progress.Quad;
-import work_in_progress.Shape;
-import work_in_progress.ToggleButton;
+import dataType.GUIElementMatrix;
+import function.Function;
+import input.ToggleButton;
+import rendering.shapes.Quad;
+import rendering.shapes.Shape;
 
 public class TestToggleButton extends ToggleButton {
 	

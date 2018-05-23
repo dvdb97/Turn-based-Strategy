@@ -3,12 +3,12 @@ package work_in_progress.test;
 import java.util.ArrayList;
 
 import assets.meshes.geometry.Color;
-import work_in_progress.AdvancedElementList;
-import work_in_progress.Container;
-import work_in_progress.GUIElementMatrix;
-import work_in_progress.Quad;
-import work_in_progress.Shape;
-import work_in_progress.ToggleButton;
+import dataType.AdvancedElementList;
+import dataType.GUIElementMatrix;
+import fundamental.Container;
+import input.ToggleButton;
+import rendering.shapes.Quad;
+import rendering.shapes.Shape;
 
 public class TabMenu extends Container {
 

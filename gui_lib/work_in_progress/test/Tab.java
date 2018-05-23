@@ -1,9 +1,9 @@
 package work_in_progress.test;
 
 import assets.meshes.geometry.Color;
-import work_in_progress.Container;
-import work_in_progress.GUIElementMatrix;
-import work_in_progress.Shape;
+import dataType.GUIElementMatrix;
+import fundamental.Container;
+import rendering.shapes.Shape;
 
 /**
  * 

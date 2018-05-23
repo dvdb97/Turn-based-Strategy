@@ -2,10 +2,10 @@ package gui_core;
 
 import java.util.LinkedList;
 
+import container.GUIWindow;
 import fontRendering.font.GUIFontCollection;
+import input.Mouse;
 import interaction.Window;
-import work_in_progress.GUIWindow;
-import work_in_progress.Mouse;
 
 public class GUIManager {
 	

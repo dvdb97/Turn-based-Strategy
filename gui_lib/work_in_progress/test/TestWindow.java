@@ -1,10 +1,10 @@
 package work_in_progress.test;
 
 import assets.meshes.geometry.Color;
-import work_in_progress.GUIElementMatrix;
-import work_in_progress.GUIWindow;
-import work_in_progress.Mouse;
-import work_in_progress.Quad;
+import container.GUIWindow;
+import dataType.GUIElementMatrix;
+import input.Mouse;
+import rendering.shapes.Quad;
 
 public class TestWindow extends GUIWindow {
 
