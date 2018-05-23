@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 
 import utils.CustomBufferUtils;
 
-public class Quad extends Shape {
+public class GUIQuad extends Shape {
 
 	private static final float[] data = {
 			0.0f,  0.0f, -1.0f,
@@ -29,7 +29,7 @@ public class Quad extends Shape {
 		};
 		
 		
-		public Quad() {
+		public GUIQuad() {
 			super();
 			
 			this.loadData();

@@ -1,21 +1,29 @@
 package work_in_progress.test;
 
-import assets.meshes.geometry.Color;
 import container.GUIWindow;
 import dataType.GUIElementMatrix;
-import input.Mouse;
-import rendering.shapes.Quad;
+import function.Function;
+import input.PushButton;
+import output.ColorBox;
+import rendering.shapes.GUIQuad;
+
+import static utils.ColorPalette.*;
+
+import assets.meshes.geometry.Color;
 
 public class TestWindow extends GUIWindow {
-
+	
+	private ColorBox colorBox;
+	
 	public TestWindow() {
-		super(new Quad(), new Color(0, 255, 255, 255), new GUIElementMatrix(0f, 0f, 1f, 1f));
+		super(new GUIQuad(), GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
 		
+		colorBox = new ColorBox(WHITE, new GUIElementMatrix(0.03f, -0.03f, 0.94f, 0.235f));
+		children.add(colorBox);
 		
-		TestToggleButton button = new TestToggleButton(new Color(1f,  0f, 0f, 1f), new GUIElementMatrix(0f, 0f, 0.5f, 0.5f));
+		TestPushButton button = new TestPushButton(YELLOW, new GUIElementMatrix(0.03f, -0.265f, 0.94f, 0.1f));
+		button.setFunction( (e) -> colorBox.setColor(new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1f)) );
 		children.add(button);
-		button.setEnableFunc( (e) -> {});//Mouse.getCursorPosititon().print() );
-		button.setDisableFunc( (e) -> {});//Mouse.getCursorPosititon().print() );
 		
 	}
 	

@@ -4,7 +4,7 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import input.ToggleButton;
-import rendering.shapes.Quad;
+import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 
 public class TestToggleButton extends ToggleButton {
@@ -13,7 +13,7 @@ public class TestToggleButton extends ToggleButton {
 	private static Color color2 = new Color(1f, 1f, 1f, 1f);
 	
 	public TestToggleButton(Color color, GUIElementMatrix transformationMatrix) {
-		super(new Quad(), color, color2, transformationMatrix);
+		super(new GUIQuad(), color, color2, transformationMatrix);
 		color1 = color;
 	}
 	

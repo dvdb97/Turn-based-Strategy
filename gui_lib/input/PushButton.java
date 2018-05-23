@@ -22,17 +22,20 @@ public abstract class PushButton extends ClickableElement {
 	
 	@Override
 	public void onClick() {
-		onClickFunc.execute(this);
+		if(onClickFunc != null)
+			onClickFunc.execute(this);
 	}
 	
 	@Override
 	public void onRelease() {
-		function.execute(this);
+		if(function != null)
+			function.execute(this);
 	}
 	
 	@Override
 	public void reset() {
-		resetFunc.execute(this);
+		if(resetFunc != null)
+			resetFunc.execute(this);
 	}
 	
 	protected void setFunction(Function<PushButton> function) {

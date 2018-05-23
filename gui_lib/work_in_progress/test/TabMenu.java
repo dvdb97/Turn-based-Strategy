@@ -7,7 +7,7 @@ import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
 import fundamental.Container;
 import input.ToggleButton;
-import rendering.shapes.Quad;
+import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 
 public class TabMenu extends Container {
@@ -43,7 +43,7 @@ public class TabMenu extends Container {
 			return;
 		}
 		
-		Tab tab = new Tab(new Quad(), color, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
+		Tab tab = new Tab(new GUIQuad(), color, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
 		tabs.add(tab);
 		
 		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(0.1f + buttons.size()*0.2f, -0.1f, 0.2f, 0.2f));
