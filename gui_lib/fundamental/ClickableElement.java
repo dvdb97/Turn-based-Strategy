@@ -8,7 +8,7 @@ import rendering.shapes.Shape;
 
 public abstract class ClickableElement extends Element implements Clickable {
 	
-	private boolean pressed;
+	protected boolean pressed;
 	
 	//******************** constructor *******************************
 	

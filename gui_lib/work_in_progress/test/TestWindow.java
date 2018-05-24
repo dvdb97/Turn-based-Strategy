@@ -20,6 +20,8 @@ public class TestWindow extends GUIWindow {
 	private TextBox greenText;
 	private TextBox blueText;
 	
+	private Slider slider;
+	
 	//************************* constructor **************************************
 	
 	public TestWindow() {
@@ -36,6 +38,14 @@ public class TestWindow extends GUIWindow {
 	}
 	
 	
+	
+	//********************************************************************************
+	
+	@Override
+	public void update(GUIElementMatrix parentMatrix) {
+		super.update(parentMatrix);
+		setColor(new Color(slider.getValue(), colorBox.getColor().getGreen(), colorBox.getColor().getBlue(), colorBox.getColor().getAlpha()));
+	}
 	
 	//********************************************************************************
 	
@@ -61,7 +71,9 @@ public class TestWindow extends GUIWindow {
 	}
 	
 	private void setUpSliders() {
-		//TODO
+		
+		slider = new Slider(GIANTS_ORANGE, new GUIElementMatrix(0.0833f, -0.535f, 0.1667f, 0.435f));
+		children.add(slider);
 	}
 	
 	
@@ -70,9 +82,12 @@ public class TestWindow extends GUIWindow {
 	private void setColor(Color color) {
 		
 		colorBox.setColor(color);
+		
 		redText.setLabel(Integer.toString(color.getRedInt()));
 		greenText.setLabel(Integer.toString(color.getGreenInt()));
 		blueText.setLabel(Integer.toString(color.getBlueInt()));
+		
+		slider.setValue(color.getRed());
 		
 	}
 	

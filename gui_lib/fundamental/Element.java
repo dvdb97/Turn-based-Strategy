@@ -84,10 +84,7 @@ public abstract class Element implements ElementBase {
 		this.TM = parentMatrix.times(elementMatrix);
 		
 		this.invertedTM = TM.getInverse();
-	//	System.out.println("Element:");
-	//	TM.print();
-	//	System.out.println("Inverse:");
-	//	invertedTM.print();
+		
 	}
 
 

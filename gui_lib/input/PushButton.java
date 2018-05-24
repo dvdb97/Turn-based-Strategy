@@ -12,7 +12,7 @@ public abstract class PushButton extends ClickableElement {
 	
 	private Function<PushButton> function;
 	
-	private Function<PushButton> onClickFunc;
+	protected Function<PushButton> onClickFunc;
 	private Function<PushButton> resetFunc;
 	
 	protected PushButton(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
