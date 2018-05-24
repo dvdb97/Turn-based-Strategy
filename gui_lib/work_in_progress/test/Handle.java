@@ -35,9 +35,7 @@ public class Handle extends ClickableElement {
 			dragFunction.calculate(elementMatrix, parentMatrix);
 		}
 		
-		this.TM = parentMatrix.times(elementMatrix);
-		
-		this.invertedTM = TM.getInverse();
+		super.update(parentMatrix);
 		
 	}
 	

@@ -22,9 +22,9 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
-		super(new GUIQuad(), GREEN, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
+		super(new GUIQuad(), GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
 		
-		infoText = new TextBox(new GUIQuad(), GREEN, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.45f), "index");
+		infoText = new TextBox(new GUIQuad(), GREEN_1, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.45f), "index");
 		
 		
 		
@@ -58,9 +58,9 @@ public class TileInfoWindow extends GUIWindow {
 		this.tile = tile;
 		infoText.setLabel(TileInfoStringIssuer.getTileInfoString(tile));
 		if(tile.isWater()) {
-			infoText.setColor(BLUE);
+			infoText.setColor(BLUE_1);
 		} else {
-			infoText.setColor(GREEN);
+			infoText.setColor(GREEN_1);
 		}
 	}
 	

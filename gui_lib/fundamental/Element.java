@@ -79,8 +79,6 @@ public abstract class Element implements ElementBase {
 	 */
 	private void updateRenderingMatrix(GUIElementMatrix parentMatrix) {
 		
-	//TODO:	this.transformationMatrix = new GUIElementMatrix(xShift, yShift, xStretch, yStretch);
-		
 		this.TM = parentMatrix.times(elementMatrix);
 		
 		this.invertedTM = TM.getInverse();

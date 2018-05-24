@@ -2,6 +2,7 @@ package work_in_progress.test;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
+import function.Function;
 import fundamental.Container;
 import rendering.shapes.GUIQuad;
 import utils.Percentage;
@@ -13,6 +14,8 @@ public class Slider extends Container {
 	
 	private Handle handle;
 	
+	private Function<Slider> function;
+	
 	//********************************************************************************
 	
 	public Slider(Color color, GUIElementMatrix transformationMatrix) {
@@ -22,13 +25,27 @@ public class Slider extends Container {
 		children.add(handle);
 	}
 	
+	@Override
+	public void update(GUIElementMatrix parentMatrix) {
+		
+		if(function != null)
+			function.execute(this);
+		
+		super.update(parentMatrix);
+		
+	}
+	
 	//******************************** get & set **************************************
 	
+	public void setFunction(Function<Slider> function) {
+		this.function = function;
+	}
+	
 	public float getValue() {
-		return -handle.getYShift()/0.9f;
+		return (handle.getYShift()+1)/0.9f;
 	}
 	
 	public void setValue(float value) {
-		handle.setYShift(-value*0.9f);
+		handle.setYShift(value*0.9f-1);
 	}
 }
