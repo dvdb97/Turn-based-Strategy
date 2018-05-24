@@ -5,6 +5,7 @@ import dataType.GUIElementMatrix;
 import function.Function;
 import input.PushButton;
 import output.ColorBox;
+import output.TextBox;
 import rendering.shapes.GUIQuad;
 
 import static utils.ColorPalette.*;
@@ -15,18 +16,64 @@ public class TestWindow extends GUIWindow {
 	
 	private ColorBox colorBox;
 	
+	private TextBox redText;
+	private TextBox greenText;
+	private TextBox blueText;
+	
+	//************************* constructor **************************************
+	
 	public TestWindow() {
 		super(new GUIQuad(), GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
 		
-		colorBox = new ColorBox(WHITE, new GUIElementMatrix(0.03f, -0.03f, 0.94f, 0.235f));
-		children.add(colorBox);
+		setUpColorBox();
 		
-		TestPushButton button = new TestPushButton(YELLOW, new GUIElementMatrix(0.03f, -0.265f, 0.94f, 0.1f));
-		button.setFunction( (e) -> colorBox.setColor(new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1f)) );
-		children.add(button);
+		SetUpButton();
+		
+		setUpTextBoxes();
+		
+		setUpSliders();
 		
 	}
 	
 	
+	
+	//********************************************************************************
+	
+	private void setUpColorBox() {
+		colorBox = new ColorBox(WHITE, new GUIElementMatrix(0.03f, -0.03f, 0.94f, 0.235f));
+		children.add(colorBox);
+	}
+
+	private void SetUpButton() {
+		TestPushButton button = new TestPushButton(YELLOW, new GUIElementMatrix(0.03f, -0.265f, 0.94f, 0.1f));
+		button.setFunction( (e) -> setColor(new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1f)) );
+		children.add(button);
+	}
+
+	private void setUpTextBoxes() {
+		redText   = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.0833f, -0.4f, 0.1667f, 0.1f), "R");
+		greenText = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.4167f, -0.4f, 0.1667f, 0.1f), "G");
+		blueText  = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.7500f, -0.4f, 0.1667f, 0.1f), "B");
+		
+		children.add(redText);
+		children.add(greenText);
+		children.add(blueText);
+	}
+	
+	private void setUpSliders() {
+		//TODO
+	}
+	
+	
+	//********************************************************************************
+	
+	private void setColor(Color color) {
+		
+		colorBox.setColor(color);
+		redText.setLabel(Integer.toString(color.getRedInt()));
+		greenText.setLabel(Integer.toString(color.getGreenInt()));
+		blueText.setLabel(Integer.toString(color.getBlueInt()));
+		
+	}
 	
 }

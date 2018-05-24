@@ -78,5 +78,37 @@ public class Color {
 		return alpha;
 	}
 	
+	//***********************************
 	
+	/**
+	 * @return the red
+	 */
+	public int getRedInt() {
+		return (int)(red*255);
+	}
+
+
+	/**
+	 * @return the green
+	 */
+	public int getGreenInt() {
+		return (int)(green*255);
+	}
+
+
+	/**
+	 * @return the blue
+	 */
+	public int getBlueInt() {
+		return (int)(blue*255);
+	}
+
+
+	/**
+	 * @return the alpha
+	 */
+	public int getAlphaInt() {
+		return (int)(alpha*255);
+	}
+
 }
