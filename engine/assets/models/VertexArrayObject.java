@@ -2,6 +2,7 @@ package assets.models;
 
 import assets.GLObject;
 import assets.buffers.VertexBuffer;
+import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
 import assets.buffers.Buffer;
 
@@ -12,9 +13,10 @@ import static org.lwjgl.opengl.GL41.glVertexAttribLPointer;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class VertexArrayObject extends GLObject {
-		
+	
 	/**
 	 * 
 	 * @author Dario
@@ -52,9 +54,7 @@ public class VertexArrayObject extends GLObject {
 
 		public int getOffset() {
 			return offset;
-		}
-		
-		
+		}		
 		
 	}
 	
@@ -62,16 +62,35 @@ public class VertexArrayObject extends GLObject {
 	//An array containing all vertex attribute
 	private VertexAttribute[] attributes;
 	
-	private String[] labels;
+	
+	private BufferLayout layout;
+	
 
-	public VertexArrayObject() {
+	public VertexArrayObject(BufferLayout layout) {
 		super(glGenVertexArrays());
 		
 		this.attributes = new VertexAttribute[16];
+		
+		this.layout = layout;
 	}
 	
 	
+	/**
+	 * 
+	 * Sets pointers to the vertex data. The algorithm assumes that the vertex data is interleaved and
+	 * sets pointers according to the layout
+	 * 
+	 * @param buffer The buffer in which the data is stored
+	 * @param layout The layout of the data in the buffer
+	 */
 	public void setVertexAttributePointers(VertexBuffer buffer, int layout) {
+		
+		if (buffer == null) {
+			System.err.println("The buffer hasn't been initialized yet!");
+			
+			return;
+		}
+		
 		
 		this.bind();
 		buffer.bind();
@@ -107,13 +126,129 @@ public class VertexArrayObject extends GLObject {
 	
 	/**
 	 * 
+	 * Sets pointers to the vertex data. The algorithm assumes that the vertex data is stored in multiple buffers and
+	 * sets pointers according to the layout
+	 * 
+	 * @param buffers The buffers the pointer should point to
+	 * @param layout The layout of the vertices stored in the buffers
+	 */
+	public void setVertexAttributePointers(VertexBuffer[] buffers, int layout) {
+		
+		if (buffers == null) {
+			System.err.println("The buffer array hasn't been initialized yet!");
+			
+			return;
+		}
+		
+		
+		if (buffers.length > attributes.length) {
+			System.err.println("There are more buffers than pointers that can be set!");
+			
+			return;
+		}
+		
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		
+		for (int i = 0; i < buffers.length; ++i) {
+			
+			if (sizes[i] == 0) {
+				continue;
+			}
+			
+			setVertexAttributePointer(buffers[i], i, sizes[i], 0, 0);
+		}
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Sets pointers to the vertex data. The algorithm assumes that the vertex data is stored in multiple buffers and
+	 * sets pointers according to the layout
+	 * 
+	 * @param buffers The buffers the pointer should point to
+	 * @param layout The layout of the vertices stored in the buffers
+	 */
+	public void setVertexAttributePointers(List<VertexBuffer> buffers, int layout) {
+	
+		if (buffers == null) {
+			System.err.println("The buffer array hasn't been initialized yet!");
+			
+			return;
+		}
+		
+		
+		if (buffers.size() > attributes.length) {
+			System.err.println("There are more buffers than pointers that can be set!");
+			
+			return;
+		}
+		
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		
+		for (int i = 0; i < buffers.size(); ++i) {
+			
+			if (sizes[i] == 0) {
+				continue;
+			}
+			
+			setVertexAttributePointer(buffers.get(i), i, sizes[i], 0, 0);
+		}
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Sets pointers to the vertex data. The algorithm assumes that the vertex data is stored blockwise in one buffer and
+	 * sets pointers according to the layout
+	 * 
+	 * @param buffer
+	 * @param numVertices
+	 * @param layout
+	 */
+	public void setVertexAttributePointers(VertexBuffer buffer, int numVertices, int layout) {
+		
+		if (buffer == null) {
+			System.err.println("The buffer hasn't been initialized yet!");
+			
+			return;
+		}
+		
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		
+		int offset = 0;
+		
+		for (int i = 0; i < sizes.length; ++i) {
+			
+			if (sizes[i] == 0) {
+				continue;
+			}
+			
+			setVertexAttributePointer(buffer, i, sizes[i], 0, offset);
+			
+			offset += sizes[i] * numVertices;
+			
+		}
+		
+	}
+	
+	
+	/**
+	 * 
 	 * Sets a vertex attribute pointer to the given buffer
 	 * 
 	 * @param buffer The buffer containing the vertex data
 	 * @param index The index of the pointer that should be set
 	 * @param size The size of the block of data that defines an attribute of one vertex
 	 * @param stride The offset in bytes between the blocks
-	 * @param offset The staring position of the blocks in the buffer
+	 * @param offset The starting position of the blocks in the buffer
 	 */
 	public void setVertexAttributePointer(VertexBuffer buffer, int index, int size, int stride, int offset) {
 		
@@ -176,6 +311,27 @@ public class VertexArrayObject extends GLObject {
 	 */
 	private boolean isFloat(int dataType) {
 		return dataType == GL_FLOAT || dataType == GL_HALF_FLOAT;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the total size of the data stored for each vertex
+	 */
+	public int getVertexSize() {
+		
+		int totalSize = 0;
+		
+		for (VertexAttribute attribute : attributes) {
+			if (attribute == null) {
+				continue;
+			}
+			
+			totalSize += attribute.size;
+		}
+		
+		return totalSize;
+		
 	}
 	
 	

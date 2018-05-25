@@ -15,8 +15,23 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class VertexBuffer extends Buffer {
 
+	
 	public VertexBuffer() {
 		super(GL_ARRAY_BUFFER, GL_FLOAT);
+	}
+	
+	
+	public VertexBuffer(LinkedList<Vertex> vertices, int flag) {
+		super(GL_ARRAY_BUFFER, GL_FLOAT);
+		
+		this.storeData(vertices, flag);
+	}
+	
+	
+	public VertexBuffer(LinkedList<Vertex> vertices, int layout, int flag) {
+		super(GL_ARRAY_BUFFER, GL_FLOAT);
+		
+		this.storeData(vertices, layout, flag);
 	}
 	
 	

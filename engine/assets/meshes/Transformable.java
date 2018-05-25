@@ -1,7 +1,5 @@
 package assets.meshes;
 
-import javax.xml.crypto.dsig.Transform;
-
 import math.matrices.Matrix44f;
 import rendering.matrices.transformation.*;
 import math.vectors.Vector3f;
