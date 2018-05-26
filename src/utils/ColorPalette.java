@@ -4,7 +4,7 @@ import assets.meshes.geometry.Color;
 
 public class ColorPalette {
 	
-	
+	//TODO: final
 	public static Color WHITE           = new Color(1f, 1f, 1f, 1f);
 	public static Color BLACK           = new Color(0f, 0f, 0f, 1f);
 	
