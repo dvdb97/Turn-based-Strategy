@@ -1,10 +1,8 @@
 package assets.meshes.boundingBox;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 import assets.meshes.geometry.Vertex;
-import assets.meshes.geometry.VertexLegacy;
 import math.matrices.Matrix44f;
 
 /**
@@ -24,12 +22,7 @@ public class BoundingBox {
 	private float minZ, maxZ;
 	
 	
-	public BoundingBox(LinkedList<Vertex> vertices) {
-		computeBoundingBox(vertices);
-	}
-	
-	
-	public BoundingBox(ArrayList<Vertex> vertices) {
+	public BoundingBox(List<Vertex> vertices) {
 		computeBoundingBox(vertices);
 	}
 	

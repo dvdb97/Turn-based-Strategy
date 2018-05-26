@@ -1,7 +1,9 @@
 package assets.meshes;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -20,15 +22,16 @@ public class Mesh implements IRenderable {
 	
 	private BufferLayout layout;
 	
+	private int vertexLayout;
 	
-	private LinkedList<Vertex> vertices;
+	private List<Vertex> vertices;
 	
-	private LinkedList<Integer> indices;
+	private List<Integer> indices;
 	
 	private int drawMode;
 	
 	
-	private BoundingBox boundingBox;
+	//TODO: Bounding box
 	
 	public final Transformable transform;
 	
@@ -49,44 +52,121 @@ public class Mesh implements IRenderable {
 		
 		this.drawMode = GL_TRIANGLES;
 		
-		transform = new Transformable();
+		this.transform = new Transformable();
 		
-		material = new StandardMaterial();
+		this.material = new StandardMaterial();
 		
 		this.shader = shader;
+		
+		this.vertexLayout = shader.getLayout();
 		
 	}
 	
 	
-	public Mesh(BufferLayout layout, LinkedList<Vertex> vertices, LinkedList<Integer> indices, ShaderProgram shader) {
+	/**
+	 * 
+	 * @param layout
+	 * @param vertices
+	 * @param indices
+	 * @param shader
+	 */
+	public Mesh(BufferLayout layout, List<Vertex> vertices, List<Integer> indices, ShaderProgram shader) {
 		this(GL_TRIANGLES, layout, shader);
 		
 		this.vertices = vertices;
 		this.indices = indices;
 		
-		boundingBox = new BoundingBox(vertices);
-		
 		this.vao = new VertexArrayObject(layout);
 		
 	}
 	
+
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param layout
+	 * @param vertices
+	 * @param indices
+	 * @param shader
+	 */
+	public Mesh(BufferLayout layout, Vertex[] vertices, int[] indices, ShaderProgram shader) {
+		this(GL_TRIANGLES, layout, shader);
+		
+		//TODO
+		
+	}
 	
+	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param index
+	 * @param newVertex
+	 */
 	public void replaceVertex(int index, Vertex newVertex) {
 		
 		if (vao.getVertexSize() != newVertex.getDataSize()) {
 			return;
 		}
 		
-		
+		//TODO
 		
 	}
 	
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 * @param offset
+	 * @param range
+	 * @param data
+	 */
+	public void replacePosition(int offset, int range, FloatBuffer data) {
+		
+	}
+	
+	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param offset
+	 * @param range
+	 * @param data
+	 */
 	public void replaceColor(int offset, int range, FloatBuffer data) {
 		
+	}	
+
+	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param offset
+	 * @param range
+	 * @param data
+	 */
+	public void replaceTexCoords(int offset, int range, FloatBuffer data) {
+		
 	}
 	
-
+	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param offset
+	 * @param range
+	 * @param data
+	 */
+	public void replaceNormals(int offset, int range, FloatBuffer data) {
+		
+	}
+	
 
 	@Override
 	public void render() {
