@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import assets.buffers.VertexBuffer;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.MeshConst.BufferLayout;
@@ -15,85 +16,88 @@ import rendering.shaders.ShaderProgram;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Mesh implements IRenderable {	
+public class Mesh implements IRenderable {
 	
 	//The vertex array object that holds the references to the vertex data
-	private VertexArrayObject vao;
+	private VertexArrayObject vao = null;
 	
-	private BufferLayout layout;
+	private BufferLayout layout = null;
 	
 	private int vertexLayout;
 	
-	private List<Vertex> vertices;
 	
-	private List<Integer> indices;
+	private List<Vertex> vertices = null;
 	
-	private int drawMode;
+	private List<Integer> indices = null;
 	
-	
-	//TODO: Bounding box
-	
-	public final Transformable transform;
-	
-	public final ShaderProgram shader;
-	
-	public final Material material;
+	private int drawMode = GL_TRIANGLES;
 	
 	
 	/**
 	 * 
 	 * Default constructor
 	 * 
-	 * @param drawMode Specifies what will be rendered (e.g. GL_TRIANGLES or GL_LINES)
-	 * @param layout The layout in which the vertex data should be stored
-	 * @param shader The shader that will be used to render this model
+	 * @param vertices The vertices of the mesh
+	 * @param indices A list of triangles in this mesh
 	 */
-	public Mesh(int drawMode, BufferLayout layout, ShaderProgram shader) {
-		
-		this.drawMode = GL_TRIANGLES;
-		
-		this.transform = new Transformable();
-		
-		this.material = new StandardMaterial();
-		
-		this.shader = shader;
-		
-		this.vertexLayout = shader.getLayout();
-		
-	}
-	
-	
-	/**
-	 * 
-	 * @param layout
-	 * @param vertices
-	 * @param indices
-	 * @param shader
-	 */
-	public Mesh(BufferLayout layout, List<Vertex> vertices, List<Integer> indices, ShaderProgram shader) {
-		this(GL_TRIANGLES, layout, shader);
+	public Mesh(List<Vertex> vertices, List<Integer> indices) {
 		
 		this.vertices = vertices;
 		this.indices = indices;
 		
-		this.vao = new VertexArrayObject(layout);
-		
 	}
 	
-
+	
 	/**
 	 * 
-	 * TODO
+	 * 
 	 * 
 	 * @param layout
-	 * @param vertices
-	 * @param indices
-	 * @param shader
+	 * @param vertexLayout
+	 * @param flag
 	 */
-	public Mesh(BufferLayout layout, Vertex[] vertices, int[] indices, ShaderProgram shader) {
-		this(GL_TRIANGLES, layout, shader);
+	public void storeOnGPU(BufferLayout layout, int vertexLayout, int flag) {
+				
+		if (vao != null) {
+			System.err.println("This mesh is already stored on the gpu!");
+			
+			return;
+		}
 		
-		//TODO
+		this.vao = new VertexArrayObject();
+		
+		this.layout = layout;
+		
+		this.vertexLayout = vertexLayout;
+		
+		
+		if (layout == BufferLayout.INTERLEAVED) {
+			
+			VertexBuffer buffer = new VertexBuffer();
+			
+			buffer.storeDataInterleaved(vertices, vertexLayout, flag);
+			
+			vao.setVertexAttributePointers(buffer, vertexLayout);
+			
+		}
+		
+		else if (layout == BufferLayout.BLOCKWISE) {
+			
+			VertexBuffer buffer = new VertexBuffer();
+			
+			buffer.storeDataBlockwise(vertices, vertexLayout, flag);
+			
+			vao.setVertexAttributePointers(buffer, vertices.size(), vertexLayout);
+			
+		}
+		
+		else if (layout == BufferLayout.MULTIPLE_BUFFERS) {
+			
+			VertexBuffer[] buffers = VertexBuffer.storeDataMultipleBuffers(vertices, vertexLayout, flag);
+			
+			vao.setVertexAttributePointers(buffers, vertexLayout);
+			
+		}
 		
 	}
 	

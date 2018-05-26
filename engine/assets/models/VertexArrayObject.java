@@ -62,11 +62,8 @@ public class VertexArrayObject extends GLObject {
 	//An array containing all vertex attribute
 	private VertexAttribute[] attributes;
 	
-	
-	private BufferLayout layout;
-	
 
-	public VertexArrayObject(BufferLayout layout) {
+	public VertexArrayObject() {
 		super(glGenVertexArrays());
 		
 		this.attributes = new VertexAttribute[16];

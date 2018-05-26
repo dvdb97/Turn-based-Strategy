@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
@@ -24,39 +25,39 @@ public class VertexBuffer extends Buffer {
 	public VertexBuffer(LinkedList<Vertex> vertices, int flag) {
 		super(GL_ARRAY_BUFFER, GL_FLOAT);
 		
-		this.storeData(vertices, flag);
+		this.storeDataInterleaved(vertices, flag);
 	}
 	
 	
 	public VertexBuffer(LinkedList<Vertex> vertices, int layout, int flag) {
 		super(GL_ARRAY_BUFFER, GL_FLOAT);
 		
-		this.storeData(vertices, layout, flag);
+		this.storeDataInterleaved(vertices, layout, flag);
 	}
 	
 	
-	public int storeData(LinkedList<Vertex> vertices, int flag) {
+	public int storeDataInterleaved(List<Vertex> vertices, int flag) {
 		
 		if (vertices.isEmpty()) {
 			return 0;
 		}
 		
-		int layout = vertices.getFirst().getDataLayout();
+		int layout = vertices.get(0).getDataLayout();
 		
-		storeData(vertices, layout, flag);
+		storeDataInterleaved(vertices, layout, flag);
 		
 		return layout;
 		
 	}
 	
 	
-	public void storeData(LinkedList<Vertex> vertices, int layout, int flag) {
+	public void storeDataInterleaved(List<Vertex> vertices, int layout, int flag) {
 		
 		if (vertices.isEmpty()) {
 			return;
 		}
 		
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.size() * vertices.getLast().getDataSize());
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.size() * Vertex.getSize(layout));
 		
 		for (Vertex vertex : vertices) {
 			buffer.put(vertex.toDataBundle(layout));
@@ -69,20 +70,20 @@ public class VertexBuffer extends Buffer {
 	}
 	
 	
-	public int storeData(Vertex[] vertices, int flag) {
+	public int storeDataInterleaved(Vertex[] vertices, int flag) {
 		
 		int layout = vertices[0].getDataLayout();
 		
-		storeData(vertices, layout, flag);
+		storeDataInterleaved(vertices, layout, flag);
 		
 		return layout;
 		
 	}
 	
 	
-	public void storeData(Vertex[] vertices, int layout, int flag) {
+	public void storeDataInterleaved(Vertex[] vertices, int layout, int flag) {
 		
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.length * vertices[0].getDataSize());
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.getSize(layout));
 		
 		for (Vertex vertex : vertices) {
 			buffer.put(vertex.toDataBundle(layout));
@@ -91,6 +92,46 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
+		
+	}
+	
+	
+	public void storeDataBlockwise(List<Vertex> vertices, int flag) {
+		//TODO
+	}
+	
+	
+	public void storeDataBlockwise(List<Vertex> vertices, int layout, int flag) {
+		//TODO
+	}
+	
+	
+	public void storeDataBlockwise(Vertex[] vertices, int flag) {
+		//TODO
+	}
+	
+	
+	public void storeDataBlockwise(Vertex[] vertices, int layout, int flag) {
+		//TODO
+	}
+	
+	
+	public static VertexBuffer[] storeDataMultipleBuffers(List<Vertex> vertices, int flag) {
+		return null;
+	}
+	
+	
+	public static VertexBuffer[] storeDataMultipleBuffers(List<Vertex> vertices, int layout, int flag) {
+		return null;
+	}
+	
+	
+	public static VertexBuffer[] storeDataMultipleBuffers(Vertex[] vertices, int flag) {
+		
+	}
+	
+	
+	public static VertexBuffer[] storeDataMultipleBuffers(Vertex[] vertices, int layout, int flag) {
 		
 	}
 

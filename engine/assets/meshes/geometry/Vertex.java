@@ -436,6 +436,20 @@ public class Vertex {
 	}
 	
 	
+	public static int getSize(int layout) {
+		
+		int sum = 0;
+		int mask = 15;
+		
+		for (int i = 0; i < 8; i++) {
+			sum += (byte) ((layout >> (i * 4)) & mask); 
+		}
+		
+		return sum;
+		
+	}
+	
+	
 	public static int generateLayout(int posSize, int colorSize, int texPosSize, int normalSize) {
 		
 		int layout = 0;
