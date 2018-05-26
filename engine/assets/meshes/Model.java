@@ -11,7 +11,14 @@ public class Model {
 	
 	public final ShaderProgram shader;
 	
-	public final Material material;
+	public Material material;
+	
+	private Mesh mesh;
+	
+	
+	public Model() {
+		
+	}
 	
 
 }
