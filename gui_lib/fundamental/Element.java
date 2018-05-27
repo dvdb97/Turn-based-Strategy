@@ -22,7 +22,7 @@ public abstract class Element implements ElementBase {
 	 * inverted transformation matrix
 	 */
 	protected GUIElementMatrix invertedTM;
-	protected GUIElementMatrix TM;
+	protected GUIElementMatrix TM = new GUIElementMatrix();
 	
 	
 	
