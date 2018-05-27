@@ -42,10 +42,10 @@ public class Slider extends Container {
 	}
 	
 	public float getValue() {
-		return (handle.getYShift()+1)/0.9f;
+		return (handle.getYShift()+0.9f)/0.9f;
 	}
 	
 	public void setValue(float value) {
-		handle.setYShift(value*0.9f-1);
+		handle.setYShift(value*0.9f-0.9f);
 	}
 }

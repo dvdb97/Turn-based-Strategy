@@ -39,6 +39,14 @@ public class Handle extends ClickableElement {
 		
 	}
 	
+	@Override
+	public void reset() {
+		
+		//reset to original state
+		
+	}
+
+	
 	//******************************** get & set **************************************
 	
 	public float getYShift() {

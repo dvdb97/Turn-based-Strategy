@@ -11,7 +11,14 @@ public class TestDragFunction implements DragFunction {
 		
 		Vector3f vec = parentMatrix.getInverse().times(Mouse.getCursorPosititon());
 		
-		elementMatrix.setYShift(vec.getB()+0.5f*elementMatrix.getYStretch());
+		float a = vec.getB()+0.5f*elementMatrix.getYStretch();
+		
+		if (a < -0.9f)
+			elementMatrix.setYShift(-0.9f);
+		else if (a > 0)
+			elementMatrix.setYShift(0);
+		else
+			elementMatrix.setYShift(a);
 		
 	}
 	
