@@ -19,15 +19,10 @@ public class DragBar extends ClickableElement {
 		dragFunction = new DragFunction() {
 			
 			@Override
-			public void calculate(GUIElementMatrix matrix, GUIElementMatrix parentMatrix) {
+			public void calculate(GUIElementMatrix elementMatrix, GUIElementMatrix parentMatrix) {
 				
-				Vector3f vec = parentMatrix.getInverse().times(Mouse.getCursorPosititon());
-				
-				float x = vec.getA()+0.5f*elementMatrix.getXStretch();
-				float y = vec.getB()+0.5f*elementMatrix.getYStretch();
-				
-				TM.setXShift(x);
-				TM.setYShift(y);
+				parentMatrix.setXShift(Mouse.getCursorX()-0.1f);
+				parentMatrix.setYShift(Mouse.getCursorY()+0.02f);
 				
 			}
 		};

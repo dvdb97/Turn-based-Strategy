@@ -21,8 +21,8 @@ public class DragableWindow extends GUIWindow {
 	
 	@Override
 	public void update() {
-		this.elementMatrix.setXShift(bar.getX());
-		this.elementMatrix.setYShift(bar.getY());
+	//	this.elementMatrix.setXShift(bar.getX());
+	//	this.elementMatrix.setYShift(bar.getY());
 		super.update();
 	}
 	
