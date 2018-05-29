@@ -3,8 +3,6 @@ package assets.buffers;
 import static org.lwjgl.opengl.GL15.*;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -96,13 +94,77 @@ public class VertexBuffer extends Buffer {
 	}
 	
 	
-	public void storeDataBlockwise(List<Vertex> vertices, int flag) {
-		//TODO
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param vertices
+	 * @param flag
+	 * @return
+	 */
+	public int storeDataBlockwise(List<Vertex> vertices, int flag) {
+		
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.get(0).getDataSize() * vertices.size());
+		
+		for (Vertex vertex : vertices) {
+			vertex.putPositionData(buffer);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putColorData(buffer);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putTexPosData(buffer);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putNormalData(buffer);
+		}
+		
+		buffer.flip();
+		
+		this.setBufferStorage(buffer, flag);
+			
+		return vertices.get(0).getDataLayout();
+			
 	}
 	
 	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @param vertices
+	 * @param layout
+	 * @param flag
+	 */
 	public void storeDataBlockwise(List<Vertex> vertices, int layout, int flag) {
-		//TODO
+
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(Vertex.getSize(layout) * vertices.size());
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		for (Vertex vertex : vertices) {
+			vertex.putPositionData(buffer, sizes[0]);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putColorData(buffer, sizes[1]);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putTexPosData(buffer, sizes[2]);
+		}
+		
+		for (Vertex vertex : vertices) {
+			vertex.putNormalData(buffer, sizes[3]);
+		}
+		
+		buffer.flip();
+		
+		this.setBufferStorage(buffer, flag);
+
 	}
 	
 	
@@ -127,12 +189,12 @@ public class VertexBuffer extends Buffer {
 	
 	
 	public static VertexBuffer[] storeDataMultipleBuffers(Vertex[] vertices, int flag) {
-		
+		return null;
 	}
 	
 	
 	public static VertexBuffer[] storeDataMultipleBuffers(Vertex[] vertices, int layout, int flag) {
-		
+		return null;
 	}
 
 }

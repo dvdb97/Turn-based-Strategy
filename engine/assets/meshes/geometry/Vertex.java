@@ -309,6 +309,19 @@ public class Vertex {
 	}
 	
 	
+	public void putPositionData(FloatBuffer buffer, int size) {
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < position.length) {
+				buffer.put(position[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
+	}
+	
+	
 	public float[] getPositionData() {
 		return position;
 	}
@@ -316,6 +329,19 @@ public class Vertex {
 	
 	public void putColorData(FloatBuffer buffer) {
 		buffer.put(color);
+	}
+	
+	
+	public void putColorData(FloatBuffer buffer, int size) {
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < color.length) {
+				buffer.put(color[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
 	}
 	
 	
@@ -329,6 +355,19 @@ public class Vertex {
 	}
 	
 	
+	public void putNormalData(FloatBuffer buffer, int size) {
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < normal.length) {
+				buffer.put(normal[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
+	}
+	
+	
 	public float[] getNormalData() {
 		return normal;
 	}
@@ -336,6 +375,19 @@ public class Vertex {
 	
 	public void putTexPosData(FloatBuffer buffer) {
 		buffer.put(texPos);
+	}
+	
+	
+	public void putTexPosData(FloatBuffer buffer, int size) {
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < texPos.length) {
+				buffer.put(texPos[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
 	}
 	
 	

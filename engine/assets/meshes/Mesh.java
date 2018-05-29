@@ -1,22 +1,20 @@
 package assets.meshes;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import assets.buffers.VertexBuffer;
-import assets.material.Material;
-import assets.material.StandardMaterial;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.boundingBox.BoundingBox;
 import assets.meshes.geometry.Vertex;
 import assets.models.VertexArrayObject;
-import rendering.shaders.ShaderProgram;
+import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Mesh implements IRenderable {
+public class Mesh {
 	
 	//The vertex array object that holds the references to the vertex data
 	private VertexArrayObject vao = null;
@@ -29,6 +27,11 @@ public class Mesh implements IRenderable {
 	private List<Vertex> vertices = null;
 	
 	private List<Integer> indices = null;
+	
+	private IntBuffer indexBuffer;
+	
+	
+	private BoundingBox boundingBox;	
 	
 	private int drawMode = GL_TRIANGLES;
 	
@@ -45,16 +48,47 @@ public class Mesh implements IRenderable {
 		this.vertices = vertices;
 		this.indices = indices;
 		
+		this.boundingBox = new BoundingBox(vertices);
+		
 	}
 	
 	
 	/**
 	 * 
+	 * Constructor that accepts data stored in arrays
 	 * 
+	 * @param vertices The vertices of the mesh
+	 * @param indices An array of triangles in this mesh
+	 */
+	public Mesh(Vertex[] vertices, int[] indices) {
+		
+		//TODO: Change it if the most common operations make LinkedLists more efficient
+		this.vertices = new ArrayList<Vertex>();
+		this.indices = new ArrayList<Integer>();
+		
+		this.boundingBox = new BoundingBox(vertices, this.vertices);
+		
+	}
+	
+	
+	public Mesh(FloatBuffer vertexData, int layout) {
+		//TODO
+	}
+	
+	
+	
+	/**
 	 * 
-	 * @param layout
-	 * @param vertexLayout
-	 * @param flag
+	 * Stores the data of this mesh on the GPU. The way the data is stored
+	 * can be specified by the parameters.
+	 * 
+	 * @param layout The layout in which the data is stored in buffers. 
+	 * The data can be stored in interleaved blocks or across multiple buffers 
+	 * 
+	 * @param vertexLayout Specifies the way the vertex data is being stored. Every 4 Bits describe
+	 * the number of values that represent one attribute of the vertex
+	 * 
+	 * @param flag The way the data will be accessed in future operations. Massively impacts the speed if used correctly.
 	 */
 	public void storeOnGPU(BufferLayout layout, int vertexLayout, int flag) {
 				
@@ -99,6 +133,8 @@ public class Mesh implements IRenderable {
 			
 		}
 		
+		this.indexBuffer = CustomBufferUtils.createIntBuffer((Integer[])indices.toArray());
+		
 	}
 	
 	
@@ -115,21 +151,6 @@ public class Mesh implements IRenderable {
 			return;
 		}
 		
-		//TODO
-		
-	}
-	
-	
-	/**
-	 * 
-	 * 
-	 * 
-	 * @param offset
-	 * @param range
-	 * @param data
-	 */
-	public void replacePosition(int offset, int range, FloatBuffer data) {
-		
 	}
 	
 	
@@ -137,52 +158,19 @@ public class Mesh implements IRenderable {
 	 * 
 	 * TODO
 	 * 
-	 * @param offset
-	 * @param range
-	 * @param data
+	 * @param index
 	 */
-	public void replaceColor(int offset, int range, FloatBuffer data) {
-		
-	}	
-
-	
-	/**
-	 * 
-	 * TODO
-	 * 
-	 * @param offset
-	 * @param range
-	 * @param data
-	 */
-	public void replaceTexCoords(int offset, int range, FloatBuffer data) {
-		
+	public void removeVertex(int index) {
+		//TODO		
 	}
 	
 	
-	/**
-	 * 
-	 * TODO
-	 * 
-	 * @param offset
-	 * @param range
-	 * @param data
-	 */
-	public void replaceNormals(int offset, int range, FloatBuffer data) {
-		
-	}
-	
-
-	@Override
 	public void render() {
-		shader.use();
-		
 		vao.enableVertexAttribArray();
 		
-		//glDrawElements(drawMode, indices);
+		glDrawElements(drawMode, indexBuffer);
 		
 		vao.disableVertexAttribArray();
-		
-		shader.disable();		
 	}
-
+	
 }

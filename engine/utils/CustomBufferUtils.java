@@ -24,6 +24,7 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
+	
 	/**
 	 * creates and flips a ByteBuffer which contains all the elements of array
 	 * @param array byte array which elements will be put in the buffer
@@ -37,6 +38,7 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
+	
 	/**
 	 * creates and flips a IntBuffer which contains all the elements of array
 	 * @param array int array which elements will be put in the buffer
@@ -49,6 +51,25 @@ public class CustomBufferUtils {
 		
 		return buffer;
 	}
+	
+	
+	/**
+	 * creates and flips a IntBuffer which contains all the elements of array
+	 * @param array Integer array which elements will be put in the buffer
+	 * @return the buffer
+	 */
+	public static IntBuffer createIntBuffer(Integer[] array) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(array.length);
+
+		for (int i : array) {
+			buffer.put(i);
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
 	
 	/**
 	 * 
