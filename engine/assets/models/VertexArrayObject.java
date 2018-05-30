@@ -67,8 +67,6 @@ public class VertexArrayObject extends GLObject {
 		super(glGenVertexArrays());
 		
 		this.attributes = new VertexAttribute[16];
-		
-		this.layout = layout;
 	}
 	
 	
@@ -94,24 +92,26 @@ public class VertexArrayObject extends GLObject {
 		
 		byte[] sizes = Vertex.getSizes(layout);
 		
-		int stride = 0;
+		int totalSize = 0;
 		
 		for (byte b : sizes) {
-			stride += b * Float.BYTES;
+			totalSize += b * Float.BYTES;
 		}
 		
 		int offset = 0;
 		
 		for (int i = 0; i < sizes.length; ++i) {
-		
-			offset += sizes[i] * Float.BYTES;
 			
 			if (sizes[i] == 0) {
 				continue;
 			}
 			
-			glVertexAttribPointer(i, sizes[i], buffer.getDataType(), false, stride, offset);
-			this.attributes[i] = new VertexAttribute(buffer, sizes[i], stride, offset);
+			glVertexAttribPointer(i, sizes[i], buffer.getDataType(), false, totalSize, offset);
+			System.out.println("Pointer set: Pos=" + i + ", size=" + sizes[i] + ", datatype=" + buffer.getDataType() + ", stride=" + totalSize + ", offset=" + offset);
+			
+			this.attributes[i] = new VertexAttribute(buffer, sizes[i], totalSize, offset);
+			
+			offset += sizes[i] * Float.BYTES;
 			
 		}
 		
@@ -333,6 +333,7 @@ public class VertexArrayObject extends GLObject {
 	
 	
 	public void enableVertexAttribArray() {
+		this.bind();		
 		for (int i = 0; i < attributes.length; i++) {
 			if (attributes[i] != null)
 				glEnableVertexAttribArray(i);
@@ -345,6 +346,7 @@ public class VertexArrayObject extends GLObject {
 			if (attributes[i] != null)
 				glDisableVertexAttribArray(i);
 		}
+		this.unbind();
 	}
 	
 

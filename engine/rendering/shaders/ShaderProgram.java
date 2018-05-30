@@ -77,10 +77,10 @@ public class ShaderProgram {
 	
 	
 	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Uniform> uniforms;
+	private HashMap<String, Uniform> uniforms = null;
 	
 	//A hashmap we are going to store attribute locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Attribute> attributes;
+	private HashMap<String, Attribute> attributes = null;
 	
 	//The layout of the data that a mesh needs to have to match the shaders requirements
 	private int layout;
@@ -341,6 +341,10 @@ public class ShaderProgram {
 	 * @return Returns the uniform's location
 	 */
 	public int getUniformLocation(String name) {
+		
+		if (uniforms == null) {
+			return 0;
+		}
 		
 		if (!uniforms.containsKey(name)) {
 			return glGetUniformLocation(ID, name);

@@ -57,7 +57,7 @@ public class Transformable {
 		
 		Matrix44f translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
 		
-		Matrix44f scalingMatrix = RotationMatrix.getRotationMatrix(rotation);
+		Matrix44f scalingMatrix = ScalingMatrix.getScalingMatrix(1.0f);
 		
 		return scalingMatrix.times(rotationMat.times(translationMatrix));
 		

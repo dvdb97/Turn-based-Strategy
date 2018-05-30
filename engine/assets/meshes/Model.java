@@ -34,18 +34,16 @@ public class Model {
 	
 	
 	public Model(ShaderProgram shader, Mesh mesh) {
-		this(shader, new StandardMaterial(), mesh, BufferLayout.BLOCKWISE, Buffer.DYNAMIC_STORAGE);
+		this(shader, new StandardMaterial(), mesh, BufferLayout.INTERLEAVED, Buffer.DYNAMIC_STORAGE);
 	}
 	
 	
 	public void render() {
 		shader.use();
-		//shader.setMaterial(material)
-		//shader.setMatrices()
 		
+		shader.setUniformMatrix4fv("mvpMatrix", transform.getTransformationMatrix());
 		
 		mesh.render();
-		
 		
 		shader.disable();
 	}

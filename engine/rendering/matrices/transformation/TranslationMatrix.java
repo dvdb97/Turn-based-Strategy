@@ -11,9 +11,9 @@ public class TranslationMatrix {
 		Matrix44f matrix = new Matrix44f();
 		matrix.setIdentity();
 		
-		matrix.setA1(x);
-		matrix.setB2(y);
-		matrix.setC3(z);
+		matrix.setA4(x);
+		matrix.setB4(y);
+		matrix.setC4(z);
 		
 		return matrix;
 		

@@ -8,7 +8,7 @@ public class RotationMatrix {
 	
 	public static Matrix44f getRotationMatrix(float x, float y, float z) {
 		
-		return getZRotationMatrix(z).times(getYRotationMatrix(y).times(getXRotationMatrix(z)));		
+		return getZRotationMatrix(z).times(getYRotationMatrix(y).times(getXRotationMatrix(x)));		
 		
 	}
 	

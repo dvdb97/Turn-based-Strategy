@@ -68,6 +68,27 @@ public class Mesh {
 		
 		this.boundingBox = new BoundingBox(vertices, this.vertices);
 		
+		this.toList(indices);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Constructor that accepts data stored in arrays
+	 * 
+	 * @param vertices The vertices of the mesh
+	 * @param indices An array of triangles in this mesh
+	 */
+	public Mesh(List<Vertex> vertices, int[] indices) {
+		
+		this.vertices = vertices;
+		this.indices = new ArrayList<Integer>();
+		
+		this.boundingBox = new BoundingBox(vertices);
+		
+		this.toList(indices);
+		
 	}
 	
 	
@@ -75,6 +96,18 @@ public class Mesh {
 		//TODO
 	}
 	
+	
+	private void toList(int[] array) {
+		
+		if (this.indices == null) {
+			this.indices = new ArrayList<Integer>();
+		}
+		
+		for (int i : array) {
+			this.indices.add(i);
+		}
+		
+	}
 	
 	
 	/**
@@ -133,7 +166,7 @@ public class Mesh {
 			
 		}
 		
-		this.indexBuffer = CustomBufferUtils.createIntBuffer((Integer[])indices.toArray());
+		this.indexBuffer = CustomBufferUtils.createIntBuffer(indices);
 		
 	}
 	

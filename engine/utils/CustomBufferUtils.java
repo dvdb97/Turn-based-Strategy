@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
@@ -50,6 +51,19 @@ public class CustomBufferUtils {
 		buffer.flip();
 		
 		return buffer;
+	}
+	
+	
+	public static IntBuffer createIntBuffer(List<Integer> list) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(list.size());
+		
+		for (int i : list) {
+			buffer.put(i);
+		}
+		
+		buffer.flip();
+		
+		return buffer;		
 	}
 	
 	

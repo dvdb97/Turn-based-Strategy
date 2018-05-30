@@ -32,10 +32,39 @@ public class Vertex {
 	 * 
 	 * Creates a new Vertex
 	 * 
+	 * @param x The x coordinate of the vertex
+	 * @param y The y coordinate of the vertex
+	 * @param z The z coordinate of the vertex
+	 */
+	public Vertex(float x, float y, float z) {
+		float[] array = {x, y, z};
+		
+		this.position = array;
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
 	 * @param position The vertex position
 	 */
 	public Vertex(Vector2f position) {
 		this.position = position.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param x The x coordinate of the vertex
+	 * @param y The y coordinate of the vertex
+	 */
+	public Vertex(float x, float y) {
+		float[] array = {x, y};
+		
+		this.position = array;
 	}
 	
 	
