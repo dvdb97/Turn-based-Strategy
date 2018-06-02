@@ -9,8 +9,6 @@ import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
-
 import java.util.ArrayList;
 
 import assets.meshes.Mesh;
