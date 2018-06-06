@@ -38,6 +38,11 @@ public class Model {
 	}
 	
 	
+	public Model(ShaderProgram shader, Mesh mesh, BufferLayout layout) {
+		this(shader, new StandardMaterial(), mesh, layout, Buffer.DYNAMIC_STORAGE);
+	}
+	
+	
 	public void render() {
 		shader.use();
 		

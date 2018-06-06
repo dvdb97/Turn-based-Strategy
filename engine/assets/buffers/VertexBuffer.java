@@ -34,6 +34,13 @@ public class VertexBuffer extends Buffer {
 	}
 	
 	
+	public VertexBuffer(FloatBuffer data, int flag) {
+		super(GL_ARRAY_BUFFER, GL_FLOAT);
+		
+		this.setBufferStorage(data, flag);
+	}
+	
+	
 	public int storeDataInterleaved(List<Vertex> vertices, int flag) {
 		
 		if (vertices.isEmpty()) {
@@ -97,6 +104,13 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
+		
+		
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			System.out.print(buffer.get(i) + " ");
+		}
+		
+		System.out.println();
 		
 	}
 	
@@ -171,6 +185,13 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
+		
+		
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			System.out.print(buffer.get(i) + " ");
+		}
+		
+		System.out.println();
 
 	}
 	
@@ -191,7 +212,40 @@ public class VertexBuffer extends Buffer {
 	
 	
 	public static VertexBuffer[] storeDataMultipleBuffers(List<Vertex> vertices, int layout, int flag) {
-		return null;
+		VertexBuffer[] buffers = new VertexBuffer[8];
+		
+		byte[] sizes = Vertex.getSizes(layout);
+		
+		
+		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.size() * sizes[0]);
+		for (Vertex vertex : vertices) {
+			vertex.putPositionData(posBuffer, sizes[0]);
+		}
+		buffers[0] = new VertexBuffer(posBuffer, VertexBuffer.DYNAMIC_STORAGE);
+		
+		
+		FloatBuffer colBuffer = BufferUtils.createFloatBuffer(vertices.size() * sizes[1]);
+		for (Vertex vertex : vertices) {
+			vertex.putColorData(colBuffer, sizes[1]);
+		}
+		buffers[1] = new VertexBuffer(colBuffer, VertexBuffer.DYNAMIC_STORAGE);
+		
+		
+		FloatBuffer texPosBuffer = BufferUtils.createFloatBuffer(vertices.size() * sizes[2]);
+		for (Vertex vertex : vertices) {
+			vertex.putTexPosData(texPosBuffer, sizes[2]);
+		}
+		buffers[2] = new VertexBuffer(texPosBuffer, VertexBuffer.DYNAMIC_STORAGE);
+		
+		
+		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(vertices.size() * sizes[2]);
+		for (Vertex vertex : vertices) {
+			vertex.putNormalData(normalBuffer, sizes[3]);
+		}
+		buffers[3] = new VertexBuffer(normalBuffer, VertexBuffer.DYNAMIC_STORAGE);
+		
+		
+		return buffers;		
 	}
 	
 	

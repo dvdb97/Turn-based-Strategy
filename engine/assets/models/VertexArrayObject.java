@@ -219,7 +219,6 @@ public class VertexArrayObject extends GLObject {
 		
 		byte[] sizes = Vertex.getSizes(layout);
 		
-		
 		int offset = 0;
 		
 		for (int i = 0; i < sizes.length; ++i) {
@@ -229,8 +228,9 @@ public class VertexArrayObject extends GLObject {
 			}
 			
 			setVertexAttributePointer(buffer, i, sizes[i], 0, offset);
+			System.out.println("Pointer set: Pos=" + i + ", size=" + sizes[i] + ", datatype=" + buffer.getDataType() + ", stride=" + 0 + ", offset=" + offset);
 			
-			offset += sizes[i] * numVertices;
+			offset += sizes[i] * numVertices * Float.BYTES;
 			
 		}
 		

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import assets.meshes.Mesh;
 import assets.meshes.Model;
+import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
 
 public class ModelTest {
@@ -67,7 +68,7 @@ public class ModelTest {
 		
 		Mesh mesh = new Mesh(vertices, indices);
 		
-		return new Model(shader, mesh);		
+		return new Model(shader, mesh, BufferLayout.MULTIPLE_BUFFERS);		
 		
 	}
 	
