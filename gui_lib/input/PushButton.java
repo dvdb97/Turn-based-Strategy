@@ -3,12 +3,12 @@ package input;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
-import fundamental.ClickableElement;
+import fundamental.Button;
 import rendering.shapes.Shape;
 
 //TODO: bullshit
 
-public abstract class PushButton extends ClickableElement {
+public abstract class PushButton extends Button {
 	
 	private Function<PushButton> function;
 	

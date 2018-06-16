@@ -3,10 +3,10 @@ package input;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
-import fundamental.ClickableElement;
+import fundamental.Button;
 import rendering.shapes.Shape;
 
-public abstract class ToggleButton extends ClickableElement {
+public abstract class ToggleButton extends Button {
 	
 	private boolean enabled;
 	

@@ -2,13 +2,8 @@ package fundamental;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
-import gui_core.GUIMatrixManager;
 import input.Mouse;
-import math.matrices.Matrix44f;
-import math.matrices.advanced.MatrixInversion33f;
-import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
 import rendering.shapes.Shape;
 
 public abstract class Element implements ElementBase {

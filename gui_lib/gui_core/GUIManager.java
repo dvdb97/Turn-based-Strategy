@@ -4,6 +4,10 @@ import java.util.LinkedList;
 
 import container.GUIWindow;
 import fontRendering.font.GUIFontCollection;
+import fundamental.Button;
+import fundamental.ClickableElement;
+import fundamental.Element;
+import fundamental.ElementBase;
 import input.Mouse;
 import interaction.Window;
 
@@ -20,6 +24,8 @@ public class GUIManager {
 	private static int width;
 	
 	private static int height;
+	
+	private static ClickableElement clickedElement;
 	
 	
 	private GUIManager() {
@@ -50,6 +56,8 @@ public class GUIManager {
 		
 	}
 	
+	//***************************************************************************************
+	
 	/**
 	 * 
 	 * @return true,  if any window is hit
@@ -58,10 +66,19 @@ public class GUIManager {
 		
 		Mouse.update();
 		
-		for (GUIWindow window : windows) {
+		if (clickedElement != null) {
 			
-			if (window.processInput()) {
-				return true;
+			clickedElement.processInput();
+			return true;
+			
+		} else {
+			
+			for (GUIWindow window : windows) {
+				
+				if (window.processInput()) {
+					return true;
+				}
+				
 			}
 			
 		}
@@ -91,6 +108,31 @@ public class GUIManager {
 		
 	}
 	
+	//************************** clicked element ******************************************
+	
+	public static void setClickedElement(ClickableElement element) {
+		
+		if (clickedElement == null) {
+			clickedElement = element;
+		} else {
+			System.err.println("GUIManager: clickedElement already set");
+		}
+		
+	}
+	
+	
+	public static void resetClickedELement(ClickableElement element) {
+		
+		if (clickedElement == element) {
+			clickedElement = null;
+		} else {
+			//TODO: error report
+			System.err.println("GUIManager: TODO");
+		}
+		
+	}
+	
+	//***************************************************************************************
 	
 	public static boolean isInitialized() {
 		return initialized;

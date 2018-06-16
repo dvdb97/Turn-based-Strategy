@@ -6,6 +6,6 @@ interface Clickable {
 	
 	void onRelease();
 	
-	void reset();
+//	void reset();
 	
 }

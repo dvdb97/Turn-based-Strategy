@@ -4,10 +4,11 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.DragFunction;
 import function.TestDragFunction;
-import fundamental.ClickableElement;
+import fundamental.Button;
+import fundamental.DragableElement;
 import rendering.shapes.GUIQuad;
 
-public class Handle extends ClickableElement {
+public class Handle extends DragableElement {
 	
 	private DragFunction dragFunction;
 	
@@ -38,14 +39,6 @@ public class Handle extends ClickableElement {
 		super.update(parentMatrix);
 		
 	}
-	
-	@Override
-	public void reset() {
-		
-		//reset to original state
-		
-	}
-
 	
 	//******************************** get & set **************************************
 	

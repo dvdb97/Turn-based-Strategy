@@ -3,18 +3,26 @@ package work_in_progress.test;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.DragFunction;
+import fundamental.Button;
 import fundamental.ClickableElement;
+import fundamental.DragableElement;
 import graphics.matrices.TransformationMatrix;
 import input.Mouse;
 import math.vectors.Vector3f;
 import rendering.shapes.GUIQuad;
 
-public class DragBar extends ClickableElement {
+public class DragBar extends DragableElement {
 	
 	private DragFunction dragFunction;
 	
+	private Color color1;
+	private Color color2;
+	
 	public DragBar(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, transformationMatrix);
+		
+		color1 = color;
+		color2 = utils.ColorPalette.RED;
 		
 		dragFunction = new DragFunction() {
 			
@@ -32,14 +40,12 @@ public class DragBar extends ClickableElement {
 	
 	@Override
 	public void onClick() {
-		// TODO Auto-generated method stub
-		
+		color = color2;
 	}
 
 	@Override
 	public void onRelease() {
-		// TODO Auto-generated method stub
-		
+		color = color1;
 	}
 	
 	
