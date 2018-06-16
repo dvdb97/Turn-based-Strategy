@@ -18,6 +18,9 @@ public class DragBar extends DragableElement {
 	private Color color1;
 	private Color color2;
 	
+	private float x;
+	private float y;
+	
 	public DragBar(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, transformationMatrix);
 		
@@ -29,8 +32,8 @@ public class DragBar extends DragableElement {
 			@Override
 			public void calculate(GUIElementMatrix elementMatrix, GUIElementMatrix parentMatrix) {
 				
-				parentMatrix.setXShift(Mouse.getCursorX()-0.1f);
-				parentMatrix.setYShift(Mouse.getCursorY()+0.02f);
+				parentMatrix.setXShift(Mouse.getCursorX() - x + parentMatrix.getXShift());
+				parentMatrix.setYShift(Mouse.getCursorY() - y + parentMatrix.getYShift());
 				
 			}
 		};
@@ -41,6 +44,8 @@ public class DragBar extends DragableElement {
 	@Override
 	public void onClick() {
 		color = color2;
+		x = Mouse.getCursorX();
+		y = Mouse.getCursorY();
 	}
 
 	@Override
