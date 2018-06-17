@@ -6,6 +6,7 @@ import function.DragFunction;
 import fundamental.Button;
 import fundamental.ClickableElement;
 import fundamental.DragableElement;
+import fundamental.Element;
 import graphics.matrices.TransformationMatrix;
 import input.Mouse;
 import math.vectors.Vector3f;
@@ -21,19 +22,23 @@ public class DragBar extends DragableElement {
 	private float x;
 	private float y;
 	
-	public DragBar(Color color, GUIElementMatrix transformationMatrix) {
+	private Moveable movedElement;
+	
+	public DragBar(Color color, GUIElementMatrix transformationMatrix, Moveable movedElement) {
 		super(new GUIQuad(), color, transformationMatrix);
 		
 		color1 = color;
 		color2 = utils.ColorPalette.RED;
+		
+		this.movedElement = movedElement;
 		
 		dragFunction = new DragFunction() {
 			
 			@Override
 			public void calculate(GUIElementMatrix elementMatrix, GUIElementMatrix parentMatrix) {
 				
-				parentMatrix.setXShift(Mouse.getCursorX() - x + parentMatrix.getXShift());
-				parentMatrix.setYShift(Mouse.getCursorY() - y + parentMatrix.getYShift());
+				parentMatrix.setXShift(Mouse.getCursorX() - x);
+				parentMatrix.setYShift(Mouse.getCursorY() - y);
 				
 			}
 		};
@@ -44,8 +49,8 @@ public class DragBar extends DragableElement {
 	@Override
 	public void onClick() {
 		color = color2;
-		x = Mouse.getCursorX();
-		y = Mouse.getCursorY();
+		x = Mouse.getCursorX() - movedElement.getTransformationMatrix().getXShift();
+		y = Mouse.getCursorY() - movedElement.getTransformationMatrix().getYShift();
 	}
 
 	@Override
