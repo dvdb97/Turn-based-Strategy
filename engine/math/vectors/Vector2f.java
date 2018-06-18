@@ -18,10 +18,36 @@ public class Vector2f extends Vectorf {
 	}
 	
 	
-	@Override
-	protected Matrixf copyOf() {
-		// TODO Auto-generated method stub
-		return new Vector2f(getA(), getB());
+	/**
+	 * Vector addition
+	 * 
+	 * @param v summand
+	 * @return returns itself after a component wise addition
+	 */
+	public Vector2f plusEQ(Vector2f v) {
+		super.plus(v);
+		return this;
+	}
+	
+	
+	/**
+	 * Vector addition
+	 * 
+	 * @param v summand
+	 * @return returns a new Vector
+	 */
+	public Vector2f plus(Vector2f v) {
+		Vector2f output = this.copyOf();
+		
+		return output.plusEQ(v);
+		
+	}
+	
+	/**
+	 * @return returns a deep copy of this vector
+	 */
+	public Vector2f copyOf() {
+		return new Vector2f(get(0), get(1));
 	}
 
 	

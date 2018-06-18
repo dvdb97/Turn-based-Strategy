@@ -19,9 +19,9 @@ public class GameGUIManager {
 		//Disable this to remove the gui window from the screen
 		TIW = new TileInfoWindow();
 		
-	//	TestWindow window = new TestWindow();
+		TestWindow window = new TestWindow();
 		
-		DragableWindow window2 = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0.2f, 0.2f, 0.4f, 0.4f));
+	//	DragableWindow window2 = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0.2f, 0.2f, 0.4f, 0.4f));
 		
 	}
 	

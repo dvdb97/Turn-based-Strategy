@@ -9,6 +9,7 @@ import fundamental.DragableElement;
 import fundamental.Element;
 import graphics.matrices.TransformationMatrix;
 import input.Mouse;
+import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 import rendering.shapes.GUIQuad;
 
@@ -19,8 +20,7 @@ public class DragBar extends DragableElement {
 	private Color color1;
 	private Color color2;
 	
-	private float x;
-	private float y;
+	private Vector2f offset;
 	
 	private Moveable movedElement;
 	
@@ -32,13 +32,15 @@ public class DragBar extends DragableElement {
 		
 		this.movedElement = movedElement;
 		
+		offset = new Vector2f(0, 0);
+		
 		dragFunction = new DragFunction() {
 			
 			@Override
-			public void calculate(GUIElementMatrix elementMatrix, GUIElementMatrix parentMatrix) {
+			public void calculate(GUIElementMatrix elementMatrix, GUIElementMatrix parentMatrix, Vector2f offset) {
 				
-				parentMatrix.setXShift(Mouse.getCursorX() - x);
-				parentMatrix.setYShift(Mouse.getCursorY() - y);
+				movedElement.getTransformationMatrix().setXShift(Mouse.getCursorX() - offset.getA());
+				movedElement.getTransformationMatrix().setYShift(Mouse.getCursorY() - offset.getB());
 				
 			}
 		};
@@ -49,8 +51,8 @@ public class DragBar extends DragableElement {
 	@Override
 	public void onClick() {
 		color = color2;
-		x = Mouse.getCursorX() - movedElement.getTransformationMatrix().getXShift();
-		y = Mouse.getCursorY() - movedElement.getTransformationMatrix().getYShift();
+		offset.setA(Mouse.getCursorX() - movedElement.getTransformationMatrix().getXShift());
+		offset.setB(Mouse.getCursorY() - movedElement.getTransformationMatrix().getYShift());
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public class DragBar extends DragableElement {
 	public void update(GUIElementMatrix parentMatrix) {
 		
 		if (pressed) {
-			dragFunction.calculate(elementMatrix, parentMatrix);
+			dragFunction.calculate(elementMatrix, parentMatrix, offset);
 		}
 		
 		super.update(parentMatrix);
