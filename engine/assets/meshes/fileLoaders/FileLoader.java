@@ -107,7 +107,7 @@ public class FileLoader {
 			
 		}
 		
-		return null;
+		return new Mesh(vertices, indices);
 	}
 	
 	
@@ -232,37 +232,45 @@ public class FileLoader {
 			
 			int normal = -1;
 			
-			int count = matcher.groupCount();
+			int count = 0;
 			
-			System.out.println("Found: " + matcher.groupCount());
-			
-			for (int i = 1; i <= count; ++i) {
+			for (int i = 1; i <= matcher.groupCount(); ++i) {
 				
-				if (i % 4 == 1) {
-					System.out.println(matcher.group(i));
-					
+				if (i % 4 == 1) {					
 					continue;
 				}
 				
-				if (i % (count / 4) == 2)
-					position = parseInt(matcher.group(i));
 				
-				if (i % (count / 4) == 3)
-					texPos = parseInt(matcher.group(i));
+				if (i % 4 == 2)
+					if (matcher.group(i) == null)
+						break;
+					else
+						position = parseInt(matcher.group(i));
 				
-				if (i % (count / 4) == 0) {
+				
+				if (i % 4 == 3)
+					if (matcher.group(i) == null)
+						break;
+					else
+						texPos = parseInt(matcher.group(i));
+				
+				
+				if (i % 4 == 0) {
+					if (matcher.group(i) == null)
+						break;
+					
 					normal = parseInt(matcher.group(i));
 					
-					vertices.add(new Vertex(position == -1 ? null : positions.get(position), 
-											texPos == -1 ? null : texCoords.get(texPos), 
-											normal == -1 ? null : normals.get(normal)));
-					
-					System.out.println(vertices.get(vertices.size() - 1));
+					vertices.add(new Vertex(position == -1 ? null : positions.get(position - 1), 
+											texPos == -1 ? null : texCoords.get(texPos - 1), 
+											normal == -1 ? null : normals.get(normal - 1)));
 				}
+				
+				++count;
 				
 			}		
 			
-			if (matcher.groupCount() == 16) {
+			if (count == 12) {
 				toQuad(matcher);
 			} else {
 				toTriange(matcher);
@@ -279,12 +287,20 @@ public class FileLoader {
 	
 	
 	private static void toQuad(Matcher matcher) {
-		System.out.println("Quad");
+		indices.add(vertices.size() - 4);
+		indices.add(vertices.size() - 3);
+		indices.add(vertices.size() - 1);
+		
+		indices.add(vertices.size() - 4);
+		indices.add(vertices.size() - 2);
+		indices.add(vertices.size() - 1);
 	}
 	
 	
 	private static void toTriange(Matcher matcher) {
-		System.out.println("Triangle");
+		indices.add(vertices.size() - 3);
+		indices.add(vertices.size() - 2);
+		indices.add(vertices.size() - 1);
 	}
 	
 	
