@@ -68,7 +68,7 @@ public class ModelTest {
 		
 		Mesh mesh = new Mesh(vertices, indices);
 		
-		return new Model(shader, mesh, BufferLayout.MULTIPLE_BUFFERS);		
+		return new Model(shader, mesh, BufferLayout.BLOCKWISE);		
 		
 	}
 	

@@ -1,6 +1,7 @@
 package assets.meshes.geometry;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
@@ -76,6 +77,13 @@ public class Vertex {
 	 */
 	public Vertex(float[] position) {
 		this.position = position.clone();
+	}
+	
+	
+	public Vertex(float[] position, float[] texCoords, float[] normal) {
+		this.position = position;
+		this.texPos = texCoords;
+		this.normal = normal;
 	}
 	
 	
@@ -546,8 +554,14 @@ public class Vertex {
 		layout |= normalSize << (shift++ * 4);
 		
 		return layout;
-		
-		
+			
 	}
+
+
+	@Override
+	public String toString() {
+		return "Vertex at position " + Arrays.toString(position) + " texCoords " + Arrays.toString(texPos) + " normal " + Arrays.toString(normal);
+	}
+	
 	
 }
