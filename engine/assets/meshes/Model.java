@@ -5,6 +5,8 @@ import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.MeshConst.BufferLayout;
+import assets.textures.Texture;
+import assets.textures.Texture2D;
 import rendering.shaders.ShaderProgram;
 
 public class Model {
@@ -12,6 +14,8 @@ public class Model {
 	public final Transformable transform;
 	
 	private Material material;
+	
+	private Texture texture;
 	
 	private ShaderProgram shader;
 	
@@ -38,8 +42,37 @@ public class Model {
 	}
 	
 	
+	/**
+	 * 
+	 * Creates a model with the given specifications.
+	 * 
+	 * Stores the vertex data on the gpu but adapts it
+	 * to the shaders requirements.
+	 * 
+	 * @param shader The shader that will be used to render this model
+	 * @param mesh The mesh of the model
+	 * @param layout The layout in which the model will be stored on the gpu
+	 */
 	public Model(ShaderProgram shader, Mesh mesh, BufferLayout layout) {
 		this(shader, new StandardMaterial(), mesh, layout, Buffer.DYNAMIC_STORAGE);
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a model with the given specifications.
+	 * 
+	 * Stores the vertex data on the gpu but adapts it
+	 * to the shaders requirements.
+	 * 
+	 * @param shader The shader that will be used to render this model
+	 * @param mesh The mesh of the model
+	 * @param layout The layout in which the model will be stored on the gpu
+	 */
+	public Model(ShaderProgram shader, Mesh mesh, Texture2D texture, BufferLayout layout) {
+		this(shader, new StandardMaterial(), mesh, layout, Buffer.DYNAMIC_STORAGE);
+		
+		this.texture = texture;
 	}
 	
 	
@@ -48,7 +81,13 @@ public class Model {
 		
 		shader.setUniformMatrix4fv("mvpMatrix", transform.getTransformationMatrix());
 		
+		if (texture != null)
+			texture.bind();
+		
 		mesh.render();
+		
+		if (texture != null)
+			texture.unbind();
 		
 		shader.disable();
 	}

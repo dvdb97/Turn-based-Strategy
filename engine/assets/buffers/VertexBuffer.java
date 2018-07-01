@@ -3,6 +3,7 @@ package assets.buffers;
 import static org.lwjgl.opengl.GL15.*;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -168,6 +169,8 @@ public class VertexBuffer extends Buffer {
 		
 		for (Vertex vertex : vertices) {
 			vertex.putPositionData(buffer, sizes[0]);
+			
+			System.out.println(Arrays.toString(vertex.getPositionData()));
 		}
 		
 		for (Vertex vertex : vertices) {
@@ -185,13 +188,6 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
-		
-		
-		for (int i = 0; i < buffer.capacity(); ++i) {
-			System.out.print(buffer.get(i) + " ");
-		}
-		
-		System.out.println();
 
 	}
 	

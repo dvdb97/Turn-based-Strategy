@@ -80,6 +80,14 @@ public class Vertex {
 	}
 	
 	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texCoords The vertex tex coordinates
+	 * @param normal The vertex normal
+	 */
 	public Vertex(float[] position, float[] texCoords, float[] normal) {
 		this.position = position;
 		this.texPos = texCoords;
@@ -347,6 +355,9 @@ public class Vertex {
 	
 	
 	public void putPositionData(FloatBuffer buffer, int size) {
+		if (position == null)
+			return;
+		
 		for (int i = 0; i < size; ++i) {
 			
 			if (i < position.length) {
@@ -370,6 +381,9 @@ public class Vertex {
 	
 	
 	public void putColorData(FloatBuffer buffer, int size) {
+		if (color == null)
+			return;
+		
 		for (int i = 0; i < size; ++i) {
 			
 			if (i < color.length) {
@@ -393,6 +407,9 @@ public class Vertex {
 	
 	
 	public void putNormalData(FloatBuffer buffer, int size) {
+		if (normal == null)
+			return;
+		
 		for (int i = 0; i < size; ++i) {
 			
 			if (i < normal.length) {
@@ -416,6 +433,9 @@ public class Vertex {
 	
 	
 	public void putTexPosData(FloatBuffer buffer, int size) {
+		if (texPos == null)
+			return;
+		
 		for (int i = 0; i < size; ++i) {
 			
 			if (i < texPos.length) {
