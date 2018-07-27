@@ -302,10 +302,5 @@ public class FileLoader {
 		indices.add(vertices.size() - 2);
 		indices.add(vertices.size() - 1);
 	}
-	
-	
-	public static void main(String[] args) {
-		FileLoader.loadObjFile("res/models/Suzanne.obj", BufferLayout.INTERLEAVED);
-	}
 
 }

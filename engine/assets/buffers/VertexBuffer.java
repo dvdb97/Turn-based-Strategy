@@ -69,13 +69,6 @@ public class VertexBuffer extends Buffer {
 			buffer.put(vertex.toDataBundle(layout));
 		}
 		
-		//TODO: Temp	
-		for (int i = 0; i < buffer.capacity(); ++i) {
-			System.out.print(buffer.get(i) + " ");
-		}
-		
-		System.out.println();
-		
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
@@ -105,13 +98,6 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
-		
-		
-		for (int i = 0; i < buffer.capacity(); ++i) {
-			System.out.print(buffer.get(i) + " ");
-		}
-		
-		System.out.println();
 		
 	}
 	
