@@ -48,8 +48,6 @@ public class Mesh {
 		this.vertices = vertices;
 		this.indices = indices;
 		
-		System.out.println(indices.toString());
-		
 		this.boundingBox = new BoundingBox(vertices);
 		
 	}
@@ -72,8 +70,6 @@ public class Mesh {
 		
 		this.toList(indices);
 		
-		System.out.println(indices.toString());
-		
 	}
 	
 	
@@ -92,8 +88,6 @@ public class Mesh {
 		this.boundingBox = new BoundingBox(vertices);
 		
 		this.toList(indices);
-		
-		System.out.println(indices.toString());
 		
 	}
 	

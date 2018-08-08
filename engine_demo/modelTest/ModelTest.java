@@ -3,25 +3,18 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
-import math.vectors.Vector2f;
-import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
-import rendering.matrices.transformation.TransformationMatrix;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import java.util.ArrayList;
-
-import javax.xml.crypto.dsig.Transform;
 
 import assets.meshes.Mesh;
 import assets.meshes.Model;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.fileLoaders.FileLoader;
-import assets.meshes.geometry.Vertex;
 import assets.textures.Texture2D;
 
 public class ModelTest {
