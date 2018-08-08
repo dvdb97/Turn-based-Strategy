@@ -63,6 +63,10 @@ public class VertexBuffer extends Buffer {
 			return;
 		}
 		
+		for (Vertex vert : vertices) {
+			System.out.println(vert);
+		}
+		
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.size() * Vertex.getSize(layout));
 		
 		for (Vertex vertex : vertices) {
@@ -70,6 +74,10 @@ public class VertexBuffer extends Buffer {
 		}
 		
 		buffer.flip();
+		
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			System.out.println(buffer.get(i));
+		}
 		
 		this.setBufferStorage(buffer, flag);
 		
@@ -155,8 +163,6 @@ public class VertexBuffer extends Buffer {
 		
 		for (Vertex vertex : vertices) {
 			vertex.putPositionData(buffer, sizes[0]);
-			
-			System.out.println(Arrays.toString(vertex.getPositionData()));
 		}
 		
 		for (Vertex vertex : vertices) {

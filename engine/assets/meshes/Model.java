@@ -11,7 +11,7 @@ import rendering.shaders.ShaderProgram;
 
 public class Model {
 	
-	public final Transformable transform;
+	private Transformable transform;
 	
 	private Material material;
 	
@@ -105,6 +105,11 @@ public class Model {
 		shadowMap.getShadowMap().unbind();
 		
 		shader.disable();
+	}
+	
+	
+	public Transformable getTransformable() {
+		return transform;
 	}
 
 }

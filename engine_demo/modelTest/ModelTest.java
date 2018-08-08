@@ -59,11 +59,11 @@ public class ModelTest {
 	
 	public static Model initMesh() {
 		
-		Mesh mesh = FileLoader.loadObjFile("res/models/Cube.obj", BufferLayout.INTERLEAVED);
+		Mesh mesh = FileLoader.loadObjFile("res/models/Plane.obj");
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		return new Model(shader, mesh, texture, BufferLayout.BLOCKWISE);		
+		return new Model(shader, mesh, texture, BufferLayout.INTERLEAVED);		
 		
 	}
 	
@@ -74,18 +74,21 @@ public class ModelTest {
 		
 		Model model = initMesh();
 		
-		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
+		model.getTransformable().scale(0.5f);
 		
-		Matrix44f matrix = new Matrix44f(0.5f, 0.0f, 0.0f, 0.0f,
-										 0.0f, 0.5f, 0.0f, 0.0f,
-										 0.0f, 0.0f, 0.5f, 0.0f, 
-										 0.0f, 0.0f, 0.0f, 1.0f);
+		model.getTransformable().rotate(1.5708f, 0f, 0f);
+		
+		Matrix44f transformationMatrix = model.getTransformable().getTransformationMatrix();
+		
+		System.out.println(transformationMatrix);
+		
+		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			
 			RenderEngine.clear();
 			
-			shader.setUniformMatrix4fv("mvpMatrix", projMatrix.times(matrix));
+			shader.setUniformMatrix4fv("mvpMatrix", projMatrix.times(transformationMatrix));
 			
 			shader.setUniformVector4f("u_Color", new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
 			

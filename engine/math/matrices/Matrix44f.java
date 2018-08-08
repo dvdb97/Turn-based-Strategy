@@ -207,6 +207,26 @@ public class Matrix44f extends Matrixf {
 		
 	}
 	
+	
+	@Override
+	public String toString() {
+		
+		float[] a = this.toArray();
+		String output = "";
+		
+		for (int row=0; row<N; row++) {
+			for (int col=0; col<N; col++) {
+				
+				output += a[row+N*col] + "   ";
+				
+			}
+			output += "\n";
+		}
+		
+		return output;
+	}
+
+
 	/**
 	 * @return returns a deep copy of this matrix
 	 */

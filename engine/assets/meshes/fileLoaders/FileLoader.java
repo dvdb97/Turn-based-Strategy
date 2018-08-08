@@ -63,7 +63,7 @@ public class FileLoader {
 	 * @param layout
 	 * @return
 	 */
-	public static Mesh loadObjFile(String meshPath, BufferLayout layout) {
+	public static Mesh loadObjFile(String meshPath) {
 		
 		init();
 				
