@@ -336,7 +336,7 @@ public class VertexArrayObject extends GLObject {
 		this.bind();		
 		for (int i = 0; i < attributes.length; i++) {
 			if (attributes[i] != null)
-				glEnableVertexAttribArray(i);
+				glEnableVertexAttribArray(i);			
 		}
 	}
 	
@@ -364,6 +364,11 @@ public class VertexArrayObject extends GLObject {
 
 	@Override
 	public void delete() {
+		for (VertexAttribute va : attributes) {
+			if (va != null)
+				va.buffer.delete();
+		}
+		
 		glDeleteVertexArrays(getID());		
 	}
 

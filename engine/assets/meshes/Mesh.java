@@ -212,4 +212,9 @@ public class Mesh {
 		vao.disableVertexAttribArray();
 	}
 	
+	
+	public void delete() {
+		vao.delete();
+	}
+	
 }

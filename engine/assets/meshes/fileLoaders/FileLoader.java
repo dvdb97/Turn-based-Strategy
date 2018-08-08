@@ -14,6 +14,8 @@ import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.Model;
 import assets.meshes.geometry.Vertex;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 
 public class FileLoader {
 	
@@ -65,6 +67,8 @@ public class FileLoader {
 	 */
 	public static Mesh loadObjFile(String meshPath) {
 		
+		double timer1 = glfwGetTime();
+		
 		init();
 				
 		try(BufferedReader reader = new BufferedReader(new FileReader(new File(meshPath)))) {
@@ -83,14 +87,20 @@ public class FileLoader {
 			
 			while ((line = reader.readLine()) != null) {
 				
-				if (getPositionData(line)) 
+				if (line.startsWith("vn")) {
+					getNormalData(line);
 					continue;
+				}	
 				
-				if (getTexPosData(line))
+				if (line.startsWith("vt")) {
+					getTexPosData(line);
 					continue;
+				}
 				
-				if (getNormalData(line))
+				if (line.startsWith("v")) {
+					getPositionData(line);
 					continue;
+				}
 				
 				assembleFaces(line);
 				
@@ -106,6 +116,8 @@ public class FileLoader {
 			e.printStackTrace();
 			
 		}
+		
+		System.out.println("Time needed: " + (glfwGetTime() - timer1));
 		
 		return new Mesh(vertices, indices);
 	}
@@ -289,7 +301,7 @@ public class FileLoader {
 	private static void toQuad(Matcher matcher) {
 		indices.add(vertices.size() - 4);
 		indices.add(vertices.size() - 3);
-		indices.add(vertices.size() - 1);
+		indices.add(vertices.size() - 2);
 		
 		indices.add(vertices.size() - 4);
 		indices.add(vertices.size() - 2);

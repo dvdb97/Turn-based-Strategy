@@ -111,5 +111,10 @@ public class Model {
 	public Transformable getTransformable() {
 		return transform;
 	}
+	
+	
+	public void delete() {
+		mesh.delete();
+	}
 
 }

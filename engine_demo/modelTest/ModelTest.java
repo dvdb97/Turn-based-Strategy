@@ -59,7 +59,7 @@ public class ModelTest {
 	
 	public static Model initMesh() {
 		
-		Mesh mesh = FileLoader.loadObjFile("res/models/Plane.obj");
+		Mesh mesh = FileLoader.loadObjFile("res/models/Ball.obj");
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
@@ -74,6 +74,7 @@ public class ModelTest {
 		
 		Model model = initMesh();
 		
+		
 		model.getTransformable().scale(0.5f);
 		
 		model.getTransformable().rotate(1.5708f, 0f, 0f);
@@ -83,6 +84,7 @@ public class ModelTest {
 		System.out.println(transformationMatrix);
 		
 		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
+		
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			
@@ -97,6 +99,8 @@ public class ModelTest {
 			RenderEngine.swapBuffers();
 			
 		}
+		
+		model.delete();
 		
 	}
 
