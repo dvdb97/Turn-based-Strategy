@@ -13,13 +13,7 @@ import utils.FileUtils;
 public class LightShader extends ShaderProgram {
 	
 	//A constant for loading the files because I'm lazy to type it 4 times
-	private static final String path = "Shaders/LightShaders/";
-
-	
-	private DirectionalLight lightSource = new DirectionalLight(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-	
-	private StandardMaterial standardMaterial = new StandardMaterial();
-	
+	private static final String path = "Shaders/LightShaders/";	
 	
 	private LightShader(String vertPath, String fragPath) {
 		super(vertPath, fragPath);
@@ -158,27 +152,6 @@ public class LightShader extends ShaderProgram {
 	public void setAmbientLight(Vector3f vec) {
 		
 		this.setUniform3fv("ambientLight", vec.toArray());
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Sets the values of all the material-related uniform variables
-	 * 
-	 * @param mat The material
-	 */
-	public void setMaterial(Material mat) {
-		
-		this.setUniform3fv("material.emission", mat.emission.toArray());
-		
-		this.setUniform3fv("material.ambient", mat.ambient.toArray());
-		
-		this.setUniform3fv("material.diffuse", mat.diffuse.toArray());
-		
-		this.setUniform3fv("material.specular", mat.specular.toArray());
-		
-		this.setUniform1f("material.shininess", mat.shininess);
 		
 	}
 	

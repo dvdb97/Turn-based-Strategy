@@ -8,6 +8,8 @@ import math.vectors.Vector3f;
 
 public class Transformable {
 	
+	public static final float _1_DEGREE = 0.0174533f;
+	
 	private Vector3f translation;
 	
 	private Matrix44f translationMatrix;
@@ -175,7 +177,7 @@ public class Transformable {
 	 * @return Returns the transformation matrix.
 	 */
 	public Matrix44f getTransformationMatrix() {
-		return scalingMatrix.times(rotationMatrix.times(translationMatrix));
+		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
 	}
 
 }

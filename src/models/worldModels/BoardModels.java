@@ -91,7 +91,7 @@ public class BoardModels {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
+		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
 		sun = new DirectionalLight(new Vector3f(0.5f, 0.5f, 0.3f));
 		

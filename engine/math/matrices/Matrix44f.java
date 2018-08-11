@@ -78,7 +78,7 @@ public class Matrix44f extends Matrixf {
 	}
 	
 	/**
-	 * creates an 3x3 identity matrix
+	 * creates an 4x4 identity matrix
 	 */
 	public Matrix44f() {
 		

@@ -2,10 +2,12 @@ package rendering.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
+import assets.material.Material;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -232,6 +234,7 @@ public class ShaderProgram {
 		
 	}
 	
+	
 	private void compileShader(String sourceCode, int id) {
 		
 		glShaderSource(id, sourceCode);
@@ -248,6 +251,44 @@ public class ShaderProgram {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * Passes the material of the model as a uniform to the shader.
+	 * 
+	 * @param material The material of the model.
+	 */
+	public void setMaterial(Material material) {
+		this.setUniform3fv("material.color", material.color.toArray());
+		this.setUniform3fv("material.emission", material.emission.toArray());
+		this.setUniform3fv("material.ambient", material.ambient.toArray());
+		this.setUniform3fv("material.diffuse", material.diffuse.toArray());
+		this.setUniform3fv("material.specular", material.specular.toArray());
+		this.setUniform1f("material.shininess", material.shininess);
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the model-, view- and projection matrix to the shader.
+	 * 
+	 * Every single matrix and the combined MVP-Matrix will be passed to
+	 * the shader.
+	 * 
+	 * @param model The model's model matrix.
+	 * @param view The camera's view matrix.
+	 * @param projection The projection matrix.
+	 */
+	public void setMVPMatrix(Matrix44f model, Matrix44f view, Matrix44f projection) {
+		//Pass every single matrix to the shader
+		this.setUniformMatrix4fv("modelMatrix", model);
+		this.setUniformMatrix4fv("viewMatrix", view);
+		this.setUniformMatrix4fv("projectionMatrix", projection);
+		
+		//Combine the matrices and pass the result to the shader.
+		this.setUniformMatrix4fv("mvpMatrix", projection.times(view).times(model));
+	}
+	
 	
 	/**
 	 * 

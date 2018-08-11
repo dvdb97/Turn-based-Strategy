@@ -43,14 +43,14 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	private void generatePerspectiveMatrix( ) {
 		
-		setD3(-1f);
-		setD4(0f);		
 		setA1(2*near / (right - left));
-		setA3((right + left) / (right - left));
 		setB2(2*near / (top-bottom) * widthHeightRelation);
+		setA3((right + left) / (right - left));
 		setB3((top + bottom) / (top - bottom) * widthHeightRelation);
 		setC3(-(far + near) / (far - near));
+		setD3(-1f);
 		setC4(-2 * far * near / (far - near));
+		setD4(0f);	
 		
 		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);
 		

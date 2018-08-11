@@ -11,10 +11,18 @@ import rendering.shaders.ShaderProgram;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
+import java.awt.RenderingHints.Key;
+
+import org.lwjgl.glfw.GLFW;
+
+import assets.cameras.Camera;
+import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.meshes.Model;
+import assets.meshes.Transformable;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.fileLoaders.FileLoader;
+import assets.meshes.geometry.Color;
 import assets.textures.Texture2D;
 
 public class ModelTest {
@@ -22,6 +30,10 @@ public class ModelTest {
 	private static Window window;
 	
 	private static ShaderProgram shader;
+	
+	private static Camera camera;
+	
+	private static Model model;
 	
 	
 	public static void init() {
@@ -45,18 +57,18 @@ public class ModelTest {
 	
 	public static void initShader() {
 		
-		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shaderColorAsU.vert", "Shaders/StandardShaders/shaderColorAsU.frag");
+		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shader.vert", "Shaders/StandardShaders/shader.frag");
 		
 	}
 	
 	
 	public static Model initMesh() {
 		
-		Mesh mesh = FileLoader.loadObjFile("res/models/Ball.obj");
+		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		return new Model(shader, mesh, texture, BufferLayout.INTERLEAVED);		
+		return new Model(shader, mesh, new Material(new Color(1f, 0f, 0f, 1f)), texture, BufferLayout.INTERLEAVED);		
 		
 	}
 	
@@ -65,16 +77,9 @@ public class ModelTest {
 		
 		init();
 		
-		Model model = initMesh();
+		model = initMesh();
 		
-		
-		model.getTransformable().scale(0.5f);
-		
-		model.getTransformable().rotate(1.5708f, 0f, 0f);
-		
-		Matrix44f transformationMatrix = model.getTransformable().getTransformationMatrix();
-		
-		System.out.println(transformationMatrix);
+		camera = new Camera();
 		
 		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
 		
@@ -83,17 +88,41 @@ public class ModelTest {
 			
 			RenderEngine.clear();
 			
-			shader.setUniformMatrix4fv("mvpMatrix", projMatrix.times(transformationMatrix));
+			shader.use();
 			
-			shader.setUniformVector4f("u_Color", new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+			handleInput();
 			
-			model.render();
+			model.render(camera.getViewMatrix(), projMatrix);
+			
+			shader.disable();
 			
 			RenderEngine.swapBuffers();
 			
 		}
 		
 		model.delete();
+		
+	}
+	
+	
+	private static void handleInput() {
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_W)) {
+			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
+			model.getTransformable().translate(0f, 0f, -0.1f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_S)) {
+			model.getTransformable().rotate(-Transformable._1_DEGREE, 0f, 0f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_A)) {
+			model.getTransformable().rotate(0f, -Transformable._1_DEGREE, 0f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_D)) {
+			model.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
+		}
 		
 	}
 
