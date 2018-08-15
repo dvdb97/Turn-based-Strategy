@@ -8,6 +8,8 @@ public class Vector3f extends Vectorf {
 	
 	private final static int LENGTH = 3;
 	
+	public static final Vector3f ZERO = new Vector3f(0f, 0f, 0f);
+	
 	//----------------------- constructor ----------------------
 	private Vector3f(Vector3f v) {
 		

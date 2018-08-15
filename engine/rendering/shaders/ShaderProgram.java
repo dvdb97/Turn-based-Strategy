@@ -143,7 +143,7 @@ public class ShaderProgram {
 			String type = uniformMatcher.group(1);
 			
 			String identifier = uniformMatcher.group(2);
-			
+
 			int location = getUniformLocation(identifier);
 			
 			uniforms.put(identifier, new Uniform(identifier, type, GL_FRAGMENT_SHADER, location));
@@ -259,11 +259,11 @@ public class ShaderProgram {
 	 * @param material The material of the model.
 	 */
 	public void setMaterial(Material material) {
-		this.setUniform3fv("material.color", material.color.toArray());
-		this.setUniform3fv("material.emission", material.emission.toArray());
-		this.setUniform3fv("material.ambient", material.ambient.toArray());
-		this.setUniform3fv("material.diffuse", material.diffuse.toArray());
-		this.setUniform3fv("material.specular", material.specular.toArray());
+		this.setUniformVector4f("material.color", material.color);
+		this.setUniformVector3f("material.emission", material.emission);
+		this.setUniformVector3f("material.ambient", material.ambient);
+		this.setUniformVector3f("material.diffuse", material.diffuse);
+		this.setUniformVector3f("material.specular", material.specular);
 		this.setUniform1f("material.shininess", material.shininess);
 	}
 	
@@ -316,21 +316,25 @@ public class ShaderProgram {
 	
 	/**
 	 * 
-	 * Pass a vector into the rendering pipeline
+	 * Pass a Vector3f as a uniform to the shader.
 	 * 
-	 * @param name The name of the uniform variable to address
-	 * @param value The value of the uniform variable should have
+	 * @param name The identifier of the uniform variable.
+	 * @param vector The vector to be passed to the shader.
 	 */
-	public void setUniformVector(String name, float[] array) {
-		glUniform4fv(getUniformLocation(name), array);
-	}
-	
 	public void setUniformVector3f(String name, Vector3f vector) {
-		setUniformVector(name, vector.toArray());
+		glUniform3fv(getUniformLocation(name), vector.toArray());
 	}
 	
+	
+	/**
+	 * 
+	 * Pass a Vector4f as a uniform to the shader.
+	 * 
+	 * @param name The identifier of the uniform variable.
+	 * @param vector The vector to be passed to the shader.
+	 */
 	public void setUniformVector4f(String name, Vector4f vector) {
-		setUniformVector(name, vector.toArray());
+		glUniform4fv(getUniformLocation(name), vector.toArray());
 	}
 	
 	
@@ -339,12 +343,20 @@ public class ShaderProgram {
 	 * Pass a 4x4 Matrix into the rendering pipeline
 	 * 
 	 * @param name The name of the uniform variable to address
-	 * @param value The value of the uniform variable should have
+	 * @param value The value of the uniform variable should have. In this case as an array.
 	 */
 	public void setUniformMatrix4fv(String name, float[] array) {
 		glUniformMatrix4fv(getUniformLocation(name), false, array);
 	}
 	
+	
+	/**
+	 * 
+	 * Pass a 4x4 Matrix into the rendering pipeline
+	 * 
+	 * @param name The name of the uniform variable to address.
+	 * @param value The value of the uniform variable should have.
+	 */
 	public void setUniformMatrix4fv(String name, Matrix44f matrix) {
 		setUniformMatrix4fv(name, matrix.toArray());
 	}
@@ -369,7 +381,7 @@ public class ShaderProgram {
 	 * @param name The name of the uniform variable to address
 	 * @param matrix The value for the uniform 
 	 */
-	public void setUnifrom3fv(String name, Matrix33f matrix) {
+	public void setUniform3fv(String name, Matrix33f matrix) {
 		setUniform3fv(name, matrix.toArray());
 	}
 	

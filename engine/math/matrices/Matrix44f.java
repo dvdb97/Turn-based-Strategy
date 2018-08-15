@@ -7,6 +7,10 @@ public class Matrix44f extends Matrixf {
 	private final static int N = 4;
 	private final static int LENGTH = N*N;
 	
+	
+	public static final Matrix44f IDENTITY = new Matrix44f();
+		
+	
 	//----------------------------- constructor ---------------------
 	
 	/**

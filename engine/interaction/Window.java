@@ -152,6 +152,9 @@ public class Window {
 	}
 	
 	
+	/** 
+	 * @return Returns the width of the framebuffer in pixel.
+	 */
 	public int getFrameBufferWidth() {		
 		glfwGetFramebufferSize(windowID, width, height);
 		
@@ -159,6 +162,9 @@ public class Window {
 	}
 	
 	
+	/**
+	 * @return Returns the height of the framebuffer in pixel.
+	 */
 	public int getFrameBufferHeight() {
 		glfwGetFramebufferSize(windowID, width, height);
 		

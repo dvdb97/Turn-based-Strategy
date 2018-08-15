@@ -1,5 +1,6 @@
 package rendering.shaders.standardShaders.lightShader;
 
+import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.material.Material;
@@ -14,6 +15,7 @@ public class LightShader extends ShaderProgram {
 	
 	//A constant for loading the files because I'm lazy to type it 4 times
 	private static final String path = "Shaders/LightShaders/";	
+	
 	
 	private LightShader(String vertPath, String fragPath) {
 		super(vertPath, fragPath);
@@ -90,21 +92,6 @@ public class LightShader extends ShaderProgram {
 	
 	/**
 	 * 
-	 * Passes the model, view and projection matrix as an uniform variables to the gpu
-	 * 
-	 * @param modelMatrix The model matrix
-	 * @param viewMatrix The view matrix
-	 * @param projectionMatrix The projection matrix
-	 */
-	public void setMVPMatrix(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projectionMatrix) {
-		this.setModelMatrix(modelMatrix);
-		this.setViewMatrix(viewMatrix);
-		this.setProjectionMatrix(projectionMatrix);		
-	}
-	
-	
-	/**
-	 * 
 	 * Passes the light view matrix as an uniform variable to the gpu
 	 * 
 	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
@@ -158,21 +145,49 @@ public class LightShader extends ShaderProgram {
 	
 	/**
 	 * 
+	 * Sets the values of all the light source related uniform variables.
+	 * Sets all shadow related variables to a default value.
+	 * 
+	 * @param light The light source
+	 */
+	public void setLightSource(DirectionalLight light) {
+		this.setLightSource(light, Matrix44f.IDENTITY, Matrix44f.IDENTITY, false);
+	}
+	
+	
+	/**
+	 * 
 	 * Sets the values of all the light source related uniform variables
 	 * 
-	 * @param ls The light source
+	 * @param light The light source
 	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
 	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
-	 */
-	public void setLightSource(DirectionalLight ls, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
+	 * @param shadows Enables or disables trying to read from a shadow map.
+	 */	
+	public void setLightSource(DirectionalLight light, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
 		
-		this.setUniform3fv("light.direction", ls.getViewDirection().toArray());
+		this.setUniform3fv("light.direction", light.getViewDirection().toArray());
 		
-		this.setUniform3fv("light.color", ls.getColor().toArray());
+		this.setUniform3fv("light.color", light.getColor().toArray());
 		
 		this.setLightVPMatrix(lightViewMatrix, lightProjectionMatrix);
 		
 		this.setUniform1i("shadowsActive", shadows ? 1 : 0);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the values of all the camera related uniform variables
+	 * 
+	 * @param camera The camera the scene is rendered with.
+	 */
+	public void setCamera(Camera camera) {
+		
+		this.setUniform3fv("cameraPosition", camera.getPosition().toArray());
+		
+		//TODO: Maybe set view matrix here.
 		
 	}
 	

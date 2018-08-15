@@ -1,6 +1,5 @@
 #version 330 core
 
-
 layout(location = 0) in vec3 vPosition;
 layout(location = 1) in vec4 vColor;
 layout(location = 2) in vec3 vTexPos;
@@ -11,6 +10,8 @@ layout(location = 3) in vec3 vNormal;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+
+uniform mat4 mvpMatrix;
 
 //Shadow uniforms:
 uniform mat4 lightViewMatrix;
@@ -45,6 +46,6 @@ void main() {
 	vs_out.fragCoordLightSpace = lightProjectionMatrix * lightViewMatrix * modelMatrix * vec4(vs_out.fragCoord, 1.0f);
 
 	//The projective space coordinates of the vertex
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vPosition, 1.0f);
+	gl_Position = mvpMatrix * vec4(vPosition, 1.0f);
 
 }

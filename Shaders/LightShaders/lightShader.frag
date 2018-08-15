@@ -3,6 +3,7 @@
 
 //Defines the properties of light on this object
 struct Material {
+	vec4 color;
 	vec3 emission;
 	vec3 ambient;
 	vec3 diffuse;
@@ -58,7 +59,7 @@ float computeShadow() {
 
 	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
 
-	float bias = 0.005f;//max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.05);
+	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.05);
 
 	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
 
@@ -105,7 +106,7 @@ vec3 computeLight() {
 	//********* final result *********
 
 
-	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * fs_in.fragColor.rgb;
+	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * material.color.rgb;
 
 
 	return min(vec3(1.0f, 1.0f, 1.0f), finalColor);

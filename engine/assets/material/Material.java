@@ -34,10 +34,10 @@ public class Material {
 		super();
 		
 		this.color = color;
-		this.emission = new Vector3f(0f, 0f, 0f);
-		this.ambient = new Vector3f(0f, 0f, 0f);
-		this.diffuse = new Vector3f(0f, 0f, 0f);
-		this.specular = new Vector3f(0f, 0f, 0f);
+		this.emission = Vector3f.ZERO;
+		this.ambient = Vector3f.ZERO;
+		this.diffuse = Vector3f.ZERO;
+		this.specular = Vector3f.ZERO;
 		this.shininess = 0f;
 	}
 	

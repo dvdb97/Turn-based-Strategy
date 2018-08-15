@@ -3,11 +3,13 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
+import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
+import rendering.shaders.standardShaders.lightShader.LightShader;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
@@ -16,6 +18,7 @@ import java.awt.RenderingHints.Key;
 import org.lwjgl.glfw.GLFW;
 
 import assets.cameras.Camera;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.meshes.Model;
@@ -29,9 +32,11 @@ public class ModelTest {
 	
 	private static Window window;
 	
-	private static ShaderProgram shader;
+	private static LightShader shader;
 	
 	private static Camera camera;
+	
+	private static DirectionalLight light;
 	
 	private static Model model;
 	
@@ -40,7 +45,7 @@ public class ModelTest {
 		
 		window = new Window();
 		
-		window.createWindowedWindow("Model Demo");
+		window.createFullscreenWindow("Model Demo");
 		
 		window.setKeyInputCallback(new KeyInput());
 		
@@ -57,7 +62,7 @@ public class ModelTest {
 	
 	public static void initShader() {
 		
-		shader = ShaderLoader.loadShader("Shaders/StandardShaders/shader.vert", "Shaders/StandardShaders/shader.frag");
+		shader = LightShader.createPerFragmentLightShader();
 		
 	}
 	
@@ -68,7 +73,9 @@ public class ModelTest {
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		return new Model(shader, mesh, new Material(new Color(1f, 0f, 0f, 1f)), texture, BufferLayout.INTERLEAVED);		
+		Material material = new Material(Color.GREEN, Vector3f.ZERO, new Vector3f(0.5f, 0.5f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0.2f, 0.2f, 0.2f), 1f);
+		
+		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 		
 	}
 	
@@ -81,6 +88,8 @@ public class ModelTest {
 		
 		camera = new Camera();
 		
+		light = new DirectionalLight(new Vector3f(-1f, 0f, 0f), new Vector3f(1f, 1f, 0f));
+		
 		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
 		
 		
@@ -89,6 +98,12 @@ public class ModelTest {
 			RenderEngine.clear();
 			
 			shader.use();
+			
+			shader.setAmbientLight(new Vector3f(1f, 1f, 1f));
+			
+			shader.setLightSource(light);
+			
+			shader.setCamera(camera);
 			
 			handleInput();
 			
@@ -108,8 +123,7 @@ public class ModelTest {
 	private static void handleInput() {
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_W)) {
-			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
-			model.getTransformable().translate(0f, 0f, -0.1f);
+			model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_S)) {
@@ -122,6 +136,18 @@ public class ModelTest {
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_D)) {
 			model.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_Q)) {
+			camera.backward(0.1f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_E)) {
+			camera.forward(0.1f);
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
+			RenderEngine.takeScreenshot(window, "screenshots/monkey.png", "PNG");
 		}
 		
 	}

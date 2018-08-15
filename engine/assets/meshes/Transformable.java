@@ -90,6 +90,16 @@ public class Transformable {
 	}
 	
 	
+	public void setTranslation(Vector3f translation) {
+		
+	}
+	
+	
+	public void setTranslation(float x, float y, float z) {
+		
+	}
+	
+	
 	/**
 	 * 
 	 * Rotates the Transformable by the given vector. The values of
@@ -121,6 +131,16 @@ public class Transformable {
 		
 		//TODO: Change the matrix' values instead of creating a completely new one.
 		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+	}
+	
+	
+	public void setRotation(Vector3f rotation) {
+		
+	}
+	
+	
+	public void setRotation(float x, float y, float z) {
+		
 	}
 	
 	
@@ -167,6 +187,21 @@ public class Transformable {
 		
 		//TODO: Change the matrix' values instead of creating a completely new one.
 		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);	
+	}
+	
+	
+	public void setScaling(Vector3f scale) {
+		
+	}
+	
+	
+	public void setScaling(float x, float y, float z) {
+		
+	}
+	
+	
+	public void setScaling(float xyz) {
+		
 	}
 	
 	
