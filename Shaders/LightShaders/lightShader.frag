@@ -118,6 +118,6 @@ void main() {
 
 	vec3 finalColor = computeLight();
 	
-	fColor = vec4(finalColor, fs_in.fragColor.a);
+	fColor = vec4(finalColor, material.color.a);
 
 }

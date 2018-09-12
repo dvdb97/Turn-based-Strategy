@@ -65,7 +65,7 @@ public class VertexBuffer extends Buffer {
 		
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.size() * Vertex.getSize(layout));
 		
-		for (Vertex vertex : vertices) {
+		for (Vertex vertex : vertices) {			
 			buffer.put(vertex.toDataBundle(layout));
 		}
 		

@@ -73,7 +73,7 @@ public class ModelTest {
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		Material material = new Material(Color.GREEN, Vector3f.ZERO, new Vector3f(0.5f, 0.5f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0.2f, 0.2f, 0.2f), 1f);
+		Material material = new Material(Color.GREEN, Vector3f.ZERO, new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
 		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 		
@@ -99,7 +99,7 @@ public class ModelTest {
 			
 			shader.use();
 			
-			shader.setAmbientLight(new Vector3f(1f, 1f, 1f));
+			shader.setAmbientLight(new Vector3f(0.6f, 0.6f, 0.6f));
 			
 			shader.setLightSource(light);
 			
