@@ -3,7 +3,7 @@ package gui_core;
 import java.util.LinkedList;
 
 import container.GUIWindow;
-import fontRendering.font.GUIFontCollection;
+import fontRendering.legacy.font.GUIFontCollection;
 import fundamental.Button;
 import fundamental.ClickableElement;
 import fundamental.Element;

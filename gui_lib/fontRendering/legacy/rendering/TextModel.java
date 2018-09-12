@@ -1,4 +1,4 @@
-package fontRendering.rendering;
+package fontRendering.legacy.rendering;
 
 import assets.meshes.geometry.Vertex;
 import assets.models.Element_Model;

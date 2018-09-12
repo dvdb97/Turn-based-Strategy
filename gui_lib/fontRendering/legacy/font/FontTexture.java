@@ -1,4 +1,4 @@
-package fontRendering.font;
+package fontRendering.legacy.font;
 
 import assets.textures.Texture;
 import assets.textures.Texture2D;

@@ -1,8 +1,8 @@
-package fontRendering.generation;
+package fontRendering.legacy.generation;
 
-import fontRendering.font.FontTexture;
-import fontRendering.generation.functions.FontFunction;
-import fontRendering.rendering.TextModel;
+import fontRendering.legacy.font.FontTexture;
+import fontRendering.legacy.generation.functions.FontFunction;
+import fontRendering.legacy.rendering.TextModel;
 import gui_core.GUIMatrixManager;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;

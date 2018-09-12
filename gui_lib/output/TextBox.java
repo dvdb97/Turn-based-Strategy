@@ -2,10 +2,10 @@ package output;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
-import fontRendering.font.FontTexture;
-import fontRendering.font.GUIFontCollection;
-import fontRendering.generation.TextGenerator;
-import fontRendering.rendering.TextModel;
+import fontRendering.legacy.font.FontTexture;
+import fontRendering.legacy.font.GUIFontCollection;
+import fontRendering.legacy.generation.TextGenerator;
+import fontRendering.legacy.rendering.TextModel;
 import fundamental.Element;
 import gui_core.GUIMatrixManager;
 import gui_core.GUIShaderCollection;
