@@ -1,9 +1,9 @@
-package fontRendering.legacy.font;
+package fontRendering.font;
 
 import java.util.HashMap;
 
-import fontRendering.legacy.font.FontTexture;
-import fontRendering.legacy.font.classic.TimesNewRoman;
+import fontRendering.font.FontTexture;
+import fontRendering.font.classic.TimesNewRoman;
 
 public class GUIFontCollection {
 	

@@ -1,27 +1,21 @@
-package fontRendering.legacy.generation;
+package fontRendering.generation;
 
-import fontRendering.legacy.font.FontTexture;
-import fontRendering.legacy.generation.functions.FontFunction;
-import fontRendering.legacy.rendering.TextModel;
+import fontRendering.font.FontTexture;
+import fontRendering.generation.functions.FontFunction;
+import fontRendering.rendering.TextModel;
 import gui_core.GUIMatrixManager;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
 public class TextGenerator {
-	
-	private static final float[] data = {
-			0.0f,  0.0f, -1.0f,
-			1.0f,  0.0f, -1.0f,
-			0.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f		
-		};
 	
 	//A template of texture coordinates for easy texture mapping
 	private static final Vector3f[] texCoords = {
@@ -33,10 +27,10 @@ public class TextGenerator {
 	
 	//A template of vertex positions to generate 
 	private static final Vector4f[] coords = {
-		new Vector4f(0.0f,  0.0f, -1.0f, 1.0f),
-		new Vector4f(1.0f,  0.0f, -1.0f, 1.0f),
-		new Vector4f(0.0f, -1.0f, -1.0f, 1.0f),
-		new Vector4f(1.0f, -1.0f, -1.0f, 1.0f)		
+		new Vector4f(0.0f,  0.0f, -1.0f, 1.0f), //Up left
+		new Vector4f(1.0f,  0.0f, -1.0f, 1.0f), //Up right
+		new Vector4f(0.0f, -1.0f, -1.0f, 1.0f), //Down left
+		new Vector4f(1.0f, -1.0f, -1.0f, 1.0f)	//Down right	
 	};
 	
 	
@@ -47,7 +41,7 @@ public class TextGenerator {
 	};
 	
 	
-	public static TextModel generateTextModel(String text, FontTexture font, FontFunction func) {
+	public static TextModel generateTextModel(String text, FontFunction func) {
 		
 		final int QUAD_VERTICES = 4;
 		final int QUAD_INDICES = 6;
@@ -57,6 +51,8 @@ public class TextGenerator {
 		FloatBuffer positionBuffer = BufferUtils.createFloatBuffer(text.length() * QUAD_VERTICES * POS_DATA_SIZE);
 		FloatBuffer texPosBuffer = BufferUtils.createFloatBuffer(text.length() * QUAD_VERTICES * TEX_COORD_DATA_SIZE);
 		IntBuffer indexBuffer = BufferUtils.createIntBuffer(text.length() * QUAD_INDICES);
+		
+		ByteBuffer textEncoded = FontTexture.toISO_8859_1(text);
 		
 		//The current row of the text. Will be increased when the char '\b' marks the end of a line
 		int line = 0;
@@ -71,8 +67,8 @@ public class TextGenerator {
 		Matrix44f letterTM;
 		
 		//The size of a letter on the texture in uv-coords
-		float texCharWidth = font.getCharWidth();
-		float texCharHeight = font.getCharHeight();
+		float texCharWidth = FontTexture.getCharWidth();
+		float texCharHeight = FontTexture.getCharHeight();
 		
 		//The position of the subtexture in uv-coords
 		float texPosXOffset, texPosYOffset;
@@ -97,8 +93,9 @@ public class TextGenerator {
 				continue;
 			}
 			
-			texPosXOffset = font.getXPosition(letter);
-			texPosYOffset = font.getYPosition(letter);
+			//Look up the texCoord of the encoded char.
+			texPosXOffset = FontTexture.getXPosition(textEncoded.get(letterIndex));
+			texPosYOffset = FontTexture.getYPosition(textEncoded.get(letterIndex));
 			
 			//The transformation matrix to put the next vertex into the right position
 			letterTM = GUIMatrixManager.generateTransformationMatrix44(posInLine, -line, 1, 1);
@@ -140,20 +137,3 @@ public class TextGenerator {
 	}
 
 }
-
-
-/*
-private static final Vector3f[] texCoords = {
-		new Vector3f(0.0f, 0.0f, 1.0f),
-		new Vector3f(1.0f, 0.0f, 1.0f),
-		new Vector3f(0.0f, 1.0f, 1.0f),
-		new Vector3f(1.0f, 1.0f, 1.0f),
-	};
-	
-	//A template of vertex positions to generate 
-	private static final Vector4f[] coords = {
-		new Vector4f(0.0f, 1.0f, -1.0f, 1.0f),
-		new Vector4f(1.0f, 1.0f, -1.0f, 1.0f),
-		new Vector4f(0.0f, 0.0f, -1.0f, 1.0f),
-		new Vector4f(1.0f, 0.0f, -1.0f, 1.0f)		
-	};*/

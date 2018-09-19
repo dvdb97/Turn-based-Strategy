@@ -86,17 +86,18 @@ public class Application {
 	}
 	
 	
+	public static Window getWindow() {
+		return window;
+	}
+	
+	
 	public static int getWindowHeight() {
-		
 		return window.getHeight();
-		
 	}
 	
 	
 	public static int getWindowWidth() {
-		
 		return window.getWidth();
-		
 	}
 
 }

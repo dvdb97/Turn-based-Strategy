@@ -2,10 +2,10 @@ package visualize;
 
 import assets.models.Element_Model;
 import assets.textures.ArrayTexture2D;
-import fontRendering.legacy.font.FontTexture;
-import fontRendering.legacy.font.classic.TimesNewRoman;
-import fontRendering.legacy.generation.TextGenerator;
-import fontRendering.legacy.generation.functions.TempFunction;
+import fontRendering.font.FontTexture;
+import fontRendering.font.classic.TimesNewRoman;
+import fontRendering.generation.TextGenerator;
+import fontRendering.generation.functions.TempFunction;
 
 public class FontTest {
 	

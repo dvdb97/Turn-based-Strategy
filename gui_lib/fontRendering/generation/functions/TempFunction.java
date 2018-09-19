@@ -1,4 +1,4 @@
-package fontRendering.legacy.generation.functions;
+package fontRendering.generation.functions;
 
 public class TempFunction implements FontFunction {
 

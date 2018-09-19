@@ -1,4 +1,4 @@
-package fontRendering.legacy.rendering.shader;
+package fontRendering.rendering.shader;
 
 import math.matrices.Matrix44f;
 import rendering.shaders.ShaderProgram;

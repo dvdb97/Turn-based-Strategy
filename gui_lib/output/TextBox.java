@@ -2,10 +2,10 @@ package output;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
-import fontRendering.legacy.font.FontTexture;
-import fontRendering.legacy.font.GUIFontCollection;
-import fontRendering.legacy.generation.TextGenerator;
-import fontRendering.legacy.rendering.TextModel;
+import fontRendering.font.FontTexture;
+import fontRendering.font.GUIFontCollection;
+import fontRendering.generation.TextGenerator;
+import fontRendering.rendering.TextModel;
 import fundamental.Element;
 import gui_core.GUIMatrixManager;
 import gui_core.GUIShaderCollection;
@@ -51,12 +51,15 @@ public class TextBox extends Element {
 			return;
 		}
 		
-		GUIShaderCollection.useFontShader(TM.toMatrix44f().times(labelMatrix));
+		font.bind();
+		
+		GUIShaderCollection.useFontShader(TM.toMatrix44f().times(labelMatrix), new Color(0f, 0f, 0f, 1f));
 		
 		RenderEngine.draw(label, font);
 		
 		GUIShaderCollection.disableFontShader();
 		
+		font.unbind();		
 	}
 	
 	public void setLabel(String text) {
@@ -71,7 +74,7 @@ public class TextBox extends Element {
 		
 		this.labelText = text;	
 		
-		this.label = TextGenerator.generateTextModel(labelText, font, null);
+		this.label = TextGenerator.generateTextModel(labelText, null);
 		
 		generateLabelMatrix();
 		
