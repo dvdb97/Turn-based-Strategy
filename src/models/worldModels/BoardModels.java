@@ -2,7 +2,7 @@ package models.worldModels;
 
 import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.meshes.fileLoaders.OBJ_FileLoader;
+import assets.meshes.fileLoaders.deprecated.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.VertexLegacy;
 import assets.models.Illuminated_Model;

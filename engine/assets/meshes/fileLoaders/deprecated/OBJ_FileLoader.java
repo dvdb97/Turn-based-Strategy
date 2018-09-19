@@ -1,4 +1,4 @@
-package assets.meshes.fileLoaders;
+package assets.meshes.fileLoaders.deprecated;
 
 
 import java.io.BufferedReader;
@@ -29,13 +29,7 @@ public class OBJ_FileLoader {
 	private OBJ_FileLoader() {
 		
 	}
-	
-	
-	public static Illuminated_Model loadOBJ_File(String objPath, String matPath) {
-		return loadOBJ_File(objPath, MTL_Loader.loadMaterialFromMTL(matPath), null);
-	}
-	
-	
+		
 	
 	public static Illuminated_Model loadOBJ_File(String objPath, Material material, Color color) {
 		

@@ -1,4 +1,4 @@
-package assets.meshes.fileLoaders;
+package assets.meshes.fileLoaders.deprecated;
 
 
 //IO stuff

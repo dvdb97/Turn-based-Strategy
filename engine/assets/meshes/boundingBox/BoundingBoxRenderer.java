@@ -15,10 +15,7 @@ public class BoundingBoxRenderer {
 	public static void init() {
 		if (init) {
 			return;
-		}
-		
-		boundingBoxMesh = Cube.generate(1f, 1f, 1f);
-		
+		}		
 	}
 	
 	

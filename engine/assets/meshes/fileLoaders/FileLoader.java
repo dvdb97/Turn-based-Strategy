@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Vertex;
 import math.vectors.Vector2f;
@@ -114,6 +115,11 @@ public class FileLoader {
 		
 		return new Mesh(vertices, indices);
 		
+	}
+	
+	
+	public static Material loadMaterialFromMTL(String file) {		
+		return null;
 	}
 
 }
