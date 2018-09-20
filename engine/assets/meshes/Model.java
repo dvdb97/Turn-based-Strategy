@@ -117,9 +117,32 @@ public class Model {
 		
 		if (texture != null)
 			texture.unbind();
+		
 	}
 	
 	
+	/**
+	 * 
+	 * Renders this Model on the screen. This method also offers the option
+	 * to display the mesh's bounding box.
+	 * 
+	 * @param view The viewMatrix of the camera.
+	 * @param projection The projectionMatrix.
+	 * @param showBoundingBox If set to true the bounding box will displayed.
+	 */
+	public void render(Matrix44f view, Matrix44f projection, boolean showBoundingBox) {
+		render(view, projection);
+		
+		if (showBoundingBox)
+			mesh.renderBoundingBox(transform, view, projection);
+	}
+	
+	
+	/**
+	 * TODO
+	 * 
+	 * @param shadowMap
+	 */
 	public void render(ShadowMap shadowMap) {
 		shader.use();
 		//shader.setMaterial(material)

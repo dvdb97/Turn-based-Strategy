@@ -10,6 +10,7 @@ import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.boundingBox.BoundingBox;
 import assets.meshes.geometry.Vertex;
 import assets.models.VertexArrayObject;
+import math.matrices.Matrix44f;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -94,6 +95,15 @@ public class Mesh {
 	
 	public Mesh(FloatBuffer vertexData, int layout) {
 		//TODO
+	}
+	
+	
+	/**
+	 * 
+	 * @param mode The primitive type this mesh is rendered with. E.g. GL_TRIANGLE, GL_LINES.
+	 */
+	public void setRenderMode(int mode) {
+		this.drawMode = mode;
 	}
 	
 	
@@ -204,6 +214,11 @@ public class Mesh {
 		glDrawElements(drawMode, indexBuffer);
 		
 		vao.disableVertexAttribArray();
+	}
+	
+	
+	public void renderBoundingBox(Transformable transform, Matrix44f view, Matrix44f projection) {
+		boundingBox.render(transform, view, projection);		
 	}
 	
 	

@@ -73,7 +73,7 @@ public class ModelTest {
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		Material material = new Material(Color.GREEN, Vector3f.ZERO, new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
+		Material material = new Material(Color.YELLOW, Vector3f.ZERO, new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 1f);
 		
 		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 		
@@ -107,12 +107,11 @@ public class ModelTest {
 			
 			handleInput();
 			
-			model.render(camera.getViewMatrix(), projMatrix);
+			model.render(camera.getViewMatrix(), projMatrix, true);
 			
 			shader.disable();
 			
 			RenderEngine.swapBuffers();
-			
 		}
 		
 		model.delete();
@@ -147,7 +146,7 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			RenderEngine.takeScreenshot(window, "screenshots/monkey.png", "PNG");
+			RenderEngine.takeScreenshot(window, "screenshots/BoundingBox.png", "PNG");
 		}
 		
 	}

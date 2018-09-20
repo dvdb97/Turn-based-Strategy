@@ -13,6 +13,8 @@ public class Color extends Vector4f {
 	
 	public static final Color BLUE = new Color(0f, 0f, 1f, 1f);
 	
+	public static final Color YELLOW = new Color(1f, 1f, 0f, 1f);
+	
 
 	/**
 	 * 
@@ -24,6 +26,6 @@ public class Color extends Vector4f {
 	 * @param alpha The value of the alpha channel in the range from [0-1].
 	 */
 	public Color(float red, float green, float blue, float alpha) {
-		super(red, blue, green, alpha);
+		super(red, green, blue, alpha);
 	}
 }

@@ -2,9 +2,14 @@ package assets.meshes.boundingBox;
 
 import java.util.List;
 
+import javax.xml.crypto.dsig.Transform;
+
+import assets.meshes.Transformable;
 import assets.meshes.geometry.Vertex;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
+import rendering.shaders.ShaderLoader;
+import rendering.shaders.ShaderProgram;
 
 /**
  * 
@@ -21,6 +26,15 @@ public class BoundingBox {
 	private float minY, maxY;
 	
 	private float minZ, maxZ;
+	
+	private Vector3f centerPoint;
+	
+	private Transformable transform;
+	
+	
+	private static BoundingBoxMesh mesh = null;
+	
+	private static ShaderProgram bbShader = null;
 	
 	
 	/**
@@ -55,6 +69,23 @@ public class BoundingBox {
 			addPoint(vertex);
 		}
 		
+		centerPoint = new Vector3f((minX + maxX) / 2f, (minY + maxY) / 2f, (minZ + maxZ) / 2f);
+		
+		transform = new Transformable();
+		
+		System.out.println("X: " + minX + " to " + maxX);
+		System.out.println("Y: " + minY + " to " + maxY);
+		System.out.println("Z: " + minZ + " to " + maxZ);
+		System.out.println("Center point: " + centerPoint);
+		
+		if (mesh == null) {
+			mesh = new BoundingBoxMesh();
+		}
+		
+		if (bbShader == null) {
+			bbShader = ShaderLoader.loadShader("Shaders/StandardShaders/BBShader.vert", 
+					   						   "Shaders/StandardShaders/BBShader.frag");	
+		}		
 	}
 	
 	
@@ -68,6 +99,21 @@ public class BoundingBox {
 			targetList.add(vertex);
 		}
 		
+		centerPoint = new Vector3f((minX + maxX) / 2f, (minY + maxY) / 2f, (minZ + maxZ) / 2f);
+		
+		System.out.println("X: " + minX + " to " + maxX);
+		System.out.println("Y: " + minY + " to " + maxY);
+		System.out.println("Z: " + minZ + " to " + maxZ);
+		System.out.println("Center point: " + centerPoint.toString());
+		
+		if (mesh == null) {
+			mesh = new BoundingBoxMesh();
+		}
+		
+		if (bbShader == null) {
+			bbShader = ShaderLoader.loadShader("Shaders/StandardShaders/BBShader.vert", 
+					   						   "Shaders/StandardShaders/BBShader.frag");	
+		}
 	}
 	
 	
@@ -84,7 +130,7 @@ public class BoundingBox {
 		if (vertex.getXPos() > maxX) { maxX = vertex.getXPos(); }
 		
 		//Y-Axis
-		if (vertex.getYPos() < minY) { minX = vertex.getYPos(); }
+		if (vertex.getYPos() < minY) { minY = vertex.getYPos(); }
 		
 		if (vertex.getYPos() > maxY) { maxY = vertex.getYPos(); }
 		
@@ -134,10 +180,18 @@ public class BoundingBox {
 	}
 	
 	
-	public void display(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projectionMatrix) {
+	public void render(Transformable meshTransform, Matrix44f view, Matrix44f projection) {
+		transform.setTranslation(centerPoint.plus(meshTransform.getTranslation()));
+		transform.setRotation(meshTransform.getRotation());
+		Vector3f s = meshTransform.getScaling();
+		transform.setScaling(new Vector3f(s.getA() * (maxX - minX) / 2f, s.getB() * (maxY - minY) / 2f, s.getC() * (maxZ - minZ) / 2f));
 		
-		BoundingBoxRenderer.render(modelMatrix, viewMatrix, projectionMatrix);
+		bbShader.use();		
+		bbShader.setMVPMatrix(transform.getTransformationMatrix(), view, projection);
 		
+		mesh.render();
+		
+		bbShader.disable();
 	}
 	
 }

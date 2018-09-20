@@ -209,8 +209,15 @@ public class Vector3f extends Vectorf {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "(" + this.getA() + ", " + this.getB() + ", " + this.getC() + ")";
+	}
+	
+	
 	//------------------------- Get & Set ----------------------
 	
+
 	/**
 	 * @return returns the first component of this vector
 	 */

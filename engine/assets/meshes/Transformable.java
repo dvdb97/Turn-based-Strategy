@@ -31,7 +31,7 @@ public class Transformable {
 	public Transformable() {
 		this.translation = new Vector3f(0f, 0f, 0f);
 		this.rotation = new Vector3f(0f, 0f, 0f);
-		this.scaling = new Vector3f(0f, 0f, 0f);
+		this.scaling = new Vector3f(1f, 1f, 1f);
 		
 		this.translationMatrix = new Matrix44f();
 		this.rotationMatrix = new Matrix44f();
@@ -91,12 +91,26 @@ public class Transformable {
 	
 	
 	public void setTranslation(Vector3f translation) {
+		this.translation = translation.copyOf();
 		
+		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
 	}
 	
 	
 	public void setTranslation(float x, float y, float z) {
+		this.translation = new Vector3f(x, y, z);
 		
+		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
+	}
+	
+	
+	public Vector3f getPosition() {
+		return translation;
+	}
+	
+	
+	public Vector3f getTranslation() {
+		return translation;
 	}
 	
 	
@@ -135,12 +149,23 @@ public class Transformable {
 	
 	
 	public void setRotation(Vector3f rotation) {
+		this.rotation = rotation.copyOf();
 		
+		//TODO: Change the matrix' values instead of creating a completely new one.
+		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
 	}
 	
 	
 	public void setRotation(float x, float y, float z) {
+		this.rotation = new Vector3f(x, y, z);
 		
+		//TODO: Change the matrix' values instead of creating a completely new one.
+		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+	}
+	
+	
+	public Vector3f getRotation() {
+		return rotation;
 	}
 	
 	
@@ -191,17 +216,31 @@ public class Transformable {
 	
 	
 	public void setScaling(Vector3f scale) {
+		this.scaling = scale.copyOf();
 		
+		//TODO: Change the matrix' values instead of creating a completely new one.
+		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
 	}
 	
 	
 	public void setScaling(float x, float y, float z) {
+		this.scaling = new Vector3f(x, y, z);
 		
+		//TODO: Change the matrix' values instead of creating a completely new one.
+		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
 	}
 	
 	
 	public void setScaling(float xyz) {
+		this.setScaling(xyz, xyz, xyz);
 		
+		//TODO: Change the matrix' values instead of creating a completely new one.
+		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
+	}
+	
+	
+	public Vector3f getScaling() {
+		return scaling;
 	}
 	
 	

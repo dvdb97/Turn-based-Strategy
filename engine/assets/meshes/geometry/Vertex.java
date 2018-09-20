@@ -460,7 +460,7 @@ public class Vertex {
 	
 	public float getXPos() {
 		
-		if (position != null) {
+		if (position == null) {
 			return 0f;
 		}
 		
@@ -471,7 +471,7 @@ public class Vertex {
 	
 	public float getYPos() {
 		
-		if (position != null) {
+		if (position == null) {
 			return 0f;
 		}
 		
@@ -486,7 +486,7 @@ public class Vertex {
 	
 	public float getZPos() {
 		
-		if (position != null) {
+		if (position == null) {
 			return 0f;
 		}
 		
