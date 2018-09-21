@@ -6,7 +6,7 @@ layout(location = 2) in vec3 vTexPos;
 layout(location = 3) in vec3 vNormal;
 
 
-//model, view and projection matrix TODO: Reduce them to one matrix to save computations
+//model, view and projection matrix
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;

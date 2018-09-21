@@ -193,6 +193,20 @@ public class Matrix44f extends Matrixf {
 	
 	//---------------------- other methods -------------------
 	
+	
+	/**
+	 * 
+	 * Converts this Matrix44f to a Matrix33f.
+	 * 
+	 * @return Returns a new Matrix33f.
+	 */
+	public Matrix33f toMatrix33f() {
+		return new Matrix33f(this.getA1(), this.getA2(), this.getA3(), 
+							 this.getB1(), this.getB2(), this.getB3(), 
+							 this.getC1(), this.getC2(), this.getC3());
+	}
+	
+	
 	/**
 	 * prints out the matrix
 	 */

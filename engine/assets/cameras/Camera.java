@@ -21,9 +21,6 @@ public class Camera {
 	//The up vector for creating a view matrix
 	private Vector3f upVector;
 	
-	//the current view matrix for this camera
-	private Matrix44f viewMatrix;
-	
 	
 	public Camera() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -32,10 +29,16 @@ public class Camera {
 	}
 	
 	
+	public Camera(Vector3f position) {
+		this.position = position.copyOf();
+		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
+		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+	}
+	
+	
 	public Camera(Vector3f position, Vector3f viewDirection) {
 		this.position = position.copyOf();
-		this.viewDirection = viewDirection.normalizedCopy();
-		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		this.viewDirection = viewDirection.copyOf();
 	}
 	
 	
@@ -60,7 +63,7 @@ public class Camera {
 	 * @param distance
 	 */
 	public void backward(float distance) {
-		this.move(-viewDirection.getA() * distance, -viewDirection.getB() * distance, -viewDirection.getC() * distance);
+		this.move(viewDirection.times(-distance));
 	}
 	
 	
@@ -99,6 +102,17 @@ public class Camera {
 	public void moveTo(Vector3f position) {
 		if (!this.position.equals(position))
 			this.position = position.copyOf();
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the camera's position.
+	 * 
+	 * @param position The new position of the camera.
+	 */
+	public void setPosition(Vector3f position) {
+		moveTo(position);
 	}
 	
 	
@@ -175,11 +189,8 @@ public class Camera {
 	 * @param degrees The rotation in degrees
 	 */
 	public void pitch(int degrees) {
-		
 		float radians = (float)(degrees / 360) * 2 * PI;
-		
 		pitch(radians);
-		
 	}
 	
 	
@@ -207,11 +218,8 @@ public class Camera {
 	 * @param degrees The rotation in degrees
 	 */
 	public void yaw(int degrees) {
-		
 		float radians = (float)(degrees / 360) * 2 * PI;
-		
 		yaw(radians);
-		
 	}
 	
 	

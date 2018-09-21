@@ -65,7 +65,7 @@ float computeShadow() {
 
 	float currentDepth = projCoords.z;
 
-	return currentDepth > shadowMapDepth ? 0.2f : 1.0f;
+	return currentDepth > shadowMapDepth ? 0.2f : 0.2f;
 
 }
 
