@@ -217,7 +217,22 @@ public class Vector3f extends Vectorf {
 	
 	//------------------------- Get & Set ----------------------
 	
+	
+	public Vector2f getXY() {
+		return new Vector2f(getA(), getB());
+	}
+	
+	
+	public Vector2f getYZ() {
+		return new Vector2f(getB(), getC());
+	}
+	
+	
+	public Vector2f getXZ() {
+		return new Vector2f(getA(), getC());
+	}
 
+	
 	/**
 	 * @return returns the first component of this vector
 	 */

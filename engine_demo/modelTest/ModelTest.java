@@ -183,9 +183,9 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			RenderEngine.takeScreenshot(window, "screenshots/BoundingBox.png", "PNG");
+			//RenderEngine.takeScreenshot(window, "screenshots/BoundingBox.png", "PNG");
+			
+			System.out.println("View Matrix: " + camera.getViewMatrix());
 		}
-		
 	}
-
 }

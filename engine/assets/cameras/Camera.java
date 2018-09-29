@@ -1,12 +1,15 @@
 package assets.cameras;
 
+import math.MathUtils;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import rendering.matrices.transformation.*;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
+import interaction.input.KeyInput;
 
 import static math.Trigonometry.*;
-
-import interaction.input.KeyInput;
+import static rendering.matrices.transformation.RotationMatrix.*;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 
@@ -122,8 +125,18 @@ public class Camera {
 	 * 
 	 * @param point The new point the camera should look at
 	 */
-	public void lookAt(Vector3f point) {
+	public void lookAt(Vector3f point) {		
+		Vector3f baseVD = new Vector3f(0f, 0f, -1f);
+		
 		this.viewDirection = point.minus(position).normalize();
+		
+		float x = acos(baseVD.getYZ().dot(viewDirection.getYZ()));
+		float y = acos(baseVD.getXZ().dot(viewDirection.getXZ()));
+		float z = acos(baseVD.getXY().dot(viewDirection.getXY()));
+		
+		System.out.println("X: " + x + "; Y: " + y + "; Z: " + z);
+		
+		this.upVector = RotationMatrix.getRotationMatrix(x, y, z).times(new Vector4f(0f, 1f, 0f, 1f)).toVector3f();
 	}
 	
 	
@@ -206,8 +219,7 @@ public class Camera {
 	
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
 		
-		this.upVector = rotationMatrix.times(upVector);
-		
+		this.upVector = rotationMatrix.times(upVector);	
 	}
 	
 	
@@ -220,6 +232,33 @@ public class Camera {
 	public void yaw(int degrees) {
 		float radians = (float)(degrees / 360) * 2 * PI;
 		yaw(radians);
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the z-axis
+	 * 
+	 * @param radians The rotation in radians
+	 */
+	public void roll(float radians) {
+		Matrix33f rotationMatrix = new Matrix33f(cos(radians), -sin(radians), 0f, sin(radians), cos(radians), 0f, 0f, 0f, 1f);
+		
+		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
+		
+		this.upVector = rotationMatrix.times(upVector);
+	}
+	
+	
+	/**
+	 * 
+	 * Rotates the camera around the z-axis
+	 * 
+	 * @param degrees The rotation in degrees
+	 */
+	public void roll(int degrees) {
+		float radians = (float)(degrees / 360) * 2 * PI;
+		roll(radians);
 	}
 	
 	

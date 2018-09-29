@@ -14,6 +14,15 @@ public class Trigonometry {
 	}
 	
 	
+	public static float acos(float f) {
+		if (f > 1f) {
+			return acos(1f);
+		}
+		
+		return (float)Math.acos(f);
+	}
+	
+	
 	public static float sin(float value) {
 		return (float)Math.sin(value);
 	}

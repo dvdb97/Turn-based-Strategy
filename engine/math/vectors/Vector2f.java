@@ -23,6 +23,11 @@ public class Vector2f extends Vectorf {
 		// TODO Auto-generated method stub
 		return new Vector2f(getA(), getB());
 	}
+	
+	
+	public float dot(Vector2f vec) {
+		return this.getA() * vec.getA() + this.getB() * vec.getB();
+	}
 
 	
 	public void setA(float a) {

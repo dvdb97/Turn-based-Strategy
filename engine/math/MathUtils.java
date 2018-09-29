@@ -2,7 +2,6 @@ package math;
 
 public class MathUtils {
 	
-	
 	public static float square(float value) {
 		return value * value;
 	}

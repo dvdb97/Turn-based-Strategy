@@ -30,8 +30,6 @@ public class SkyboxShader extends ShaderProgram {
 	public void setUniformMatrices(Matrix44f view, Matrix44f projection) {
 		Matrix44f cleanedUpViewMatrix = view.toMatrix33f().toMatrix44f();
 		
-		System.out.println("View Matrix: " + cleanedUpViewMatrix);
-		
 		this.setUniformMatrix4fv("viewMatrix", cleanedUpViewMatrix);
 		this.setUniformMatrix4fv("projectionMatrix", projection);		
 	}
