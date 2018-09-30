@@ -52,7 +52,6 @@ vec3 computeAmbientLight() {
 
 
 float computeShadow() {
-
 	if (shadowsActive == 0) {
 		return 1.0f;
 	}
@@ -66,12 +65,10 @@ float computeShadow() {
 	float currentDepth = projCoords.z;
 
 	return currentDepth > shadowMapDepth ? 0.2f : 0.2f;
-
 }
 
 
 vec3 computeLight() {
-
 	vec3 normalizedNormal = normalize(fs_in.fragNormal);
 
 	//********* diffuse light *********
@@ -110,14 +107,11 @@ vec3 computeLight() {
 
 
 	return min(vec3(1.0f, 1.0f, 1.0f), finalColor);
-
 }
 
 
 void main() {
-
 	vec3 finalColor = computeLight();
 	
 	fColor = vec4(finalColor, material.color.a);
-
 }

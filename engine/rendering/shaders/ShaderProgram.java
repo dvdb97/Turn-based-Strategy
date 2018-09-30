@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.regex.*;
 
 import assets.material.Material;
+import assets.meshes.geometry.Vertex;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -60,6 +61,11 @@ public class ShaderProgram {
 			}
 			
 			return 2;
+		}
+
+		@Override
+		public String toString() {
+			return "location " + location + ": " + type + " " + identifier;
 		}
 		
 	}
@@ -182,25 +188,19 @@ public class ShaderProgram {
 	
 	
 	private void parseLayout() {
-		
 		Collection<Attribute> attribCollection = attributes.values();
 		
 		int layout = 0;
 		
 		for (int i = 0; i < 8; ++i) {
-			
 			for (Attribute attrib : attribCollection) {
-				
-				if (attrib.location == i) {
+				if (attrib.location == i) {					
 					layout |= attrib.getDataSize() << (i * 4);
 				}
-				
 			}
-			
 		}
 		
 		this.layout = layout;
-		
 	}
 	
 	

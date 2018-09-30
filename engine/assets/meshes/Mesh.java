@@ -133,8 +133,7 @@ public class Mesh {
 	 * 
 	 * @param flag The way the data will be accessed in future operations. Massively impacts the speed if used correctly.
 	 */
-	public void storeOnGPU(BufferLayout layout, int vertexLayout, int flag) {
-				
+	public void storeOnGPU(BufferLayout layout, int vertexLayout, int flag) {		
 		if (vao != null) {
 			System.err.println("This mesh is already stored on the gpu!");
 			
@@ -177,7 +176,6 @@ public class Mesh {
 		}
 		
 		this.indexBuffer = CustomBufferUtils.createIntBuffer(indices);
-		
 	}
 	
 	
@@ -189,11 +187,9 @@ public class Mesh {
 	 * @param newVertex
 	 */
 	public void replaceVertex(int index, Vertex newVertex) {
-		
 		if (vao.getVertexSize() != newVertex.getDataSize()) {
 			return;
 		}
-		
 	}
 	
 	
@@ -222,6 +218,18 @@ public class Mesh {
 	}
 	
 	
+	@Override
+	public String toString() {
+		String s = "";
+		
+		for (Vertex vertex : vertices) {
+			s += vertex.toString() + "\n";
+		}
+		
+		return s;
+	}
+
+
 	public void delete() {
 		vao.delete();
 	}

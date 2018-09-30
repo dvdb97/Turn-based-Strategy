@@ -42,6 +42,7 @@ public class Camera {
 	public Camera(Vector3f position, Vector3f viewDirection) {
 		this.position = position.copyOf();
 		this.viewDirection = viewDirection.copyOf();
+		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 	}
 	
 	
@@ -126,17 +127,7 @@ public class Camera {
 	 * @param point The new point the camera should look at
 	 */
 	public void lookAt(Vector3f point) {		
-		Vector3f baseVD = new Vector3f(0f, 0f, -1f);
-		
 		this.viewDirection = point.minus(position).normalize();
-		
-		float x = acos(baseVD.getYZ().dot(viewDirection.getYZ()));
-		float y = acos(baseVD.getXZ().dot(viewDirection.getXZ()));
-		float z = acos(baseVD.getXY().dot(viewDirection.getXY()));
-		
-		System.out.println("X: " + x + "; Y: " + y + "; Z: " + z);
-		
-		this.upVector = RotationMatrix.getRotationMatrix(x, y, z).times(new Vector4f(0f, 1f, 0f, 1f)).toVector3f();
 	}
 	
 	

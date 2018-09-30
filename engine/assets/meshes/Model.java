@@ -103,7 +103,6 @@ public class Model {
 	 * @param projection The projectionMatrix.
 	 */
 	public void render(Matrix44f view, Matrix44f projection) {
-		
 		//Pass the mvp matrix to the shader.
 		shader.setMVPMatrix(transform.getTransformationMatrix(), view, projection);
 		
@@ -117,7 +116,6 @@ public class Model {
 		
 		if (texture != null)
 			texture.unbind();
-		
 	}
 	
 	

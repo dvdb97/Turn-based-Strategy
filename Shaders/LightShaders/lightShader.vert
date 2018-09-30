@@ -29,7 +29,6 @@ out VS_OUT {
 
 
 void main() {
-
 	//The color of the vertex
 	vs_out.fragColor = vColor;
 
@@ -47,5 +46,4 @@ void main() {
 
 	//The projective space coordinates of the vertex
 	gl_Position = mvpMatrix * vec4(vPosition, 1.0f);
-
 }

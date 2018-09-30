@@ -43,7 +43,6 @@ public class ModelTest {
 	
 	
 	public static void init() {
-		
 		window = new Window();
 		
 		window.createFullscreenWindow("Model Demo");
@@ -57,39 +56,33 @@ public class ModelTest {
 		RenderEngine.setSwapInterval(1);
 		
 		initShader();
-		
 	}
 	
 	
 	public static void initShader() {
-		
 		shader = LightShader.createPerFragmentLightShader();
-		
 	}
 	
 	
 	public static Model initMesh() {
-		
 		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), 1f);
 		
-		return new Model(shader, mesh, material, texture, BufferLayout.BLOCKWISE);		
-		
+		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 	}
 	
 	
 	public static void main(String[] args) {
-		
 		init();
 		
 		model = initMesh();
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(1f, 0f, 0f), new Vector3f(1f, 1f, 0f));
+		light = new DirectionalLight(new Vector3f(1f, -1f, 0f), new Vector3f(1f, 1f, 0f));
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -128,12 +121,10 @@ public class ModelTest {
 		}
 		
 		model.delete();
-		
 	}
 	
 	
 	private static void handleInput() {
-		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_W)) {
 			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
 			

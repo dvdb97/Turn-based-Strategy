@@ -262,13 +262,13 @@ public class Vertex {
 		for (int i = 0; i < attributes.length; ++i) {
 			
 			for (int j = 0; j < blockSizes[i]; ++j) {
-				
 				if (attributes[i] == null) {
+					data[arrayIndex++] = 0f;
+					
 					continue;
 				}
 				
 				data[arrayIndex++] = j < attributes[i].length ? attributes[i][j] : 0f; 
-				
 			}
 			
 		}
@@ -582,6 +582,5 @@ public class Vertex {
 	public String toString() {
 		return "Vertex at position " + Arrays.toString(position) + " texCoords " + Arrays.toString(texPos) + " normal " + Arrays.toString(normal);
 	}
-	
 	
 }

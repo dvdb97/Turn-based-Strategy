@@ -58,9 +58,7 @@ public class LightShader extends ShaderProgram {
 	 * @param modelMatrix The model matrix
 	 */
 	public void setModelMatrix(Matrix44f modelMatrix) {
-		
 		this.setUniformMatrix4fv("modelMatrix", modelMatrix.toArray());
-		
 	}
 	
 	
@@ -71,9 +69,7 @@ public class LightShader extends ShaderProgram {
 	 * @param viewMatrix The view matrix
 	 */
 	public void setViewMatrix(Matrix44f viewMatrix) {
-		
 		this.setUniformMatrix4fv("viewMatrix", viewMatrix.toArray());
-		
 	}
 	
 	
@@ -84,9 +80,7 @@ public class LightShader extends ShaderProgram {
 	 * @param projectionMatrix The projection matrix
 	 */
 	public void setProjectionMatrix(Matrix44f projectionMatrix) {
-		
 		this.setUniformMatrix4fv("projectionMatrix", projectionMatrix.toArray());
-		
 	}
 	
 	
@@ -97,9 +91,7 @@ public class LightShader extends ShaderProgram {
 	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
 	 */
 	public void setLightViewMatrix(Matrix44f lightViewMatrix) {
-		
 		this.setUniformMatrix4fv("lightViewMatrix", lightViewMatrix);
-		
 	}
 	
 	
@@ -110,9 +102,7 @@ public class LightShader extends ShaderProgram {
 	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
 	 */
 	public void setLightProjectionMatrix(Matrix44f lightProjectionMatrix) {
-		
 		this.setUniformMatrix4fv("lightProjectionMatrix", lightProjectionMatrix);
-		
 	}
 	
 	
@@ -130,16 +120,12 @@ public class LightShader extends ShaderProgram {
 	
 	
 	public void setCameraPosition(Vector3f pos) {
-		
 		this.setUniform3fv("cameraPosition", pos.toArray());
-		
 	}
 	
 	
 	public void setAmbientLight(Vector3f vec) {
-		
 		this.setUniform3fv("ambientLight", vec.toArray());
-		
 	}
 	
 	
@@ -165,15 +151,13 @@ public class LightShader extends ShaderProgram {
 	 * @param shadows Enables or disables trying to read from a shadow map.
 	 */	
 	public void setLightSource(DirectionalLight light, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix, boolean shadows) {
+		this.setUniformVector3f("light.direction", light.getViewDirection());
 		
-		this.setUniform3fv("light.direction", light.getViewDirection().toArray());
-		
-		this.setUniform3fv("light.color", light.getColor().toArray());
+		this.setUniformVector3f("light.color", light.getColor());
 		
 		this.setLightVPMatrix(lightViewMatrix, lightProjectionMatrix);
 		
 		this.setUniform1i("shadowsActive", shadows ? 1 : 0);
-		
 	}
 	
 	
@@ -184,18 +168,14 @@ public class LightShader extends ShaderProgram {
 	 * @param camera The camera the scene is rendered with.
 	 */
 	public void setCamera(Camera camera) {
-		
 		this.setUniform3fv("cameraPosition", camera.getPosition().toArray());
 		
 		//TODO: Maybe set view matrix here.
-		
 	}
 	
 	
 	public void setShadowMapInformation(ShadowMap shadowMap) {
-		
 		this.setLightVPMatrix(shadowMap.getLightViewMatrix(), shadowMap.getLightProjectionMatrix());
-		
 	}
 
 }
