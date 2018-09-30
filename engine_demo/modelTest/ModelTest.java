@@ -82,7 +82,7 @@ public class ModelTest {
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(1f, -1f, 0f), new Vector3f(1f, 1f, 0f));
+		light = new DirectionalLight(new Vector3f(1f, -1f, 0f), new Vector3f(1f, 1f, 1f));
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -105,7 +105,7 @@ public class ModelTest {
 			
 			shader.use();
 			
-			shader.setAmbientLight(new Vector3f(0.2f, 0.2f, 0.2f));
+			shader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
 			
 			shader.setLightSource(light);
 			

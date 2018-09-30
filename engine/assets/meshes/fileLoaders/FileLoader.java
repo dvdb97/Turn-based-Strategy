@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import assets.material.Material;
 import assets.meshes.Mesh;
@@ -27,6 +29,11 @@ public class FileLoader {
 	 * 
 	 * https://www.youtube.com/watch?v=YKFYtekgnP8&index=10&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP
 	 * 
+	 * Requirements:
+	 * 
+	 * 	- The model has to be triangulated in Blender as this algorithm isn't able to process quads.
+	 *  - No lines have been added manually to the file as it might cause the programm to crash.
+	 * 
 	 * @param path The path of the file.
 	 * @return Returns a Mesh
 	 */
@@ -35,10 +42,13 @@ public class FileLoader {
 		double timer1 = glfwGetTime();
 		
 		ArrayList<Vector3f> positions = new ArrayList<Vector3f>();
+		
 		ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
 		ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
 		
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+		HashMap<Vertex, Integer> vertexLookUp = new HashMap<Vertex, Integer>();
+		
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		
 		String line = "";
@@ -55,7 +65,7 @@ public class FileLoader {
 				
 				} else if (line.startsWith("vt ")) {
 					
-					texCoords.add(new Vector2f(parseFloat(currentLines[1]), parseFloat(currentLines[2])));
+					texCoords.add(new Vector2f(parseFloat(currentLines[1]), 1f - parseFloat(currentLines[2])));
 				
 				} else if (line.startsWith("vn ")) {
 					
@@ -63,46 +73,14 @@ public class FileLoader {
 				
 				} else if (line.startsWith("f ")) {
 					
-					for (int i = 1; i < currentLines.length; ++i) {
-						
-						String[] values = currentLines[i].split("/");
-						
-						float[] position = new float[0];
-						float[] texture = new float[0];
-						float[] normal = new float[0];
-						
-						if (!values[0].equals("")) {
-							position = positions.get(parseInt(values[0]) - 1).toArray();
-						}
-						
-						if (!values[1].equals("")) {
-							texture = texCoords.get(parseInt(values[1]) - 1).toArray();
-						}
-						
-						if (!values[2].equals("")) {
-							normal = normals.get(parseInt(values[2]) - 1).toArray();
-						}
-						
-						vertices.add(new Vertex(position, texture, normal));
-						
-					}
+					String[] currentLine = line.split(" ");
 					
-					if (currentLines.length == 3) {
-						indices.add(vertices.size() - 3);
-						indices.add(vertices.size() - 2);
-						indices.add(vertices.size() - 1);											
-					} else {
-						indices.add(vertices.size() - 4);
-						indices.add(vertices.size() - 3);
-						indices.add(vertices.size() - 2);
+					for (int i = 1; i < currentLine.length; ++i) {
+						String[] vertexData = currentLine[i].split("/");
 						
-						indices.add(vertices.size() - 4);
-						indices.add(vertices.size() - 2);
-						indices.add(vertices.size() - 1);
+						processVertex(vertexData, vertices, vertexLookUp, indices, positions, texCoords, normals);
 					}
-					
-				}
-				
+				}				
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -114,7 +92,23 @@ public class FileLoader {
 		System.out.println("Time needed: " + (glfwGetTime() - timer1));
 		
 		return new Mesh(vertices, indices);
+	}
+	
+	
+	private static void processVertex(String[] vertexData, List<Vertex> vertices, HashMap<Vertex, Integer> vertexLookUp, List<Integer> indices, List<Vector3f> positions, List<Vector2f> texCoords, List<Vector3f> normals) {
+		Vector3f vPosition = positions.get(parseInt(vertexData[0]) - 1);		
+		Vector2f vTexCoord = vertexData[1].equals("") ? null : texCoords.get(parseInt(vertexData[1]) - 1);
+		Vector3f vNormal = normals.get(parseInt(vertexData[2]) - 1);
 		
+		Vertex vertex = new Vertex(vPosition, vTexCoord, vNormal);
+		
+		if (vertexLookUp.containsKey(vertex)) {
+			indices.add(vertexLookUp.get(vertex));
+		} else {
+			vertices.add(vertex);
+			indices.add(new Integer(vertices.size() - 1));
+			vertexLookUp.put(vertex, vertices.size() - 1);
+		}
 	}
 	
 	

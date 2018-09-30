@@ -58,7 +58,6 @@ public class VertexBuffer extends Buffer {
 	
 	
 	public void storeDataInterleaved(List<Vertex> vertices, int layout, int flag) {
-		
 		if (vertices.isEmpty()) {
 			return;
 		}
@@ -72,18 +71,15 @@ public class VertexBuffer extends Buffer {
 		buffer.flip();
 		
 		this.setBufferStorage(buffer, flag);
-		
 	}
 	
 	
 	public int storeDataInterleaved(Vertex[] vertices, int flag) {
-		
 		int layout = vertices[0].getDataLayout();
 		
 		storeDataInterleaved(vertices, layout, flag);
 		
 		return layout;
-		
 	}
 	
 	

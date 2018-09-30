@@ -177,6 +177,21 @@ public class Vertex {
 	
 	/**
 	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 * @param normal The vertex normal
+	 */
+	public Vertex(Vector3f position, Vector2f texPos, Vector3f normal) {
+		this(position);
+		this.normal = normal.toArray();
+		this.texPos = normal.toArray();
+	}
+	
+	
+	/**
+	 * 
 	 * Encodes the size of every vertex attribute as 4 bits
 	 * of an integer
 	 * 
