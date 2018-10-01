@@ -8,6 +8,7 @@ import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import rendering.shaders.standardShaders.lightShader.LightShader;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.glfw.GLFW;
 import assets.cameras.Camera;
@@ -17,6 +18,9 @@ import assets.meshes.Mesh;
 import assets.meshes.Model;
 import assets.meshes.Transformable;
 import assets.meshes.MeshConst.BufferLayout;
+import assets.meshes.algorithms.terrain.CosFunction;
+import assets.meshes.algorithms.terrain.Heightmap;
+import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.textures.Skybox;
@@ -41,6 +45,7 @@ public class ModelTest {
 	private static float xRot = 0f;
 	private static float yRot = 0f;
 	
+	private static boolean wireframe = false;	
 	
 	public static void init() {
 		window = new Window();
@@ -64,12 +69,14 @@ public class ModelTest {
 	}
 	
 	
-	public static Model initMesh() {
-		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
+	public static Model initMesh() {		
+		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol.png");
+		
+		Mesh mesh = Terrain.generate(heightmap);
 		
 		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
-		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), 1f);
+		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), 1f);
 		
 		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 	}
@@ -80,9 +87,11 @@ public class ModelTest {
 		
 		model = initMesh();
 		
+		model.getTransformable().setScaling(6f, 6f, 0.5f);
+		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(1f, -1f, 0f), new Vector3f(1f, 1f, 1f));
+		light = new DirectionalLight(new Vector3f(0f, 0f, -1f), new Vector3f(1f, 1f, 1f));
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -95,7 +104,6 @@ public class ModelTest {
 		skybox = new Skybox(paths);
 		
 		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
-		
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			
@@ -174,9 +182,7 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			//RenderEngine.takeScreenshot(window, "screenshots/BoundingBox.png", "PNG");
-			
-			System.out.println("View Matrix: " + camera.getViewMatrix());
+			RenderEngine.takeScreenshot(window, "screenshots/Fancy.png", "PNG");			
 		}
 	}
 }

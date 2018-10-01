@@ -17,21 +17,27 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Mesh {
 	
-	//The vertex array object that holds the references to the vertex data
+	//The vertex array object that holds the references to the vertex data.
 	private VertexArrayObject vao = null;
 	
+	//The way the vertex data is stored in the buffers.
 	private BufferLayout layout = null;
 	
-	private int vertexLayout;
+	//The layout of the vertex' attributes.
+	private int attributeLayout;
 	
 	
+	//The list of vertices of this mesh.
 	private List<Vertex> vertices = null;
 	
+	//The list of indices defining the faces of the mesh.
 	private List<Integer> indices = null;
 	
+	//The buffer storing the indices.
 	private IntBuffer indexBuffer;
 	
 	
+	//A box approximating the size of the mesh.
 	private BoundingBox boundingBox;	
 	
 	private int drawMode = GL_TRIANGLES;
@@ -50,7 +56,13 @@ public class Mesh {
 		this.indices = indices;
 		
 		this.boundingBox = new BoundingBox(vertices);
+	}
+	
+	
+	public Mesh(List<Vertex> vertices, List<Integer> indices, int drawMode) {
+		this(vertices, indices);
 		
+		this.drawMode = drawMode;
 	}
 	
 	
@@ -144,7 +156,7 @@ public class Mesh {
 		
 		this.layout = layout;
 		
-		this.vertexLayout = vertexLayout;
+		this.attributeLayout = vertexLayout;
 		
 		
 		if (layout == BufferLayout.INTERLEAVED) {

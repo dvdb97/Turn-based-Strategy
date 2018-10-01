@@ -15,6 +15,8 @@ public class Color extends Vector4f {
 	
 	public static final Color YELLOW = new Color(1f, 1f, 0f, 1f);
 	
+	public static final Color GREY = new Color(0.5f, 0.5f, 0.5f, 1f);
+	
 
 	/**
 	 * 
