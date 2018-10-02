@@ -1,4 +1,4 @@
-package rendering.shaders;
+package assets.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
 

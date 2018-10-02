@@ -1,13 +1,13 @@
-package rendering.shaders.standardShaders.lightShader;
+package assets.shaders.standardShaders.lightShader;
 
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import rendering.shaders.ShaderProgram;
 import utils.FileUtils;
 
 

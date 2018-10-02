@@ -1,7 +1,7 @@
-package rendering.shaders.standardShaders.shadowMapping;
+package assets.shaders.standardShaders.shadowMapping;
 
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
-import rendering.shaders.ShaderProgram;
 import utils.FileUtils;
 
 public class ShadowMappingShader extends ShaderProgram {

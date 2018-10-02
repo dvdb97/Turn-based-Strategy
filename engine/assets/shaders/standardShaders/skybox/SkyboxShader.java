@@ -1,7 +1,7 @@
-package rendering.shaders.standardShaders.skybox;
+package assets.shaders.standardShaders.skybox;
 
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
-import rendering.shaders.ShaderProgram;
 import utils.FileUtils;
 
 public class SkyboxShader extends ShaderProgram {	
