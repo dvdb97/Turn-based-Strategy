@@ -20,11 +20,13 @@ struct LightSource {
 
 //Incoming variables variables:
 in VS_OUT {
-	vec3 fragCoord;
+	vec3 fragCoordModelSpace;
+	vec3 fragCoordWorldSpace;
 	vec4 fragCoordLightSpace;
 	vec4 fragColor;
-	vec3 fragTexPos;
-	vec3 fragNormal;
+	vec2 fragTexPos;
+	vec3 fragNormalModelSpace;
+	vec3 fragNormalWorldSpace;
 } fs_in;
 
 
@@ -62,7 +64,7 @@ float computeShadow() {
 
 	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
 
-	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormal), normalize(light.direction))), 0.05);
+	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormalWorldSpace), normalize(light.direction))), 0.05);
 
 	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
 
@@ -72,7 +74,7 @@ float computeShadow() {
 }
 
 vec4 computeLight() {
-	vec3 normalizedNormal = normalize(fs_in.fragNormal);
+	vec3 normalizedNormal = normalize(fs_in.fragNormalWorldSpace);
 
 	//********* diffuse light *********
 
@@ -89,7 +91,7 @@ vec4 computeLight() {
 	 * The vector from the fragment's position to the camera. Will be used for reflection.
 	 * If the reflected light at this fragment matches this vector there will be maximum reflected light.
 	 */
-	vec3 viewDirection = normalize(cameraPosition - fs_in.fragCoord);
+	vec3 viewDirection = normalize(cameraPosition - fs_in.fragCoordModelSpace);
 	
 	//Reflect the incoming light
 	vec3 reflectionDirection = normalize(reflect(lightDirection, normalizedNormal));
@@ -107,7 +109,7 @@ vec4 computeLight() {
 
 	vec4 col = color();
 
-	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * color.rgb;
+	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * col.rgb;
 
 	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), material.color.a);
 }

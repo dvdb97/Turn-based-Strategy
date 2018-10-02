@@ -23,6 +23,9 @@ import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.shaders.standardShaders.lightShader.LightShader;
+import assets.shaders.subshaders.ConstantColorSubshader;
+import assets.shaders.subshaders.Subshader;
+import assets.shaders.subshaders.Texture2DSubshader;
 import assets.textures.Skybox;
 import assets.textures.Texture2D;
 
@@ -65,7 +68,9 @@ public class ModelTest {
 	
 	
 	public static void initShader() {
-		shader = LightShader.createPerFragmentLightShader();
+		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
+		
+		shader = LightShader.createPerFragmentLightShader(subshader);
 	}
 	
 	
@@ -74,7 +79,7 @@ public class ModelTest {
 		
 		Mesh mesh = Terrain.generate(heightmap);
 		
-		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
+		Texture2D texture = new Texture2D("res/heightmaps/Osttirol_HR.png");
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), 1f);
 		
@@ -109,7 +114,7 @@ public class ModelTest {
 			
 			RenderEngine.clear();
 			
-			skybox.render(camera.getViewMatrix(), projMatrix);
+			//skybox.render(camera.getViewMatrix(), projMatrix);
 			
 			shader.use();
 			
@@ -121,7 +126,7 @@ public class ModelTest {
 			
 			handleInput();
 			
-			model.render(camera.getViewMatrix(), projMatrix, true);
+			model.render(camera.getViewMatrix(), projMatrix);
 			
 			shader.disable();
 			

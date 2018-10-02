@@ -5,6 +5,7 @@ import java.util.List;
 
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Vertex;
+import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -53,11 +54,14 @@ public class Terrain extends Mesh {
 		for (int y = 0; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
 				Vector3f position = new Vector3f(-1f + x * quadWidth, -1f + y * quadHeight, depthFunc.getDepth(x, y));
+				
+				Vector2f texCoords = new Vector2f(x * quadWidth / 2f, y * quadHeight / 2f);
+				
 				Vector3f normal = new Vector3f(depthFunc.getDepth(x-1, y) - depthFunc.getDepth(x+1, y), 
 											   depthFunc.getDepth(x, y-1) - depthFunc.getDepth(x, y+1), 
 											   1f);
 				
-				vertices.add(new Vertex(position.toArray(), null, normal.toArray()));
+				vertices.add(new Vertex(position.toArray(), texCoords.toArray(), normal.toArray()));
 			}
 		}
 		

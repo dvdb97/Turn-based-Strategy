@@ -6,6 +6,7 @@ import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.shaders.ShaderProgram;
+import assets.shaders.subshaders.Subshader;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import utils.FileUtils;
@@ -43,6 +44,27 @@ public class LightShader extends ShaderProgram {
 		
 		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
+		
+		return new LightShader(vertSource, fragSource);
+	}
+	
+	
+	/**
+	 * 
+	 * @param subshader A subshader to compute the color values.
+	 * @return returns a LightShader that does per fragment light computing
+	 */
+	public static LightShader createPerFragmentLightShader(Subshader subshader) {
+		
+		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
+		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
+		
+		//Replace the standard color-function with the subshader's function.
+		fragSource = fragSource.replace("vec4 color() {\n" + 
+				"	return material.color;\n" + 
+				"}", subshader.getSourceCode());
+		
+		System.out.println(fragSource);
 		
 		return new LightShader(vertSource, fragSource);
 	}
