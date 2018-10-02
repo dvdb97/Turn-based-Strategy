@@ -3,12 +3,12 @@ package rendering.lightRenderer;
 import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
+import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import assets.textures.Texture2D;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
 import rendering.framebuffers.FrameBuffer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
-import rendering.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 
 public class ShadowMapper {
 	

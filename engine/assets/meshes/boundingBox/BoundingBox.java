@@ -6,10 +6,10 @@ import javax.xml.crypto.dsig.Transform;
 
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Vertex;
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
 
 /**
  * 

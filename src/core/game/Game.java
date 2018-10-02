@@ -7,11 +7,12 @@ import interaction.TileSelecter;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import rendering.shaders.ShaderManager;
 import visualize.FontTest;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+
+import assets.shaders.ShaderManager;
 
 
 public class Game {

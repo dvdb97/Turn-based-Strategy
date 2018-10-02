@@ -4,10 +4,10 @@ import assets.buffers.Buffer;
 import assets.meshes.Mesh;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
+import assets.shaders.standardShaders.skybox.SkyboxShader;
 import math.matrices.Matrix44f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
-import rendering.shaders.standardShaders.skybox.SkyboxShader;
 
 import static org.lwjgl.opengl.GL11.*;
 

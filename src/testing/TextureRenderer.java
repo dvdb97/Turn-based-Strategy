@@ -1,11 +1,11 @@
 package testing;
 
 import assets.models.Element_Model;
+import assets.shaders.ShaderManager;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import rendering.shaders.ShaderManager;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;

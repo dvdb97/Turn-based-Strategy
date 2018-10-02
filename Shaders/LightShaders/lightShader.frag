@@ -43,13 +43,17 @@ uniform int shadowsActive;
 uniform sampler2D shadowMap;
 
 
+//The final color
 out vec4 fColor;
 
+
+vec4 color() {
+	return material.color;
+}
 
 vec3 computeAmbientLight() {
 	return ambientLight * material.ambient;
 }
-
 
 float computeShadow() {
 	if (shadowsActive == 0) {
@@ -67,8 +71,7 @@ float computeShadow() {
 	return currentDepth > shadowMapDepth ? 0.2f : 0.2f;
 }
 
-
-vec3 computeLight() {
+vec4 computeLight() {
 	vec3 normalizedNormal = normalize(fs_in.fragNormal);
 
 	//********* diffuse light *********
@@ -102,16 +105,13 @@ vec3 computeLight() {
 
 	//********* final result *********
 
+	vec4 col = color();
 
-	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * material.color.rgb;
+	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * color.rgb;
 
-
-	return min(vec3(1.0f, 1.0f, 1.0f), finalColor);
+	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), material.color.a);
 }
 
-
 void main() {
-	vec3 finalColor = computeLight();
-	
-	fColor = vec4(finalColor, material.color.a);
+	fColor = computeLight();
 }

@@ -5,7 +5,6 @@ import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
-import rendering.shaders.standardShaders.lightShader.LightShader;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.opengl.GL11.*;
@@ -23,6 +22,7 @@ import assets.meshes.algorithms.terrain.Heightmap;
 import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
+import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.textures.Skybox;
 import assets.textures.Texture2D;
 
@@ -70,7 +70,7 @@ public class ModelTest {
 	
 	
 	public static Model initMesh() {		
-		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol.png");
+		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol_HR.png");
 		
 		Mesh mesh = Terrain.generate(heightmap);
 		
@@ -87,11 +87,11 @@ public class ModelTest {
 		
 		model = initMesh();
 		
-		model.getTransformable().setScaling(6f, 6f, 0.5f);
+		model.getTransformable().setScaling(6f, 6f, 1f);
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(0f, 0f, -1f), new Vector3f(1f, 1f, 1f));
+		light = new DirectionalLight(new Vector3f(0f, 1f, -1f), new Vector3f(1f, 1f, 1f));
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";

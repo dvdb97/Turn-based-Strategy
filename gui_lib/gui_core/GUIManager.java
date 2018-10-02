@@ -1,9 +1,9 @@
 package gui_core;
 
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix33f;
 import math.vectors.Vector4f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
 
 public class GUIManager {
 	

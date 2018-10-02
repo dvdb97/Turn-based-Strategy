@@ -88,5 +88,23 @@ public class Terrain extends Mesh {
 	 */
 	public static Terrain generate(ElevationFunction depthFunc) {
 		return generate(depthFunc.getWidth(), depthFunc.getHeight(), depthFunc);
-	}	
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the width of the Terrain.
+	 */
+	public int getWidth() {
+		return width;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the height of the Terrain.
+	 */
+	public int getHeight() {
+		return height;
+	}
 }

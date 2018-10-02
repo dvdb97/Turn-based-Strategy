@@ -1,7 +1,5 @@
 package assets.meshes.algorithms.terrain;
 
-import java.util.Arrays;
-
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
 
@@ -27,8 +25,6 @@ public class Heightmap implements ElevationFunction {
 	private void loadHeightmap(String path) {
 		Image image = ImageLoader.loadImageRGBA(path);
 		byte[] pixelData = image.getImageData();
-		
-		System.out.println(Arrays.toString(pixelData));
 		
 		this.width = image.getWidth();
 		this.height = image.getHeight();

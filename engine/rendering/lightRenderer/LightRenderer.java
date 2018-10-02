@@ -4,11 +4,11 @@ import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.light.ShadowMap;
 import assets.models.Illuminated_Model;
+import assets.shaders.standardShaders.lightShader.LightShader;
 import graphics.matrices.Matrices;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
-import rendering.shaders.standardShaders.lightShader.LightShader;
 import testing.TextureRenderer;
 
 public class LightRenderer {

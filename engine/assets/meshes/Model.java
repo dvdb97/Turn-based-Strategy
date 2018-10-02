@@ -5,10 +5,10 @@ import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.MeshConst.BufferLayout;
+import assets.shaders.ShaderProgram;
 import assets.textures.Texture;
 import assets.textures.Texture2D;
 import math.matrices.Matrix44f;
-import rendering.shaders.ShaderProgram;
 
 public class Model {
 	
