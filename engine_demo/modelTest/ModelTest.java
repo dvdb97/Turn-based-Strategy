@@ -46,9 +46,7 @@ public class ModelTest {
 	private static Skybox skybox;
 	
 	private static float xRot = 0f;
-	private static float yRot = 0f;
-	
-	private static boolean wireframe = false;	
+	private static float yRot = 0f;	
 	
 	public static void init() {
 		window = new Window();
@@ -81,7 +79,7 @@ public class ModelTest {
 		
 		Texture2D texture = new Texture2D("res/heightmaps/Osttirol_HR.png");
 		
-		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), 1f);
+		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		
 		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
 	}

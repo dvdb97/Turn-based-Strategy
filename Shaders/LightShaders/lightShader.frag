@@ -102,7 +102,7 @@ vec4 computeLight() {
 		specular = 0;
 	}
 
-	vec3 specularLight = material.specular * pow(specular, 64f) * light.color;
+	vec3 specularLight = material.specular * pow(specular, material.shininess) * light.color;
 
 
 	//********* final result *********
