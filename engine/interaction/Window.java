@@ -18,6 +18,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Window {
 	
+	public static Window main;
+	
 	//****************************** screen information ******************************
 	
 	private int screenWidth;
@@ -48,6 +50,9 @@ public class Window {
 	
 	
 	public Window() {
+		
+		if (main == null)
+			main = this;
 		
 		GLFWErrorCallback.createPrint(System.err).set();
 		

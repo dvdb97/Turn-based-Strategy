@@ -1,19 +1,18 @@
 package assets.cameras;
 
-import math.MathUtils;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
-import rendering.matrices.transformation.*;
+import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
-import interaction.input.KeyInput;
-
 import static math.Trigonometry.*;
-import static rendering.matrices.transformation.RotationMatrix.*;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
+import interaction.Window;
 
 public class Camera {
+	
+	public enum ProjectionType {
+		PERSPECTIVE, ORTHOGRAPHIC
+	}
 	
 	//The current position of the camera
 	private Vector3f position;
@@ -24,29 +23,98 @@ public class Camera {
 	//The up vector for creating a view matrix
 	private Vector3f upVector;
 	
+	//The type of projection that is currently used.
+	private ProjectionType projection;	
 	
+	
+	//The camera's projection matrix.
+	private Matrix44f projectionMatrix;
+	
+	//The inverse of the camera's projection matrix.
+	private Matrix44f invertedProjectionMatrix;
+	
+		
+	/**
+	 * 
+	 * Generates a camera with default values.
+	 */
 	public Camera() {
+		this(ProjectionType.PERSPECTIVE);
+	}
+	
+	
+	public Camera(ProjectionType projection) {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		
+		this.setProjection(projection);
 	}
 	
 	
 	public Camera(Vector3f position) {
+		this(position, ProjectionType.PERSPECTIVE);
+	}
+	
+	
+	public Camera(Vector3f position, ProjectionType projection) {
 		this.position = position.copyOf();
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		
+		this.setProjection(projection);
 	}
 	
 	
 	public Camera(Vector3f position, Vector3f viewDirection) {
+		this(position, viewDirection, ProjectionType.PERSPECTIVE);
+	}
+	
+	
+	public Camera(Vector3f position, Vector3f viewDirection, ProjectionType projection) {
 		this.position = position.copyOf();
 		this.viewDirection = viewDirection.copyOf();
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		
+		this.setProjection(projection);
 	}
 	
 	
 	//******************************** core functions ********************************
+	
+	
+	/**
+	 * 
+	 * Sets the projection type of the camera to the given type
+	 * generating a new projection matrix.
+	 * 
+	 * @param projection
+	 */
+	public void setProjection(ProjectionType projection) {
+		
+		//Take the main window's proportions.
+		float widthHeightRelation = Window.main.getProportions();
+		
+		if (projection == ProjectionType.PERSPECTIVE) {
+			projectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(widthHeightRelation);
+			invertedProjectionMatrix = projectionMatrix.inverse();
+			
+		} else {
+			projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(widthHeightRelation);
+			invertedProjectionMatrix = projectionMatrix.inverse();
+		}
+		
+		this.projection = projection;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the type of projection that this camera uses.
+	 */
+	public ProjectionType getProjectionType() {
+		return projection;
+	}
 	
 	
 	/**
@@ -285,6 +353,24 @@ public class Camera {
 	
 	//****************************************** matrix handling ******************************************
 
+	
+	/**
+	 * 
+	 * @return Returns the camera's projection matrix.
+	 */
+	public Matrix44f getProjectionMatrix() {
+		return projectionMatrix;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the inverse of the camera's projection matrix.
+	 */
+	public Matrix44f getInvertedProjectionMatrix() {
+		return invertedProjectionMatrix;
+	}
+	
 
 	/**
 	 *  

@@ -1,5 +1,7 @@
 package math.matrices;
 
+import math.matrices.advanced.Determinant;
+import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector4f;
 
 public class Matrix44f extends Matrixf {
@@ -189,6 +191,25 @@ public class Matrix44f extends Matrixf {
 	public Matrix44f negated() {
 		super.voidNegated();
 		return this;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns true if the matrix is invertible.
+	 */
+	public boolean isInvertible() {
+		return Determinant.getDeterminant(this) != 0f;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the inverse of this matrix. This function will also 
+	 * return something if the matrix isn't invertible.
+	 */
+	public Matrix44f inverse() {
+		return MatrixInversion44f.generateMultiplicativeInverse(this);
 	}
 	
 	//---------------------- other methods -------------------
