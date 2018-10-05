@@ -27,6 +27,13 @@ public class Camera {
 	private ProjectionType projection;	
 	
 	
+	//The camera's view matrix.
+	private Matrix44f viewMatrix;
+	
+	//The inverse of the camera's view matrix.
+	private Matrix44f invertedViewMatrix;
+	
+	
 	//The camera's projection matrix.
 	private Matrix44f projectionMatrix;
 	
@@ -43,39 +50,66 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * 
+	 * @param projection The type of projection the camera uses.
+	 */
 	public Camera(ProjectionType projection) {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 		
+		this.updateViewMatrix();
 		this.setProjection(projection);
 	}
 	
 	
+	/**
+	 * 
+	 * @param position The camera's position.
+	 */
 	public Camera(Vector3f position) {
 		this(position, ProjectionType.PERSPECTIVE);
 	}
 	
 	
+	/**
+	 * 
+	 * @param position The camera's position.
+	 * @param projection The type of projection the camera uses.
+	 */
 	public Camera(Vector3f position, ProjectionType projection) {
 		this.position = position.copyOf();
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 		
+		this.updateViewMatrix();
 		this.setProjection(projection);
 	}
 	
 	
+	/**
+	 * 
+	 * @param position The camera's position.
+	 * @param viewDirection The camera's view direction.
+	 */
 	public Camera(Vector3f position, Vector3f viewDirection) {
 		this(position, viewDirection, ProjectionType.PERSPECTIVE);
 	}
 	
 	
+	/**
+	 * 
+	 * @param position The camera's position.
+	 * @param viewDirection The camera's view direction.
+	 * @param projection The type of projection the camera uses.
+	 */
 	public Camera(Vector3f position, Vector3f viewDirection, ProjectionType projection) {
 		this.position = position.copyOf();
 		this.viewDirection = viewDirection.copyOf();
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 		
+		this.updateViewMatrix();
 		this.setProjection(projection);
 	}
 	
@@ -91,14 +125,12 @@ public class Camera {
 	 * @param projection
 	 */
 	public void setProjection(ProjectionType projection) {
-		
 		//Take the main window's proportions.
 		float widthHeightRelation = Window.main.getProportions();
 		
 		if (projection == ProjectionType.PERSPECTIVE) {
 			projectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(widthHeightRelation);
 			invertedProjectionMatrix = projectionMatrix.inverse();
-			
 		} else {
 			projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(widthHeightRelation);
 			invertedProjectionMatrix = projectionMatrix.inverse();
@@ -114,6 +146,12 @@ public class Camera {
 	 */
 	public ProjectionType getProjectionType() {
 		return projection;
+	}
+	
+	
+	private void updateViewMatrix() {
+		this.viewMatrix = generateViewMatrixA(position, viewDirection, upVector);
+		this.invertedViewMatrix = generateInvertedViewMatrix();
 	}
 	
 	
@@ -151,6 +189,8 @@ public class Camera {
 		this.position.setA(position.getA() + dx);
 		this.position.setB(position.getB() + dy);
 		this.position.setC(position.getC() + dz);
+		
+		updateViewMatrix();
 	}
 	
 	
@@ -174,6 +214,8 @@ public class Camera {
 	public void moveTo(Vector3f position) {
 		if (!this.position.equals(position))
 			this.position = position.copyOf();
+		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -196,6 +238,8 @@ public class Camera {
 	 */
 	public void lookAt(Vector3f point) {		
 		this.viewDirection = point.minus(position).normalize();
+		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -207,7 +251,9 @@ public class Camera {
 	 */
 	public void lookInDir(Vector3f viewDirection) {
 		if (!this.position.equals(viewDirection))
-			this.viewDirection = viewDirection.normalizedCopy();		
+			this.viewDirection = viewDirection.normalizedCopy();
+		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -244,13 +290,13 @@ public class Camera {
 	 * @param radians The rotation in radians
 	 */
 	public void pitch(float radians) {
-		
 		Matrix33f rotationMatrix = new Matrix33f(1f, 0f, 0f, 0f, cos(radians), -sin(radians), 0f, sin(radians), cos(radians));
 		
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
 		
 		this.upVector = rotationMatrix.times(upVector);
 		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -278,7 +324,9 @@ public class Camera {
 	
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
 		
-		this.upVector = rotationMatrix.times(upVector);	
+		this.upVector = rotationMatrix.times(upVector);
+		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -306,6 +354,8 @@ public class Camera {
 		this.viewDirection = rotationMatrix.times(viewDirection).normalize();
 		
 		this.upVector = rotationMatrix.times(upVector);
+		
+		this.updateViewMatrix();
 	}
 	
 	
@@ -332,7 +382,7 @@ public class Camera {
 	 */
 	public void rotate(float pitch, float yaw) {
 		pitch(pitch);
-		pitch(yaw);
+		yaw(yaw);
 	}
 	
 	
@@ -377,7 +427,7 @@ public class Camera {
 	 * @return Generates a view matrix for this camera
 	 */
 	public Matrix44f getViewMatrix() {
-		return generateViewMatrixA(position, viewDirection, upVector);
+		return viewMatrix;
 	}
 	
 	
@@ -386,6 +436,11 @@ public class Camera {
 	 * @return Generates the multiplicative inverse of the view matrix
 	 */
 	public Matrix44f getInvertedViewMatrix() {
+		return invertedViewMatrix;
+	}
+	
+	
+	private Matrix44f generateInvertedViewMatrix() {
 		return generateViewMatrixA(position.normalizedCopy(), viewDirection.negatedCopy(), upVector);
 	}
 	
@@ -398,7 +453,6 @@ public class Camera {
 	 * @return Returns a view matrix
 	 */
 	public static Matrix44f generateViewMatrixA(Vector3f eye, Vector3f viewDirection, Vector3f up) {
-		
 		Vector3f z = viewDirection.normalizedCopy();
 		z.negated();
 		
@@ -419,7 +473,6 @@ public class Camera {
 											  0f, 0f, 0f, 1f);
 				
 		return orientation.times(translation);
-		
 	}
 	
 	
@@ -431,9 +484,7 @@ public class Camera {
 	 * @return Returns a view matrix
 	 */
 	public static Matrix44f generateViewMatrixB(Vector3f eye, Vector3f center, Vector3f up) {
-		
 		return generateViewMatrixA(eye, center.minus(eye), up);
-		
 	}
 
 }

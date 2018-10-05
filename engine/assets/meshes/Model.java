@@ -1,6 +1,7 @@
 package assets.meshes;
 
 import assets.buffers.Buffer;
+import assets.cameras.Camera;
 import assets.light.ShadowMap;
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -116,6 +117,11 @@ public class Model {
 		
 		if (texture != null)
 			texture.unbind();
+	}
+	
+	
+	public void render(Camera camera) {
+		this.render(camera.getViewMatrix(), camera.getProjectionMatrix());
 	}
 	
 	

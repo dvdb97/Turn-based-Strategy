@@ -124,7 +124,7 @@ public class ModelTest {
 			
 			handleInput();
 			
-			model.render(camera.getViewMatrix(), projMatrix);
+			model.render(camera);
 			
 			shader.disable();
 			
