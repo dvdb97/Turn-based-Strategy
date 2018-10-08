@@ -1,93 +1,61 @@
 package rendering.matrices.projectionMatrices;
 
+import static math.Trigonometry.*;
+
+import interaction.Window;
 import math.matrices.Matrix44f;
-import math.matrices.advanced.MatrixInversion44f;
+import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 public class ProjectionMatrix extends Matrix44f {
 	
-	private float left;
+	private float n, f, l, r, b, t;
 	
-	private float right;
-	
-	private float bottom;
-	
-	private float top;
-	
-	private float near; 
-	
-	private float far;
-	
-	private float widthHeightRelation;
-	
-	private Matrix44f multiplicativeInverse;
+	private Matrix44f inverse;
 	
 	
-	private ProjectionMatrix(float widthHeightRelation, float factor) {
+	private ProjectionMatrix(float n, float f, float l, float r, float b, float t) {
+		this.n = n;
+		this.f = f;
+		this.l = l;
+		this.r = r;
+		this.b = b;
+		this.t = t;
 		
-		this.left = -1f * factor;
-		
-		this.right = 1f * factor;
-		
-		this.bottom = -1f * factor;
-		
-		this.top = 1f * factor;
-		
-		this.near = 1f * factor;
-		
-		this.far = -1f * factor;
-		
-		this.widthHeightRelation = widthHeightRelation;
-		
-	}
-	
-	
-	private void generatePerspectiveMatrix( ) {
-		
-		setA1(2*near / (right - left));
-		setB2(2*near / (top-bottom) * widthHeightRelation);
-		setA3((right + left) / (right - left));
-		setB3((top + bottom) / (top - bottom) * widthHeightRelation);
-		setC3(-(far + near) / (far - near));
-		setD3(-1f);
-		setC4(-2 * far * near / (far - near));
-		setD4(0f);	
-		
-		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);
-		
-	}
-	
-	
-	private void generateOrthographicMatrix() {
-		
-		setA1(2f / (right - left));
-		setA4(-((right + left) / (right - left)));
-		setB2(2f / (top - bottom));
-		setB4(-((top + bottom) / (top - bottom)));
-		setC3(-2 / (far - near));
-		setC4(-((far + near) / (far - near)));
-		setD4(1f);
-		
-		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);
-		
+		this.inverse = inverse();
 	}
 	
 	
 	/**
 	 * 
-	 * Generates a projection matrix for perspective rendering
-	 * 
-	 * @param widthHeightRelation The relation of the window's width and height
-	 * @return Returns a projection matrix for perspective rendering
+	 * @param n The camera's near plane.
+	 * @param f The camera's far plane.
+	 * @param l The camera's left plane.
+	 * @param r The camera's right plane.
+	 * @param b The camera's bottom plane.
+	 * @param t The camera's top plane.
+	 * @return Returns a perspective projection matrix.
 	 */
-	public static ProjectionMatrix generatePerspectiveProjectionMatrix(float widthHeightRelation) {
-		return generatePerspectiveProjectionMatrix(widthHeightRelation, 1.0f);
-	}
-	
-	
-	public static ProjectionMatrix generatePerspectiveProjectionMatrix(float widthHeightRelation, float factor) {
-		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation, factor);
+	public static ProjectionMatrix perspective(float n, float f, float l, float r, float b, float t) {
+		float a = Window.main.getProportions();
 		
-		matrix.generatePerspectiveMatrix();
+		l = l * a;
+		r = r * a;
+		
+		ProjectionMatrix matrix = new ProjectionMatrix(n, f, l, r, b, t);
+		
+		float rl = r - l;
+		float tb = t - b;
+		float fn = f - n;
+		
+		matrix.setA1(2f * n / rl);
+		matrix.setA3((r + l) / rl);
+		matrix.setB2(2 * n / tb);
+		matrix.setB3((t + b) / tb);
+		matrix.setC3(-(f + n) / fn);
+		matrix.setC4((-2f * f * n) / fn );
+		matrix.setD3(-1f);
+		matrix.setD4(0f);
 		
 		return matrix;
 	}
@@ -95,20 +63,55 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	/**
 	 * 
-	 * Generates a projection matrix for orthographic rendering
-	 * 
-	 * @param widthHeightRelation The relation of the window's width and height
-	 * @return Returns a projection matrix for orthographic rendering
+	 * @return Returns a perspective projection matrix with 
+	 * default values ranging from -1 to 1.
 	 */
-	public static ProjectionMatrix generateOrthographicProjectionMatrix(float widthHeightRelation) {
-		return generateOrthographicProjectionMatrix(widthHeightRelation, 1.0f);
+	public static ProjectionMatrix perspective() {
+		return perspective(1f, -1f, -1f, 1f, -1f, 1f);
 	}
 	
 	
-	public static ProjectionMatrix generateOrthographicProjectionMatrix(float widthHeightRelation, float factor) {
-		ProjectionMatrix matrix = new ProjectionMatrix(widthHeightRelation, factor);
+	/**
+	 * 
+	 * @param fov The camera's vertical field of view.
+	 * @param n The camera's near plane.
+	 * @param f The camera's far plane.
+	 * @return Returns a perspecive projection matrix.
+	 */
+	public static ProjectionMatrix perspective(float fov, float n, float f) {		
+		float t = tan(fov / 2f) * n;
 		
-		matrix.generateOrthographicMatrix();
+		//The window's aspect ratio.
+		float a = Window.main.getProportions();
+		
+		return perspective(n, f, -t * a, t * a, -t, t);	
+	}
+	
+	
+	public static ProjectionMatrix orthographic() {
+		return orthographic(1f, -1f, -1f, 1f, -1f, 1f);
+	}
+	
+	
+	/**
+	 * 
+	 * @param n The camera's near plane.
+	 * @param f The camera's far plane.
+	 * @param l The camera's left plane.
+	 * @param r The camera's right plane.
+	 * @param b The camera's bottom plane.
+	 * @param t The camera's top plane.
+	 * @return Returns a orthographic projection matrix.
+	 */
+	public static ProjectionMatrix orthographic(float n, float f, float l, float r, float b, float t) {
+		ProjectionMatrix matrix = new ProjectionMatrix(n, f, l, r, b, t);
+		
+		matrix.setA1(2f / (r - l));
+		matrix.setB2(2f / (t - b));
+		matrix.setC3(-2f / (f -n));
+		matrix.setD1(-(r + l) / (r - l));
+		matrix.setD2(-(t + b) / (t - b));
+		matrix.setD3(-(f + n) / (f - n));
 		
 		return matrix;
 	}
@@ -116,45 +119,98 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	/**
 	 * 
-	 * @return Returns the multiplicative inverse of this matrix
+	 * @return Returns an array containing the frustrums corners in projected space.
 	 */
-	public Matrix44f getMultiplicativeInverse() {
-		return multiplicativeInverse;
+	public Vector4f[] getFrustrumCorners() {
+		float vFov = getFieldOfView();
+		float hFov = getFieldOfView() * getAspectRatio();
+		
+		float x1 = n * tan(hFov / 2f);
+		float x2 = f * tan(hFov / 2f);
+		
+		float y1 = n * tan(vFov / 2f);
+		float y2 = f * tan(vFov / 2f);
+		
+		Vector4f[] corners = {
+			//Near clipping plane
+			new Vector4f(-x1, y1, n, 1f),
+			new Vector4f(x1, y1, n, 1f),
+			new Vector4f(-x1, -y1, n, 1f),
+			new Vector4f(x1, -y1, n, 1f),
+			
+			//Far clipping plane
+			new Vector4f(-x2, y2, f, 1f),
+			new Vector4f(x2, y2, f, 1f),
+			new Vector4f(-x2, -y2, f, 1f),
+			new Vector4f(x2, -y2, f, 1f)
+		};
+		
+		return corners;
 	}
-
-
-	public float getLeft() {
-		return left;
+	
+	
+	/**
+	 * 
+	 * @return Returns the view frustrums center position in projected space.
+	 */
+	public Vector4f getFrustrumCenter() {
+		Vector4f[] corners = getFrustrumCorners();
+		
+		float x = 0f;
+		float y = 0f; 
+		float z = 0f;
+		
+		for (Vector4f corner : corners) {
+			x += corner.getA();
+			y += corner.getB();
+			z += corner.getC();
+		}
+		
+		x /= corners.length;
+		y /= corners.length;
+		z /= corners.length;
+		
+		return new Vector4f(x, y, z, 1f);
 	}
-
-
-	public float getRight() {
-		return right;
+	
+	
+	public float getAspectRatio() {
+		return r / t;
 	}
-
-
-	public float getBottom() {
-		return bottom;
+	
+	
+	public float getFieldOfView() {
+		return 2f * atan(t / n); 
 	}
-
-
-	public float getTop() {
-		return top;
+	
+	
+	public float getNearPlane() {
+		return n;
 	}
-
-
-	public float getNear() {
-		return near;
+	
+	
+	public float getFarPlane() {
+		return f;
 	}
-
-
-	public float getFar() {
-		return far;
+	
+	
+	public float getTopPlane() {
+		return t;
 	}
-
-
-	public float getWidthHeightRelation() {
-		return widthHeightRelation;
+	
+	
+	public float getBotPlane() {
+		return b;
 	}
-
+	
+	
+	public float getLeftPlane() {
+		return l;
+	}
+	
+	
+	public float getRightPlane() {
+		return r;
+	}
+	
 }

@@ -125,6 +125,11 @@ public class Model {
 	}
 	
 	
+	public void renderToShadowMap() {
+		mesh.render();
+	}
+	
+	
 	/**
 	 * 
 	 * Renders this Model on the screen. This method also offers the option
@@ -139,26 +144,6 @@ public class Model {
 		
 		if (showBoundingBox)
 			mesh.renderBoundingBox(transform, view, projection);
-	}
-	
-	
-	/**
-	 * TODO
-	 * 
-	 * @param shadowMap
-	 */
-	public void render(ShadowMap shadowMap) {
-		shader.use();
-		//shader.setMaterial(material)
-		//shader.setMatrices()
-		
-		shadowMap.getShadowMap().bind();
-		
-		mesh.render();
-		
-		shadowMap.getShadowMap().unbind();
-		
-		shader.disable();
 	}
 	
 	

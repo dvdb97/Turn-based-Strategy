@@ -194,10 +194,5 @@ public class LightShader extends ShaderProgram {
 		
 		//TODO: Maybe set view matrix here.
 	}
-	
-	
-	public void setShadowMapInformation(ShadowMap shadowMap) {
-		this.setLightVPMatrix(shadowMap.getLightViewMatrix(), shadowMap.getLightProjectionMatrix());
-	}
 
 }

@@ -106,8 +106,6 @@ public class ModelTest {
 		
 		skybox = new Skybox(paths);
 		
-		ProjectionMatrix projMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
-		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			
 			RenderEngine.clear();
@@ -127,6 +125,8 @@ public class ModelTest {
 			model.render(camera);
 			
 			shader.disable();
+			
+			light.fitToFrustrum(camera);
 			
 			RenderEngine.swapBuffers();
 		}

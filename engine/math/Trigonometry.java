@@ -28,6 +28,16 @@ public class Trigonometry {
 	}
 	
 	
+	public static float tan(float value) {
+		return (float)Math.tan(value);
+	}
+	
+	
+	public static float atan(float value) {
+		return (float)Math.atan(value);
+	}
+	
+	
 	//TODO: Add more
 
 }

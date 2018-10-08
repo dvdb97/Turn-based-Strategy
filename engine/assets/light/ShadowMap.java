@@ -1,54 +1,73 @@
 package assets.light;
 
+import assets.Bindable;
+import assets.cameras.Camera;
+import assets.meshes.Model;
+import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import assets.textures.Texture2D;
-import math.matrices.Matrix44f;
+import rendering.framebuffers.FrameBuffer;
 
-public class ShadowMap {
+public class ShadowMap implements Bindable {	
+
+	private static ShadowMappingShader shader;
 	
-	private Matrix44f lightViewMatrix;
+	private Texture2D depthTexture;
 	
-	private Matrix44f lightProjectionMatrix;
-	
-	private Texture2D shadowMap;
+	private FrameBuffer frameBuffer;
 	
 
-	public ShadowMap(Texture2D shadowMap, Matrix44f lightViewMatrix, Matrix44f lightProjectionMatrix) {
+	/**
+	 * 
+	 * @param width The width of the depth texture.
+	 * @param height The height of the depth texture.
+	 */
+	public ShadowMap(int width, int height) {
+		this.frameBuffer = new FrameBuffer();
+		this.depthTexture = Texture2D.generateDepthTexture(width, height);
 		
-		this.lightViewMatrix = lightViewMatrix;
+		frameBuffer.addDepthAttachment(depthTexture);
+		frameBuffer.disableDrawToColorBuffer();
+		frameBuffer.disableReadFromColorBuffer();
 		
-		this.lightProjectionMatrix = lightProjectionMatrix;
+		if (shader == null)
+			shader = ShadowMappingShader.generateShader();
+	}
+	
+	
+	public void startRenderPass(DirectionalLight light, Camera camera) {
+		shader.use();
+		shader.prepareForRendering(light.getViewMatrix(), light.getProjectionMatrix());
+	}
+	
+	
+	public void render(Model model) {
+		shader.setModelMatrix(model.getTransformable().getTransformationMatrix());
 		
-		this.shadowMap = shadowMap;
+		model.renderToShadowMap();
+	}
+	
+	
+	public void endRenderPass() {
+		shader.disable();
 	}
 
 	
-	public Texture2D getShadowMap() {
-		return shadowMap;
+	@Override
+	public void bind() {
+		depthTexture.bind();
 	}
-
-
-	public void setShadowMap(Texture2D shadowMap) {
-		this.shadowMap = shadowMap;
-	}
-
-
-	public Matrix44f getLightViewMatrix() {
-		return lightViewMatrix;
-	}
-
 	
-	public void setLightViewMatrix(Matrix44f lightViewMatrix) {
-		this.lightViewMatrix = lightViewMatrix;
+
+	@Override
+	public void unbind() {
+		depthTexture.unbind();		
 	}
+	
 
-
-	public Matrix44f getLightProjectionMatrix() {
-		return lightProjectionMatrix;
-	}
-
-
-	public void setLightProjectionMatrix(Matrix44f lightProjectionMatrix) {
-		this.lightProjectionMatrix = lightProjectionMatrix;
+	@Override
+	public void delete() {
+		frameBuffer.delete();
+		depthTexture.delete();
 	}
 		
 }

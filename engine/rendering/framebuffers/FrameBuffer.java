@@ -161,9 +161,21 @@ public class FrameBuffer extends GLTargetObject {
 	}
 	
 	
-	public void disableColorBuffer() {
+	public void disableDrawToColorBuffer() {
 		this.bind();
 		glDrawBuffers(GL_NONE);
+		
+		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
+			System.out.println("Failed removing the color buffer of this framebuffer!");
+		}
+		
+		this.unbind();
+	}
+	
+	
+	public void disableReadFromColorBuffer() {
+		this.bind();
+		glReadBuffer(GL_NONE);
 		
 		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
 			System.out.println("Failed removing the color buffer of this framebuffer!");

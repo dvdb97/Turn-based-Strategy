@@ -12,18 +12,24 @@ public class ShadowMappingShader extends ShaderProgram {
 	
 	
 	public static ShadowMappingShader generateShader() {
-		return new ShadowMappingShader(FileUtils.loadShaderSourceCode("Shaders/ShadowMappingShader/ShadowMappingShader.vert"), 
-									   FileUtils.loadShaderSourceCode("Shaders/ShadowMappingShader/ShadowMappingShader.frag"));
+		
+		String vert = FileUtils.loadShaderSourceCode("Shaders/ShadowMappingShader/ShadowMappingShader.vert");
+		String frag = FileUtils.loadShaderSourceCode("Shaders/ShadowMappingShader/ShadowMappingShader.frag");
+		
+		return new ShadowMappingShader(vert, frag);
 	}
 	
 	
-	public void prepareForRendering(Matrix44f modelMatrix, Matrix44f lightViewMatrix, Matrix44f projectionMatrix) {
+	public void setModelMatrix(Matrix44f modelMatrix) {
+		this.setUniformMatrix4fv("modelMatrix", modelMatrix);
+	}
+	
+	
+	public void prepareForRendering(Matrix44f lightViewMatrix, Matrix44f projectionMatrix) {
 		this.use();
 		
-		this.setUniformMatrix4fv("modelMatrix", modelMatrix);
 		this.setUniformMatrix4fv("viewMatrix", lightViewMatrix);
 		this.setUniformMatrix4fv("projectionMatrix", projectionMatrix);
-		
 	}
 
 }

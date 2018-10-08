@@ -2,6 +2,7 @@ package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
 
 import java.nio.ByteBuffer;
 import assets.textures.utils.Image;
@@ -58,13 +59,13 @@ public class Texture2D extends Texture {
 	}
 	
 	
-	public static Texture2D generateEmptyTexture(int width, int height) {
+	public static Texture2D generateDepthTexture(int width, int height) {
 		
 		Texture2D texture = new Texture2D(width, height);
 		
 		texture.bind();
 		
-		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
+		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT32, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
 		
 		texture.setFilter(GL_NEAREST);
 		texture.setTextureWrap(GL_CLAMP_TO_EDGE);

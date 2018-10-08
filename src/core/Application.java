@@ -10,7 +10,6 @@ import interaction.input.KeyInput;
 import interaction.input.MouseInputManager;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
-import rendering.lightRenderer.LightRenderer;
 
 public class Application {
 	
@@ -53,11 +52,7 @@ public class Application {
 		RenderEngine.enableDepthTest();
 		RenderEngine.setSwapInterval(1);
 		
-		Matrices.initProjectionMatrix(window);
-		
-		//Initializes the ShadowMapper that is later used for generating a shadow map
-		LightRenderer.init(window.getWidth(), window.getHeight());
-		
+		Matrices.initProjectionMatrix(window);		
 	}
 	
 	

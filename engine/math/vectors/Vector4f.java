@@ -57,6 +57,7 @@ public class Vector4f extends Vectorf {
 		return this;
 	}
 	
+	
 	/**
 	 * Vector subtraction
 	 * 

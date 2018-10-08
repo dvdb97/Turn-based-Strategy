@@ -1,9 +1,10 @@
 package assets.textures;
 
-
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 import assets.GLTargetObject;
@@ -121,9 +122,37 @@ public abstract class Texture extends GLTargetObject {
 		return height;
 	}
 
-
+	
 	public void setHeight(int height) {
 		this.height = height;
+	}
+	
+	
+	/**
+	 * 
+	 * Bind this texture to a specific texture unit.
+	 * 
+	 * @param texUnit
+	 */
+	public void bind(int texUnit) {
+		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
+			glActiveTexture(texUnit);
+			this.bind();
+		} else {
+			System.err.println("Cannot bind texture " + getID() + " to texture unit " + 
+							   	texUnit + " as it exceeds Opengl's limit.");
+		}
+	}
+	
+	
+	public void unbind(int texUnit) {
+		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
+			glActiveTexture(texUnit);
+			this.unbind();
+		} else {
+			System.err.println("Cannot unbind texture " + getID() + " from texture unit " + 
+								texUnit + " as it exceeds Opengl's limit.");
+		}
 	}
 	
 	

@@ -4,15 +4,15 @@ import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import math.vectors.Vector3f;
-import static math.Trigonometry.*;
+import math.vectors.Vector4f;
 
-import interaction.Window;
+import static math.Trigonometry.*;
 
 public class Camera {
 	
 	public enum ProjectionType {
 		PERSPECTIVE, ORTHOGRAPHIC
-	}
+	};
 	
 	//The current position of the camera
 	private Vector3f position;
@@ -35,10 +35,17 @@ public class Camera {
 	
 	
 	//The camera's projection matrix.
-	private Matrix44f projectionMatrix;
+	private ProjectionMatrix projectionMatrix;
 	
 	//The inverse of the camera's projection matrix.
 	private Matrix44f invertedProjectionMatrix;
+	
+	//The field of view of the camera.
+	private float fieldOfView = (float)Math.PI / 8f;
+	
+	
+	//The inverse of this camera's view-projection matrix.
+	private Matrix44f invertedViewProjectionMatrix;
 	
 		
 	/**
@@ -124,19 +131,46 @@ public class Camera {
 	 * 
 	 * @param projection
 	 */
-	public void setProjection(ProjectionType projection) {
-		//Take the main window's proportions.
-		float widthHeightRelation = Window.main.getProportions();
-		
+	private void setProjection(ProjectionType projection) {		
 		if (projection == ProjectionType.PERSPECTIVE) {
-			projectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(widthHeightRelation);
-			invertedProjectionMatrix = projectionMatrix.inverse();
+			setPerspectiveProjection(this.fieldOfView);
 		} else {
-			projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(widthHeightRelation);
-			invertedProjectionMatrix = projectionMatrix.inverse();
+			setOrthographicProjection();
 		}
 		
-		this.projection = projection;
+		this.invertedViewProjectionMatrix = invertedProjectionMatrix.times(invertedViewMatrix);
+	}
+	
+
+	public void setPerspectiveProjection(float fieldOfView) {		
+		projectionMatrix = ProjectionMatrix.perspective();
+		invertedProjectionMatrix = projectionMatrix.inverse();
+		
+		this.projection = ProjectionType.PERSPECTIVE;
+	}
+	
+	
+	public void setPerspectiveProjection(float n, float f, float l, float r, float b, float t) {
+		projectionMatrix = ProjectionMatrix.perspective(n, f, l, r, b, t);
+		invertedProjectionMatrix = projectionMatrix.inverse();
+		
+		this.projection = ProjectionType.PERSPECTIVE;
+	}
+	
+	
+	public void setOrthographicProjection() {		
+		projectionMatrix = ProjectionMatrix.orthographic();
+		invertedProjectionMatrix = projectionMatrix.inverse();
+		
+		this.projection = ProjectionType.ORTHOGRAPHIC;
+	}
+	
+	
+	public void setOrthographicProjection(float n, float f, float l, float r, float b, float t) {
+		projectionMatrix = ProjectionMatrix.orthographic(n, f, l, r, b, t);
+		invertedProjectionMatrix = projectionMatrix.inverse();
+		
+		this.projection = ProjectionType.ORTHOGRAPHIC;
 	}
 	
 	
@@ -386,18 +420,64 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns the camera's position.
+	 */
 	public Vector3f getPosition() {
 		return position;
 	}
 
-
+	
+	/**
+	 * 
+	 * @return Returns the camera's view direction.
+	 */
 	public Vector3f getViewDirection() {
 		return viewDirection;
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns the up vector that is used to construct the
+	 * camera's view matrix.
+	 */
 	protected Vector3f getUpVector() {
 		return upVector;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the camera's field of view.
+	 */
+	public float getFieldOfView() {
+		return fieldOfView;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the camera's frustrum center in world space.
+	 */
+	public Vector3f getFrustrumCenter() {
+		return getInvertedViewProjectionMatrix().times(projectionMatrix.getFrustrumCenter()).toVector3f();
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the camera's frustrum's corners in world space.
+	 */
+	public Vector4f[] getFrustrumCorners() {
+		Vector4f[] corners = projectionMatrix.getFrustrumCorners();
+		
+		for (int i = 0; i < corners.length; ++i) {
+			corners[i] = invertedViewProjectionMatrix.times(corners[i]);
+		}
+		
+		return corners;		
 	}
 	
 	
@@ -408,7 +488,7 @@ public class Camera {
 	 * 
 	 * @return Returns the camera's projection matrix.
 	 */
-	public Matrix44f getProjectionMatrix() {
+	public ProjectionMatrix getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
@@ -437,6 +517,11 @@ public class Camera {
 	 */
 	public Matrix44f getInvertedViewMatrix() {
 		return invertedViewMatrix;
+	}
+	
+	
+	public Matrix44f getInvertedViewProjectionMatrix() {
+		return invertedProjectionMatrix;
 	}
 	
 	
