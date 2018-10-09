@@ -1,161 +1,60 @@
 package math.matrices.advanced;
 
-import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import rendering.matrices.projectionMatrices.ProjectionMatrix;
 
-public class LU_Decomposition {	
+public class LU_Decomposition {
 	
-	//TODO: Set the input to references
-	public static void generate(Matrix44f input, Matrix44f l_Matrix, Matrix44f u_Matrix) {
+	public static void luDecomposition(Matrix44f matrix, Matrix44f l_ptr, Matrix44f u_ptr) {
 		
-		l_Matrix.setA1(1f);
-		l_Matrix.setB2(1f);
-		l_Matrix.setC3(1f);
-		l_Matrix.setD4(1f);
+		final float N = 4;
 		
-		lu(input, l_Matrix, u_Matrix);				
-		
-	}
-	
-	
-	public static void generate(Matrix33f input, Matrix33f l_Matrix, Matrix33f u_Matrix) {
-		
-		l_Matrix.setA1(1f);
-		l_Matrix.setB2(1f);
-		l_Matrix.setC3(1f);
-		
-		lu(input, l_Matrix, u_Matrix);
-		
-	}
-	
-	
-	private static void lu(Matrix44f matrix, Matrix44f l_Matrix, Matrix44f u_Matrix) {
-		
-		for (int row = 0; row < 4; ++row) {
+		for (int i = 0; i < N; ++i) {
 			
-			for (int col = 0; col < 4; ++col) {
+			//Upper triangular matrix:
+			for (int k = i; k < N; ++k) {
 				
-				if (col >= row) {
-					
-					computeU(col, row, matrix, l_Matrix, u_Matrix);
-					
+				float sum = 0f;
+				
+				for (int j = 0; j < i; ++j) 
+					sum += l_ptr.get(j, i) * u_ptr.get(k, j);
+				
+				u_ptr.set(k, i, matrix.get(k, i) - sum);
+			}
+			
+			//Lower triangular matrix:
+			for (int k = i; k < N; ++k) {
+				if (i == k) {
+					l_ptr.set(i, i, 1f);
 				} else {
-				
-					computeL(col, row, matrix, l_Matrix, u_Matrix);
+					float sum = 0f;
 					
+					for (int j = 0; j < i; ++j) 
+						sum += l_ptr.get(j, k) * u_ptr.get(i, j);
+					
+					l_ptr.set(i, k, (matrix.get(i, k) - sum) / u_ptr.get(i, i));
 				}
-				
-			}	
-			
-		}
-		
-	}
-	
-	
-	private static void lu(Matrix33f matrix, Matrix33f l_Matrix, Matrix33f u_Matrix) {
-		
-		for (int row = 0; row < 3; ++row) {
-			
-			for (int col = 0; col < 3; ++col) {
-				
-				if (col >= row) {
-					
-					computeU(col, row, matrix, l_Matrix, u_Matrix);
-					
-				} else {
-				
-					computeL(col, row, matrix, l_Matrix, u_Matrix);
-					
-				}
-				
-			}	
-			
-		}
-		
-	}
-	
-	
-	private static void computeU(int x, int y, Matrix44f matrix, Matrix44f l_Matrix, Matrix44f u_Matrix) {
-		
-		float u = matrix.get(x, y);
-		
-		
-		for (int i = 0; i < 4; ++i) {
-			
-			if (i == x) {
-				continue;
 			}
 			
-			u -= l_Matrix.get(i, y) * u_Matrix.get(x, i);
-			
 		}
-		
-		
-		u_Matrix.set(x, y, u);
 		
 	}
 	
 	
-	private static void computeU(int x, int y, Matrix33f matrix, Matrix33f l_Matrix, Matrix33f u_Matrix) {
+	public static void main(String[] args) {
+		Matrix44f matrix = ProjectionMatrix.perspective();
 		
-		float u = matrix.get(x, y);
+		System.out.println(matrix);
 		
+		Matrix44f u_ptr = Matrix44f.zero();
+		Matrix44f l_ptr = Matrix44f.zero();
 		
-		for (int i = 0; i < 3; ++i) {
-			
-			if (i == x) {
-				continue;
-			}
-			
-			u -= l_Matrix.get(i, y) * u_Matrix.get(x, i);
-			
-		}
+		luDecomposition(matrix, l_ptr, u_ptr);
 		
+		System.out.println("Lower: \n" + l_ptr);
+		System.out.println("Upper: \n" + u_ptr);
 		
-		u_Matrix.set(x, y, u);
-		
-	}
-	
-	
-	private static void computeL(int x, int y, Matrix44f matrix, Matrix44f l_Matrix, Matrix44f u_Matrix) {
-		
-		float l = matrix.get(x, y);
-		
-		
-		for (int i = 0; i < 4; ++i) {
-			
-			if (i == x) {
-				continue;
-			}
-			
-			l -= l_Matrix.get(i, y) * u_Matrix.get(x, i);
-			
-		}
-		
-		
-		l_Matrix.set(x, y, l / u_Matrix.get(x, x));		
-		
-	}
-	
-	
-	private static void computeL(int x, int y, Matrix33f matrix, Matrix33f l_Matrix, Matrix33f u_Matrix) {
-		
-		float l = matrix.get(x, y);
-		
-		
-		for (int i = 0; i < 3; ++i) {
-			
-			if (i == x) {
-				continue;
-			}
-			
-			l -= l_Matrix.get(i, y) * u_Matrix.get(x, i);
-			
-		}
-		
-		
-		l_Matrix.set(x, y, l / u_Matrix.get(x, x));		
-		
+		System.out.println(l_ptr.times(u_ptr));
 	}
 
 }

@@ -2,6 +2,7 @@ package math.matrices.advanced;
 
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import math.matrices.advanced.deprecated.LU_Decomposition_Deprecated;
 
 public class MatrixInversion33f {
 	
@@ -16,7 +17,7 @@ public class MatrixInversion33f {
 		Matrix33f l_Matrix = new Matrix33f(0);
 		Matrix33f u_Matrix = new Matrix33f(0);
 		
-		LU_Decomposition.generate(matrix, l_Matrix, u_Matrix);
+		LU_Decomposition_Deprecated.generate(matrix, l_Matrix, u_Matrix);
 		
 		Matrix33f l_inverted = getLInverted(l_Matrix);
 		Matrix33f u_inverted = getUInverted(u_Matrix);
