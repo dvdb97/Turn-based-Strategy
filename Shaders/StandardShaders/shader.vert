@@ -15,5 +15,5 @@ out vec4 out_Color;
 void main() {
 	out_Color = vColor;
 
-	gl_Position = mvpMatrix * vec4(vPosition, 1.0f);
+	gl_Position = mvpMatrix * vec4(vPosition, 1.0f);;
 }
