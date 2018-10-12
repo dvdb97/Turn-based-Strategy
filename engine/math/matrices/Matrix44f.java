@@ -94,6 +94,15 @@ public class Matrix44f extends Matrixf {
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns a zero matrix.
+	 */
+	public static Matrix44f zero() {
+		return new Matrix44f(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+	}
+	
+	
 	//------------------------- math methods ------------------------
 	
 	/**
