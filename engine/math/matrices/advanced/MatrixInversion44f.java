@@ -20,6 +20,18 @@ public class MatrixInversion44f {
 	
 	public static Matrix44f generateMultiplicativeInverse(Matrix44f matrix) {
 		
+		if (matrix.getA1() == 0f) {
+			matrix.setA1(0.00000001f);
+		}
+		
+		if (matrix.getB2() == 0f) {
+			matrix.setB2(0.00000001f);
+		}
+		
+		if (matrix.getC3() == 0f) {
+			matrix.setC3(0.00000001f);
+		}
+		
 		Matrix44f l_Matrix = new Matrix44f();
 		l_Matrix.times(0f);
 		Matrix44f u_Matrix = new Matrix44f();
