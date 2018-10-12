@@ -2,16 +2,17 @@ package rendering.matrices.projectionMatrices;
 
 import static math.Trigonometry.*;
 
+import java.util.Arrays;
+
 import interaction.Window;
 import math.matrices.Matrix44f;
-import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
 public class ProjectionMatrix extends Matrix44f {
 	
 	private float n, f, l, r, b, t;
 	
-	private Matrix44f inverse;
+	private Matrix44f inverse = null;
 	
 	
 	private ProjectionMatrix(float n, float f, float l, float r, float b, float t) {
@@ -21,8 +22,6 @@ public class ProjectionMatrix extends Matrix44f {
 		this.r = r;
 		this.b = b;
 		this.t = t;
-		
-		this.inverse = inverse();
 	}
 	
 	
@@ -52,7 +51,8 @@ public class ProjectionMatrix extends Matrix44f {
 		matrix.setA3((r + l) / rl);
 		matrix.setB2(2 * n / tb);
 		matrix.setB3((t + b) / tb);
-		matrix.setC3(-(f + n) / fn);
+		//TODO: This will result in a 0 for default parameters. Our lu-decomposition can't handle this case.
+		matrix.setC3(-(f + n + 0.000000001f) / fn);
 		matrix.setC4((-2f * f * n) / fn );
 		matrix.setD3(-1f);
 		matrix.setD4(0f);
@@ -121,28 +121,19 @@ public class ProjectionMatrix extends Matrix44f {
 	 * 
 	 * @return Returns an array containing the frustrums corners in projected space.
 	 */
-	public Vector4f[] getFrustrumCorners() {
-		float vFov = getFieldOfView();
-		float hFov = getFieldOfView() * getAspectRatio();
-		
-		float x1 = n * tan(hFov / 2f);
-		float x2 = f * tan(hFov / 2f);
-		
-		float y1 = n * tan(vFov / 2f);
-		float y2 = f * tan(vFov / 2f);
-		
+	public Vector4f[] getFrustrumCorners() {		
 		Vector4f[] corners = {
 			//Near clipping plane
-			new Vector4f(-x1, y1, n, 1f),
-			new Vector4f(x1, y1, n, 1f),
-			new Vector4f(-x1, -y1, n, 1f),
-			new Vector4f(x1, -y1, n, 1f),
+			new Vector4f(-1f, 1f, -1f, 1f),
+			new Vector4f(1f, 1f, -1f, 1f),
+			new Vector4f(-1f, -1f, -1f, 1f),
+			new Vector4f(1f, -1f, -1f, 1f),
 			
 			//Far clipping plane
-			new Vector4f(-x2, y2, f, 1f),
-			new Vector4f(x2, y2, f, 1f),
-			new Vector4f(-x2, -y2, f, 1f),
-			new Vector4f(x2, -y2, f, 1f)
+			new Vector4f(-1f, 1f, 1f, 1f),
+			new Vector4f(1f, 1f, 1f, 1f),
+			new Vector4f(-1f, -1f, 1f, 1f),
+			new Vector4f(1f, -1f, 1f, 1f)
 		};
 		
 		return corners;
@@ -151,7 +142,7 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	/**
 	 * 
-	 * @return Returns the view frustrums center position in projected space.
+	 * @return Returns the view frustrums center position in view space.
 	 */
 	public Vector4f getFrustrumCenter() {
 		Vector4f[] corners = getFrustrumCorners();
@@ -211,6 +202,15 @@ public class ProjectionMatrix extends Matrix44f {
 	
 	public float getRightPlane() {
 		return r;
+	}
+
+
+	@Override
+	public Matrix44f inverse() {
+		if (inverse == null)
+			this.inverse = super.inverse();
+		
+		return inverse;
 	}
 	
 }
