@@ -42,9 +42,7 @@ public class FrameBuffer extends GLTargetObject {
 		
 		glFramebufferRenderbuffer(getType(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthAttachment.getID());
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed attaching a depth component to the FrameBuffer!");
-			
+		if (!validate()) {
 			unbind();
 			return false;
 		}
@@ -55,6 +53,11 @@ public class FrameBuffer extends GLTargetObject {
 	}
 	
 	
+	/**
+	 * 
+	 * @param texture The depth texture
+	 * @return Returns true when adding the depth component was successful
+	 */
 	public boolean addDepthAttachment(Texture2D texture) {
 		bind();
 		texture.bind();
@@ -63,9 +66,7 @@ public class FrameBuffer extends GLTargetObject {
 		
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.getType(), texture.getID(), 0);
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed attaching a depth component to the FrameBuffer!");
-			
+		if (!validate()) {			
 			unbind();
 			return false;
 		}
@@ -91,8 +92,6 @@ public class FrameBuffer extends GLTargetObject {
 		
 		
 		if (colorAttachments.size() == 15) {
-			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
-			
 			unbind();
 			return false;
 		}
@@ -103,9 +102,7 @@ public class FrameBuffer extends GLTargetObject {
 		glFramebufferRenderbuffer(getType(), ATTACHMENT_PARAM + colorAttachments.size(), GL_RENDERBUFFER, colorAttachments.get(colorAttachments.size() - 1).getID());
 		
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed attaching a color component to the FrameBuffer!");
-			
+		if (!validate()) {
 			unbind();
 			return false;
 		}
@@ -130,7 +127,7 @@ public class FrameBuffer extends GLTargetObject {
 		
 		
 		if (colorAttachments.size() == 15) {
-			System.err.println("The maximum amount of color attachments per FraeBuffer is 15!");
+			System.err.println("The maximum amount of color attachments per FrameBuffer is 15!");
 			
 			texture.unbind();
 			unbind();
@@ -143,9 +140,7 @@ public class FrameBuffer extends GLTargetObject {
 		glFramebufferTexture(getType(), ATTACHMENT_PARAM + colorAttachments.size(), texture.getID(), 0);
 		
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed attaching a color component to the FrameBuffer!");
-			
+		if (!validate()) {
 			texture.unbind();
 			unbind();
 			return false;
@@ -165,9 +160,7 @@ public class FrameBuffer extends GLTargetObject {
 		this.bind();
 		glDrawBuffers(GL_NONE);
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed removing the color buffer of this framebuffer!");
-		}
+		validate();
 		
 		this.unbind();
 	}
@@ -177,9 +170,7 @@ public class FrameBuffer extends GLTargetObject {
 		this.bind();
 		glReadBuffer(GL_NONE);
 		
-		if (glCheckFramebufferStatus(getType()) != GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("Failed removing the color buffer of this framebuffer!");
-		}
+		validate();
 		
 		this.unbind();
 	}
@@ -197,6 +188,49 @@ public class FrameBuffer extends GLTargetObject {
 		
 		return buffer;
 		
+	}
+	
+	
+	/**
+	 * 
+	 * Checks the current state of this framebuffer and logs potential errors.
+	 * 
+	 * @return Returns true if there are no problems with the framebuffer.
+	 */
+	public boolean validate() {
+		int error = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		
+		if (error != GL_FRAMEBUFFER_COMPLETE) {
+			switch (error) {
+				case GL_FRAMEBUFFER_UNDEFINED:
+					System.err.println("Framebuffer Error: FRAMEBUFFER_UNDEFINED");
+					break;
+				case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+					break;
+				case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+					break;
+				case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
+					break;
+				case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
+					break;
+				case GL_FRAMEBUFFER_UNSUPPORTED:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_UNSUPPORTED");
+					break;
+				case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
+					break;
+				default:
+					System.err.println("Framebuffer Error: Unknown error.");
+			}
+			
+			return false;
+		}
+		
+		return true;
 	}
 	
 	
