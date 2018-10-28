@@ -39,7 +39,7 @@ public class GUIManager {
 			init();
 		}
 		
-		guiShader.use();
+		guiShader.bind();
 		
 		guiShader.setUniform1i("u_textured", 1);
 	}
@@ -51,7 +51,7 @@ public class GUIManager {
 			init();
 		}
 		
-		guiShader.use();
+		guiShader.bind();
 		
 		guiShader.setUniform1i("u_textured", 0);
 		guiShader.setUniformVector4f("u_color", color);
@@ -65,7 +65,7 @@ public class GUIManager {
 			init();
 		}
 		
-		guiShader.disable();
+		guiShader.unbind();
 	}
 
 }

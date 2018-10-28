@@ -1,12 +1,25 @@
 package assets.meshes;
 
-import org.omg.CORBA.portable.ValueBase;
-
 import math.matrices.Matrix44f;
 import rendering.matrices.transformation.*;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 public class Transformable {
+	
+	private static final Vector4f[] unitCube = {
+		//Front face:
+		new Vector4f(-1f, 1f, 1f, 1f),
+		new Vector4f(1f, 1f, 1f, 1f),
+		new Vector4f(1f, -1f, 1f, 1f),
+		new Vector4f(-1f, -1f, 1f, 1f),
+		
+		//Back face:
+		new Vector4f(-1f, 1f, -1f, 1f),
+		new Vector4f(1f, 1f, -1f, 1f),
+		new Vector4f(1f, -1f, -1f, 1f),
+		new Vector4f(-1f, -1f, -1f, 1f)
+	};
 	
 	public static final float _1_DEGREE = 0.0174533f;
 	
@@ -252,6 +265,58 @@ public class Transformable {
 	 */
 	public Matrix44f getTransformationMatrix() {
 		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms a vector to world space
+	 * 
+	 * @param vec The vector to be transformed
+	 * @return Returns a transformed vector.
+	 */
+	public Vector4f toWorldSpace(Vector4f vec) {
+		return getTransformationMatrix().times(vec);
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms a vector to world space
+	 * 
+	 * @param vec The vector to be transformed
+	 * @return Returns a transformed vector.
+	 */
+	public Vector4f toWorldSpace(Vector3f vec) {
+		return toWorldSpace(vec.toVector4f(1f));
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms an array of vectors to world space
+	 * 
+	 * @param vec The vectors to be transformed
+	 * @return Returns a transformed vectors.
+	 */
+	public Vector4f[] toWorldSpace(Vector4f[] vectors) {
+		Matrix44f modelMatrix = getTransformationMatrix();
+		Vector4f[] vec = new Vector4f[vectors.length];
+		
+		for (int i = 0; i < vectors.length; ++i) {
+			vec[i] = modelMatrix.times(vectors[i]);
+		}
+		
+		return vec;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the boundaries of a unit mesh transformed to world space by this Transformable
+	 */
+	public Vector4f[] getBoundaries() {
+		return toWorldSpace(unitCube);
 	}
 
 }

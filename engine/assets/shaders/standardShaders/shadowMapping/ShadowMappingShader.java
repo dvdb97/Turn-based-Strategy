@@ -1,5 +1,6 @@
 package assets.shaders.standardShaders.shadowMapping;
 
+import assets.cameras.Camera;
 import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
 import utils.FileUtils;
@@ -18,18 +19,19 @@ public class ShadowMappingShader extends ShaderProgram {
 		
 		return new ShadowMappingShader(vert, frag);
 	}
-	
-	
-	public void setModelMatrix(Matrix44f modelMatrix) {
-		this.setUniformMatrix4fv("modelMatrix", modelMatrix);
+
+
+	@Override
+	public void setModelMatrix(Matrix44f model) {
+		//Combine the matrices and pass the result to the shader.
+		this.setUniformMatrix4fv("mvpMatrix", viewProjectionMatrix.times(model));
 	}
-	
-	
-	public void prepareForRendering(Matrix44f lightViewMatrix, Matrix44f projectionMatrix) {
-		this.use();
-		
-		this.setUniformMatrix4fv("viewMatrix", lightViewMatrix);
-		this.setUniformMatrix4fv("projectionMatrix", projectionMatrix);
+
+
+	@Override
+	public void setCamera(Camera camera) {
+		//Set the view-projection matrix as a variable to use it again when a model matrix is set.
+		this.viewProjectionMatrix = camera.getViewProjectionMatrix();
 	}
 
 }

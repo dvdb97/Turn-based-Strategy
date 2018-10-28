@@ -6,6 +6,7 @@ import javax.xml.crypto.dsig.Transform;
 
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Vertex;
+import assets.meshes.prefabs.Box;
 import assets.shaders.ShaderLoader;
 import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
@@ -32,7 +33,7 @@ public class BoundingBox {
 	private Transformable transform;
 	
 	
-	private static BoundingBoxMesh mesh = null;
+	private static Box mesh = null;
 	
 	private static ShaderProgram bbShader = null;
 	
@@ -79,7 +80,7 @@ public class BoundingBox {
 		System.out.println("Center point: " + centerPoint);
 		
 		if (mesh == null) {
-			mesh = new BoundingBoxMesh();
+			mesh = new Box();
 		}
 		
 		if (bbShader == null) {
@@ -107,7 +108,7 @@ public class BoundingBox {
 		System.out.println("Center point: " + centerPoint.toString());
 		
 		if (mesh == null) {
-			mesh = new BoundingBoxMesh();
+			mesh = new Box();
 		}
 		
 		if (bbShader == null) {
@@ -186,12 +187,12 @@ public class BoundingBox {
 		Vector3f s = meshTransform.getScaling();
 		transform.setScaling(new Vector3f(s.getA() * (maxX - minX) / 2f, s.getB() * (maxY - minY) / 2f, s.getC() * (maxZ - minZ) / 2f));
 		
-		bbShader.use();		
-		bbShader.setMVPMatrix(transform.getTransformationMatrix(), view, projection);
+		bbShader.bind();		
+		bbShader.setModelMatrix(transform.getTransformationMatrix(), view, projection);
 		
 		mesh.render();
 		
-		bbShader.disable();
+		bbShader.unbind();
 	}
 	
 }

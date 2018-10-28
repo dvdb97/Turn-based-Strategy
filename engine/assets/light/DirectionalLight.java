@@ -1,28 +1,145 @@
 package assets.light;
 
+import assets.Deletable;
 import assets.cameras.Camera;
-import math.matrices.Matrix44f;
+import assets.meshes.Model;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
+import static math.MathUtils.*;
 
-public class DirectionalLight extends Camera {
+
+public class DirectionalLight extends Camera implements Deletable {
 	
 	private Vector3f color;
+	
+	private DepthBuffer shadowMap;
 	
 	
 	//****************************** constructor ******************************
 	
 	
+	/**
+	 * 
+	 * Creates a directional light.
+	 * 
+	 * @param color The color of the light source.
+	 */
 	public DirectionalLight(Vector3f color) {
-		super(new Vector3f(0f, 0f, 1f), new Vector3f(0f, 0f, -1f), ProjectionType.ORTHOGRAPHIC);
+		super(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, -1f), ProjectionType.ORTHOGRAPHIC);
 		this.color = color;
 	}
 	
 	
+	/**
+	 * 
+	 * Creates a directional light.
+	 * 
+	 * @param direction The light's direction.
+	 * @param color The color of the light source.
+	 */
 	public DirectionalLight(Vector3f direction, Vector3f color) {
-		super(direction.times(-1f), direction, ProjectionType.ORTHOGRAPHIC);
+		super(new Vector3f(0f, 0f, 0f), direction, ProjectionType.ORTHOGRAPHIC);
 		this.color = color;
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a directional light.
+	 * 
+	 * @param direction The light's direction.
+	 * @param smWidth The width of the light's shadow map.
+	 * @param smHeight The height of the light's shadow map.
+	 */
+	public DirectionalLight(Vector3f direction, Vector3f color, int smWidth, int smHeight) {
+		super(new Vector3f(0f, 0f, 0f), direction, ProjectionType.ORTHOGRAPHIC);
+		this.color = color;
+		this.initializeShadowMap(smWidth, smHeight);
+	}
+	
+	
+	//****************************** Shadow Mapping ******************************
+	
+	
+	/**
+	 * 
+	 * Initializes this light's Shadow Map to make this light available
+	 * for shadow mapping.
+	 * 
+	 * @param smWidth The Shadow Map's width in pixels.
+	 * @param smHeight The Shadow Map's height in pixels.  
+	 */
+	public void initializeShadowMap(int smWidth, int smHeight) {
+		this.shadowMap = new DepthBuffer(smWidth, smHeight);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the light source's shadow map. Returns null if the
+	 * shadow map isn't initialized yet.
+	 */
+	public DepthBuffer getShadowMap() {
+		return shadowMap;
+	}
+	
+	
+	/**
+	 * Prepares the shadow map for rendering models to it.
+	 */
+	public void startShadowMapPass() {
+		if (shadowMap == null) {
+			System.err.println("The light source " + this + " doesn't support shadow mapping.");
+			return;
+		}
+		
+		shadowMap.startRenderPass(this);
+	}
+	
+	
+	/**
+	 * 
+	 * Renders a number of models to the Shadow Map.
+	 * 
+	 * @param models The models to render to the Shadow Map.
+	 */
+	public void passToShadowMap(Model[] models) {
+		if (shadowMap == null) {
+			System.err.println("The light source " + this + " doesn't support shadow mapping.");
+			return;
+		}
+		
+		shadowMap.passToDepthBuffer(models, this);
+	}
+	
+	
+	/**
+	 * 
+	 * Renders a model to the Shadow Map.
+	 * 
+	 * @param model The model to render to the Shadow Map.
+	 */
+	public void passToShadowMap(Model model) {
+		if (shadowMap == null) {
+			System.err.println("The light source " + this + " doesn't support shadow mapping.");
+			return;
+		}
+		
+		shadowMap.passToDepthBuffer(model);
+	}
+	
+	
+	/**
+	 * Ends the current pass to the Shadow Map.
+	 */
+	public void endShadowMapPass() {
+		if (shadowMap == null) {
+			System.err.println("The light source " + this + " doesn't support shadow mapping.");
+			return;
+		}
+		
+		shadowMap.endRenderPass();
 	}
 	
 	
@@ -78,8 +195,47 @@ public class DirectionalLight extends Camera {
 		
 		this.setOrthographicProjection(maxZ, minZ, minX, maxX, minY, maxY);		
 	}
+
+	
+	public void fitToBoundingBox(Model model) {
+		Vector4f[] meshBoundaries = toViewSpace(model.getTransformable().getBoundaries());
+		
+		float xMin, yMin, zMin, xMax, yMax, zMax;
+		xMin = yMin = zMin = Float.MAX_VALUE;
+		xMax = yMax = zMax = Float.MIN_VALUE;
+		
+		Vector4f current = null;
+		
+		for (int i = 0; i < meshBoundaries.length; ++i) {
+			current = meshBoundaries[i];
+			
+			xMin = min(current.getA(), xMin);
+			yMin = min(current.getB(), yMin);
+			zMin = min(current.getC(), zMin);
+			
+			xMax = max(current.getA(), xMax);
+			yMax = max(current.getB(), yMax);
+			zMax = max(current.getC(), zMax);
+		}
+		
+		System.out.println("Min: " + "x=" + xMin + "; y=" + yMin + "; z=" + zMin);
+		System.out.println("Max: " + "x=" + xMax + "; y=" + yMax + "; z=" + zMax);
+		
+		Vector4f center = new Vector4f(xMin + (xMax - xMin) / 2f, yMin + (yMax - yMin) / 2f, zMin + (zMax - zMin) / 2f, 1f);
+		Vector4f camPosViewSpace = center.plus(new Vector4f(0f , 0f, (zMin - zMax) / 2f + zMax, 1f));
+		Vector4f camPosWorldSpace = toWorldSpace(camPosViewSpace);
+		System.out.println(camPosWorldSpace);
+		setPosition(camPosWorldSpace);
+		
+		setZoom(1f / (xMax - xMin) * 2f, 1f / (yMax - yMin) * 2f, 1f / (zMax - zMin) * 2f);
+	}
 	
 	
+	public void fitToBoundingBox(Model[] models) {
+		
+	}
+	
+		
 	public Vector3f getLightDirection() {
 		return getViewDirection();
 	}
@@ -92,6 +248,12 @@ public class DirectionalLight extends Camera {
 
 	public void setColor(Vector3f color) {
 		this.color = color;
+	}
+
+
+	@Override
+	public void delete() {
+		shadowMap.delete();
 	}
 	
 }

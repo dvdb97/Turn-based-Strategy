@@ -1,6 +1,7 @@
 package assets.textures;
 
 import assets.buffers.Buffer;
+import assets.cameras.Camera;
 import assets.meshes.Mesh;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
@@ -56,17 +57,17 @@ public class Skybox extends CubeMap {
 	}
 	
 	
-	public void render(Matrix44f view, Matrix44f projection) {
+	public void render(Camera camera) {
 		glDepthMask(false);
-		shader.use();
+		shader.bind();
 		this.bind();
 		
-		shader.setUniformMatrices(view, projection);
+		shader.setUniformMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 		
 		mesh.render();
 		
 		this.unbind();
-		shader.disable();
+		shader.unbind();
 		glDepthMask(true);
 	}
 }

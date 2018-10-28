@@ -51,13 +51,13 @@ public class ShaderManager {
 		
 		if (!colorAsUniform) {
 						
-			shader.use();
+			shader.bind();
 			
 			shader.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());
 			
 		} else {
 			
-			shaderColorAsU.use();
+			shaderColorAsU.bind();
 			
 			shaderColorAsU.setUniformMatrix4fv("mvpMatrix", mvpMatrix.toArray());	
 			shaderColorAsU.setUniformVector4f("u_Color", color);
@@ -79,7 +79,7 @@ public class ShaderManager {
 			
 		}
 		
-		shader.disable();
+		shader.unbind();
 		
 	}
 	
@@ -94,7 +94,7 @@ public class ShaderManager {
 			
 		}
 		
-		texturedMeshShader.use();
+		texturedMeshShader.bind();
 		texturedMeshShader.setUniformMatrix4fv("u_mvpMatrix", mvpMatrix);
 		
 	}
@@ -110,7 +110,7 @@ public class ShaderManager {
 			
 		}
 		
-		texturedMeshShader.disable();
+		texturedMeshShader.unbind();
 		
 	}
 	
@@ -125,7 +125,7 @@ public class ShaderManager {
 			
 		}
 		
-		fontShader.use();
+		fontShader.bind();
 		fontShader.prepareForRendering(mvpMatrix);
 		
 	}
@@ -141,7 +141,7 @@ public class ShaderManager {
 			
 		}
 		
-		fontShader.disable();
+		fontShader.unbind();
 	}
 
 }

@@ -17,6 +17,8 @@ public class Material {
 	
 	public float shininess;
 	
+	public boolean castShadows;
+	
 	
 	public Material(Color color, Vector3f emission, Vector3f ambient, Vector3f diffuse, Vector3f specular, float shininess) {
 		super();
@@ -27,6 +29,7 @@ public class Material {
 		this.diffuse = diffuse;
 		this.specular = specular;
 		this.shininess = shininess;
+		this.castShadows = true;
 	}
 	
 	
@@ -39,6 +42,7 @@ public class Material {
 		this.diffuse = Vector3f.ZERO;
 		this.specular = Vector3f.ZERO;
 		this.shininess = 0f;
+		this.castShadows = true;
 	}
 	
 }

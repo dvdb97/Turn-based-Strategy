@@ -212,8 +212,8 @@ public class Window {
 	
 	//****************************** Getters & Setters ******************************
 	
-	//TODO: calculation may be incorrect
-	public float getProportions() {
+	
+	public float getAspectRatio() {
 		return (float)windowWidth / (float)windowHeight;
 	}
 	

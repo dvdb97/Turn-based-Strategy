@@ -152,6 +152,19 @@ public class Vertex {
 	 * Creates a new Vertex
 	 * 
 	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 */
+	public Vertex(Vector3f position, Vector2f texPos) {
+		this(position);
+		this.texPos = texPos.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
 	 * @param color The vertex color
 	 * @param normal The vertex normal
 	 */

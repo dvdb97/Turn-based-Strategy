@@ -2,7 +2,7 @@ package assets.meshes;
 
 import assets.buffers.Buffer;
 import assets.cameras.Camera;
-import assets.light.ShadowMap;
+import assets.light.DepthBuffer;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.MeshConst.BufferLayout;
@@ -11,7 +11,7 @@ import assets.textures.Texture;
 import assets.textures.Texture2D;
 import math.matrices.Matrix44f;
 
-public class Model {
+public class Model implements IRenderable {
 	
 	private Transformable transform;
 	
@@ -97,15 +97,12 @@ public class Model {
 	
 	
 	/**
-	 * 
 	 * Renders this Model on the screen.
-	 * 
-	 * @param view The viewMatrix of the camera.
-	 * @param projection The projectionMatrix.
 	 */
-	public void render(Matrix44f view, Matrix44f projection) {
+	public void render() {
+		
 		//Pass the mvp matrix to the shader.
-		shader.setMVPMatrix(transform.getTransformationMatrix(), view, projection);
+		shader.setModelMatrix(transform.getTransformationMatrix());
 		
 		//Pass the material to the shader.
 		shader.setMaterial(material);
@@ -121,11 +118,11 @@ public class Model {
 	
 	
 	public void render(Camera camera) {
-		this.render(camera.getViewMatrix(), camera.getProjectionMatrix());
+		this.render();
 	}
 	
 	
-	public void renderToShadowMap() {
+	public void passToShadowMap() {
 		mesh.render();
 	}
 	
@@ -140,15 +137,28 @@ public class Model {
 	 * @param showBoundingBox If set to true the bounding box will displayed.
 	 */
 	public void render(Matrix44f view, Matrix44f projection, boolean showBoundingBox) {
-		render(view, projection);
+		render();
 		
 		if (showBoundingBox)
 			mesh.renderBoundingBox(transform, view, projection);
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns the model's transformable.
+	 */
 	public Transformable getTransformable() {
 		return transform;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the model's material.
+	 */
+	public Material getMaterial() {
+		return material;
 	}
 	
 	

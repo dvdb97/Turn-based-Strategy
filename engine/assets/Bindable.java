@@ -1,11 +1,9 @@
 package assets;
 
-public interface Bindable {
+public interface Bindable extends Deletable {
 	
 	public abstract void bind();
 	
 	public abstract void unbind();
 	
-	public abstract void delete();
-
 }

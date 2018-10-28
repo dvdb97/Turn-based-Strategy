@@ -36,7 +36,7 @@ public class ProjectionMatrix extends Matrix44f {
 	 * @return Returns a perspective projection matrix.
 	 */
 	public static ProjectionMatrix perspective(float n, float f, float l, float r, float b, float t) {
-		float a = Window.main.getProportions();
+		float a = Window.main.getAspectRatio();
 		
 		l = l * a;
 		r = r * a;
@@ -82,14 +82,14 @@ public class ProjectionMatrix extends Matrix44f {
 		float t = tan(fov / 2f) * n;
 		
 		//The window's aspect ratio.
-		float a = Window.main.getProportions();
+		float a = Window.main.getAspectRatio();
 		
 		return perspective(n, f, -t * a, t * a, -t, t);	
 	}
 	
 	
 	public static ProjectionMatrix orthographic() {
-		return orthographic(1f, -1f, -1f, 1f, -1f, 1f);
+		return orthographic(-1f, 1f, -1f, 1f, -1f, 1f);
 	}
 	
 	
@@ -108,10 +108,10 @@ public class ProjectionMatrix extends Matrix44f {
 		
 		matrix.setA1(2f / (r - l));
 		matrix.setB2(2f / (t - b));
-		matrix.setC3(-2f / (f -n));
-		matrix.setD1(-(r + l) / (r - l));
-		matrix.setD2(-(t + b) / (t - b));
-		matrix.setD3(-(f + n) / (f - n));
+		matrix.setC3(-2f / (f - n));
+		matrix.setA4(-(r + l) / (r - l));
+		matrix.setB4(-(t + b) / (t - b));
+		matrix.setC4(-(f + n) / (f - n));
 		
 		return matrix;
 	}

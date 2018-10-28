@@ -20,15 +20,15 @@ public class Matrices {
 
 	public static void initProjectionMatrix(Window window) {
 		
-		perspProjectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getProportions());
+		perspProjectionMatrix = ProjectionMatrix.generatePerspectiveProjectionMatrix(window.getAspectRatio());
 		
 		invertedPerspProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(perspProjectionMatrix);
 		
-		orthProjectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions(), 10f);
+		orthProjectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getAspectRatio(), 10f);
 		
 		invertedOrthProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(orthProjectionMatrix);
 		
-		windowProportions = window.getProportions();
+		windowProportions = window.getAspectRatio();
 		
 	}
 	

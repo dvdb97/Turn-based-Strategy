@@ -1,9 +1,10 @@
-package assets.meshes.boundingBox;
+package assets.meshes.prefabs;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import java.nio.IntBuffer;
 
+import assets.Deletable;
 import assets.buffers.Buffer;
 import assets.buffers.VertexBuffer;
 import assets.meshes.geometry.Vertex;
@@ -12,7 +13,7 @@ import math.vectors.Vector3f;
 import utils.CustomBufferUtils;
 
 
-public class BoundingBoxMesh {
+public class Box implements Deletable {
 	
 	private VertexBuffer vbo;
 	
@@ -21,7 +22,7 @@ public class BoundingBoxMesh {
 	private IntBuffer indexBuffer;
 	
 	
-	public BoundingBoxMesh() {
+	public Box() {
 		vbo = new VertexBuffer();
 		
 		Vertex[] vertices = {
@@ -65,6 +66,13 @@ public class BoundingBoxMesh {
 		glDrawElements(GL_LINES, indexBuffer);
 		
 		vao.disableVertexAttribArray();
+	}
+
+
+	@Override
+	public void delete() {
+		vbo.delete();
+		vao.delete();
 	}
 
 }

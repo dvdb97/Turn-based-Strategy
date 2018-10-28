@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
+import assets.Bindable;
+import assets.cameras.Camera;
 import assets.material.Material;
 import assets.meshes.geometry.Vertex;
 import math.matrices.Matrix33f;
@@ -16,7 +18,7 @@ import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class ShaderProgram {
+public class ShaderProgram implements Bindable {
 	
 	private class Uniform {
 		
@@ -92,6 +94,9 @@ public class ShaderProgram {
 	
 	//The layout of the data that a mesh needs to have to match the shaders requirements
 	private int layout;
+	
+	//The view projection matrix used for the current pass. It will be stored here to use it in later computation
+	protected Matrix44f viewProjectionMatrix;
 	
 	
 	public ShaderProgram(String vertSource, String fragSource) {
@@ -279,20 +284,40 @@ public class ShaderProgram {
 	 * @param view The camera's view matrix.
 	 * @param projection The projection matrix.
 	 */
-	public void setMVPMatrix(Matrix44f model, Matrix44f view, Matrix44f projection) {
-		//Pass every single matrix to the shader
+	public void setModelMatrix(Matrix44f model) {
+		//Pass the model matrix to the shader
 		this.setUniformMatrix4fv("modelMatrix", model);
-		this.setUniformMatrix4fv("viewMatrix", view);
-		this.setUniformMatrix4fv("projectionMatrix", projection);
 		
 		//Combine the matrices and pass the result to the shader.
-		this.setUniformMatrix4fv("mvpMatrix", projection.times(view).times(model));
+		this.setUniformMatrix4fv("mvpMatrix", viewProjectionMatrix.times(model));
 	}
 	
 	
 	/**
 	 * 
-	 * Pass an single float into the rendering pipeline
+	 * Sets the values of all the camera related uniform variables
+	 * 
+	 * @param camera The camera the scene is rendered with.
+	 */
+	public void setCamera(Camera camera) {
+		//Pass the camera's position to the shader.
+		this.setUniform3fv("cameraPosition", camera.getPosition().toArray());
+		
+		//Set the view-projection matrix as a variable to use it again when a model matrix is set.
+		this.viewProjectionMatrix = camera.getViewProjectionMatrix();
+		
+		//System.out.println("View: " + camera.getViewMatrix());
+		//System.out.println("Projection: " + camera.getProjectionMatrix());
+		
+		//Pass the view and projection matrix to the shader.
+		this.setUniformMatrix4fv("viewMatrix", camera.getViewMatrix());
+		this.setUniformMatrix4fv("projectionMatrix", camera.getProjectionMatrix());
+	}
+	
+	
+	/**
+	 * 
+	 * Pass an single float to the shader.
 	 * 
 	 * @param name The name of the uniform variable to address
 	 * @param value The value of the uniform variable should have
@@ -471,12 +496,20 @@ public class ShaderProgram {
 	}
 	
 	
-	public void use() {
+	public void bind() {
 		glUseProgram(ID);
 	}
 	
-	public void disable() {
+	public void unbind() {
 		glUseProgram(0);
+	}
+
+
+	@Override
+	public void delete() {
+		glDeleteProgram(ID);
+		glDeleteShader(vertShaderID);
+		glDeleteProgram(fragShaderID);
 	}
 
 }

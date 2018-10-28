@@ -2,13 +2,21 @@ package assets.cameras;
 
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
+import rendering.BoxRenderer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
 import static math.Trigonometry.*;
 
-public class Camera {
+import assets.material.Material;
+import assets.meshes.IRenderable;
+import assets.meshes.geometry.Color;
+import assets.meshes.prefabs.Box;
+import assets.shaders.ShaderProgram;
+import assets.shaders.standardShaders.StandardShader;
+
+public class Camera implements IRenderable {
 	
 	public enum ProjectionType {
 		PERSPECTIVE, ORTHOGRAPHIC
@@ -19,6 +27,9 @@ public class Camera {
 	
 	//The current view direction of the camera
 	private Vector3f viewDirection;
+	
+	//The current zoom of the camera
+	private Vector3f zoom;
 	
 	//The up vector for creating a view matrix
 	private Vector3f upVector;
@@ -44,6 +55,9 @@ public class Camera {
 	private float fieldOfView = (float)Math.PI / 8f;
 	
 	
+	//This camera's view-projection matrix.
+	private Matrix44f viewProjectionMatrix;
+	
 	//The inverse of this camera's view-projection matrix.
 	private Matrix44f invertedViewProjectionMatrix;
 	
@@ -65,9 +79,10 @@ public class Camera {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		this.zoom = new Vector3f(1f, 1f, 1f);
 		
-		this.updateViewMatrix();
 		this.setProjection(projection);
+		this.updateViewMatrix();
 	}
 	
 	
@@ -89,9 +104,10 @@ public class Camera {
 		this.position = position.copyOf();
 		this.viewDirection = new Vector3f(0.0f, 0.0f, -1.0f);
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		this.zoom = new Vector3f(1f, 1f, 1f);
 		
-		this.updateViewMatrix();
 		this.setProjection(projection);
+		this.updateViewMatrix();;
 	}
 	
 	
@@ -115,9 +131,10 @@ public class Camera {
 		this.position = position.copyOf();
 		this.viewDirection = viewDirection.copyOf();
 		this.upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		this.zoom = new Vector3f(1f, 1f, 1f);
 		
-		this.updateViewMatrix();
 		this.setProjection(projection);
+		this.updateViewMatrix();;
 	}
 	
 	
@@ -133,16 +150,18 @@ public class Camera {
 	 */
 	private void setProjection(ProjectionType projection) {		
 		if (projection == ProjectionType.PERSPECTIVE) {
-			setPerspectiveProjection(this.fieldOfView);
+			setPerspectiveProjection();
 		} else {
 			setOrthographicProjection();
 		}
-		
-		this.invertedViewProjectionMatrix = invertedProjectionMatrix.times(invertedViewMatrix);
 	}
 	
 
-	public void setPerspectiveProjection(float fieldOfView) {		
+	/**
+	 * Starts using an perspective projection matrix with default values for 
+	 * rendering with this camera.
+	 */
+	public void setPerspectiveProjection() {		
 		projectionMatrix = ProjectionMatrix.perspective();
 		invertedProjectionMatrix = projectionMatrix.inverse();
 		
@@ -150,6 +169,44 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * 
+	 * Starts using an perspective projection matrix for rendering with this camera.
+	 * 
+	 * @param fov The camera's field of view.
+	 */
+	public void setPerspectiveProjection(float fov) {
+		this.setPerspectiveProjection(fov, 1f, -1f);
+	}
+	
+	
+	/**
+	 * 
+	 * Starts using an perspective projection matrix for rendering with this camera.
+	 * 
+	 * @param fov The camera's field of view.
+	 * @param n The near plane of the frustrum.
+	 * @param f The far plane of the frustrum.
+	 */
+	public void setPerspectiveProjection(float fov, float near, float far) {
+		projectionMatrix = ProjectionMatrix.perspective(fov, near, far);
+		invertedProjectionMatrix = projectionMatrix.inverse();
+		
+		this.projection = ProjectionType.PERSPECTIVE;
+	}
+	
+	
+	/**
+	 * 
+	 * Starts using an perspective projection matrix for rendering with this camera.
+	 * 
+	 * @param n The near plane of the frustrum.
+	 * @param f The far plane of the frustrum.
+	 * @param l The left plane of the frustrum.
+	 * @param r The right plane of the frustrum.
+	 * @param b The bottom plane of the frustrum.
+	 * @param t The top plane of the frustrum.
+	 */
 	public void setPerspectiveProjection(float n, float f, float l, float r, float b, float t) {
 		projectionMatrix = ProjectionMatrix.perspective(n, f, l, r, b, t);
 		invertedProjectionMatrix = projectionMatrix.inverse();
@@ -158,6 +215,9 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * Starts using an orthographic projection matrix for rendering with this camera.
+	 */
 	public void setOrthographicProjection() {		
 		projectionMatrix = ProjectionMatrix.orthographic();
 		invertedProjectionMatrix = projectionMatrix.inverse();
@@ -166,6 +226,17 @@ public class Camera {
 	}
 	
 	
+	/**
+	 * 
+	 * Starts using an orthographic projection matrix for rendering with this camera.
+	 * 
+	 * @param n The near plane of the box.
+	 * @param f The far plane of the box.
+	 * @param l The left plane of the box.
+	 * @param r The right plane of the box.
+	 * @param b The bottom plane of the box.
+	 * @param t The top plane of the box.
+	 */
 	public void setOrthographicProjection(float n, float f, float l, float r, float b, float t) {
 		projectionMatrix = ProjectionMatrix.orthographic(n, f, l, r, b, t);
 		invertedProjectionMatrix = projectionMatrix.inverse();
@@ -184,8 +255,10 @@ public class Camera {
 	
 	
 	private void updateViewMatrix() {
-		this.viewMatrix = generateViewMatrixA(position, viewDirection, upVector);
-		this.invertedViewMatrix = generateInvertedViewMatrix();
+		this.viewMatrix = generateViewMatrixA(position, viewDirection, upVector, zoom);
+		this.invertedViewMatrix = viewMatrix.inverse();
+		this.viewProjectionMatrix = projectionMatrix.times(viewMatrix);
+		this.invertedViewProjectionMatrix = invertedViewMatrix.times(projectionMatrix.inverse());
 	}
 	
 	
@@ -261,6 +334,17 @@ public class Camera {
 	 */
 	public void setPosition(Vector3f position) {
 		moveTo(position);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the camera's position.
+	 * 
+	 * @param position The new position of the camera.
+	 */
+	public void setPosition(Vector4f position) {
+		moveTo(position.toVector3f());
 	}
 	
 	
@@ -422,6 +506,21 @@ public class Camera {
 	
 	/**
 	 * 
+	 * @param zoom The camera's zoom
+	 */
+	public void setZoom(Vector3f zoom) {
+		this.zoom = zoom;
+		this.updateViewMatrix();
+	}
+	
+	
+	public void setZoom(float x, float y, float z) {
+		setZoom(new Vector3f(x, y, z));
+	}
+	
+	
+	/**
+	 * 
 	 * @return Returns the camera's position.
 	 */
 	public Vector3f getPosition() {
@@ -459,6 +558,60 @@ public class Camera {
 	
 	/**
 	 * 
+	 * Transforms a vector to the camera's view space.
+	 * 
+	 * @param vec The vector to be transformed
+	 * @return The transformed vector
+	 */
+	public Vector4f toViewSpace(Vector4f vec) {
+		return viewMatrix.times(vec);
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms a vector to the camera's view space.
+	 * 
+	 * @param vec The vector to be transformed
+	 * @return The transformed vector
+	 */
+	public Vector4f toViewSpace(Vector3f vec) {
+		return toViewSpace(vec.toVector4f(1f));
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms an array of vectors to the camera's view space.
+	 * 
+	 * @param vec The vectors to be transformed
+	 * @return The transformed vectors
+	 */
+	public Vector4f[] toViewSpace(Vector4f[] vectors) {
+		Vector4f[] vec = new Vector4f[vectors.length];
+		
+		for (int i = 0; i < vec.length; ++i) {
+			vec[i] = viewMatrix.times(vectors[i]);
+		}
+		
+		return vec;
+	}
+	
+	
+	/**
+	 * 
+	 * Transforms a vector from the camera's view space back to world space.
+	 * 
+	 * @param vec The vector to be transformed
+	 * @return The transformed vector
+	 */
+	public Vector4f toWorldSpace(Vector4f vector) {
+		return invertedViewMatrix.times(vector);	
+	}
+	
+	
+	/**
+	 * 
 	 * @return Returns the camera's frustrum center in world space.
 	 */
 	public Vector3f getFrustrumCenter() {
@@ -475,9 +628,21 @@ public class Camera {
 		
 		for (int i = 0; i < corners.length; ++i) {
 			corners[i] = invertedViewProjectionMatrix.times(corners[i]);
+			corners[i] = corners[i].times(1f / corners[i].getD());
 		}
 		
 		return corners;		
+	}
+	
+	
+	@Override
+	public void render(Camera camera) {
+		render(camera, Color.WHITE);
+	}
+	
+	
+	public void render(Camera camera, Color color) {
+		BoxRenderer.draw(invertedViewProjectionMatrix, camera, color);
 	}
 	
 	
@@ -504,7 +669,7 @@ public class Camera {
 
 	/**
 	 *  
-	 * @return Generates a view matrix for this camera
+	 * @return Returns a view matrix for this camera
 	 */
 	public Matrix44f getViewMatrix() {
 		return viewMatrix;
@@ -513,20 +678,28 @@ public class Camera {
 	
 	/**
 	 * 
-	 * @return Generates the multiplicative inverse of the view matrix
+	 * @return Returns the multiplicative inverse of the view matrix
 	 */
 	public Matrix44f getInvertedViewMatrix() {
 		return invertedViewMatrix;
 	}
 	
 	
-	public Matrix44f getInvertedViewProjectionMatrix() {
-		return invertedProjectionMatrix;
+	/**
+	 * 
+	 * @return Returns the camera's view-projection-matrix.
+	 */
+	public Matrix44f getViewProjectionMatrix() {
+		return viewProjectionMatrix;
 	}
 	
 	
-	private Matrix44f generateInvertedViewMatrix() {
-		return generateViewMatrixA(position.normalizedCopy(), viewDirection.negatedCopy(), upVector);
+	/**
+	 * 
+	 * @return Returns the inverse of the camera's view-projection-matrix.
+	 */
+	public Matrix44f getInvertedViewProjectionMatrix() {
+		return invertedProjectionMatrix;
 	}
 	
 	
@@ -537,19 +710,19 @@ public class Camera {
 	 * @param up A global up vector
 	 * @return Returns a view matrix
 	 */
-	public static Matrix44f generateViewMatrixA(Vector3f eye, Vector3f viewDirection, Vector3f up) {
+	public static Matrix44f generateViewMatrixA(Vector3f eye, Vector3f viewDirection, Vector3f up, Vector3f zoom) {
 		Vector3f z = viewDirection.normalizedCopy();
 		z.negated();
 		
 		up = up.normalizedCopy();		
 		
-		Vector3f x = up.cross(z).normalize();;			
+		Vector3f x = up.cross(z).normalize();			
 		
 		Vector3f y = z.cross(x).normalize();
 		
-		Matrix44f orientation = new Matrix44f(x.getA(), x.getB(), x.getC(), 0f, 
-											  y.getA(), y.getB(), y.getC(), 0f, 
-											  z.getA(), z.getB(), z.getC(), 0f, 
+		Matrix44f orientation = new Matrix44f(zoom.getA() * x.getA(), zoom.getA() * x.getB(), zoom.getA() * x.getC(), 0f, 
+											  zoom.getB() * y.getA(), zoom.getB() * y.getB(), zoom.getB() * y.getC(), 0f, 
+											  zoom.getC() * z.getA(), zoom.getC() * z.getB(), zoom.getC() * z.getC(), 0f, 
 											  0f, 0f, 0f, 1f);
 		
 		Matrix44f translation = new Matrix44f(1f, 0f, 0f, -eye.getA(),
@@ -568,8 +741,8 @@ public class Camera {
 	 * @param up A global up vector
 	 * @return Returns a view matrix
 	 */
-	public static Matrix44f generateViewMatrixB(Vector3f eye, Vector3f center, Vector3f up) {
-		return generateViewMatrixA(eye, center.minus(eye), up);
+	public static Matrix44f generateViewMatrixB(Vector3f eye, Vector3f center, Vector3f up, Vector3f zoom) {
+		return generateViewMatrixA(eye, center.minus(eye), up, zoom);
 	}
 
 }

@@ -87,12 +87,14 @@ public class Texture2D extends Texture {
 		
 		ByteBuffer buffer = image.getImageDataAsByteBuffer();
 		
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		
-		generateMipMapLevels();
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
 		this.setFilter(this.getFilterMode());
 		this.setTextureWrap(this.getWrapMode());
+		
+		generateMipMapLevels();
 		
 		unbind();
 	}

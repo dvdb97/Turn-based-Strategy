@@ -3,11 +3,16 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
+import rendering.BoxRenderer;
 import rendering.RenderEngine;
+import rendering.TextureRenderer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.opengl.GL11.*;
+
+import java.util.Arrays;
 
 import org.lwjgl.glfw.GLFW;
 import assets.cameras.Camera;
@@ -39,6 +44,10 @@ public class ModelTest {
 	
 	private static Camera camera;
 	
+	private static Camera camera2;
+	
+	private static Camera main;
+	
 	private static DirectionalLight light;
 	
 	private static Model model;
@@ -47,6 +56,8 @@ public class ModelTest {
 	
 	private static float xRot = 0f;
 	private static float yRot = 0f;	
+	
+	private static boolean shadows = true;
 	
 	public static void init() {
 		window = new Window();
@@ -66,8 +77,7 @@ public class ModelTest {
 	
 	
 	public static void initShader() {
-		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
-		
+		Subshader subshader = /*Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");*/ new ConstantColorSubshader(Color.BLUE);//
 		shader = LightShader.createPerFragmentLightShader(subshader);
 	}
 	
@@ -75,13 +85,11 @@ public class ModelTest {
 	public static Model initMesh() {		
 		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol_HR.png");
 		
-		Mesh mesh = Terrain.generate(heightmap);
-		
-		Texture2D texture = new Texture2D("res/heightmaps/Osttirol_HR.png");
+		Mesh mesh = FileLoader.loadObjFile("res/models/ShadowTest.obj");//Terrain.generate(heightmap);
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		
-		return new Model(shader, mesh, material, texture, BufferLayout.INTERLEAVED);		
+		return new Model(shader, mesh, material, null, BufferLayout.INTERLEAVED);		
 	}
 	
 	
@@ -90,11 +98,13 @@ public class ModelTest {
 		
 		model = initMesh();
 		
-		model.getTransformable().setScaling(6f, 6f, 1f);
+		model.getTransformable().setScaling(1f, 1f, 1f);
+		model.getTransformable().translate(0, 0, 0);
+		model.getTransformable().rotate(Transformable._1_DEGREE * 90f, 0f, 0f);
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(0f, 1f, -1f), new Vector3f(1f, 1f, 1f));
+		light = new DirectionalLight(new Vector3f(0f, 0f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -106,32 +116,43 @@ public class ModelTest {
 		
 		skybox = new Skybox(paths);
 		
+		light.fitToBoundingBox(model);
+		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			
 			RenderEngine.clear();
 			
-			//skybox.render(camera.getViewMatrix(), projMatrix);
+			//skybox.render(camera);
 			
-			shader.use();
+			light.startShadowMapPass();
+			light.passToShadowMap(model);
+			light.endShadowMapPass();
+			
+			shader.bind();
 			
 			shader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
-			
-			shader.setLightSource(light);
-			
+			shader.setLightSource(light, true);
 			shader.setCamera(camera);
 			
 			handleInput();
 			
-			model.render(camera);
+			model.render();
 			
-			shader.disable();
+			shader.unbind();
 			
-			light.fitToFrustrum(camera);
+			BoxRenderer.draw(model.getTransformable().getTransformationMatrix(), camera, Color.RED);
+			light.render(camera, Color.YELLOW);
+			TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
 			
 			RenderEngine.swapBuffers();
 		}
 		
+		TextureRenderer.delete();
+		BoxRenderer.delete();
+		shader.delete();
 		model.delete();
+		light.delete();
+		skybox.delete();
 	}
 	
 	
@@ -185,7 +206,7 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			RenderEngine.takeScreenshot(window, "screenshots/Fancy.png", "PNG");			
+			RenderEngine.takeScreenshot(window, "screenshots/Schatten.png", "PNG");
 		}
 	}
 }

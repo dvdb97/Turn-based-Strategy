@@ -9,11 +9,7 @@ out vec2 pass_tex_pos;
 
 
 void main() {
-
 	pass_tex_pos = vTexPos;
 
-	vec4 pos = u_mvpMatrix * vec4(vPosition, 1);
-
-	gl_Position = pos;
-
+	gl_Position = u_mvpMatrix * vec4(vPosition, 1);
 }

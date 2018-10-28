@@ -22,7 +22,7 @@ struct LightSource {
 in VS_OUT {
 	vec3 fragCoordModelSpace;
 	vec3 fragCoordWorldSpace;
-	vec4 fragCoordLightSpace;
+	vec3 fragCoordLightSpace;
 	vec4 fragColor;
 	vec2 fragTexPos;
 	vec3 fragNormalModelSpace;
@@ -62,15 +62,16 @@ float computeShadow() {
 		return 1.0f;
 	}
 
-	vec3 projCoords = vec3(fs_in.fragCoordLightSpace) * 0.5f + vec3(0.5f, 0.5f, 0.5f);
+	//TODO: Move to vertex shader.
+	vec2 shadowTexCoords = 0.5f * fs_in.fragCoordLightSpace.xy + vec2(0.5f, 0.5f);
 
-	float bias = max(0.05 * (1.0 - dot(normalize(fs_in.fragNormalWorldSpace), normalize(light.direction))), 0.05);
+	float visibility = 1f;
 
-	float shadowMapDepth = texture(shadowMap, projCoords.xy).r + bias;
+	if (fs_in.fragCoordLightSpace.z > texture(shadowMap, shadowTexCoords).z) {
+		visibility = 0.5f;
+	}
 
-	float currentDepth = projCoords.z;
-
-	return currentDepth > shadowMapDepth ? 0.2f : 0.2f;
+	return visibility;
 }
 
 vec4 computeLight() {
@@ -109,7 +110,9 @@ vec4 computeLight() {
 
 	vec4 col = color();
 
-	vec3 finalColor = (computeAmbientLight() + computeShadow() * (diffuseLight + specularLight)) * col.rgb;
+	float shadow = computeShadow();
+
+	vec3 finalColor = (computeAmbientLight() + shadow * (diffuseLight + specularLight)) * col.rgb;
 
 	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), material.color.a);
 }

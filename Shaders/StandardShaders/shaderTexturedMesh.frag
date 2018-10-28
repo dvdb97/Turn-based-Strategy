@@ -7,10 +7,5 @@ uniform sampler2D tex;
 out vec4 pass_color;
 
 void main() {
-
-	//TODO: Temporary for testing purposes
-	float d = texture(tex, pass_tex_pos).r;
-
-	pass_color = vec4(d, d, d, 1.0);
-
+	pass_color = texture(tex, pass_tex_pos);
 }
