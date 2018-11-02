@@ -23,6 +23,9 @@ import math.vectors.Vector2i;
 import math.vectors.Vector4f;
 import rendering.framebuffers.FrameBuffer;
 
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
+
 
 public class RenderEngine {
 	
@@ -134,7 +137,7 @@ public class RenderEngine {
 	}
 	
 	
-	public static void takeScreenshot(Window window, String path, String format) {
+	public static void takeScreenshot(String path, String format) {
 		glReadBuffer(GL_FRONT);
 		
 		//The size of the framebuffer
@@ -150,7 +153,10 @@ public class RenderEngine {
 		
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		
-		File file = new File(path);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
+		LocalDateTime now = LocalDateTime.now();  
+		
+		File file = new File(path + "/screenshot_" + dtf.format(now)+ "." + format.toLowerCase());
 		
 		for(int x = 0; x < width; x++) 
 		{

@@ -69,14 +69,14 @@ float computeShadow() {
 	vec3 normalizedNormal = normalize(fs_in.fragNormalWorldSpace);
 	vec3 lightDirection = normalize(light.direction);
 
-	float bias = 0.001 + 0.005*tan(acos(dot(lightDirection, normalizedNormal)));
+	float bias = 0.01 + 0.005*tan(acos(dot(lightDirection, normalizedNormal)));
 
 	bias = clamp(bias, 0, 0.01);
 
 	float visibility = 1f;
 
 	if (shadowTexCoords.z - bias > texture(shadowMap, shadowTexCoords.xy).z) {
-		visibility = 0.5f;
+		visibility = 0.7f;
 	}
 
 	return visibility;

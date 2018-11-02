@@ -75,7 +75,7 @@ public class ModelTest {
 	
 	
 	public static void initShader() {
-		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag"); //new ConstantColorSubshader(Color.BLUE);//
+		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");// new ConstantColorSubshader(Color.BLUE);//
 		shader = LightShader.createPerFragmentLightShader(subshader);
 	}
 	
@@ -83,7 +83,7 @@ public class ModelTest {
 	public static Model initMesh() {		
 		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol_HR.png");
 		
-		Mesh mesh = /*FileLoader.loadObjFile("res/models/ShadowTest.obj");*/Terrain.generate(heightmap);
+		Mesh mesh = /*FileLoader.loadObjFile("res/models/Suzanne.obj");*/Terrain.generate(heightmap);
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		
@@ -103,7 +103,7 @@ public class ModelTest {
 		
 		model = initMesh();
 		
-		model.getTransformable().setScaling(6f, 6f, 2f);
+		model.getTransformable().setScaling(6f, 6f, 1f);
 		model.getTransformable().translate(0, 0, 0);
 		model.getTransformable().rotate(0f, 0f, 0f);
 		
@@ -211,7 +211,7 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			RenderEngine.takeScreenshot(window, "screenshots/TerrainShadows.png", "PNG");
+			RenderEngine.takeScreenshot("screenshots", "PNG");
 		}
 	}
 }
