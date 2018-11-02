@@ -25,7 +25,6 @@ public class Model implements IRenderable {
 	
 	
 	public Model(ShaderProgram shader, Material material, Mesh mesh, BufferLayout layout, int flag) {
-		
 		this.transform = new Transformable();
 		
 		this.shader = shader;
@@ -35,7 +34,6 @@ public class Model implements IRenderable {
 		this.mesh = mesh;
 		
 		mesh.storeOnGPU(layout, shader.getLayout(), flag);
-		
 	}
 	
 	
@@ -100,7 +98,6 @@ public class Model implements IRenderable {
 	 * Renders this Model on the screen.
 	 */
 	public void render() {
-		
 		//Pass the mvp matrix to the shader.
 		shader.setModelMatrix(transform.getTransformationMatrix());
 		

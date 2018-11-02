@@ -306,9 +306,6 @@ public class ShaderProgram implements Bindable {
 		//Set the view-projection matrix as a variable to use it again when a model matrix is set.
 		this.viewProjectionMatrix = camera.getViewProjectionMatrix();
 		
-		//System.out.println("View: " + camera.getViewMatrix());
-		//System.out.println("Projection: " + camera.getProjectionMatrix());
-		
 		//Pass the view and projection matrix to the shader.
 		this.setUniformMatrix4fv("viewMatrix", camera.getViewMatrix());
 		this.setUniformMatrix4fv("projectionMatrix", camera.getProjectionMatrix());

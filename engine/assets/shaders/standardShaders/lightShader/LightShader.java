@@ -112,7 +112,6 @@ public class LightShader extends ShaderProgram {
 	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
 	 */
 	public void setLightVPMatrix(Matrix44f lightViewProjectionMatrix) {
-		System.out.println(lightViewProjectionMatrix);
 		this.setLightViewProjectionMatrix(lightViewProjectionMatrix);
 	}
 	
@@ -155,7 +154,12 @@ public class LightShader extends ShaderProgram {
 		
 		this.setLightVPMatrix(light.getViewProjectionMatrix());
 		
-		this.setUniform1i("shadowsActive", shadows ? 1 : 0);
+		if (shadows) {
+			this.setUniform1i("shadowsActive", 1);
+			light.getShadowMap().bind();
+		} else {
+			this.setUniform1i("shadowsActive", 0);
+		}
 	}
 
 }

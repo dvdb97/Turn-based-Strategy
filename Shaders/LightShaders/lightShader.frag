@@ -57,22 +57,31 @@ vec3 computeAmbientLight() {
 	return ambientLight * material.ambient;
 }
 
+
 float computeShadow() {
 	if (shadowsActive == 0) {
 		return 1.0f;
 	}
 
 	//TODO: Move to vertex shader.
-	vec2 shadowTexCoords = 0.5f * fs_in.fragCoordLightSpace.xy + vec2(0.5f, 0.5f);
+	vec3 shadowTexCoords = 0.5f * fs_in.fragCoordLightSpace.xyz + vec3(0.5f, 0.5f, 0.5f);
+
+	vec3 normalizedNormal = normalize(fs_in.fragNormalWorldSpace);
+	vec3 lightDirection = normalize(light.direction);
+
+	float bias = 0.001 + 0.005*tan(acos(dot(lightDirection, normalizedNormal)));
+
+	bias = clamp(bias, 0, 0.01);
 
 	float visibility = 1f;
 
-	if (fs_in.fragCoordLightSpace.z > texture(shadowMap, shadowTexCoords).z) {
+	if (shadowTexCoords.z - bias > texture(shadowMap, shadowTexCoords.xy).z) {
 		visibility = 0.5f;
 	}
 
 	return visibility;
 }
+
 
 vec4 computeLight() {
 	vec3 normalizedNormal = normalize(fs_in.fragNormalWorldSpace);
@@ -117,6 +126,9 @@ vec4 computeLight() {
 	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), material.color.a);
 }
 
+
 void main() {
+	vec2 shadowTexCoords = 0.5f * fs_in.fragCoordLightSpace.xy + vec2(0.5f, 0.5f);
+
 	fColor = computeLight();
 }

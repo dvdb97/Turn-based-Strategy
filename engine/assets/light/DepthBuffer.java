@@ -7,7 +7,7 @@ import assets.textures.Texture2D;
 import interaction.Window;
 import rendering.framebuffers.FrameBuffer;
 
-import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11.*;
 
 
 public class DepthBuffer implements Bindable {	
@@ -50,6 +50,8 @@ public class DepthBuffer implements Bindable {
 		glViewport(0, 0, depthTexture.getWidth(), depthTexture.getHeight());
 		frameBuffer.clear();
 		depthTexture.bind();
+		
+		glCullFace(GL_FRONT);
 	}
 	
 	
@@ -92,6 +94,8 @@ public class DepthBuffer implements Bindable {
 	 * Ends the current render pass.
 	 */
 	public void endRenderPass() {
+		glCullFace(GL_BACK);
+		
 		depthTexture.unbind();
 		glViewport(0, 0, Window.main.getWidth(), Window.main.getHeight());
 		frameBuffer.unbind();
