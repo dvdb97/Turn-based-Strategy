@@ -3,9 +3,12 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
+import performance.SpeedTester;
 import rendering.BoxRenderer;
 import rendering.RenderEngine;
 import rendering.TextureRenderer;
+import utils.Cooldown;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.nuklear.Nuklear;
@@ -71,6 +74,8 @@ public class ModelTest {
 		RenderEngine.enableDepthTest();
 		
 		RenderEngine.setSwapInterval(1);
+		
+		Cooldown.start("shadows", 0.2);
 	}
 	
 	
@@ -109,7 +114,7 @@ public class ModelTest {
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(0f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
+		light = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(1f, 1f, 1f), 2000, 2000);
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -124,7 +129,6 @@ public class ModelTest {
 		light.fitToBoundingBox(model);
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
-			
 			RenderEngine.clear();
 			
 			//skybox.render(camera);
@@ -136,7 +140,7 @@ public class ModelTest {
 			shader.bind();
 			
 			shader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
-			shader.setLightSource(light, true);
+			shader.setLightSource(light, shadows);
 			shader.setCamera(camera);
 			
 			handleInput();
@@ -145,9 +149,9 @@ public class ModelTest {
 			
 			shader.unbind();
 			
-			BoxRenderer.draw(model.getTransformable().getTransformationMatrix(), camera, Color.RED);
-			light.render(camera, Color.YELLOW);
-			TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
+			//BoxRenderer.draw(model.getTransformable().getTransformationMatrix(), camera, Color.RED);
+			//light.render(camera, Color.YELLOW);
+			//TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
 			
 			RenderEngine.swapBuffers();
 		}
@@ -211,7 +215,11 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
-			RenderEngine.takeScreenshot("screenshots", "PNG");
+			if (Cooldown.ended("shadows")) {
+				shadows = !shadows;
+				
+				Cooldown.refresh("shadows");
+			}
 		}
 	}
 }
