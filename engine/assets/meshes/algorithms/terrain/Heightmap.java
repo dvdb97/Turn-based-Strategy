@@ -34,8 +34,6 @@ public class Heightmap implements ElevationFunction {
 		for (int i = 0; i < height * width; ++i) {
 			//Take every first byte of each pixel and transform it to a value in the range of -1f and 1f.
 			hmap[i / width][i % width] = (float)Byte.toUnsignedInt(pixelData[i * 4]) / 128f - 1f;
-			
-			
 		}
 	}
 	

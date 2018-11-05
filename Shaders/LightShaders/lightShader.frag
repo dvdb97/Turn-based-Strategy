@@ -76,7 +76,7 @@ float computeShadow() {
 	float visibility = 1f;
 
 	if (shadowTexCoords.z - bias > texture(shadowMap, shadowTexCoords.xy).z) {
-		visibility = 0.7f;
+		visibility = 0.5f;
 	}
 
 	return visibility;

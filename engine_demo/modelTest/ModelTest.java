@@ -3,7 +3,6 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
-import performance.SpeedTester;
 import rendering.BoxRenderer;
 import rendering.RenderEngine;
 import rendering.TextureRenderer;
@@ -11,9 +10,6 @@ import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.nuklear.Nuklear;
-import org.lwjgl.system.MemoryStack;
-
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
@@ -23,24 +19,11 @@ import assets.meshes.Transformable;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.algorithms.terrain.Heightmap;
 import assets.meshes.algorithms.terrain.Terrain;
-import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.shaders.standardShaders.lightShader.LightShader;
-import assets.shaders.subshaders.ConstantColorSubshader;
 import assets.shaders.subshaders.Subshader;
 import assets.textures.Skybox;
 import static java.lang.Math.*;
-
-import org.lwjgl.nuklear.NkAllocator;
-import org.lwjgl.nuklear.NkContext;
-import org.lwjgl.nuklear.NkRect;
-import org.lwjgl.nuklear.NkUserFont;
-
-import static org.lwjgl.nuklear.Nuklear.*;
-import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.system.MemoryStack.*;
-
-import static org.lwjgl.stb.STBTruetype.*;
 
 
 public class ModelTest {
@@ -76,19 +59,22 @@ public class ModelTest {
 		RenderEngine.setSwapInterval(1);
 		
 		Cooldown.start("shadows", 0.2);
+		Cooldown.start("screenshot", 1.0);
 	}
 	
 	
 	public static void initShader() {
-		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");// new ConstantColorSubshader(Color.BLUE);//
+		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
 		shader = LightShader.createPerFragmentLightShader(subshader);
 	}
 	
 	
 	public static Model initMesh() {		
-		Heightmap heightmap = new Heightmap("res/heightmaps/Osttirol_HR.png");
+		Heightmap heightmap = new Heightmap("res/heightmaps/HalloWelt.png");
 		
-		Mesh mesh = /*FileLoader.loadObjFile("res/models/Suzanne.obj");*/Terrain.generate(heightmap);
+		//Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
+		
+		Mesh mesh = Terrain.generate(heightmap);
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		
@@ -114,7 +100,7 @@ public class ModelTest {
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
-		light = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(1f, 1f, 1f), 2000, 2000);
+		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -219,6 +205,14 @@ public class ModelTest {
 				shadows = !shadows;
 				
 				Cooldown.refresh("shadows");
+			}
+		}
+		
+		if (KeyInput.keyPressed(GLFW.GLFW_KEY_F2)) {
+			if (Cooldown.ended("screenshot")) {
+				RenderEngine.takeScreenshot("screenshots", "PNG");
+				
+				Cooldown.refresh("screenshot");
 			}
 		}
 	}
