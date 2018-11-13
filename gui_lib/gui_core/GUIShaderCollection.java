@@ -1,5 +1,6 @@
 package gui_core;
 
+import assets.meshes.geometry.Color;
 import interaction.Window;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
@@ -17,22 +18,19 @@ public class GUIShaderCollection {
 	
 	
 	public static void init(Window window) {
-		
 		if (initialized) {
 			return;
 		}
 		
 		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions());
 		
-		guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
+		guiShader = ShaderLoader.loadShader("Shaders/GUI/Font/FontShader.vert", "Shaders/GUI/Font/FontShader.frag");
 		
 		initialized = true;
-		
 	}
 	
 	
-	public static void useFontShader(Matrix44f renderingMatrix) {
-	
+	public static void useFontShader(Matrix44f renderingMatrix, Color color) {
 		if (!initialized) {
 			return;
 		}
@@ -41,20 +39,16 @@ public class GUIShaderCollection {
 		
 		guiShader.setUniformMatrix4fv("u_Matrix", renderingMatrix.toArray());
 		guiShader.setUniformMatrix4fv("u_ProjectionMatrix", projectionMatrix.toArray());
-		guiShader.setUniform1i("u_textured", 1);
-		guiShader.setUniform1i("u_fontRendering", 1);
-		
+		guiShader.setUniformVector4f("u_Color", color.toVector4f());
 	}
 	
 	
 	public static void disableFontShader() {
-		
 		if (!initialized) {
 			return;
 		}
 		
 		guiShader.disable();
-		
 	}
 	
 	

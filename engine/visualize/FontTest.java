@@ -2,8 +2,8 @@ package visualize;
 
 import assets.models.Element_Model;
 import assets.textures.ArrayTexture2D;
-import fontRendering.font.classic.TimesNewRoman;
 import fontRendering.font.FontTexture;
+import fontRendering.font.classic.TimesNewRoman;
 import fontRendering.generation.TextGenerator;
 import fontRendering.generation.functions.TempFunction;
 

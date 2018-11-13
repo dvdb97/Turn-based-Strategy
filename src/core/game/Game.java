@@ -3,21 +3,16 @@ package core.game;
 import core.saves.GameScore;
 import graphics.shaders.ShaderManager;
 import gui.GameGUIManager;
-import gui.font.FontCollection;
 import gui_core.GUIManager;
 import interaction.CameraOperator;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
-import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import visualize.FontTest;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
-
 public class Game {
-	
 	
 	private boolean running;
 	
@@ -96,16 +91,12 @@ public class Game {
 	
 	
 	private void render() {
-		
 		WorldManager.render();
 		GUIManager.render();
-		
 	}
 	
 	
 	public void close() {
-		
-		
 		
 	}
 
