@@ -24,7 +24,7 @@ public class TileSelecter {
 	//variables needed for calculation
 	private static Matrix33f invertedViewMatrix33f;
 	private static Vector3f rayOrigin;					//ray is an imaginary line starting at the camera postion and going through the cursor position
-	private static Vector3f rayDirection;				//it's a line in 3D space representing (or represented by) a dot in 2D space
+	private static Vector3f rayDirection;				//	it's a line in 3D space corresponding to a dot in 2D space
 	
 	
 	//************************************** init ****************************************************
