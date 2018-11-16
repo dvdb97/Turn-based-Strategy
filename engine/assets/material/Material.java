@@ -5,6 +5,11 @@ import math.vectors.Vector3f;
 
 public class Material {
 	
+	/**
+	 * Standard material with default values.
+	 */
+	public static final Material standard = new StandardMaterial();
+	
 	public Color color;
 	
 	public Vector3f emission;

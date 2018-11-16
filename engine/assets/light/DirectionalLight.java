@@ -2,7 +2,7 @@ package assets.light;
 
 import assets.Deletable;
 import assets.cameras.Camera;
-import assets.meshes.Model;
+import assets.meshes.Mesh;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
@@ -86,7 +86,7 @@ public class DirectionalLight extends Camera implements Deletable {
 	
 	
 	/**
-	 * Prepares the shadow map for rendering models to it.
+	 * Prepares the shadow map for rendering meshs to it.
 	 */
 	public void startShadowMapPass() {
 		if (shadowMap == null) {
@@ -100,33 +100,33 @@ public class DirectionalLight extends Camera implements Deletable {
 	
 	/**
 	 * 
-	 * Renders a number of models to the Shadow Map.
+	 * Renders a number of meshes to the Shadow Map.
 	 * 
-	 * @param models The models to render to the Shadow Map.
+	 * @param meshes The meshes to render to the Shadow Map.
 	 */
-	public void passToShadowMap(Model[] models) {
+	public void passToShadowMap(Mesh[] meshes) {
 		if (shadowMap == null) {
 			System.err.println("The light source " + this + " doesn't support shadow mapping.");
 			return;
 		}
 		
-		shadowMap.passToDepthBuffer(models, this);
+		shadowMap.passToDepthBuffer(meshes, this);
 	}
 	
 	
 	/**
 	 * 
-	 * Renders a model to the Shadow Map.
+	 * Renders a mesh to the Shadow Map.
 	 * 
-	 * @param model The model to render to the Shadow Map.
+	 * @param mesh The mesh to render to the Shadow Map.
 	 */
-	public void passToShadowMap(Model model) {
+	public void passToShadowMap(Mesh mesh) {
 		if (shadowMap == null) {
 			System.err.println("The light source " + this + " doesn't support shadow mapping.");
 			return;
 		}
 		
-		shadowMap.passToDepthBuffer(model);
+		shadowMap.passToDepthBuffer(mesh);
 	}
 	
 	
@@ -197,8 +197,8 @@ public class DirectionalLight extends Camera implements Deletable {
 	}
 
 	
-	public void fitToBoundingBox(Model model) {
-		Vector4f[] meshBoundaries = toViewSpace(model.getTransformable().getBoundaries());
+	public void fitToBoundingBox(Mesh mesh) {
+		Vector4f[] meshBoundaries = toViewSpace(mesh.getTransformable().getBoundaries());
 		
 		float xMin, yMin, zMin, xMax, yMax, zMax;
 		xMin = yMin = zMin = Float.MAX_VALUE;
@@ -231,7 +231,7 @@ public class DirectionalLight extends Camera implements Deletable {
 	}
 	
 	
-	public void fitToBoundingBox(Model[] models) {
+	public void fitToBoundingBox(Mesh[] models) {
 		
 	}
 	

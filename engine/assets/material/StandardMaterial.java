@@ -8,7 +8,7 @@ public class StandardMaterial extends Material {
 	private static final Vector3f vec = new Vector3f(1.0f, 1.0f, 1.0f);
 	
 	public StandardMaterial() {
-		super(new Color(0f, 0f, 0f, 0f), vec, vec, vec, vec, 1.0f);
+		super(new Color(1f, 0f, 0f, 0f), vec, vec, vec, vec, 1.0f);
 	}
 
 }

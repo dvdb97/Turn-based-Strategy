@@ -48,7 +48,7 @@ public class Transformable {
 		
 		this.translationMatrix = new Matrix44f();
 		this.rotationMatrix = new Matrix44f();
-		this.scalingMatrix = new Matrix44f();
+		this.scalingMatrix = new Matrix44f();		
 	}
 	
 	
@@ -265,6 +265,11 @@ public class Transformable {
 	 */
 	public Matrix44f getTransformationMatrix() {
 		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
+	}
+	
+	
+	public Matrix44f getInvertedTransformationMatrix() {
+		return getInvertedTransformationMatrix().inverse();
 	}
 	
 	

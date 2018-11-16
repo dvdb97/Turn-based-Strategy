@@ -1,14 +1,9 @@
 package assets.textures;
 
-import assets.buffers.Buffer;
 import assets.cameras.Camera;
 import assets.meshes.Mesh;
-import assets.meshes.MeshConst.BufferLayout;
-import assets.meshes.geometry.Vertex;
-import assets.shaders.ShaderLoader;
-import assets.shaders.ShaderProgram;
 import assets.shaders.standardShaders.skybox.SkyboxShader;
-import math.matrices.Matrix44f;
+import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -30,16 +25,16 @@ public class Skybox extends CubeMap {
 	
 	
 	private static void loadSkyboxMesh() {
-		Vertex[] vertices = {
-			new Vertex(-10.0f,  10.0f, -10.0f),
-			new Vertex(-10.0f, -10.0f, -10.0f),
-			new Vertex( 10.0f, -10.0f, -10.0f),
-			new Vertex( 10.0f,  10.0f, -10.0f),
+		float[] vertices = {
+			-10.0f,  10.0f, -10.0f,
+			-10.0f, -10.0f, -10.0f,
+			 10.0f, -10.0f, -10.0f,
+			 10.0f,  10.0f, -10.0f,
 			
-			new Vertex(-10.0f,  10.0f,  10.0f),
-			new Vertex(-10.0f, -10.0f,  10.0f),
-			new Vertex( 10.0f, -10.0f,  10.0f),
-			new Vertex( 10.0f,  10.0f,  10.0f)
+			-10.0f,  10.0f,  10.0f,
+			-10.0f, -10.0f,  10.0f,
+			 10.0f, -10.0f,  10.0f,
+			 10.0f,  10.0f,  10.0f
 		};
 		
 		int[] indices = {
@@ -51,9 +46,10 @@ public class Skybox extends CubeMap {
 			0, 3, 7, 7, 4, 0
 		};
 		
-		mesh = new Mesh(vertices, indices);
+		mesh = new Mesh();
 		
-		mesh.storeOnGPU(BufferLayout.INTERLEAVED, vertices[0].getDataLayout(), Buffer.DYNAMIC_STORAGE);
+		mesh.setPositionData(CustomBufferUtils.createFloatBuffer(vertices), 3);
+		mesh.setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
 	}
 	
 	

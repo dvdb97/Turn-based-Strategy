@@ -1,6 +1,6 @@
 package visualize;
 
-import assets.meshes.Mesh;
+import assets.meshes.MeshLegacy;
 import assets.meshes.geometry.VertexLegacy;
 import assets.models.Element_Model;
 import assets.textures.Texture2D;

@@ -3,13 +3,13 @@ package assets.meshes.prefabs;
 import java.util.Arrays;
 
 import assets.buffers.Buffer;
-import assets.meshes.Mesh;
+import assets.meshes.MeshLegacy;
 import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 
-public class Plane extends Mesh {
+public class Plane extends MeshLegacy {
 
 	private static Vertex[] vertices = {
 		new Vertex(new Vector3f(-1f, 1f, 0f), new Vector2f(0f, 1f)),

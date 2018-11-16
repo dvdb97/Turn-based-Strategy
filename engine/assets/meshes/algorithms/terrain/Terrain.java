@@ -1,13 +1,10 @@
 package assets.meshes.algorithms.terrain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import org.lwjgl.BufferUtils;
 
 import assets.meshes.Mesh;
-import assets.meshes.geometry.Vertex;
-import math.vectors.Vector2f;
-import math.vectors.Vector3f;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL31.*;
 
@@ -15,14 +12,15 @@ public class Terrain extends Mesh {
 	
 	private int width, height;
 
-	private Terrain(int width, int height, List<Vertex> vertices, List<Integer> indices) {
-		super(vertices, indices, GL_TRIANGLE_STRIP);
+	private Terrain(int width, int height) {
+		super(GL_TRIANGLE_STRIP);
 		
 		this.width = width;
 		this.height = height;
 	}
 	
 	
+	@Override
 	public void render() {
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(-1);
@@ -44,41 +42,51 @@ public class Terrain extends Mesh {
 	 * @param depth The noise defining the terrain's landscape. The values
 	 * have to range between -1 and 1.
 	 */
-	public static Terrain generate(int width, int height, ElevationFunction depthFunc) {
-		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		ArrayList<Integer> indices = new ArrayList<Integer>();
+	public static Terrain generate(int width, int height, ElevationFunction depthFunc) {		
+		FloatBuffer positions = BufferUtils.createFloatBuffer(height * width * 3);
+		FloatBuffer texCoords = BufferUtils.createFloatBuffer(height * width * 2);
+		FloatBuffer normals = BufferUtils.createFloatBuffer(height * width * 3);
+		IntBuffer indices = BufferUtils.createIntBuffer((height - 1) * (3 + (width - 1) * 2));
 		
 		float quadWidth = 2.0f / width;
 		float quadHeight = 2.0f / height;
 		
 		for (int y = 0; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
-				Vector3f position = new Vector3f(-1f + x * quadWidth, -1f + y * quadHeight, depthFunc.getDepth(x, y));
+				positions.put(-1f + x * quadWidth);
+				positions.put(-1f + y * quadHeight);
+				positions.put(depthFunc.getDepth(x, y));
 				
-				Vector2f texCoords = new Vector2f(x * quadWidth / 2f, y * quadHeight / 2f);
+				texCoords.put(x * quadWidth / 2f);
+				texCoords.put(y * quadHeight / 2f);
 				
-				Vector3f normal = new Vector3f(depthFunc.getDepth(x-1, y) - depthFunc.getDepth(x+1, y), 
-											   depthFunc.getDepth(x, y-1) - depthFunc.getDepth(x, y+1), 
-											   1f);
-				
-				vertices.add(new Vertex(position.toArray(), texCoords.toArray(), normal.toArray()));
+				normals.put(depthFunc.getDepth(x-1, y) - depthFunc.getDepth(x+1, y));
+				normals.put(depthFunc.getDepth(x, y-1) - depthFunc.getDepth(x, y+1));
+				normals.put(1f);
 			}
 		}
 		
 		for (int y = 0; y < height - 1; ++y) {
 			
-			indices.add(y * height);
-			indices.add((y + 1) * height);
+			indices.put(y * height);
+			indices.put((y + 1) * height);
 			
 			for (int x = 0; x < width - 1; ++x) {
-				indices.add(y * height + x + 1);
-				indices.add((y + 1) * height + x + 1);
+				indices.put(y * height + x + 1);
+				indices.put((y + 1) * height + x + 1);
 			}
 			
-			indices.add(-1);
+			indices.put(-1);
 		}
 		
-		return new Terrain(width, height, vertices, indices);
+		Terrain terrain = new Terrain(width, height);
+		
+		terrain.setPositionData(positions, 3);
+		terrain.setTexCoordData(texCoords, 2);
+		terrain.setNormalData(normals, 3);
+		terrain.setIndexBuffer(indices);
+		
+		return terrain;
 	}
 	
 	

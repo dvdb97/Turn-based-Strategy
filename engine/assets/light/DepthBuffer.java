@@ -1,7 +1,7 @@
 package assets.light;
 
 import assets.Bindable;
-import assets.meshes.Model;
+import assets.meshes.Mesh;
 import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import assets.textures.Texture2D;
 import interaction.Window;
@@ -39,7 +39,7 @@ public class DepthBuffer implements Bindable {
 	
 	/**
 	 * 
-	 * Prepares the shadow map for rendering models to it.
+	 * Prepares the shadow map for rendering meshes to it.
 	 * 
 	 * @param light The light source we are computing shadows for.
 	 */
@@ -57,33 +57,33 @@ public class DepthBuffer implements Bindable {
 	
 	/**
 	 * 
-	 * @param model The model that is rendered to the shadow map.
+	 * @param mesh The mesh that is rendered to the shadow map.
 	 */
-	public void passToDepthBuffer(Model model) {
-		//If the model isn't supposed to cast shadows, skip it.
-		if (!model.getMaterial().castShadows)
+	public void passToDepthBuffer(Mesh mesh) {
+		//If the mesh isn't supposed to cast shadows, skip it.
+		if (!mesh.getMaterial().castShadows)
 			return;
 		
-		//Pass the model matrix to the shader.
-		shader.setModelMatrix(model.getTransformable().getTransformationMatrix());
+		//Pass the mesh matrix to the shader.
+		shader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
 		
-		//Render the model to the shadow map.
-		model.passToShadowMap();
+		//Render the mesh to the shadow map.
+		mesh.render();
 	}
 	
 	
 	/**
 	 * 
-	 * Renders multiple models to the shadow map.
+	 * Renders multiple meshes to the shadow map.
 	 * 
-	 * @param models The models to be rendered to the shadow map.
+	 * @param meshes The meshes to be rendered to the shadow map.
 	 * @param light The light source we are computing shadows for.
 	 */
-	public void passToDepthBuffer(Model[] models, DirectionalLight light) {
+	public void passToDepthBuffer(Mesh[] meshes, DirectionalLight light) {
 		startRenderPass(light);
 		
-		for (Model model : models) {
-			passToDepthBuffer(model);
+		for (Mesh mesh : meshes) {
+			passToDepthBuffer(mesh);
 		}
 		
 		endRenderPass();

@@ -2,248 +2,280 @@ package assets.meshes;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import assets.buffers.VertexBuffer;
-import assets.meshes.MeshConst.BufferLayout;
-import assets.meshes.boundingBox.BoundingBox;
-import assets.meshes.geometry.Vertex;
+import assets.material.Material;
+import assets.material.StandardMaterial;
 import assets.models.VertexArrayObject;
-import math.matrices.Matrix44f;
-import utils.CustomBufferUtils;
+import assets.textures.Texture;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public class Mesh {
+public class Mesh implements IRenderable {
 	
-	//The vertex array object that holds the references to the vertex data.
-	private VertexArrayObject vao = null;
+	private enum Attribute {
+		POSITION, COLOR, TEXCOORD, NORMAL
+	};
 	
-	//The way the vertex data is stored in the buffers.
-	private BufferLayout layout = null;
+	protected HashMap<Attribute, FloatBuffer> vertexData;
 	
-	//The layout of the vertex' attributes.
-	private int attributeLayout;
+	protected HashMap<Attribute, VertexBuffer> vertexBuffers;
 	
+	private VertexArrayObject vao;
 	
-	//The list of vertices of this mesh.
-	private List<Vertex> vertices = null;
-	
-	//The list of indices defining the faces of the mesh.
-	private List<Integer> indices = null;
-	
-	//The buffer storing the indices.
 	private IntBuffer indexBuffer;
 	
+	private Transformable transformable;
 	
-	//A box approximating the size of the mesh.
-	private BoundingBox boundingBox;	
+	private Material material;
+	
+	private Texture texture;
 	
 	private int drawMode = GL_TRIANGLES;
 	
 	
-	/**
-	 * 
-	 * Default constructor
-	 * 
-	 * @param vertices The vertices of the mesh
-	 * @param indices A list of triangles in this mesh
-	 */
-	public Mesh(List<Vertex> vertices, List<Integer> indices) {
-		
-		this.vertices = vertices;
-		this.indices = indices;
-		
-		this.boundingBox = new BoundingBox(vertices);
+	public Mesh() {
+		this(Material.standard, null);
 	}
 	
 	
-	public Mesh(List<Vertex> vertices, List<Integer> indices, int drawMode) {
-		this(vertices, indices);
+	public Mesh(int drawMode) {
+		this();
 		
 		this.drawMode = drawMode;
 	}
 	
 	
-	/**
-	 * 
-	 * Constructor that accepts data stored in arrays
-	 * 
-	 * @param vertices The vertices of the mesh
-	 * @param indices An array of triangles in this mesh
-	 */
-	public Mesh(Vertex[] vertices, int[] indices) {
-		
-		//TODO: Change it if the most common operations make LinkedLists more efficient
-		this.vertices = new ArrayList<Vertex>();
-		this.indices = new ArrayList<Integer>();
-		
-		this.boundingBox = new BoundingBox(vertices, this.vertices);
-		
-		this.toList(indices);
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Constructor that accepts data stored in arrays
-	 * 
-	 * @param vertices The vertices of the mesh
-	 * @param indices An array of triangles in this mesh
-	 */
-	public Mesh(List<Vertex> vertices, int[] indices) {
-		
-		this.vertices = vertices;
-		this.indices = new ArrayList<Integer>();
-		
-		this.boundingBox = new BoundingBox(vertices);
-		
-		this.toList(indices);
-		
-	}
-	
-	
-	public Mesh(FloatBuffer vertexData, int layout) {
-		//TODO
-	}
-	
-	
-	/**
-	 * 
-	 * @param mode The primitive type this mesh is rendered with. E.g. GL_TRIANGLE, GL_LINES.
-	 */
-	public void setRenderMode(int mode) {
-		this.drawMode = mode;
-	}
-	
-	
-	private void toList(int[] array) {
-		
-		if (this.indices == null) {
-			this.indices = new ArrayList<Integer>();
-		}
-		
-		for (int i : array) {
-			this.indices.add(i);
-		}
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Stores the data of this mesh on the GPU. The way the data is stored
-	 * can be specified by the parameters.
-	 * 
-	 * @param layout The layout in which the data is stored in buffers. 
-	 * The data can be stored in interleaved blocks or across multiple buffers 
-	 * 
-	 * @param vertexLayout Specifies the way the vertex data is being stored. Every 4 Bits describe
-	 * the number of values that represent one attribute of the vertex
-	 * 
-	 * @param flag The way the data will be accessed in future operations. Massively impacts the speed if used correctly.
-	 */
-	public void storeOnGPU(BufferLayout layout, int vertexLayout, int flag) {		
-		if (vao != null) {
-			System.err.println("This mesh is already stored on the gpu!");
-			
-			return;
-		}
-		
+	public Mesh(Material material, Texture texture) {
 		this.vao = new VertexArrayObject();
+		this.transformable = new Transformable();
 		
-		this.layout = layout;
-		
-		this.attributeLayout = vertexLayout;
-		
-		
-		if (layout == BufferLayout.INTERLEAVED) {
-			
-			VertexBuffer buffer = new VertexBuffer();
-			
-			buffer.storeDataInterleaved(vertices, vertexLayout, flag);
-			
-			vao.setVertexAttributePointers(buffer, vertexLayout);
-			
-		}
-		
-		else if (layout == BufferLayout.BLOCKWISE) {
-			
-			VertexBuffer buffer = new VertexBuffer();
-			
-			buffer.storeDataBlockwise(vertices, vertexLayout, flag);
-			
-			vao.setVertexAttributePointers(buffer, vertices.size(), vertexLayout);
-			
-		}
-		
-		else if (layout == BufferLayout.MULTIPLE_BUFFERS) {
-			
-			VertexBuffer[] buffers = VertexBuffer.storeDataMultipleBuffers(vertices, vertexLayout, flag);
-			
-			vao.setVertexAttributePointers(buffers, vertexLayout);
-			
-		}
-		
-		this.indexBuffer = CustomBufferUtils.createIntBuffer(indices);
+		this.material = material;
+		this.texture = texture;
 	}
 	
 	
 	/**
 	 * 
-	 * TODO
+	 * Sets this Mesh's position data and stores it on the gpu.
 	 * 
-	 * @param index
-	 * @param newVertex
+	 * @param buffer A buffer containing position data.
+	 * @param size The number of floats representing a position.
 	 */
-	public void replaceVertex(int index, Vertex newVertex) {
-		if (vao.getVertexSize() != newVertex.getDataSize()) {
-			return;
-		}
+	public void setPositionData(FloatBuffer buffer, int size) {
+		this.setAttribute(buffer, Attribute.POSITION, 0, size);
 	}
 	
 	
 	/**
 	 * 
-	 * TODO
+	 * Sets this Mesh's position data by setting a pointer to data that
+	 * is already stored on the gpu.
 	 * 
-	 * @param index
+	 * @param buffer A vertex buffer containing position data.
+	 * @param size The number of floats representing a position.
 	 */
-	public void removeVertex(int index) {
-		//TODO		
+	public void setPositionVertexBuffer(VertexBuffer buffer, int size) {
+		this.setVertexBuffer(buffer, Attribute.POSITION, 0, size);
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns this Mesh's position data as a FloatBuffer.
+	 */
+	public FloatBuffer getPositionData() {
+		return vertexData.get(Attribute.POSITION);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's position data as a VertexBuffer.
+	 */
+	public VertexBuffer getPositionVertexBuffer() {
+		return vertexBuffers.get(Attribute.POSITION);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's color data and stores it on the gpu.
+	 * 
+	 * @param buffer A buffer containing color data.
+	 * @param size The number of floats representing a color.
+	 */
+	public void setColorData(FloatBuffer buffer, int size) {
+		this.setAttribute(buffer, Attribute.COLOR, 1, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's color data by setting a pointer to data that
+	 * is already stored on the gpu.
+	 * 
+	 * @param buffer A vertex buffer containing color data.
+	 * @param size The number of floats representing a color.
+	 */
+	public void setColorVertexBuffer(VertexBuffer buffer, int size) {
+		this.setVertexBuffer(buffer, Attribute.COLOR, 1, size);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's color data as a FloatBuffer.
+	 */
+	public FloatBuffer getColorData() {
+		return vertexData.get(Attribute.COLOR);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's color data as a VertexBuffer.
+	 */
+	public VertexBuffer getColorVertexBuffer() {
+		return vertexBuffers.get(Attribute.COLOR);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's texture coordinate data and stores it on the gpu.
+	 * 
+	 * @param buffer A buffer containing texture coordinate data.
+	 * @param size The number of floats representing a texture coordinate.
+	 */
+	public void setTexCoordData(FloatBuffer buffer, int size) {
+		this.setAttribute(buffer, Attribute.TEXCOORD, 2, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's texture coordinate data by setting a pointer to data that
+	 * is already stored on the gpu.
+	 * 
+	 * @param buffer A vertex buffer containing texture coordinate data.
+	 * @param size The number of floats representing a texture coordinate.
+	 */
+	public void setTexCoordVertexBuffer(VertexBuffer buffer, int size) {
+		this.setVertexBuffer(buffer, Attribute.TEXCOORD, 2, size);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's texture coordinate data as a FloatBuffer.
+	 */
+	public FloatBuffer getTexCoordData() {
+		return vertexData.get(Attribute.TEXCOORD);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's texture coordinate data as a VertexBuffer.
+	 */
+	public VertexBuffer getTexCoordVertexBuffer() {
+		return vertexBuffers.get(Attribute.TEXCOORD);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's normal data and stores it on the gpu.
+	 * 
+	 * @param buffer A buffer containing normal data.
+	 * @param size The number of floats representing a normal.
+	 */
+	public void setNormalData(FloatBuffer buffer, int size) {
+		this.setAttribute(buffer, Attribute.NORMAL, 3, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's normal data by setting a pointer to data that
+	 * is already stored on the gpu.
+	 * 
+	 * @param buffer A vertex buffer containing normal data.
+	 * @param size The number of floats representing a normal.
+	 */
+	public void setNormalVertexBuffer(VertexBuffer buffer, int size) {
+		this.setVertexBuffer(buffer, Attribute.NORMAL, 3, size);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's normal data as a FloatBuffer.
+	 */
+	public FloatBuffer getNormalData() {
+		return vertexData.get(Attribute.NORMAL);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns this Mesh's normal data as a VertexBuffer.
+	 */
+	public VertexBuffer getNormalVertexBuffer() {
+		return vertexBuffers.get(Attribute.NORMAL);
+	}
+	
+	
+	private void setAttribute(FloatBuffer buffer, Attribute attribute, int pos, int size) {
+		this.vertexData.put(attribute, buffer);
+		VertexBuffer vertexBuffer = new VertexBuffer(buffer);
+		this.setVertexBuffer(vertexBuffer, attribute, pos, size);
+	}
+	
+	
+	private void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size) {
+		vao.setVertexAttributePointer(buffer, pos, size, 0, 0);
+		this.vertexBuffers.put(attribute, buffer);
+	}
+	
+	
+	public void setIndexBuffer(IntBuffer buffer) {
+		this.indexBuffer = buffer;
+	}
+	
+	
+	public IntBuffer getIndexBuffer() {
+		return indexBuffer;
+	}
+	
+	
+	public Transformable getTransformable() {
+		return transformable;
+	}
+	
+	
+	public Material getMaterial() {
+		return material;
+	}
+	
+	
+	public Texture getTexture() {
+		return texture;
+	}
+
+
+	@Override
 	public void render() {
 		vao.enableVertexAttribArray();
+		if (texture != null) texture.bind();
 		
 		glDrawElements(drawMode, indexBuffer);
 		
-		vao.disableVertexAttribArray();
-	}
-	
-	
-	public void renderBoundingBox(Transformable transform, Matrix44f view, Matrix44f projection) {
-		boundingBox.render(transform, view, projection);		
-	}
-	
-	
-	@Override
-	public String toString() {
-		String s = "";
-		
-		for (Vertex vertex : vertices) {
-			s += vertex.toString() + "\n";
-		}
-		
-		return s;
+		if (texture != null) texture.unbind();
+		vao.disableVertexAttribArray();		
 	}
 
-
-	public void delete() {
-		vao.delete();
-	}
-	
 }

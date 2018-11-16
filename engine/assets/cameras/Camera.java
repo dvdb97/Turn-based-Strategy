@@ -16,7 +16,7 @@ import assets.meshes.prefabs.Box;
 import assets.shaders.ShaderProgram;
 import assets.shaders.standardShaders.StandardShader;
 
-public class Camera implements IRenderable {
+public class Camera {
 	
 	public enum ProjectionType {
 		PERSPECTIVE, ORTHOGRAPHIC
@@ -635,7 +635,6 @@ public class Camera implements IRenderable {
 	}
 	
 	
-	@Override
 	public void render(Camera camera) {
 		render(camera, Color.WHITE);
 	}

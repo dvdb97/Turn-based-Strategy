@@ -42,6 +42,11 @@ public class VertexBuffer extends Buffer {
 	}
 	
 	
+	public VertexBuffer(FloatBuffer data) {
+		this(data, DYNAMIC_STORAGE);
+	}
+	
+	
 	public int storeDataInterleaved(List<Vertex> vertices, int flag) {
 		
 		if (vertices.isEmpty()) {

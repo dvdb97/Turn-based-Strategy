@@ -13,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.meshes.Mesh;
+import assets.meshes.MeshLegacy;
 import assets.meshes.Model;
 import assets.meshes.Transformable;
 import assets.meshes.MeshConst.BufferLayout;
@@ -74,7 +74,7 @@ public class ModelTest {
 		
 		//Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
 		
-		Mesh mesh = Terrain.generate(heightmap);
+		MeshLegacy mesh = Terrain.generate(heightmap);
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		
