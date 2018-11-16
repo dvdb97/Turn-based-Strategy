@@ -97,6 +97,8 @@ public class Mouse {
 		
 		rightButtonPressed = !rightButtonPressed;
 		
+		System.out.println("y: " + CursorPosInput.getYPos() + "   " + CursorPosInput.getYPosAsOpenglCoord() + " |");
+		
 	}
 	
 	
