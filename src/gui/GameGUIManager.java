@@ -18,7 +18,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		//Disable this to remove the gui window from the screen
-		TIW = new TileInfoWindow();
+	//	TIW = new TileInfoWindow();
 		
 		TestWindow window = new TestWindow();
 		
@@ -30,7 +30,7 @@ public class GameGUIManager {
 	
 	public static void update() {
 		
-		TIW.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
+	//	TIW.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
 		
 	}
 	

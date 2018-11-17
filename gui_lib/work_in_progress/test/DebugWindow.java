@@ -15,7 +15,7 @@ public class DebugWindow extends GUIWindow{
 	
 	@Override
 	public void update() {
-		this.TM = new GUIElementMatrix(CursorPosInput.getXPosAsOpenglCoord(), CursorPosInput.getYPosAsOpenglCoord(), 0.1f, 0.1f);
+		this.TM = new GUIElementMatrix(CursorPosInput.getXPosAsOpenglCoord(), (CursorPosInput.getYPosAsOpenglCoord()+0.05f)/0.95f, 0.1f, 0.1f);
 	}
 	
 }

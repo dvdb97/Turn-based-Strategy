@@ -27,7 +27,7 @@ public class TestWindow extends GUIWindow {
 	//************************* constructor **************************************
 	
 	public TestWindow() {
-		super(new GUIQuad(), GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
+		super(new GUIQuad(), GRAY, new GUIElementMatrix(0.25f, 1f, 0.25f, 0.5f));
 		
 		setUpColorBox();
 		
