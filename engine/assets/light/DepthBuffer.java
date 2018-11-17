@@ -1,6 +1,6 @@
 package assets.light;
 
-import assets.Bindable;
+import assets.IBindable;
 import assets.meshes.Mesh;
 import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import assets.textures.Texture2D;
@@ -10,7 +10,7 @@ import rendering.framebuffers.FrameBuffer;
 import static org.lwjgl.opengl.GL11.*;
 
 
-public class DepthBuffer implements Bindable {	
+public class DepthBuffer implements IBindable {	
 
 	private static ShadowMappingShader shader;
 	

@@ -4,16 +4,16 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
+import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.material.Material;
-import assets.material.StandardMaterial;
 import assets.models.VertexArrayObject;
 import assets.textures.Texture;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public class Mesh implements IRenderable {
+public class Mesh implements IRenderable, IDeletable {
 	
 	private enum Attribute {
 		POSITION, COLOR, TEXCOORD, NORMAL
@@ -29,7 +29,7 @@ public class Mesh implements IRenderable {
 	
 	private Transformable transformable;
 	
-	private Material material;
+	private Material material = Material.standard;
 	
 	private Texture texture;
 	
@@ -37,7 +37,10 @@ public class Mesh implements IRenderable {
 	
 	
 	public Mesh() {
-		this(Material.standard, null);
+		this.vao = new VertexArrayObject();
+		this.transformable = new Transformable();
+		vertexData = new HashMap<Attribute, FloatBuffer>();
+		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
 	
 	
@@ -49,8 +52,7 @@ public class Mesh implements IRenderable {
 	
 	
 	public Mesh(Material material, Texture texture) {
-		this.vao = new VertexArrayObject();
-		this.transformable = new Transformable();
+		this();
 		
 		this.material = material;
 		this.texture = texture;
@@ -257,6 +259,11 @@ public class Mesh implements IRenderable {
 	}
 	
 	
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+	
+	
 	public Material getMaterial() {
 		return material;
 	}
@@ -276,6 +283,16 @@ public class Mesh implements IRenderable {
 		
 		if (texture != null) texture.unbind();
 		vao.disableVertexAttribArray();		
+	}
+
+
+	@Override
+	public void delete() {
+		for (VertexBuffer buffer : vertexBuffers.values()) {
+			buffer.delete();
+		}
+		
+		vao.delete();		
 	}
 
 }

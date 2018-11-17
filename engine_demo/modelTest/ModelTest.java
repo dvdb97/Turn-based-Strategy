@@ -13,12 +13,10 @@ import org.lwjgl.glfw.GLFW;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.meshes.MeshLegacy;
-import assets.meshes.Model;
 import assets.meshes.Transformable;
-import assets.meshes.MeshConst.BufferLayout;
+import assets.meshes.Mesh;
 import assets.meshes.algorithms.terrain.Heightmap;
-import assets.meshes.algorithms.terrain.Terrain;
+import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.shaders.subshaders.Subshader;
@@ -35,8 +33,6 @@ public class ModelTest {
 	private static Camera camera;
 	
 	private static DirectionalLight light;
-	
-	private static Model model;
 	
 	private static Skybox skybox;
 	
@@ -69,16 +65,16 @@ public class ModelTest {
 	}
 	
 	
-	public static Model initMesh() {		
+	public static Mesh initMesh() {		
 		Heightmap heightmap = new Heightmap("res/heightmaps/HalloWelt.png");
 		
-		//Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
-		
-		MeshLegacy mesh = Terrain.generate(heightmap);
+		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
 		
 		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
+		//Mesh mesh = Terrain.generate(heightmap);
+		mesh.setMaterial(material);
 		
-		return new Model(shader, mesh, material, null, BufferLayout.INTERLEAVED);		
+		return mesh;	
 	}
 	
 	
@@ -92,11 +88,11 @@ public class ModelTest {
 	private static void testShadows() {
 		initShader();
 		
-		model = initMesh();
+		Mesh mesh = initMesh();
 		
-		model.getTransformable().setScaling(6f, 6f, 1f);
-		model.getTransformable().translate(0, 0, 0);
-		model.getTransformable().rotate(0f, 0f, 0f);
+		mesh.getTransformable().setScaling(6f, 6f, 1f);
+		mesh.getTransformable().translate(0, 0, 0);
+		mesh.getTransformable().rotate(0f, 0f, 0f);
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		
@@ -110,9 +106,9 @@ public class ModelTest {
 		paths[Skybox.LEFT] = "res/Textures/Skyboxes/ice/left.jpg";
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
-		skybox = new Skybox(paths);
+		//skybox = new Skybox(paths);
 		
-		light.fitToBoundingBox(model);
+		light.fitToBoundingBox(mesh);
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
@@ -120,7 +116,7 @@ public class ModelTest {
 			//skybox.render(camera);
 			
 			light.startShadowMapPass();
-			light.passToShadowMap(model);
+			light.passToShadowMap(mesh);
 			light.endShadowMapPass();
 			
 			shader.bind();
@@ -131,11 +127,11 @@ public class ModelTest {
 			
 			handleInput();
 			
-			model.render();
+			mesh.render();
 			
 			shader.unbind();
 			
-			//BoxRenderer.draw(model.getTransformable().getTransformationMatrix(), camera, Color.RED);
+			BoxRenderer.draw(mesh.getTransformable().getTransformationMatrix(), camera, Color.RED);
 			//light.render(camera, Color.YELLOW);
 			//TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
 			
@@ -145,7 +141,7 @@ public class ModelTest {
 		TextureRenderer.delete();
 		BoxRenderer.delete();
 		shader.delete();
-		model.delete();
+		mesh.delete();
 		light.delete();
 		skybox.delete();
 	}

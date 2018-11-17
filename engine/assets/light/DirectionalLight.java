@@ -1,6 +1,6 @@
 package assets.light;
 
-import assets.Deletable;
+import assets.IDeletable;
 import assets.cameras.Camera;
 import assets.meshes.Mesh;
 import math.vectors.Vector3f;
@@ -9,7 +9,7 @@ import math.vectors.Vector4f;
 import static math.MathUtils.*;
 
 
-public class DirectionalLight extends Camera implements Deletable {
+public class DirectionalLight extends Camera implements IDeletable {
 	
 	private Vector3f color;
 	

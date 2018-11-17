@@ -1,6 +1,6 @@
 package assets;
 
-public interface Deletable {
+public interface IDeletable {
 	
 	public abstract void delete();
 	
