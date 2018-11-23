@@ -12,7 +12,7 @@ import static utils.ColorPalette.*;
 
 import assets.meshes.geometry.Color;
 
-public class TestWindow extends GUIWindow {
+public class ColorPickWindow extends GUIWindow {
 	
 	private ColorBox colorBox;
 	
@@ -26,7 +26,7 @@ public class TestWindow extends GUIWindow {
 	
 	//************************* constructor **************************************
 	
-	public TestWindow() {
+	public ColorPickWindow() {
 		super(new GUIQuad(), GRAY, new GUIElementMatrix(0.25f, 1f, 0.25f, 0.5f));
 		
 		setUpColorBox();

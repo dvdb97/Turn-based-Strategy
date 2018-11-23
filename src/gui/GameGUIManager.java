@@ -1,12 +1,18 @@
 package gui;
 
-import gui.tileInfo.TileInfoWindow;
+import container.GUIWindow;
+import dataType.GUIElementMatrix;
+import work_in_progress.test.FontWindow;
+
+import static utils.ColorPalette.*;
 
 public class GameGUIManager {
 	
-	private static TileInfoWindow TIW;
+	private static GUIWindow window;
 	
 	public static void init() {
+		
+		window = new FontWindow(WHITE, new GUIElementMatrix());
 		
 	}
 	
