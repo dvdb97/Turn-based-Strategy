@@ -15,9 +15,16 @@ public class Texture2D extends Texture {
 		setImageData(path, filter, mipmapFilter);
 	}
 	
-	
-	public Texture2D(int width, int height) {
+	/**
+	 * 
+	 * @param bitmap byte buffer: [r1,g1,b1,a1,r2,g2,b2,a2,r3,...]
+	 * @param width
+	 * @param height
+	 */
+	public Texture2D(ByteBuffer bitmap, int width, int height) {
 		super(GL_TEXTURE_2D, width, height);
+		
+		setImageData(bitmap, width, height);
 	}
 	
 	
