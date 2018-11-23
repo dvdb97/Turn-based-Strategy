@@ -21,10 +21,8 @@ public class Texture2D extends Texture {
 	}
 	
 	
-	public void setImageData(String path, int filter, int mipmapFilter) {
+	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter) {
 		bind();
-
-		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
 		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
 		
@@ -38,5 +36,14 @@ public class Texture2D extends Texture {
 		
 		unbind();
 	}
-
+	
+	public void setImageData(String path, int filter, int mipmapFilter) {
+		
+		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
+		
+		setImageData(buffer, filter, mipmapFilter);
+		
+	}
+	
+	
 }
