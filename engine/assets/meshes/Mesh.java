@@ -4,6 +4,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
+import assets.Bindable;
+import assets.Deletable;
 import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.material.Material;
@@ -13,7 +15,7 @@ import assets.textures.Texture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public class Mesh implements IRenderable, IDeletable {
+public class Mesh extends Deletable implements IRenderable {
 	
 	private enum Attribute {
 		POSITION, COLOR, TEXCOORD, NORMAL

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
+import assets.Bindable;
 import assets.IBindable;
 import assets.cameras.Camera;
 import assets.material.Material;
@@ -18,7 +19,7 @@ import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class ShaderProgram implements IBindable {
+public class ShaderProgram extends Bindable {
 	
 	private class Uniform {
 		

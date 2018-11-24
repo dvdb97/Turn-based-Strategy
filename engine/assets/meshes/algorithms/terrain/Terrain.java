@@ -81,6 +81,11 @@ public class Terrain extends Mesh {
 		
 		Terrain terrain = new Terrain(width, height);
 		
+		positions.flip();
+		texCoords.flip();
+		normals.flip();
+		indices.flip();
+		
 		terrain.setPositionData(positions, 3);
 		terrain.setTexCoordData(texCoords, 2);
 		terrain.setNormalData(normals, 3);

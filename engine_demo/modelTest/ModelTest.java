@@ -141,12 +141,6 @@ public class ModelTest {
 			RenderEngine.swapBuffers();
 		}
 		
-		TextureRenderer.delete();
-		BoxRenderer.delete();
-		shader.delete();
-		mesh.delete();
-		light.delete();
-		skybox.delete();
 	}
 	
 	

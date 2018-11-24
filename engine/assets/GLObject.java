@@ -1,6 +1,6 @@
 package assets;
 
-public abstract class GLObject implements IBindable {
+public abstract class GLObject extends Bindable {
 	
 	private final int ID;
 	
