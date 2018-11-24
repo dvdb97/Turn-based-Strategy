@@ -31,6 +31,34 @@ public class FileLoader {
 			this.texCoords = tex;
 			this.normal = normal;
 		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			
+			hash += position.getA() * 37;
+			hash += position.getB() * 37;
+			hash += position.getC() * 37;
+			
+			if (texCoords != null) {
+				hash += texCoords.getA() * 37;
+				hash += texCoords.getB() * 37;
+			} else {
+				hash += 207;
+			}
+			
+			hash += normal.getA() * 37;
+			hash += normal.getB() * 37;
+			hash += normal.getC() * 37;
+			
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return super.equals(obj);
+		}
+		
 	}
 	
 	
@@ -91,9 +119,11 @@ public class FileLoader {
 						
 						if (vertexTable.containsKey(vertex)) {
 							indices.add(vertexTable.get(vertex));
+							System.out.println(vertex.position);
 						} else {
-							vertexTable.put(vertex, positions.size());
 							vertices.add(vertex);
+							indices.add(vertices.size() - 1);
+							vertexTable.put(vertex, positions.size() - 1);
 						}
 					}
 				}

@@ -244,11 +244,21 @@ public class Mesh implements IRenderable, IDeletable {
 	}
 	
 	
+	/**
+	 * 
+	 * Sets the index buffer of this mesh.
+	 * 
+	 * @param buffer The buffer containing the indices.
+	 */
 	public void setIndexBuffer(IntBuffer buffer) {
 		this.indexBuffer = buffer;
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns the mesh's index buffer.
+	 */
 	public IntBuffer getIndexBuffer() {
 		return indexBuffer;
 	}

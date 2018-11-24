@@ -19,6 +19,7 @@ import assets.meshes.algorithms.terrain.Heightmap;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.shaders.standardShaders.lightShader.LightShader;
+import assets.shaders.subshaders.ConstantColorSubshader;
 import assets.shaders.subshaders.Subshader;
 import assets.textures.Skybox;
 import static java.lang.Math.*;
@@ -60,7 +61,7 @@ public class ModelTest {
 	
 	
 	public static void initShader() {
-		Subshader subshader = Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
+		Subshader subshader = new ConstantColorSubshader(new Color(1f, 0f, 0f, 1f));//Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
 		shader = LightShader.createPerFragmentLightShader(subshader);
 	}
 	
@@ -90,7 +91,7 @@ public class ModelTest {
 		
 		Mesh mesh = initMesh();
 		
-		mesh.getTransformable().setScaling(6f, 6f, 1f);
+		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
 		
@@ -124,6 +125,8 @@ public class ModelTest {
 			shader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
 			shader.setLightSource(light, shadows);
 			shader.setCamera(camera);
+			shader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
+			shader.setMaterial(mesh.getMaterial());
 			
 			handleInput();
 			
