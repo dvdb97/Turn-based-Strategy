@@ -24,7 +24,7 @@ public class Texture2D extends Texture {
 	public Texture2D(ByteBuffer bitmap, int width, int height) {
 		super(GL_TEXTURE_2D, width, height);
 		
-		setImageData(bitmap, width, height);
+		setImageData(bitmap, Texture.LINEAR, Texture.NEAREST);
 	}
 	
 	

@@ -1,6 +1,7 @@
 package stbFont;
 
 import assets.meshes.geometry.Color;
+import assets.textures.Texture;
 import assets.textures.Texture2D;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
@@ -32,10 +33,15 @@ public class TTFBox extends Element {
 		
 		try {
 			ByteBuffer data = getFontData();
-			STBTruetype.stbtt_InitFont(fontInfo, data, 0);
+			System.out.println("Font initialized? " + STBTruetype.stbtt_InitFont(fontInfo, data, 0));
 			
 			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, 1, 1, 65, width, height, null, null);
+			System.out.println(width[0] + " x " + height[0]);
+			System.out.println("pos: "+bitmap.position()+"limit: "+bitmap.limit() );
+			
 			font = new Texture2D(bitmap, width[0], height[0]);
+	//		font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
+			
 		} catch (IOException ioe) {
 			
 		}
@@ -53,12 +59,12 @@ public class TTFBox extends Element {
 		while(true) {
 			try {
 				byte b = data_in.readByte();
-				System.out.println(b);
 				data_out.put(b);
 				
 			} catch (EOFException eof) {break;}
 		}
 		data_in.close();
+		data_out.flip();
 		return data_out;
 	}
 	
