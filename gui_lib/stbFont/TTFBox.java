@@ -35,7 +35,7 @@ public class TTFBox extends Element {
 			ByteBuffer data = getFontData();
 			System.out.println("Font initialized? " + STBTruetype.stbtt_InitFont(fontInfo, data, 0));
 			
-			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, 1, 1, 65, width, height, null, null);
+			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, 1, 1, '@', width, height, null, null);
 			System.out.println(width[0] + " x " + height[0]);
 			System.out.println("pos: "+bitmap.position()+" limit: "+bitmap.limit() );
 			
@@ -47,8 +47,8 @@ public class TTFBox extends Element {
 				newBitmap.put((byte)255);i++;
 			}
 			newBitmap.flip();
-	//		font = new Texture2D(newBitmap, width[0], height[0]);
-			font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
+			font = new Texture2D(newBitmap, width[0], height[0]);
+	//		font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
 			
 		} catch (IOException ioe) {
 			
