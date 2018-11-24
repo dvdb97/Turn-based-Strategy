@@ -44,7 +44,7 @@ public class TTFBox extends Element {
 				newBitmap.put(bitmap.get());i++;
 				newBitmap.put((byte)200);i++;
 				newBitmap.put((byte)0);i++;
-				newBitmap.put((byte)0);i++;
+				newBitmap.put((byte)255);i++;
 			}
 			newBitmap.flip();
 	//		font = new Texture2D(newBitmap, width[0], height[0]);
