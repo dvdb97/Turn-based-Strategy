@@ -45,11 +45,23 @@ public class Texture2D extends Texture {
 	}
 	
 	public void setImageData(String path, int filter, int mipmapFilter) {
+		bind();
 		
 		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
 		
-		setImageData(buffer, filter, mipmapFilter);
+	//	setImageData(buffer, filter, mipmapFilter);
 		
+		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		
+		System.out.println("Texture2D 33");
+		this.setFilter(filter, mipmapFilter);
+		this.setTextureWrap(this.getWrapMode());
+		
+		generateMipMapLevels();
+		
+		unbind();
 	}
 	
 	

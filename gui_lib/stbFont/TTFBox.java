@@ -37,10 +37,18 @@ public class TTFBox extends Element {
 			
 			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, 1, 1, 65, width, height, null, null);
 			System.out.println(width[0] + " x " + height[0]);
-			System.out.println("pos: "+bitmap.position()+"limit: "+bitmap.limit() );
+			System.out.println("pos: "+bitmap.position()+" limit: "+bitmap.limit() );
 			
-			font = new Texture2D(bitmap, width[0], height[0]);
-	//		font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
+			ByteBuffer newBitmap = BufferUtils.createByteBuffer(bitmap.limit()*4);
+			for (int i=0; i<newBitmap.capacity();) {
+				newBitmap.put(bitmap.get());i++;
+				newBitmap.put((byte)200);i++;
+				newBitmap.put((byte)0);i++;
+				newBitmap.put((byte)0);i++;
+			}
+			newBitmap.flip();
+	//		font = new Texture2D(newBitmap, width[0], height[0]);
+			font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
 			
 		} catch (IOException ioe) {
 			
