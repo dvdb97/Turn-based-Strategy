@@ -2,16 +2,23 @@ package rendering;
 
 import assets.cameras.Camera;
 import assets.meshes.geometry.Color;
-import assets.meshes.prefabs.Box;
+import assets.meshes.prefabs.WireframeBox;
 import assets.shaders.ShaderLoader;
 import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
 
+/**
+ * 
+ * @author Dario
+ * 
+ * TODO: Also add complete meshes (not only wireframes).
+ *
+ */
 public class BoxRenderer {
 	
 	private static final String path = "Shaders/StandardShaders/uniformColor";
 	
-	private static Box box;
+	private static WireframeBox box;
 	
 	private static ShaderProgram shader;
 	
@@ -21,7 +28,7 @@ public class BoxRenderer {
 	public static void init() {
 		if (init) return;
 		
-		box = new Box();		
+		box = new WireframeBox();		
 		shader = ShaderLoader.loadShader(path + ".vert", path + ".frag");
 		init = true;
 	}

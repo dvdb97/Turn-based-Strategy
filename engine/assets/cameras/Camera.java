@@ -12,7 +12,7 @@ import static math.Trigonometry.*;
 import assets.material.Material;
 import assets.meshes.IRenderable;
 import assets.meshes.geometry.Color;
-import assets.meshes.prefabs.Box;
+import assets.meshes.prefabs.WireframeBox;
 import assets.shaders.ShaderProgram;
 import assets.shaders.standardShaders.StandardShader;
 

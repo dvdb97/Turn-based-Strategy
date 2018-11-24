@@ -73,6 +73,19 @@ public class Mesh implements IRenderable, IDeletable {
 	
 	/**
 	 * 
+	 * Sets this Mesh's position data and stores it on the gpu.
+	 * This method assumes that a position attribut always consists
+	 * of three values.
+	 * 
+	 * @param buffer A buffer containing position data.
+	 */
+	public void setPositionData(FloatBuffer buffer) {
+		this.setPositionData(buffer, 3);
+	}
+	
+	
+	/**
+	 * 
 	 * Sets this Mesh's position data by setting a pointer to data that
 	 * is already stored on the gpu.
 	 * 
@@ -111,6 +124,19 @@ public class Mesh implements IRenderable, IDeletable {
 	 */
 	public void setColorData(FloatBuffer buffer, int size) {
 		this.setAttribute(buffer, Attribute.COLOR, 1, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's color data and stores it on the gpu.
+	 * This method assumes that a color attribut always consists
+	 * of four values.
+	 * 
+	 * @param buffer A buffer containing color data.
+	 */
+	public void setColorData(FloatBuffer buffer) {
+		this.setColorData(buffer, 4);
 	}
 	
 	
