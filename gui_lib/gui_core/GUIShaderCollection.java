@@ -24,7 +24,7 @@ public class GUIShaderCollection {
 		
 		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions());
 		
-		guiShader = ShaderLoader.loadShader("Shaders/GUI/Font/FontShader.vert", "Shaders/GUI/Font/FontShader.frag");
+		guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
 		
 		initialized = true;
 	}
