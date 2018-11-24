@@ -20,5 +20,5 @@ vec4 fetchTexels() {
 void main() {
 
 
-	fColor = fetchTexels();
+	fColor = texture(tex, texCoords);//fetchTexels();
 }
