@@ -72,20 +72,16 @@ public abstract class Texture {
 		if (filter == GL_LINEAR) {
 			
 			if (mipmapFilter == GL_LINEAR) {
-				System.out.println("GL_LINEAR_MIPMAP_LINEAR");
 				combinedFilters = GL_LINEAR_MIPMAP_LINEAR;
 			} else {
-				System.out.println("GL_LINEAR_MIPMAP_NEAREST");
 				combinedFilters = GL_LINEAR_MIPMAP_NEAREST;
 			}
 			
 		} else if (filter == GL_NEAREST) {
 			
 			if (mipmapFilter == GL_LINEAR) {
-				System.out.println("GL_NEAREST_MIPMAP_LINEAR");
 				combinedFilters = GL_NEAREST_MIPMAP_LINEAR;
 			} else {
-				System.out.println("GL_NEAREST_MIPMAP_NEAREST");
 				combinedFilters = GL_NEAREST_MIPMAP_NEAREST;
 			}
 			

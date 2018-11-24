@@ -1,8 +1,7 @@
 package stbFont;
 
-import assets.meshes.geometry.Color;
-import assets.textures.Texture;
 import assets.textures.Texture2D;
+import core.Application;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
 import rendering.shapes.GUIQuad;
@@ -23,9 +22,8 @@ public class TTFBox extends Element {
 	
 	private Texture2D font;
 	
-	
-	public TTFBox(GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), null, transformationMatrix);
+	public TTFBox(float xShift, float yShift, float reqHeight) {
+		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
 		ByteBuffer container = BufferUtils.createByteBuffer(160);
 		STBTTFontinfo fontInfo = new STBTTFontinfo(container);
@@ -33,28 +31,35 @@ public class TTFBox extends Element {
 		
 		try {
 			ByteBuffer data = getFontData();
-			System.out.println("Font initialized? " + STBTruetype.stbtt_InitFont(fontInfo, data, 0));
+			STBTruetype.stbtt_InitFont(fontInfo, data, 0);
 			
-			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, 1, 1, '@', width, height, null, null);
-			System.out.println(width[0] + " x " + height[0]);
-			System.out.println("pos: "+bitmap.position()+" limit: "+bitmap.limit() );
+			float pixelHeight = Utils.getHeightInPx(reqHeight);
+			float scale = STBTruetype.stbtt_ScaleForPixelHeight(fontInfo, pixelHeight);
 			
-			ByteBuffer newBitmap = BufferUtils.createByteBuffer(bitmap.limit()*4);
-			for (int i=0; i<newBitmap.capacity();) {
-				newBitmap.put(bitmap.get());i++;
-				newBitmap.put((byte)200);i++;
-				newBitmap.put((byte)0);i++;
-				newBitmap.put((byte)255);i++;
-			}
-			newBitmap.flip();
+			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, 'f', width, height, null, null);
+			ByteBuffer newBitmap = getNewBitmap(bitmap);
 			font = new Texture2D(newBitmap, width[0], height[0]);
-	//		font = new Texture2D("res/temp.png", 100, 100, Texture.LINEAR, Texture.NEAREST);
+			
+			elementMatrix.setXStretch(reqHeight*width[0]/height[0]*Application.getWindowHeight()/Application.getWindowWidth());
 			
 		} catch (IOException ioe) {
 			
 		}
 		
 	}
+	
+	private ByteBuffer getNewBitmap(ByteBuffer bitmap) {
+		ByteBuffer newBitmap = BufferUtils.createByteBuffer(bitmap.limit()*4);
+		for (int i=0; i<newBitmap.capacity();) {
+			newBitmap.put(bitmap.get());i++;
+			newBitmap.put((byte)0);i++;
+			newBitmap.put((byte)0);i++;
+			newBitmap.put((byte)255);i++;
+		}
+		newBitmap.flip();
+		return newBitmap;
+	}
+	
 	
 	private ByteBuffer getFontData() throws IOException{
 		
@@ -78,7 +83,12 @@ public class TTFBox extends Element {
 	
 	
 	
-	
+	@Override
+	public void update(GUIElementMatrix parentMatrix) {
+		
+		TM = new GUIElementMatrix(elementMatrix.getXShift()*parentMatrix.getXStretch()+parentMatrix.getXShift(), elementMatrix.getYShift()*parentMatrix.getYStretch()+parentMatrix.getYShift(), elementMatrix.getXStretch(), elementMatrix.getYStretch());
+		invertedTM = TM.getInverse();		
+	}
 	
 	@Override
 	public void render() {

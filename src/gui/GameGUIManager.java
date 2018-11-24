@@ -12,7 +12,7 @@ public class GameGUIManager {
 	
 	public static void init() {
 		
-		window = new FontWindow(BLUE_1, new GUIElementMatrix());
+		window = new FontWindow(BLUE_1, new GUIElementMatrix(-0.5f, 0.5f, 0.5f, 0.5f));
 		
 	}
 	

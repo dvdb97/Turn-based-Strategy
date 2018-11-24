@@ -35,7 +35,6 @@ public class Texture2D extends Texture {
 		
 		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
-		System.out.println("Texture2D 33");
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(this.getWrapMode());
 		
@@ -55,7 +54,6 @@ public class Texture2D extends Texture {
 		
 		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
-		System.out.println("Texture2D 33");
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(this.getWrapMode());
 		
