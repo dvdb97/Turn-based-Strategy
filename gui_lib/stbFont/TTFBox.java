@@ -25,7 +25,7 @@ public class TTFBox extends Element {
 	private int[] width = new int[1], height = new int[1];
 	private float scale;
 	
-	public TTFBox(float xShift, float yShift, float reqHeight) {
+	public TTFBox(float xShift, float yShift, float reqHeight, String text) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
 		setUpSTBFontinfo();
@@ -35,10 +35,14 @@ public class TTFBox extends Element {
 			
 			scale = scaleForReqHeight(reqHeight);
 			
-		//	ByteBuffer[] bitmaps = new ByteBuffer
+			ByteBuffer[] bitmaps = new ByteBuffer[text.length()];
+			for (int i=0; i<text.length(); i++) {
+				bitmaps[i] = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
+			}
 			
-			ByteBuffer bitmap = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, 'f', width, height, null, null);
-			ByteBuffer coloredBitmap = getColoredBitmap(bitmap);
+			
+			
+			ByteBuffer coloredBitmap = getColoredBitmap(bitmaps[0]);
 			font = new Texture2D(coloredBitmap, width[0], height[0]);
 			
 			elementMatrix.setXStretch(reqHeight*width[0]/height[0]*Application.getWindowHeight()/Application.getWindowWidth());
