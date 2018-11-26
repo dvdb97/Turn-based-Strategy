@@ -64,9 +64,12 @@ public class TTFBox extends Element {
 		
 		ArrayList<Byte> list = Utils.bufferToList(bitmap);
 		int difference = pixelHeight - height[0];
-		for (int w=0; w<width[0]; w++) {
-			list.addAll(w*(pixelHeight), Utils.byteZeros(difference));
-		}
+	//	for (int w=0; w<width[0]; w++) {
+	//		list.addAll(w*(pixelHeight), Utils.byteZeros(difference));
+	//	}
+		
+		list.addAll(0, Utils.byteZeros(width[0]*difference));
+		
 		return CustomBufferUtils.createByteBuffer(list);
 	}
 	
