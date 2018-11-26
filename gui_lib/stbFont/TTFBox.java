@@ -43,13 +43,22 @@ public class TTFBox extends Element {
 			
 			Bitmap[] bitmaps = new Bitmap[text.length()];
 			for (int i=0; i<text.length(); i++) {
-				ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
-				bitmaps[i] = new Bitmap(b, width[0], height[0]);
-				int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
-				STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
-				bitmaps[i].fillupBitmap(pixelHeight);
+				if (text.charAt(i) == ' ') {
+					bitmaps[i] = new Bitmap(pixelHeight/4, pixelHeight);
+				} else {
+					ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
+					bitmaps[i] = new Bitmap(b, width[0], height[0]);
+					int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
+					STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
+					int spaceAbove = (int)((ascent[0] - y1[0])*scale);
+					bitmaps[i].fillupV(pixelHeight, spaceAbove);
+					bitmaps[i].fillupH((int)(x0[0]*scale));
+				}
 				bitmaps[0].addGlyph(bitmaps[i]);
 			}
+			
+			int[] ix0 = new int[1], ix1 = new int[1];
+			STBTruetype.stbtt_GetCodepointBitmapBox(fontInfo, ' ', scale, scale, ix0, null, ix1, null);
 			
 			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap();
 			
@@ -78,7 +87,8 @@ public class TTFBox extends Element {
 		DataInputStream data_in = new DataInputStream(
 				new BufferedInputStream(
 						new FileInputStream(
-								new File("res/fonts/FreeMono.ttf"))));
+								new File("res/fonts/ARIALBD.TTF"))));
+		//						new File("res/fonts/FreeMono.ttf"))));
 		ByteBuffer fontData = BufferUtils.createByteBuffer(1 << 20);
 		
 		while(true) {

@@ -37,11 +37,23 @@ public class Bitmap extends ArrayList<Byte>{
 	}
 	
 	/**
+	 * creates a bitmap full of zeros
+	 */
+	public Bitmap(int width, int height) {
+		super(width*height);
+		for (int i=0; i<width*height; i++) {
+			add((byte)0);
+		}
+		
+		this.width = width;
+		this.height = height;
+	}
+	
+	/**
 	 * combines the bitmaps, such that the added glyph is next to this glyph, right handed
 	 * @param bitmap bitmap of the glyph you want to add
 	 */
 	public void addGlyph(Bitmap bitmap) {
-		
 		if(bitmap == this) {
 			return;
 		}
@@ -60,9 +72,19 @@ public class Bitmap extends ArrayList<Byte>{
 	 * fills up the bitmap with zeros, such that the new height is equal to "pixelHeight"
 	 * @param pixelHeight height of the new bitmap in pixels
 	 */
-	public void fillupBitmap(int pixelHeight) {
-		addAll(0, Utils.byteZeros(width*(pixelHeight - height)));
+	public void fillupV(int pixelHeight, int spaceAbove) {
+		addAll(0, Utils.byteZeros(width*spaceAbove));
+		addAll((height+spaceAbove)*width, Utils.byteZeros((pixelHeight-height-spaceAbove)*width));
 		height = pixelHeight;
+	}
+	
+	public void fillupH(int spaceLeftsided) {
+		Bitmap b = new Bitmap(spaceLeftsided, height);
+		b.size();
+		b.addGlyph(this);
+		clear();
+		addAll(b);
+		this.width += spaceLeftsided;
 	}
 	
 	/**
