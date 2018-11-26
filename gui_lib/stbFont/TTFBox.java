@@ -42,21 +42,21 @@ public class TTFBox extends Element {
 			scale = scaleForReqHeight(reqHeight);
 			STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
 			
-			
-			ByteBuffer[] bitmaps = new ByteBuffer[text.length()];
+			Bitmap[] bitmaps = new Bitmap[text.length()];
 			widths = new int[text.length()];
 			for (int i=0; i<text.length(); i++) {
-				bitmaps[i] = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
-				bitmaps[i] = completeGlyphBitmap(bitmaps[i]);
+				ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
+				bitmaps[i] = new Bitmap(b, width[0], height[0]);
+				bitmaps[i].completeBitmap(pixelHeight);
 				widths[i] = width[0];
 			}
 			
-			ByteBuffer stringBitmap = addGlyph(bitmaps[0], bitmaps[1]);
+			bitmaps[0].addGlyph(bitmaps[1]);
 			
-			ByteBuffer coloredBitmap = getColoredBitmap(stringBitmap);
-			font = new Texture2D(coloredBitmap, widths[0]+widths[1], pixelHeight);
+			ByteBuffer coloredBitmap = getColoredBitmap(bitmaps[0].getByteBuffer());
+			font = new Texture2D(coloredBitmap, bitmaps[0].getWidth(), pixelHeight);
 			
-			elementMatrix.setXStretch(reqHeight*(widths[0]+widths[1])/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setXStretch(reqHeight*(bitmaps[0].getWidth())/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
 			
 		} catch (IOException ioe) {
 			
