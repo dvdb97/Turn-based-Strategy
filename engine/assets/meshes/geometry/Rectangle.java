@@ -6,10 +6,10 @@ public class Rectangle {
 	
 	private Color color;
 	
-	private VertexLegacy[] vertices;
+	private Vertex[] vertices;
 	
 	//----------------------- constructor -------------------------
-	public Rectangle(VertexLegacy bottomLeft, VertexLegacy topRight, Color color) {
+	public Rectangle(Vertex bottomLeft, Vertex topRight, Color color) {
 		
 		this.color = color;
 		

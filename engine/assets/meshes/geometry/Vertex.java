@@ -4,7 +4,7 @@ import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 
 
-public class VertexLegacy extends Vector3f {
+public class Vertex extends Vector3f {
 	
 	/*
 	 * An member variable without any purpose except helping me create a super fast 
@@ -30,17 +30,17 @@ public class VertexLegacy extends Vector3f {
 	//************************************** constructor **************************************
 	
 	
-	public VertexLegacy(float x, float y, float z) {
+	public Vertex(float x, float y, float z) {
 		super(x, y, z);
 	}
 	
 	
-	public VertexLegacy(Vector3f position) {
+	public Vertex(Vector3f position) {
 		super(position.getA(), position.getB(), position.getC());
 	}
 	
 	
-	public VertexLegacy(float x, float y, float z, float red, float green, float blue, float alpha) {
+	public Vertex(float x, float y, float z, float red, float green, float blue, float alpha) {
 		super(x, y, z);
 		
 		this.red = red;
@@ -55,24 +55,24 @@ public class VertexLegacy extends Vector3f {
 	}
 	
 	
-	public VertexLegacy(float x, float y, float z, Color color) {
+	public Vertex(float x, float y, float z, Color color) {
 		this(x, y, z, color.getA(), color.getB(), color.getC(), color.getD());
 	}
 	
 	
-	public VertexLegacy(Vector3f position, Color color) {
+	public Vertex(Vector3f position, Color color) {
 		this(position.getA(), position.getB(), position.getC(), color);
 	}
 	
 	
-	public VertexLegacy(Vector3f position, Vector2f texPos) {
+	public Vertex(Vector3f position, Vector2f texPos) {
 		this(position, new Color(0f, 0f, 0f, 0f));
 		
 		this.setTexturePositions(texPos);
 	}
 	
 	
-	public VertexLegacy() {
+	public Vertex() {
 		super(0, 0, 0);
 		
 		this.red = 0.0f;
@@ -83,7 +83,7 @@ public class VertexLegacy extends Vector3f {
 	}
 	
 	//************************************** methods **************************************
-	public boolean equals(VertexLegacy vertex, float tolerance) {
+	public boolean equals(Vertex vertex, float tolerance) {
 		if(Math.abs(this.getA() - vertex.getA()) > tolerance){
 			return false;
 		}
@@ -219,7 +219,14 @@ public class VertexLegacy extends Vector3f {
 	}
 	
 	
+	public void setNormalVector(Vector3f normal) {
+		this.normalVec = normal;
+	}
+	
+	
 	//********************************************** print ******************************************
+	
+	
 	public void printColor() {
 		System.out.println(getRed() + " | " + getGreen() + " | " + getBlue() + " | " + getAlpha());
 	}

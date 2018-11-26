@@ -152,30 +152,32 @@ public class PlayerCamera {
 	
 	
 	public static void disableCameraMovement(boolean b) {
-		
 		cameraMovementDisabled = b;
-		
 	}
 	
 	
 	public static boolean isCameraMovementDisabled() {
-		
 		return cameraMovementDisabled;
-		
 	}
 	
 	
 	public static Matrix44f getViewMatrix() {
-		
 		return camera.getViewMatrix();
-		
 	}
 	
 	
 	public static Matrix44f getInvertedMatrix() {
-		
 		return camera.getInvertedViewMatrix();
-		
+	}
+	
+	
+	public static Matrix44f getProjectionMatrix() {
+		return camera.getProjectionMatrix();
+	}
+	
+	
+	public static Matrix44f getInvertedProjectionMatrix() {
+		return camera.getInvertedViewProjectionMatrix();
 	}
 	
 	

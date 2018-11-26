@@ -1,30 +1,26 @@
 package models.worldModels;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glDisable;
 
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
-import assets.models.Illuminated_Model;
 import math.vectors.Vector3f;
-import utils.Const;
-import utils.CustomBufferUtils;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
 
-public class TriangleGrid extends Illuminated_Model {
+public class TriangleGrid extends Mesh {
 	
 	private int length, width;
 	
@@ -81,8 +77,7 @@ public class TriangleGrid extends Illuminated_Model {
 	
 	
 	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
-		
-		super(GL_TRIANGLE_STRIP, material);
+		super(GL_TRIANGLE_STRIP, material, null);
 		
 		length = superGrid.getLengthInVectors();
 		width  = superGrid.getWidthInVectors();
@@ -319,20 +314,18 @@ public class TriangleGrid extends Illuminated_Model {
 	}
 	
 	//********************************** other stuff **********************************************
+	
+	
 	public void onDrawStart() {
-		super.onDrawStart();
-		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
 	}
 	
 	
-	public void onDrawStop() {
-		super.onDrawStop();
-		
+	public void onDrawEnd() {		
 		glDisable(GL_PRIMITIVE_RESTART);
-		
 	}
+	
 	
 	//******************************************** get & set **************************************
 	

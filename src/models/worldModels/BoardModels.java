@@ -3,7 +3,7 @@ package models.worldModels;
 import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.VertexLegacy;
+import assets.meshes.geometry.Vertex;
 import assets.shaders.ShaderManager;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
@@ -104,9 +104,9 @@ public class BoardModels {
 		Vector3f[] positions = terrain.getPosArray();
 		ColorFunction terrainCol = new TerrainCol();
 		
-		vertices = new VertexLegacy[positions.length];
+		vertices = new Vertex[positions.length];
 		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new VertexLegacy(positions[v], terrainCol.color(0,0,positions[v].getC()));
+			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
 		}
 		
 	}
@@ -181,7 +181,7 @@ public class BoardModels {
 	/**
 	 * @return an array containing all terrains vertices
 	 */
-	public VertexLegacy[] getVertices() {
+	public Vertex[] getVertices() {
 		
 		return vertices;
 		

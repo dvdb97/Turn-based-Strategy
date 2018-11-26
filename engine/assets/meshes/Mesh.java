@@ -4,11 +4,14 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
+import org.lwjgl.BufferUtils;
+
 import assets.Bindable;
 import assets.Deletable;
 import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.material.Material;
+import assets.meshes.geometry.Vertex;
 import assets.textures.Texture;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -52,11 +55,70 @@ public class Mesh extends Deletable implements IRenderable {
 	}
 	
 	
+	public Mesh(int drawMode, Material material, Texture texture) {
+		this(drawMode);
+		
+		this.material = material;
+		this.texture = texture;
+	}
+	
+	
 	public Mesh(Material material, Texture texture) {
 		this();
 		
 		this.material = material;
 		this.texture = texture;
+	}
+	
+	
+	/**
+	 * 
+	 * Stores vertex data on the GPU and makes those vertices available
+	 * for rendering.
+	 * 
+	 * @param vertices The vertices to be stored.
+	 * @param indices The indices that describe the mesh's triangles.
+	 */
+	public void setData(Vertex[] vertices, IntBuffer indices) {
+		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
+		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
+		FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
+		
+		for (int i = 0; i < vertices.length; ++i) {
+			posBuffer.put(vertices[i].getA());
+			posBuffer.put(vertices[i].getB());
+			posBuffer.put(vertices[i].getC());
+			
+			colorBuffer.put(vertices[i].getRed());
+			colorBuffer.put(vertices[i].getGreen());
+			colorBuffer.put(vertices[i].getBlue());
+			colorBuffer.put(vertices[i].getAlpha());
+			
+			normalBuffer.put(vertices[i].getNormal().getA());
+			normalBuffer.put(vertices[i].getNormal().getB());
+			normalBuffer.put(vertices[i].getNormal().getC());
+		}
+		
+		posBuffer.flip();
+		colorBuffer.flip();
+		normalBuffer.flip();
+		
+		this.setPositionData(posBuffer);
+		this.setColorData(colorBuffer);
+		this.setNormalData(normalBuffer, 3);
+		this.setIndexBuffer(indices);
+		
+		if (vertices[0].isTextured()) {
+			FloatBuffer texBuffer = BufferUtils.createFloatBuffer(vertices.length * 2);
+			
+			for (int i = 0; i < vertices.length; ++i) {
+				texBuffer.put(vertices[i].getTexturePositions().getA());
+				texBuffer.put(vertices[i].getTexturePositions().getB());
+			}
+			
+			texBuffer.flip();
+			this.setTexCoordData(texBuffer, 2);
+		}
 	}
 	
 	
@@ -313,13 +375,15 @@ public class Mesh extends Deletable implements IRenderable {
 
 	@Override
 	public void render() {
+		onDrawStart();
 		vao.enableVertexAttribArray();
 		if (texture != null) texture.bind();
 		
 		glDrawElements(drawMode, indexBuffer);
 		
 		if (texture != null) texture.unbind();
-		vao.disableVertexAttribArray();		
+		vao.disableVertexAttribArray();
+		onDrawEnd();
 	}
 
 
@@ -330,6 +394,16 @@ public class Mesh extends Deletable implements IRenderable {
 		}
 		
 		vao.delete();		
+	}
+	
+	
+	public void onDrawStart() {
+		//Can be overridden.
+	}
+	
+	
+	public void onDrawEnd() {
+		//Can be overridden.
 	}
 
 }

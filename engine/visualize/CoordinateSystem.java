@@ -2,7 +2,7 @@ package visualize;
 
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.VertexLegacy;
+import assets.meshes.geometry.Vertex;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
@@ -29,7 +29,7 @@ public class CoordinateSystem extends Mesh {
 		FloatBuffer posData = BufferUtils.createFloatBuffer(6 * 3);
 		FloatBuffer colData = BufferUtils.createFloatBuffer(6 * 4);
 		
-		VertexLegacy vertex;
+		Vertex vertex;
 		
 		Color red = new Color(1.0f, 0.0f, 0.0f, 1.0f);
 		Color green = new Color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -37,31 +37,31 @@ public class CoordinateSystem extends Mesh {
 		
 		
 		//X-Axis:
-		vertex = new VertexLegacy(-1.0f * range, 0.0f, 0.0f, red);
+		vertex = new Vertex(-1.0f * range, 0.0f, 0.0f, red);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
-		vertex = new VertexLegacy(1.0f * range, 0.0f, 0.0f, red);
+		vertex = new Vertex(1.0f * range, 0.0f, 0.0f, red);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		//Y-Axis:
-		vertex = new VertexLegacy(0.0f, -1.0f * range, 0.0f, green);
+		vertex = new Vertex(0.0f, -1.0f * range, 0.0f, green);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
-		vertex = new VertexLegacy(0.0f, 1.0f * range, 0.0f, green);
+		vertex = new Vertex(0.0f, 1.0f * range, 0.0f, green);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		
 		//Z-Axis:
-		vertex = new VertexLegacy(0.0f, 0.0f, -1.0f * range, blue);
+		vertex = new Vertex(0.0f, 0.0f, -1.0f * range, blue);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		
-		vertex = new VertexLegacy(0.0f, 0.0f, 1.0f * range, blue);
+		vertex = new Vertex(0.0f, 0.0f, 1.0f * range, blue);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		

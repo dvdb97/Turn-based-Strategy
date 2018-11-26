@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.VertexLegacy;
+import assets.meshes.geometry.Vertex;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
@@ -31,7 +31,7 @@ public class HexagonBorderGrid extends Element_Model {
 	
 	private Color color;
 	
-	private List<VertexLegacy> vertices;
+	private List<Vertex> vertices;
 	private IntBuffer elementBuffer;
 	private int[][] elementArrays;
 	
@@ -61,7 +61,7 @@ public class HexagonBorderGrid extends Element_Model {
 	
 	private void processVerticesAndElementBuffer() {
 
-		VertexLegacy[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
+		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
 		vectors = new ArrayList<>((length+1)*2 * (width+1));
 		
 		extractVectorsFromSuperGrid();
@@ -87,16 +87,16 @@ public class HexagonBorderGrid extends Element_Model {
 		}
 	}
 
-	private VertexLegacy[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
+	private Vertex[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
 		
 		Vector3f[] triGridPos = triangleGrid.getPosArray();
-		VertexLegacy[] triGridVertices = new VertexLegacy[triGridPos.length];
+		Vertex[] triGridVertices = new Vertex[triGridPos.length];
 		
 		float delta = 0.005f*elr;
 		
 		for (int i=0; i<triGridVertices.length; i++) {
 			
-			triGridVertices[i] = new VertexLegacy(triGridPos[i], color);
+			triGridVertices[i] = new Vertex(triGridPos[i], color);
 			
 			float c;
 			float d = triGridVertices[i].getC();
@@ -192,9 +192,9 @@ public class HexagonBorderGrid extends Element_Model {
 	}
 	
 	
-	private VertexLegacy[] vertexListToArray() {
+	private Vertex[] vertexListToArray() {
 		
-		VertexLegacy[] array = new VertexLegacy[vertices.size()];
+		Vertex[] array = new Vertex[vertices.size()];
 		
 		for (int v=0; v<array.length; v++) {
 			array[v] = vertices.get(v);

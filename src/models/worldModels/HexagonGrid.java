@@ -1,8 +1,8 @@
 package models.worldModels;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
-import assets.models.Element_Model;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
@@ -11,20 +11,15 @@ import utils.CustomBufferUtils;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-
 import org.lwjgl.BufferUtils;
 
 
-public class HexagonGrid extends Element_Model {
+public class HexagonGrid extends Mesh {
 	
 	private SuperGrid superGrid;
 	
@@ -126,7 +121,7 @@ public class HexagonGrid extends Element_Model {
 		
 		FloatBuffer colorDataBuffer = CustomBufferUtils.createFloatBuffer(colorsF);
 		
-		setVertexColorData(colorDataBuffer, 4, GL_STATIC_DRAW);
+		setColorData(colorDataBuffer);
 		
 	}
 	
@@ -171,9 +166,7 @@ public class HexagonGrid extends Element_Model {
 	}
 	
 	@Override
-	public void onDrawStop() {
-		super.onDrawStop();
-		
+	public void onDrawEnd() {		
 		glDisable(GL_PRIMITIVE_RESTART);
 		
 	}

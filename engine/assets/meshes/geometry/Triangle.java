@@ -4,9 +4,9 @@ import math.vectors.Vector3f;
 
 public class Triangle {
 	
-	private VertexLegacy[] vertices = new VertexLegacy[3];
+	private Vertex[] vertices = new Vertex[3];
 	
-	public Triangle(VertexLegacy v0, VertexLegacy v1, VertexLegacy v2) {
+	public Triangle(Vertex v0, Vertex v1, Vertex v2) {
 		vertices[0] = v0;
 		vertices[1] = v1;
 		vertices[2] = v2;
@@ -20,7 +20,7 @@ public class Triangle {
 		
 		Vector3f normal = getSurfaceNormal();
 		
-		for (VertexLegacy vertex : vertices) {
+		for (Vertex vertex : vertices) {
 			vertex.addSurfaceNormal(normal);
 		}
 		
@@ -36,7 +36,7 @@ public class Triangle {
 	}
 	
 	
-	public VertexLegacy getVertex(int index) {
+	public Vertex getVertex(int index) {
 		return vertices[index];
 	}
 	

@@ -1,8 +1,7 @@
 package interaction.tileSelection;
 
-import graphics.Camera;
-import graphics.matrices.Matrices;
-import interaction.CameraOperator;
+import interaction.PlayerCamera;
+import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
 import math.matrices.Matrix33f;
@@ -32,14 +31,14 @@ public class TileSelecter {
 	
 	private static void computeSelectedTileIndex() {
 		
-		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
+		Matrix33f invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
 		
 		float cursorX = CursorPosInput.getXPosAsOpengl();
 		float cursorY = CursorPosInput.getYPosAsOpengl();
 		
-		Vector3f rayOrigin = Camera.getPosition();
+		Vector3f rayOrigin = PlayerCamera.getCameraPosition();
 		
-		Vector3f rayDirection = new Vector3f(cursorX, cursorY/Matrices.getProjectionMatrix().getWidthOverHeight(), -1f);
+		Vector3f rayDirection = new Vector3f(cursorX, cursorY/Window.main.getAspectRatio(), -1f);
 		
 		rayDirection = invertedViewMatrix33f.times(rayDirection);
 		
