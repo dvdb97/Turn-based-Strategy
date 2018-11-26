@@ -5,9 +5,7 @@ import gui.font.FontCollection;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
-import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import visualize.FontTest;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -39,7 +37,6 @@ public class Game {
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
-		FontTest.init("The quick brown fox \njumps over the lazy dog!");
 		
 		//Init Agents etc
 		

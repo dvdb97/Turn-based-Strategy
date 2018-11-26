@@ -15,14 +15,9 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
-import assets.models.abstractModels.Renderable;
-import assets.textures.Texture2D;
 import interaction.Window;
-import math.matrices.Matrix44f;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
-import rendering.framebuffers.FrameBuffer;
-
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
 
@@ -76,64 +71,6 @@ public class RenderEngine {
 	public static void swapBuffers() {
 		glfwPollEvents();
 		glfwSwapBuffers(window.getWindowID());
-	}
-	
-	
-	public static void render(Renderable model, Texture2D texture) {
-		
-		if (texture != null) {
-			texture.bind();
-		}
-		
-
-		model.onDrawStart();
-		
-		model.activateAttributes();
-		
-		
-		model.render();
-		
-		
-		model.deactivateAttributes();
-		
-		model.onDrawStop();
-		
-		
-		if (texture != null) {
-			texture.unbind();
-		}
-		
-	}
-	
-	
-	public static void render(FrameBuffer frameBuffer, Renderable model, Texture2D texture) {
-		
-		frameBuffer.bind();
-		
-		if (texture != null) {
-			texture.bind();
-		}
-		
-
-		model.onDrawStart();
-		
-		model.activateAttributes();
-		
-		
-		model.render();
-		
-		
-		model.deactivateAttributes();
-		
-		model.onDrawStop();
-		
-		
-		if (texture != null) {
-			texture.unbind();
-		}
-		
-		frameBuffer.unbind();
-		
 	}
 	
 	

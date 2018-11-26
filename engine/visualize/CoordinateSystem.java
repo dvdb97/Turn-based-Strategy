@@ -1,17 +1,16 @@
 package visualize;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.VertexLegacy;
-import assets.models.Array_Model;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-public class CoordinateSystem extends Array_Model {
+public class CoordinateSystem extends Mesh {
 
 	private float range;
 	
@@ -70,11 +69,9 @@ public class CoordinateSystem extends Array_Model {
 		posData.flip();
 		colData.flip();
 		
-		this.setVertexPositionData(posData, 3, GL_STATIC_DRAW);
-		this.setVertexColorData(colData, 4, GL_STATIC_DRAW);
+		this.setPositionData(posData);
+		this.setColorData(colData);
 	
 	}
 	
-	
-
 }
