@@ -1,5 +1,9 @@
 package gui_core;
 
+<<<<<<< HEAD
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
+=======
 import java.util.LinkedList;
 
 import assets.textures.Texture;
@@ -10,11 +14,10 @@ import graphics.matrices.Matrices;
 import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
+>>>>>>> master
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
-import rendering.shaders.ShaderLoader;
-import rendering.shaders.ShaderProgram;
 
 public class GUIManager {
 	
@@ -53,7 +56,11 @@ public class GUIManager {
 		
 		width = window.getWidth();
 		
+<<<<<<< HEAD
+		guiShader.bind();
+=======
 		height = window.getHeight();
+>>>>>>> master
 		
 	}
 	
@@ -77,6 +84,10 @@ public class GUIManager {
 			
 		}
 		
+<<<<<<< HEAD
+		guiShader.bind();
+=======
+>>>>>>> master
 		
 		for (GUIWindow window : windows) {
 			
@@ -87,6 +98,15 @@ public class GUIManager {
 	}
 	
 	
+<<<<<<< HEAD
+	public static void disableGuiShader() {
+		
+		if (!initialized) {
+			init();
+		}
+		
+		guiShader.unbind();
+=======
 	public static boolean isInitialized() {
 		return initialized;
 	}
@@ -104,6 +124,7 @@ public class GUIManager {
 	
 	public static void remove(GUIWindow window) {
 		windows.remove(window);
+>>>>>>> master
 	}
 
 }

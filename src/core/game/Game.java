@@ -1,18 +1,17 @@
 package core.game;
 
 import core.saves.GameScore;
-import graphics.shaders.ShaderManager;
 import gui.font.FontCollection;
+import interaction.PlayerCamera;
 import gui_core.GUIManager;
-import interaction.CameraOperator;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
-import math.matrices.Matrix44f;
 import rendering.RenderEngine;
-import visualize.FontTest;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+
+import assets.shaders.ShaderManager;
 
 
 public class Game {
@@ -27,18 +26,18 @@ public class Game {
 		//Init the shaders
 		ShaderManager.init();
 		
+		//Init the camera
+		PlayerCamera.init();
+		
+		
 		//Init world
 		WorldManager.init(boardLength, boardWidth);
-		
-		//Init the camera
-		CameraOperator.init();
 		
 		//Init tile selecter
 		TileSelecter.init();
 		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
-		FontTest.init("The quick brown fox \njumps over the lazy dog!");
 		
 		//Init Agents etc
 		
@@ -81,7 +80,7 @@ public class Game {
 	
 	private void processInput() {
 		
-		CameraOperator.update();
+		PlayerCamera.update();
 		
 		TileSelecter.processInput();
 		
@@ -102,10 +101,8 @@ public class Game {
 	private void render() {
 		
 		WorldManager.render();
-		
 		//Draw the gui
 		GUIManager.update();
-		
 	}
 	
 	

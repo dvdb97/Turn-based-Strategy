@@ -54,8 +54,7 @@ public class Application {
 		RenderEngine.enableDepthTest();
 		RenderEngine.setSwapInterval(1);
 		
-		Matrices.initProjectionMatrix(window);
-		
+		Matrices.initProjectionMatrix(window);		
 	}
 	
 	

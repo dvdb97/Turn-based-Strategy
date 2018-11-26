@@ -5,17 +5,17 @@ public class Quadrangle {
 	
 	public static final int NUMBER_OF_VERTICES = 6;
 	
-	private Vertex[] vertices = new Vertex[NUMBER_OF_VERTICES];
+	private VertexLegacy[] vertices = new VertexLegacy[NUMBER_OF_VERTICES];
 	
 	//------------------------------ constructor ------------------------------
-	public Quadrangle(Vertex upperLeft, Vertex upperRight, Vertex lowerLeft, Vertex lowerRight) {
+	public Quadrangle(VertexLegacy upperLeft, VertexLegacy upperRight, VertexLegacy lowerLeft, VertexLegacy lowerRight) {
 		
 		/*
 		 * 0, 1, 2,
 		 * 0, 3, 2
 		 */
 		
-		Vertex[] temp = {
+		VertexLegacy[] temp = {
 			upperLeft, upperRight, lowerRight,
 			upperLeft, lowerLeft, lowerRight
 		};
@@ -40,7 +40,7 @@ public class Quadrangle {
 	
 	//------------------------------- get & set ---------------------------
 	
-	public Vertex[] getVertices() {
+	public VertexLegacy[] getVertices() {
 		return vertices;
 	}
 	
@@ -49,7 +49,7 @@ public class Quadrangle {
 		float[] data = new float[vertices.length * 3];
 		
 		int index = 0;
-		for (Vertex vertex : vertices) {
+		for (VertexLegacy vertex : vertices) {
 			data[index++] = vertex.getA();
 			data[index++] = vertex.getB();
 			data[index++] = vertex.getC();
@@ -64,7 +64,7 @@ public class Quadrangle {
 		float[] data = new float[vertices.length * 4];
 		
 		int index = 0;
-		for (Vertex vertex : vertices) {
+		for (VertexLegacy vertex : vertices) {
 			data[index++] = vertex.getRed();
 			data[index++] = vertex.getGreen();
 			data[index++] = vertex.getBlue();
@@ -88,7 +88,7 @@ public class Quadrangle {
 	
 	
 	public void printData() {
-		for (Vertex vertex : vertices) {
+		for (VertexLegacy vertex : vertices) {
 			vertex.print();
 		}
 	}

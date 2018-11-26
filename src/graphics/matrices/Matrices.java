@@ -1,20 +1,61 @@
 package graphics.matrices;
 
 import interaction.Window;
-import graphics.matrices.ProjectionMatrix;
+import math.matrices.Matrix44f;
+import math.matrices.advanced.MatrixInversion44f;
+import rendering.matrices.projectionMatrices.ProjectionMatrix;
 
 public class Matrices {
 	
-	private static ProjectionMatrix projectionMatrix;
+	private static ProjectionMatrix perspProjectionMatrix;
+	
+	private static Matrix44f invertedPerspProjectionMatrix;
+	
+	private static ProjectionMatrix orthProjectionMatrix;
+	
+	private static Matrix44f invertedOrthProjectionMatrix;
+	
+	private static float windowProportions;
+	
 
 	public static void initProjectionMatrix(Window window) {
-		projectionMatrix = new ProjectionMatrix(-1, 1, -1, 1, 1, -1f, window.getProportions());
+		
+		perspProjectionMatrix = ProjectionMatrix.perspective();
+		
+		invertedPerspProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(perspProjectionMatrix);
+		
+		orthProjectionMatrix = ProjectionMatrix.orthographic();
+		
+		invertedOrthProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(orthProjectionMatrix);
+		
+		windowProportions = window.getAspectRatio();
+		
+	}
+	
+
+	public static Matrix44f getPerspectiveProjectionMatrix() {
+		return perspProjectionMatrix;		
 	}
 	
 	
-	public static ProjectionMatrix getProjectionMatrix() {
-		return projectionMatrix;		
+	public static Matrix44f getInvertedPerspectiveProjectionMatrix() {
+		return invertedPerspProjectionMatrix;		
 	}
-			
+	
+	
+	public static Matrix44f getOrthographicProjectionMatrix() {
+		return orthProjectionMatrix;
+	}
+	
+	
+	public static Matrix44f getInvertedOrthographicProjectionMatrix() {
+		return invertedOrthProjectionMatrix;
+	}
+	
+	
+	public static float getWindowProportions() {
+		return windowProportions;
+	}
+
 			
 }

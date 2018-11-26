@@ -1,7 +1,7 @@
 package fontRendering.rendering.shader;
 
+import assets.shaders.ShaderProgram;
 import math.matrices.Matrix44f;
-import rendering.shaders.ShaderProgram;
 import utils.FileUtils;
 
 public class TextRenderingShader extends ShaderProgram {

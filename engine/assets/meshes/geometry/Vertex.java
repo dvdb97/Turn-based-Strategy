@@ -1,214 +1,610 @@
 package assets.meshes.geometry;
 
+import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
-
-public class Vertex extends Vector3f {
+public class Vertex {
+			
+	private float[] position = null;
 	
-	/*
-	 * An member variable without any purpose except helping me create a super fast 
-	 * vertex structuring algorithm!
+	private float[] color = null;
+	
+	private float[] texPos = null;
+	
+	private float[] normal = null;
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
 	 */
-	private int structuringIndex;
-	
-	//better save in this in form of Color
-	private float red;
-	private float green;
-	private float blue;
-	private float alpha;
-	
-	
-	private Vector2f texturePositions;
-	boolean textured;
-	
-	
-	//the normal vector of the vertex is the average of the normals of its surrounding surfaces
-	private Vector3f normalVec;
-	private int numberOfSurfaceNormals;
-	
-	//************************************** constructor **************************************
-	public Vertex(float x, float y, float z, float red, float green, float blue, float alpha) {
-		super(x, y, z);
-		
-		this.red = red;
-		this.green = green;
-		this.blue = blue;
-		this.alpha = alpha;
-		
-		normalVec = null;
-		textured = false;
-		numberOfSurfaceNormals = 0;
-		
+	public Vertex(Vector3f position) {
+		this.position = position.toArray();
 	}
 	
 	
-	public Vertex(float x, float y, float z, Color color) {
-		this(x, y, z, color.getA(), color.getB(), color.getC(), color.getD());
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param x The x coordinate of the vertex
+	 * @param y The y coordinate of the vertex
+	 * @param z The z coordinate of the vertex
+	 */
+	public Vertex(float x, float y, float z) {
+		float[] array = {x, y, z};
+		
+		this.position = array;
 	}
 	
 	
-	public Vertex(Vector3f position, Color color) {
-		this(position.getA(), position.getB(), position.getC(), color);
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 */
+	public Vertex(Vector2f position) {
+		this.position = position.toArray();
 	}
 	
 	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param x The x coordinate of the vertex
+	 * @param y The y coordinate of the vertex
+	 */
+	public Vertex(float x, float y) {
+		float[] array = {x, y};
+		
+		this.position = array;
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 */
+	public Vertex(float[] position) {
+		this.position = position.clone();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texCoords The vertex tex coordinates
+	 * @param normal The vertex normal
+	 */
+	public Vertex(float[] position, float[] texCoords, float[] normal) {
+		this.position = position;
+		this.texPos = texCoords;
+		this.normal = normal;
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param color The vertex color
+	 */
+	public Vertex(Vector3f position, Vector4f color) {
+		this(position);
+		this.color = color.toArray();		
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param color The vertex color
+	 */
+	public Vertex(Vector2f position, Vector4f color) {
+		this(position);
+		this.color = color.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param color The vertex color
+	 */
+	public Vertex(float[] position, float[] color) {
+		this(position);
+		this.color = color.clone();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 */
+	public Vertex(Vector3f position, Vector3f texPos) {
+		this(position);
+		this.texPos = texPos.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 */
 	public Vertex(Vector3f position, Vector2f texPos) {
-		this(position, new Color(0f, 0f, 0f, 0f));
-		
-		this.setTexturePositions(texPos);
+		this(position);
+		this.texPos = texPos.toArray();
 	}
 	
 	
-	public Vertex() {
-		super(0, 0, 0);
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param color The vertex color
+	 * @param normal The vertex normal
+	 */
+	public Vertex(Vector3f position, Vector4f color, Vector3f normal) {
+		this(position, color);
+		this.normal = normal.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 * @param normal The vertex normal
+	 */
+	public Vertex(Vector3f position, Vector3f texPos, Vector3f normal) {
+		this(position, texPos);
+		this.normal = normal.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a new Vertex
+	 * 
+	 * @param position The vertex position
+	 * @param texPos The vertex texture coords
+	 * @param normal The vertex normal
+	 */
+	public Vertex(Vector3f position, Vector2f texPos, Vector3f normal) {
+		this(position);
+		this.normal = normal.toArray();
+		this.texPos = normal.toArray();
+	}
+	
+	
+	/**
+	 * 
+	 * Encodes the size of every vertex attribute as 4 bits
+	 * of an integer
+	 * 
+	 * @return Returns an integer that stores the information of the attribute sizes
+	 */
+	public int getDataLayout() {
+		int layout = 0;
+		int shift = 0;
 		
-		this.red = 0.0f;
-		this.green = 0.0f;
-		this.blue = 0.0f;
-		this.alpha = 1.0f;		
+		//WTF?! Black magic!
+		layout |= ((position != null ? position.length : 0) << (shift++ * 4));
+		
+		layout |= ((color != null ? color.length : 0) << (shift++ * 4));
+		
+		layout |= ((texPos != null ? texPos.length : 0) << (shift++ * 4));
+		
+		layout |= ((normal != null ? normal.length : 0) << (shift++ * 4));
+		
+		return layout;
 		
 	}
 	
-	//************************************** methods **************************************
-	public boolean equals(Vertex vertex, float tolerance) {
-		if(Math.abs(this.getA() - vertex.getA()) > tolerance){
-			return false;
+	
+	/**
+	 * 
+	 * Puts all the data that defines this vertex into one array
+	 * 
+	 * @return Returns an array containing all the data stored in this data structure
+	 */
+	public float[] toDataBundle() {
+		
+		float[][] attributes = {position, color, texPos, normal};
+		
+		//The size of the array that is needed for this vertex
+		int dataSize = 0;
+		
+		//Compute the size of the array is needed for this vertex
+		for (float[] array : attributes) {
+			if (array != null) {
+				dataSize += array.length;
+			}
 		}
 		
-		if (Math.abs(this.getB() - vertex.getB()) > tolerance) {
-			return false;
+		
+		//The array to store the vertex data in
+		float[] data = new float[dataSize];
+		
+		
+		int arrayIndex = 0;
+		
+		for (float[] attribute : attributes) {
+			
+			if (attribute == null) {
+				continue;
+			}
+			
+			for (float value : attribute) {
+				
+				data[arrayIndex++] = value; 
+				
+			}
+			
 		}
-		
-		if (Math.abs(this.getC() - vertex.getC()) > tolerance) {
-			return false;
-		}
-		
-		return true;		
-	}
-	
-	
-	public void addSurfaceNormal(Vector3f surfaceNormal) {
-		
-		if (this.normalVec == null) {
-			this.normalVec = new Vector3f(0f, 0f, 0f);
-		}
-		
-		this.normalVec = this.normalVec.timesEQ(numberOfSurfaceNormals);
-		
-		this.normalVec = this.normalVec.plus(surfaceNormal);
-		
-		this.normalVec = this.normalVec.timesEQ(1.0f / (float)++numberOfSurfaceNormals);
-		
-	}
-	
-	
-	
-	//************************************** getter **************************************
-	public Vector3f getNormal() {
-		return normalVec;
-	}
-	
-	
-	public void setStructuringIndex(int index) {
-		structuringIndex = index;
-	}
-	
-	
-	public int getStructuringIndex() {
-		return structuringIndex;
-	}
-
-
-	public float getCheckSum() {
-		return getA() + getB() + getC();
-	}
-	
-	public Vector3f getPosition() {
-		return new Vector3f(getA(), getB(), getC());
-	}
-	
-	public float[] getPositionData() {
-		float[] data = {
-			getA(), getB(), getC()
-		};
 		
 		return data;
+		
+	}
+	
+	
+	public float[] toDataBundle(int layout) {
+		
+		//The sizes of the different attributes in this layout
+		byte[] blockSizes = getSizes(layout);
+		
+		//The array that will be returned as the result
+		float[] data = new float[getSum(blockSizes)];
+		
+		//An array with all the attribute values of this vertex
+		float[][] attributes = {position, color, texPos, normal};
+		
+		int arrayIndex = 0;
+		
+		for (int i = 0; i < attributes.length; ++i) {
+			
+			for (int j = 0; j < blockSizes[i]; ++j) {
+				if (attributes[i] == null) {
+					data[arrayIndex++] = 0f;
+					
+					continue;
+				}
+				
+				data[arrayIndex++] = j < attributes[i].length ? attributes[i][j] : 0f; 
+			}
+			
+		}
+		
+		return data;
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Utility method
+	 * 
+	 * @param array
+	 * @return
+	 */
+	private int getSum(byte[] array) {
+		
+		int sum = 0;
+		
+		for (byte b : array) {
+			sum += b;
+		}
+		
+		return sum;
+	}
+	
+	
+	/**
+	 * 
+	 * Puts all the vertex data into the given FloatBuffer
+	 * 
+	 * @param buffer A reference to a FloatBuffer
+	 */
+	public void toDataBundle(FloatBuffer buffer) {
+		
+		buffer.put(position);
+		buffer.put(color);
+		buffer.put(texPos);
+		buffer.put(normal);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Puts all the vertex data into the given FloatBuffer.
+	 * The data will be stored as specified in layout
+	 * 
+	 * @param buffer A reference to a FloatBuffer
+	 * @param layout The layout
+	 */
+	public void toDataBundle(FloatBuffer buffer, int layout) {
+		
+		//The sizes of the different attributes in this layout
+		byte[] blockSizes = getSizes(layout);
+		
+		//An array with all the attribute values of this vertex
+		float[][] attributes = {position, color, texPos, normal};
+		
+		for (int i = 0; i < attributes.length; ++i) {
+			
+			for (int j = 0; j < blockSizes[i]; ++j) {
+				
+				if (attributes[i] == null) {
+					continue;
+				}
+				
+				buffer.put(j < attributes[i].length ? attributes[i][j] : 0f); 
+				
+			}
+			
+		}
+		
+	}
+	
+	
+	//*************************************** Getters and setters ***************************************
+	
+	
+	public void putPositionData(FloatBuffer buffer) {
+		buffer.put(position);
+	}
+	
+	
+	public void putPositionData(FloatBuffer buffer, int size) {
+		if (position == null)
+			return;
+		
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < position.length) {
+				buffer.put(position[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
+	}
+	
+	
+	public float[] getPositionData() {
+		return position;
+	}
+	
+	
+	public void putColorData(FloatBuffer buffer) {
+		buffer.put(color);
+	}
+	
+	
+	public void putColorData(FloatBuffer buffer, int size) {
+		if (color == null)
+			return;
+		
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < color.length) {
+				buffer.put(color[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
 	}
 	
 	
 	public float[] getColorData() {
-		float[] data = {
-			getRed(), getGreen(), getBlue(), getAlpha()
-		};
+		return color;
+	}
+	
+	
+	public void putNormalData(FloatBuffer buffer) {
+		buffer.put(normal);
+	}
+	
+	
+	public void putNormalData(FloatBuffer buffer, int size) {
+		if (normal == null)
+			return;
 		
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < normal.length) {
+				buffer.put(normal[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
+	}
+	
+	
+	public float[] getNormalData() {
+		return normal;
+	}
+	
+	
+	public void putTexPosData(FloatBuffer buffer) {
+		buffer.put(texPos);
+	}
+	
+	
+	public void putTexPosData(FloatBuffer buffer, int size) {
+		if (texPos == null)
+			return;
 		
-		return data;
+		for (int i = 0; i < size; ++i) {
+			
+			if (i < texPos.length) {
+				buffer.put(texPos[i]);
+			} else {
+				buffer.put(0.0f);
+			}
+			
+		}
 	}
 	
 	
-	public float getRed() {
-		return red;
-	}
-
-
-	public float getGreen() {
-		return green;
-	}
-
-
-	public float getBlue() {
-		return blue;
-	}
-
-
-	public float getAlpha() {
-		return alpha;
+	public float[] getTexPosData() {
+		return texPos;
 	}
 	
-	//*************************************** setter ************************************
+	
+	public int getPositionVectorSize() {
+		return position.length;
+	}
 	
 	
-	public void setColor(float r, float g, float b, float a) {
+	public float getXPos() {
 		
-		red   = r;
-		green = g;
-		blue  = b;
-		alpha = a;
+		if (position == null) {
+			return 0f;
+		}
 		
-	}
-		public void setColor(Color color) {
-		
-		setColor(color.getA(), color.getB(), color.getC(), color.getD());
+		return position[0];
 		
 	}
 	
-		/**
-		 * alpha value is set to 1
-		 */
-	public void setColor(float r, float g, float b) {
-		setColor(r, g, b, 1);
-	}
 	
-	public void setTexturePositions(Vector2f texPos) {
-		this.texturePositions = texPos;
+	public float getYPos() {
 		
-		textured = true;
+		if (position == null) {
+			return 0f;
+		}
+		
+		if (position.length < 2) {
+			return 0f;
+		}
+		
+		return position[1];
+		
 	}
 	
 	
-	public Vector2f getTexturePositions() {
-		return texturePositions;
+	public float getZPos() {
+		
+		if (position == null) {
+			return 0f;
+		}
+		
+		if (position.length < 3) {
+			return 0f;
+		}
+		
+		return position[2];
+		
 	}
 	
 	
-	public boolean isTextured() {
-		return textured;
+	/**
+	 * 
+	 * @return Returns the size of all attribute data stored in this vertex
+	 */
+	public int getDataSize() {
+		
+		int size = 0;
+		
+		if (position != null) {
+			size += position.length;
+		}
+		
+		if (color != null) {
+			size += color.length;
+		}
+		
+		if (texPos != null) {
+			size += texPos.length;
+		}
+		
+		if (normal != null) {
+			size += normal.length;
+		}
+		
+		return size;
+		
 	}
 	
 	
+	//*************************************** Static methods ***************************************
+	
+	
+	public static byte[] getSizes(int layout) {
+		
+		int mask = 15;
+		byte[] blockSizes = new byte[8];
+		
+		for (int i = 0; i < blockSizes.length; i++) {
+			blockSizes[i] = (byte) ((layout >> (i * 4)) & mask); 
+		}
+		
+		return blockSizes;
+		
+	}
+	
+	
+	public static int getSize(int layout) {
+		
+		int sum = 0;
+		int mask = 15;
+		
+		for (int i = 0; i < 8; i++) {
+			sum += (byte) ((layout >> (i * 4)) & mask); 
+		}
+		
+		return sum;
+		
+	}
+	
+	
+<<<<<<< HEAD
+	public static int generateLayout(int posSize, int colorSize, int texPosSize, int normalSize) {
+		
+		int layout = 0;
+		int shift = 0;
+		
+		//WTF?! Black magic!
+		layout |= posSize << (shift++ * 4);
+		
+		layout |= colorSize << (shift++ * 4);
+		
+		layout |= texPosSize << (shift++ * 4);
+		
+		layout |= normalSize << (shift++ * 4);
+		
+		return layout;
+			
+=======
 	public void setNormalVector(Vector3f normalVec) {
 		this.normalVec = normalVec;
 	}
@@ -216,6 +612,13 @@ public class Vertex extends Vector3f {
 	//********************************************** print ******************************************
 	public void printColor() {
 		System.out.println(getRed() + " | " + getGreen() + " | " + getBlue() + " | " + getAlpha());
+>>>>>>> master
 	}
 
+
+	@Override
+	public String toString() {
+		return "Vertex at position " + Arrays.toString(position) + " texCoords " + Arrays.toString(texPos) + " normal " + Arrays.toString(normal);
+	}
+	
 }

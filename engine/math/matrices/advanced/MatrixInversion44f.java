@@ -1,6 +1,9 @@
 package math.matrices.advanced;
 
+import javax.swing.plaf.synth.SynthSplitPaneUI;
+
 import math.matrices.Matrix44f;
+import math.matrices.advanced.deprecated.LU_Decomposition_Deprecated;
 
 public class MatrixInversion44f {
 	
@@ -17,15 +20,24 @@ public class MatrixInversion44f {
 	
 	public static Matrix44f generateMultiplicativeInverse(Matrix44f matrix) {
 		
+		if (matrix.getA1() == 0f) {
+			matrix.setA1(0.00000001f);
+		}
+		
+		if (matrix.getB2() == 0f) {
+			matrix.setB2(0.00000001f);
+		}
+		
+		if (matrix.getC3() == 0f) {
+			matrix.setC3(0.00000001f);
+		}
+		
 		Matrix44f l_Matrix = new Matrix44f();
 		l_Matrix.times(0f);
 		Matrix44f u_Matrix = new Matrix44f();
 		u_Matrix.times(0f);
 		
-		LU_Decomposition.generate(matrix, l_Matrix, u_Matrix);
-		
-		
-		
+		LU_Decomposition.luDecomposition(matrix, l_Matrix, u_Matrix);
 		
 		Matrix44f l_inverted = getLInverted(l_Matrix);
 		Matrix44f u_inverted = getUInverted(u_Matrix);		
@@ -37,8 +49,7 @@ public class MatrixInversion44f {
 	
 	private static Matrix44f getLInverted(Matrix44f l) {
 		
-		Matrix44f inverse = new Matrix44f();
-		
+		Matrix44f inverse = new Matrix44f();		
 		
 		for (int row = 0; row < 4; ++row) {
 			

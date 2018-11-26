@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
@@ -24,6 +25,7 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
+	
 	/**
 	 * creates and flips a ByteBuffer which contains all the elements of array
 	 * @param array byte array which elements will be put in the buffer
@@ -36,6 +38,7 @@ public class CustomBufferUtils {
 		
 		return buffer;
 	}
+	
 	
 	/**
 	 * creates and flips a IntBuffer which contains all the elements of array
@@ -50,6 +53,40 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
+<<<<<<< HEAD
+	
+	public static IntBuffer createIntBuffer(List<Integer> list) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(list.size());
+		
+		for (int i : list) {
+			buffer.put(i);
+		}
+		
+		buffer.flip();
+		
+		return buffer;		
+	}
+	
+	
+	/**
+	 * creates and flips a IntBuffer which contains all the elements of array
+	 * @param array Integer array which elements will be put in the buffer
+	 * @return the buffer
+	 */
+	public static IntBuffer createIntBuffer(Integer[] array) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(array.length);
+
+		for (int i : array) {
+			buffer.put(i);
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	
+=======
 	public static IntBuffer createIntBuffer(int[][] array) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(array.length * array[0].length);
 
@@ -65,6 +102,7 @@ public class CustomBufferUtils {
 		
 	}
 	
+>>>>>>> master
 	/**
 	 * 
 	 * creates and flips a FloatBuffer which contains all the elements of list

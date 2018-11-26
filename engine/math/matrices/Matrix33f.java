@@ -176,6 +176,15 @@ public class Matrix33f extends Matrixf {
 	
 	//---------------------- other methods -------------------
 	
+	
+	public Matrix44f toMatrix44f() {
+		return new Matrix44f(this.getA1(), this.getA2(), this.getA3(), 0f,
+							 this.getB1(), this.getB2(), this.getB3(), 0f, 
+							 this.getC1(), this.getC2(), this.getC3(), 0f, 
+							 0f			 , 0f		   , 0f			 , 1f);
+	}
+	
+	
 	/**
 	 * prints out the matrix
 	 */

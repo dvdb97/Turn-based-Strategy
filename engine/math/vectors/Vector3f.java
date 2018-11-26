@@ -8,6 +8,8 @@ public class Vector3f extends Vectorf {
 	
 	private final static int LENGTH = 3;
 	
+	public static final Vector3f ZERO = new Vector3f(0f, 0f, 0f);
+	
 	//----------------------- constructor ----------------------
 	private Vector3f(Vector3f v) {
 		
@@ -139,6 +141,12 @@ public class Vector3f extends Vectorf {
 		return this;
 	}
 	
+	
+	public Vector3f normalizedCopy() {		
+		return this.copyOf().normalize();	
+	}
+	
+	
 	/**
 	 * Negation
 	 * 
@@ -148,6 +156,17 @@ public class Vector3f extends Vectorf {
 		super.voidNegated();
 		return this;
 	}
+	
+	
+	/**
+	 * Negation
+	 * 
+	 * @return a copy of itself, multiplicated with -1
+	 */
+	public Vector3f negatedCopy() {
+		return this.times(-1f);
+	}
+	
 	
 	/**
 	 * Cross product (vector product)
@@ -199,7 +218,29 @@ public class Vector3f extends Vectorf {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "(" + this.getA() + ", " + this.getB() + ", " + this.getC() + ")";
+	}
+	
+	
 	//------------------------- Get & Set ----------------------
+	
+	
+	public Vector2f getXY() {
+		return new Vector2f(getA(), getB());
+	}
+	
+	
+	public Vector2f getYZ() {
+		return new Vector2f(getB(), getC());
+	}
+	
+	
+	public Vector2f getXZ() {
+		return new Vector2f(getA(), getC());
+	}
+
 	
 	/**
 	 * @return returns the first component of this vector

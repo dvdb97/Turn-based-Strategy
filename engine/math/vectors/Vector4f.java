@@ -57,6 +57,7 @@ public class Vector4f extends Vectorf {
 		return this;
 	}
 	
+	
 	/**
 	 * Vector subtraction
 	 * 
@@ -145,9 +146,15 @@ public class Vector4f extends Vectorf {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "(" + getA() + ", " + getB() + ", " + getC() + ", " + getD() + ")";
+	}	
+	
 	
 	//------------------------- Get & Set ----------------------
 	
+
 	/**
 	 * @return returns the first component of this vector
 	 */

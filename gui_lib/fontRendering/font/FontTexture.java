@@ -1,6 +1,5 @@
 package fontRendering.font;
 
-import assets.textures.Texture;
 import assets.textures.Texture2D;
 
 public class FontTexture extends Texture2D {
@@ -12,9 +11,17 @@ public class FontTexture extends Texture2D {
 	
 	private int charsPerCol;
 	
+<<<<<<< HEAD:gui_lib/fontRendering/texture/FontTexture.java
+	private char[] correspondingChars;
+	
+	
+	public FontTexture(String path, int charsPerRow, int charsPerCol) {
+		super(path);
+=======
 
 	public FontTexture(String path, int width, int height, int charsPerRow, int charsPerCol) {
 		super(path, width, height);
+>>>>>>> master:gui_lib/fontRendering/font/FontTexture.java
 		
 		this.setFilter(Texture.CLAMP_TO_BORDER);
 		this.setTextureWrap(Texture.LINEAR);
@@ -22,6 +29,24 @@ public class FontTexture extends Texture2D {
 		this.charsPerRow = charsPerRow;
 		this.charsPerCol = charsPerCol;
 		
+<<<<<<< HEAD:gui_lib/fontRendering/texture/FontTexture.java
+	}
+	
+	
+	public FontTexture(String path, int mipmapLevels, int charsPerRow, int charsPerCol, char[] correspondingChars) {
+		super(path, mipmapLevels);
+		
+		this.charsPerRow = charsPerRow;
+		this.charsPerCol = charsPerCol;
+		
+		setCorrespondingChars(correspondingChars);
+	}
+	
+	
+	public void setCorrespondingChars(char[] correspondingChars) {
+		this.correspondingChars = correspondingChars;
+=======
+>>>>>>> master:gui_lib/fontRendering/font/FontTexture.java
 	}
 	
 	

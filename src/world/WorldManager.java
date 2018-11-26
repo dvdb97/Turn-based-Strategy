@@ -1,7 +1,11 @@
 package world;
 
+<<<<<<< HEAD
+import assets.meshes.geometry.VertexLegacy;
+=======
 import mapModes.MapModesCreater;
 import mapModes.MapModesManager;
+>>>>>>> master
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
@@ -22,6 +26,10 @@ public class WorldManager {
 	private static BoardModels boardModels;
 	private static SuperGrid superGrid;
 	
+<<<<<<< HEAD
+	private static VertexLegacy[] vertices;
+=======
+>>>>>>> master
 	private static float[] fertility;
 	
 	private static ProvisionalUI ui;

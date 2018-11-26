@@ -1,17 +1,16 @@
 package visualize;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
-import assets.models.Array_Model;
+import assets.meshes.geometry.VertexLegacy;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-public class CoordinateSystem extends Array_Model {
+public class CoordinateSystem extends Mesh {
 
 	private float range;
 	
@@ -30,7 +29,7 @@ public class CoordinateSystem extends Array_Model {
 		FloatBuffer posData = BufferUtils.createFloatBuffer(6 * 3);
 		FloatBuffer colData = BufferUtils.createFloatBuffer(6 * 4);
 		
-		Vertex vertex;
+		VertexLegacy vertex;
 		
 		Color red = new Color(1.0f, 0.0f, 0.0f, 1.0f);
 		Color green = new Color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -38,31 +37,31 @@ public class CoordinateSystem extends Array_Model {
 		
 		
 		//X-Axis:
-		vertex = new Vertex(-1.0f * range, 0.0f, 0.0f, red);
+		vertex = new VertexLegacy(-1.0f * range, 0.0f, 0.0f, red);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
-		vertex = new Vertex(1.0f * range, 0.0f, 0.0f, red);
+		vertex = new VertexLegacy(1.0f * range, 0.0f, 0.0f, red);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		//Y-Axis:
-		vertex = new Vertex(0.0f, -1.0f * range, 0.0f, green);
+		vertex = new VertexLegacy(0.0f, -1.0f * range, 0.0f, green);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
-		vertex = new Vertex(0.0f, 1.0f * range, 0.0f, green);
+		vertex = new VertexLegacy(0.0f, 1.0f * range, 0.0f, green);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		
 		//Z-Axis:
-		vertex = new Vertex(0.0f, 0.0f, -1.0f * range, blue);
+		vertex = new VertexLegacy(0.0f, 0.0f, -1.0f * range, blue);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
 		
-		vertex = new Vertex(0.0f, 0.0f, 1.0f * range, blue);
+		vertex = new VertexLegacy(0.0f, 0.0f, 1.0f * range, blue);
 		posData.put(vertex.getPositionData());
 		colData.put(vertex.getColorData());
 		
@@ -70,11 +69,9 @@ public class CoordinateSystem extends Array_Model {
 		posData.flip();
 		colData.flip();
 		
-		this.setVertexPositionData(posData, 3, GL_STATIC_DRAW);
-		this.setVertexColorData(colData, 4, GL_STATIC_DRAW);
+		this.setPositionData(posData);
+		this.setColorData(colData);
 	
 	}
 	
-	
-
 }

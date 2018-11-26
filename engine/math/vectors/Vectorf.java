@@ -30,6 +30,7 @@ abstract class Vectorf extends Matrixf {
 		
 	}
 	
+	
 	/**
 	 * prints out the vector
 	 */
@@ -40,7 +41,6 @@ abstract class Vectorf extends Matrixf {
 		}
 		
 		System.out.println();
-		
 	}
 	
 }

@@ -1,0 +1,19 @@
+Every vertex shader has to have the following variables:
+
+
+Every fragment shader has to have the following variables:
+
+struct Material {
+	vec3 emission;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+
+
+mat4 modelMatrix;
+mat4 viewMatrix;
+mat4 projectionMatrix;
+
+mat4 mvpMatrix;

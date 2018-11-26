@@ -1,14 +1,25 @@
 package assets.textures;
 
-
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
+<<<<<<< HEAD
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+=======
+>>>>>>> master
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
+import assets.GLTargetObject;
 
+
+public abstract class Texture extends GLTargetObject {
+
+<<<<<<< HEAD
+=======
 public abstract class Texture {
 	
+>>>>>>> master
 	//Linear filtering
 	public static final int LINEAR = GL_LINEAR;
 	
@@ -24,12 +35,24 @@ public abstract class Texture {
 	//Clamp mode - clamp the texture to the border.
 	public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
 	
+<<<<<<< HEAD
+	
+	//The number of mipmaplevels
+	private int mipMapLevels = 1;
+	
+	//The width and height of the texture
+	private int width, height;
+=======
 
 	//The opengl ID of this texture
 	private final int ID;
+>>>>>>> master
 	
-	//The type of the texture
-	private final int TYPE;
+	//the filter mode
+	private int filter = LINEAR;
+	
+	//The wrap mode
+	private int wrapMode = CLAMP_TO_EDGE;
 	
 	//The number of mipmaplevels
 	private int mipMapLevels = 1;
@@ -43,6 +66,10 @@ public abstract class Texture {
 	//The wrap mode
 	private int wrapMode = CLAMP_TO_EDGE;
 	
+<<<<<<< HEAD
+	public Texture(int type) {
+		super(glGenTextures(), type);
+=======
 	//storage set.
 	private boolean storageAllocated = false;
 	
@@ -53,8 +80,16 @@ public abstract class Texture {
 		this.width = width;
 		
 		this.height = height;
+>>>>>>> master
 		
-		this.TYPE = type;
+	}
+	
+	
+	public Texture(int type, int width, int height) {
+		super(glGenTextures(), type);
+		
+		this.width = width;
+		this.height = height;
 	}
 	
 	
@@ -88,6 +123,13 @@ public abstract class Texture {
 		
 		this.unbind();
 		
+<<<<<<< HEAD
+	}
+	
+	
+	public int getWrapMode() {
+		return wrapMode;
+=======
 	}
 	
 	
@@ -143,26 +185,88 @@ public abstract class Texture {
 
 	public void bind() {
 		glBindTexture(TYPE, ID);
+>>>>>>> master
 	}
 	
 	
+	public void generateMipMapLevels() {
+		glGenerateMipmap(getType());
+	}
+	
+	
+	public void setMipMapLevels(int mipmaplevels) {
+		this.mipMapLevels = mipmaplevels;
+	}
+	
+	
+	public int getMipMapLevels() {
+		return mipMapLevels;
+	}
+	
+	
+	public int getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+
+	public int getHeight() {
+		return height;
+	}
+
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	
+	/**
+	 * 
+	 * Bind this texture to a specific texture unit.
+	 * 
+	 * @param texUnit
+	 */
+	public void bind(int texUnit) {
+		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
+			glActiveTexture(texUnit);
+			this.bind();
+		} else {
+			System.err.println("Cannot bind texture " + getID() + " to texture unit " + 
+							   	texUnit + " as it exceeds Opengl's limit.");
+		}
+	}
+	
+	
+	public void unbind(int texUnit) {
+		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
+			glActiveTexture(texUnit);
+			this.unbind();
+		} else {
+			System.err.println("Cannot unbind texture " + getID() + " from texture unit " + 
+								texUnit + " as it exceeds Opengl's limit.");
+		}
+	}
+	
+	
+	@Override
+	public void bind() {
+		glBindTexture(getType(), getID());		
+	}
+
+
+	@Override
 	public void unbind() {
-		glBindTexture(TYPE, 0);
+		glBindTexture(getType(), 0);		
 	}
-	
-	
+
+
+	@Override
 	public void delete() {
-		glDeleteTextures(ID);
-	}
-	
-	
-	public int getType() {
-		return TYPE;
-	}
-	
-	
-	public int getID() {
-		return ID;
+		glDeleteTextures(getID());	
 	}
 
 }

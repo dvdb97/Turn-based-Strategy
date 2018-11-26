@@ -1,11 +1,17 @@
 package math.matrices;
 
+import math.matrices.advanced.Determinant;
+import math.matrices.advanced.MatrixInversion44f;
 import math.vectors.Vector4f;
 
 public class Matrix44f extends Matrixf {
 	
 	private final static int N = 4;
 	private final static int LENGTH = N*N;
+	
+	
+	public static final Matrix44f IDENTITY = new Matrix44f();
+		
 	
 	//----------------------------- constructor ---------------------
 	
@@ -78,13 +84,22 @@ public class Matrix44f extends Matrixf {
 	}
 	
 	/**
-	 * creates an 3x3 identity matrix
+	 * creates an 4x4 identity matrix
 	 */
 	public Matrix44f() {
 		
 		super(LENGTH);
 		
 		setIdentity();
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns a zero matrix.
+	 */
+	public static Matrix44f zero() {
+		return new Matrix44f(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
 	}
 	
 	
@@ -187,7 +202,40 @@ public class Matrix44f extends Matrixf {
 		return this;
 	}
 	
+	
+	/**
+	 * 
+	 * @return Returns true if the matrix is invertible.
+	 */
+	public boolean isInvertible() {
+		return Determinant.getDeterminant(this) != 0f;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the inverse of this matrix. This function will also 
+	 * return something if the matrix isn't invertible.
+	 */
+	public Matrix44f inverse() {
+		return MatrixInversion44f.generateMultiplicativeInverse(this);
+	}
+	
 	//---------------------- other methods -------------------
+	
+	
+	/**
+	 * 
+	 * Converts this Matrix44f to a Matrix33f.
+	 * 
+	 * @return Returns a new Matrix33f.
+	 */
+	public Matrix33f toMatrix33f() {
+		return new Matrix33f(this.getA1(), this.getA2(), this.getA3(), 
+							 this.getB1(), this.getB2(), this.getB3(), 
+							 this.getC1(), this.getC2(), this.getC3());
+	}
+	
 	
 	/**
 	 * prints out the matrix
@@ -207,6 +255,26 @@ public class Matrix44f extends Matrixf {
 		
 	}
 	
+	
+	@Override
+	public String toString() {
+		
+		float[] a = this.toArray();
+		String output = "";
+		
+		for (int row=0; row<N; row++) {
+			for (int col=0; col<N; col++) {
+				
+				output += a[row+N*col] + "   ";
+				
+			}
+			output += "\n";
+		}
+		
+		return output;
+	}
+
+
 	/**
 	 * @return returns a deep copy of this matrix
 	 */
@@ -349,6 +417,25 @@ public class Matrix44f extends Matrixf {
 	//-----------------------------------
 	private Vector4f getCol(int c) {
 		return new Vector4f(get(0+c*N), get(1+c*N), get(2+c*N), get(3+c*N));
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if(getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Matrix44f mat = (Matrix44f)obj;
+		
+		for (int i = 0; i < 16; i++) {
+			if(this.get(i) != mat.get(i)) {
+				return false;
+			}
+		}
+		
+		return true;
+		
 	}
 	
 }

@@ -1,23 +1,27 @@
 package models.worldModels;
 
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
-import graphics.Camera;
+import assets.meshes.geometry.VertexLegacy;
+import assets.shaders.ShaderManager;
+import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
-import graphics.matrices.TransformationMatrix;
-import graphics.shaders.ShaderManager;
-import interaction.CameraOperator;
+import interaction.PlayerCamera;
 import interaction.TileSelecter;
+import math.matrices.Matrix44f;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
+import rendering.matrices.transformation.TransformationMatrix;
+import testing.TextureRenderer;
 import visualize.CoordinateSystem;
 import world.WorldManager;
+
+import static math.Trigonometry.*;
 
 public class BoardModels {
 	
@@ -42,7 +46,7 @@ public class BoardModels {
 	//others
 	private static Material mapMaterial;
 	
-	private static LightSource sun;
+	private static DirectionalLight sun;
 	private static Vector3f ambientLight;
 	
 	private static Color hoveredTileColor;
@@ -83,14 +87,27 @@ public class BoardModels {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		mapMaterial = new Material(new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.1f, 0.1f, 0.1f), 1f);
+		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
-		sun = new LightSource(new Vector3f(-0.3f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new DirectionalLight(new Vector3f(0.5f, 0.5f, 0.3f));
+		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
 		
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
+		
+	}
+
+	private void createVertexArray() {
+		
+		Vector3f[] positions = terrain.getPosArray();
+		ColorFunction terrainCol = new TerrainCol();
+		
+		vertices = new VertexLegacy[positions.length];
+		for (int v=0; v<vertices.length; v++) {
+			vertices[v] = new VertexLegacy(positions[v], terrainCol.color(0,0,positions[v].getC()));
+		}
 		
 	}
 	
@@ -114,27 +131,18 @@ public class BoardModels {
 	
 	//*********************************
 	
-	private void renderTerrain() {
-		
-		ShaderManager.useLightShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
-		
-		RenderEngine.draw(terrain, null);
-		
-		ShaderManager.disableLightShader();
-		
-	}
 	
 	private void renderBordersSeaCOS() {
 		
 		tileBorders.displayAll();
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), false, null);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
-		RenderEngine.draw(sea, null);
+		RenderEngine.render(sea, null);
 		
-		RenderEngine.draw(coSystem, null);
+		RenderEngine.render(coSystem, null);
 		
 		RenderEngine.draw(hex, null);
 		
@@ -146,9 +154,9 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
 		ShaderManager.disableShader();
 		
@@ -158,9 +166,9 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor);
+		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
 		
-		RenderEngine.draw(tileBorders, null);
+		RenderEngine.render(tileBorders, null);
 		
 		ShaderManager.disableShader();
 		
@@ -169,6 +177,24 @@ public class BoardModels {
 	
 	
 	//**************************** get *************************************
+	
+	/**
+	 * @return an array containing all terrains vertices
+	 */
+	public VertexLegacy[] getVertices() {
+		
+		return vertices;
+		
+	}
+	
+	/**
+	 * @return an array containing the vertex-array-indices of all tile's center
+	 */
+	public int[] getTileCenters() {
+		
+		return tileBorders.getHexCenterIndices();
+		
+	}
 	
 	/**
 	 * @return the game board's length in tiles

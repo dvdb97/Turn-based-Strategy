@@ -5,8 +5,12 @@ import fontRendering.font.FontTexture;
 public class TimesNewRoman extends FontTexture {
 
 	public TimesNewRoman() {
+<<<<<<< HEAD:src/gui/font/TimesNewRoman.java
+		super("res/fonts/Font.png", 10, 10);
+=======
 		super("res/fonts/Font.png", 1000, 1000, 10, 10);
 		// TODO Auto-generated constructor stub
+>>>>>>> master:gui_lib/fontRendering/font/classic/TimesNewRoman.java
 		
 		char[] correspondingChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

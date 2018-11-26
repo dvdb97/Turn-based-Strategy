@@ -1,6 +1,6 @@
 package fontRendering.rendering;
 
-import assets.meshes.geometry.Vertex;
+import assets.meshes.geometry.VertexLegacy;
 import assets.models.Element_Model;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -26,8 +26,13 @@ public class TextModel extends Element_Model {
 	}
 	
 	
+<<<<<<< HEAD
+	public TextModel(VertexLegacy[] vertices, int[] indexArray, FontTexture font) {
+		this(font);
+=======
 	public TextModel(String text, Vertex[] vertices, int[] indexArray) {
 		this(text);
+>>>>>>> master
 		
 		this.setData(vertices, indexArray);
 	}

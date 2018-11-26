@@ -18,6 +18,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Window {
 	
+	public static Window main;
+	
 	//****************************** screen information ******************************
 	
 	private int screenWidth;
@@ -48,6 +50,9 @@ public class Window {
 	
 	
 	public Window() {
+		
+		if (main == null)
+			main = this;
 		
 		GLFWErrorCallback.createPrint(System.err).set();
 		
@@ -152,6 +157,9 @@ public class Window {
 	}
 	
 	
+	/** 
+	 * @return Returns the width of the framebuffer in pixel.
+	 */
 	public int getFrameBufferWidth() {		
 		glfwGetFramebufferSize(windowID, width, height);
 		
@@ -159,6 +167,9 @@ public class Window {
 	}
 	
 	
+	/**
+	 * @return Returns the height of the framebuffer in pixel.
+	 */
 	public int getFrameBufferHeight() {
 		glfwGetFramebufferSize(windowID, width, height);
 		
@@ -201,8 +212,8 @@ public class Window {
 	
 	//****************************** Getters & Setters ******************************
 	
-	//TODO: calculation may be incorrect
-	public float getProportions() {
+	
+	public float getAspectRatio() {
 		return (float)windowWidth / (float)windowHeight;
 	}
 	
