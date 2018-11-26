@@ -1,5 +1,6 @@
 package stbFont;
 
+import assets.meshes.geometry.Color;
 import assets.textures.Texture2D;
 import core.Application;
 import dataType.GUIElementMatrix;
@@ -30,7 +31,7 @@ public class TTFBox extends Element {
 	private int pixelHeight;
 	
 	
-	public TTFBox(float xShift, float yShift, float reqHeight, String text) {
+	public TTFBox(float xShift, float yShift, float reqHeight, String text, Color color) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
 		setUpSTBFontinfo();
@@ -60,7 +61,7 @@ public class TTFBox extends Element {
 			int[] ix0 = new int[1], ix1 = new int[1];
 			STBTruetype.stbtt_GetCodepointBitmapBox(fontInfo, ' ', scale, scale, ix0, null, ix1, null);
 			
-			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap();
+			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap(color);
 			
 			font = new Texture2D(coloredBitmap, bitmaps[0].getWidth(), pixelHeight);
 			

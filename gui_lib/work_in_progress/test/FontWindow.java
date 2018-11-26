@@ -6,6 +6,8 @@ import dataType.GUIElementMatrix;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 
+import static utils.ColorPalette.*;
+
 public class FontWindow extends GUIWindow {
 	
 	private TTFBox text;
@@ -13,7 +15,7 @@ public class FontWindow extends GUIWindow {
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, transformationMatrix);
 		
-		text = new TTFBox(0.1f, 0, 0.07f, "A \n B");
+		text = new TTFBox(0.1f, 0, 0.07f, "Lorem ipsum!", BLACK);
 		children.add(text);
 		
 	}

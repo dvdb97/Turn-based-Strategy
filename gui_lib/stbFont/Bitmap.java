@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
+import assets.meshes.geometry.Color;
 import utils.CustomBufferUtils;
 
 public class Bitmap extends ArrayList<Byte>{
@@ -91,14 +92,14 @@ public class Bitmap extends ArrayList<Byte>{
 	 * creates a ByteBuffer, with RGBA for every pixel
 	 * @return a ByteBuffer-bitmap
 	 */
-	public ByteBuffer getColoredBufferBitmap() {
+	public ByteBuffer getColoredBufferBitmap(Color color) {
 		
 		ByteBuffer bufferBitmap = BufferUtils.createByteBuffer(size()*4);
 		for (int i=0; i<bufferBitmap.capacity();) {
+			bufferBitmap.put((byte)color.getRedInt());i++;
+			bufferBitmap.put((byte)color.getGreenInt());i++;
+			bufferBitmap.put((byte)color.getBlueInt());i++;
 			bufferBitmap.put(this.get(i/4));i++;
-			bufferBitmap.put((byte)0);i++;
-			bufferBitmap.put((byte)0);i++;
-			bufferBitmap.put((byte)255);i++;
 		}
 		bufferBitmap.flip();
 		return bufferBitmap;
