@@ -5,6 +5,7 @@ import core.Application;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
 import rendering.shapes.GUIQuad;
+import utils.CustomBufferUtils;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTFontinfo;
@@ -23,7 +25,9 @@ public class TTFBox extends Element {
 	private Texture2D font;
 	private STBTTFontinfo fontInfo;
 	private int[] width = new int[1], height = new int[1];
+	private int[] ascent = new int[1], descent = new int[1], lineGap = new int[1];
 	private float scale;
+	private int pixelHeight;
 	
 	public TTFBox(float xShift, float yShift, float reqHeight, String text) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
@@ -34,33 +38,46 @@ public class TTFBox extends Element {
 			initFont();
 			
 			scale = scaleForReqHeight(reqHeight);
+			STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
+			
 			
 			ByteBuffer[] bitmaps = new ByteBuffer[text.length()];
 			for (int i=0; i<text.length(); i++) {
 				bitmaps[i] = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
+				bitmaps[i] = completeBitmap(bitmaps[i]);
 			}
 			
 			
 			
 			ByteBuffer coloredBitmap = getColoredBitmap(bitmaps[0]);
-			font = new Texture2D(coloredBitmap, width[0], height[0]);
+			font = new Texture2D(coloredBitmap, width[0], pixelHeight);
 			
-			elementMatrix.setXStretch(reqHeight*width[0]/height[0]*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setXStretch(reqHeight*width[0]/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
 			
 		} catch (IOException ioe) {
 			
 		}
 		
 	}
-
-
+	
+	private ByteBuffer completeBitmap(ByteBuffer bitmap) {
+		
+		ArrayList<Byte> list = Utils.bufferToList(bitmap);
+		int difference = pixelHeight - height[0];
+		for (int w=0; w<width[0]; w++) {
+			list.addAll(w*(pixelHeight), Utils.byteZeros(difference));
+		}
+		return CustomBufferUtils.createByteBuffer(list);
+	}
+	
+	
 	private void setUpSTBFontinfo() {
 		ByteBuffer container = BufferUtils.createByteBuffer(160);
 		fontInfo = new STBTTFontinfo(container);
 	}
 	
 	private float scaleForReqHeight(float reqHeight) {
-		float pixelHeight = Utils.getHeightInPx(reqHeight);
+		pixelHeight = Utils.getHeightInPx(reqHeight);
 		return STBTruetype.stbtt_ScaleForPixelHeight(fontInfo, pixelHeight);
 	}
 

@@ -37,6 +37,7 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
+	
 	/**
 	 * creates and flips a IntBuffer which contains all the elements of array
 	 * @param array int array which elements will be put in the buffer
@@ -94,4 +95,17 @@ public class CustomBufferUtils {
 		return buffer;
 		
 	}
+	
+	public static ByteBuffer createByteBuffer(ArrayList<Byte> list) {
+		
+		ByteBuffer buffer = BufferUtils.createByteBuffer(list.size());
+		for (Byte b : list) {
+			buffer.put((byte)b);
+		}
+		buffer.flip();
+		
+		return buffer;
+		
+	}
+	
 }
