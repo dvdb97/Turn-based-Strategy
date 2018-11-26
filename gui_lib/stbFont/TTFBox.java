@@ -28,6 +28,8 @@ public class TTFBox extends Element {
 	private int[] ascent = new int[1], descent = new int[1], lineGap = new int[1];
 	private float scale;
 	private int pixelHeight;
+	private int[] widths;
+	
 	
 	public TTFBox(float xShift, float yShift, float reqHeight, String text) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
@@ -42,17 +44,19 @@ public class TTFBox extends Element {
 			
 			
 			ByteBuffer[] bitmaps = new ByteBuffer[text.length()];
+			widths = new int[text.length()];
 			for (int i=0; i<text.length(); i++) {
 				bitmaps[i] = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
-				bitmaps[i] = completeBitmap(bitmaps[i]);
+				bitmaps[i] = completeGlyphBitmap(bitmaps[i]);
+				widths[i] = width[0];
 			}
 			
+			ByteBuffer stringBitmap = addGlyph(bitmaps[0], bitmaps[1]);
 			
+			ByteBuffer coloredBitmap = getColoredBitmap(stringBitmap);
+			font = new Texture2D(coloredBitmap, widths[0]+widths[1], pixelHeight);
 			
-			ByteBuffer coloredBitmap = getColoredBitmap(bitmaps[0]);
-			font = new Texture2D(coloredBitmap, width[0], pixelHeight);
-			
-			elementMatrix.setXStretch(reqHeight*width[0]/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setXStretch(reqHeight*(widths[0]+widths[1])/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
 			
 		} catch (IOException ioe) {
 			
@@ -60,17 +64,24 @@ public class TTFBox extends Element {
 		
 	}
 	
-	private ByteBuffer completeBitmap(ByteBuffer bitmap) {
+	private ByteBuffer completeGlyphBitmap(ByteBuffer bitmap) {
 		
 		ArrayList<Byte> list = Utils.bufferToList(bitmap);
-		int difference = pixelHeight - height[0];
-	//	for (int w=0; w<width[0]; w++) {
-	//		list.addAll(w*(pixelHeight), Utils.byteZeros(difference));
-	//	}
-		
-		list.addAll(0, Utils.byteZeros(width[0]*difference));
-		
+		list.addAll(0, Utils.byteZeros(width[0]*(pixelHeight - height[0])));
 		return CustomBufferUtils.createByteBuffer(list);
+	}
+	
+	private ByteBuffer addGlyph(ByteBuffer bitmap1, ByteBuffer bitmap2) {
+		
+		ArrayList<Byte> list1 = Utils.bufferToList(bitmap1);
+		ArrayList<Byte> list2 = Utils.bufferToList(bitmap2);
+		
+		for (int row=0; row<pixelHeight; row++) {
+			list1.addAll(row*(widths[0]+widths[1])+widths[0], list2.subList(row*widths[1], (row+1)*widths[1]));
+		}
+		
+		return CustomBufferUtils.createByteBuffer(list1);
+		
 	}
 	
 	
