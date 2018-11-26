@@ -9,7 +9,6 @@ import assets.Deletable;
 import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.material.Material;
-import assets.models.VertexArrayObject;
 import assets.textures.Texture;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;

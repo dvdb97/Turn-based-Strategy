@@ -1,8 +1,7 @@
-package assets.models;
+package assets.meshes;
 
 import assets.GLObject;
 import assets.buffers.VertexBuffer;
-import assets.meshes.MeshConst.BufferLayout;
 import assets.meshes.geometry.Vertex;
 import assets.buffers.Buffer;
 
