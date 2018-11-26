@@ -28,7 +28,6 @@ public class TTFBox extends Element {
 	private int[] ascent = new int[1], descent = new int[1], lineGap = new int[1];
 	private float scale;
 	private int pixelHeight;
-	private int[] widths;
 	
 	
 	public TTFBox(float xShift, float yShift, float reqHeight, String text) {
@@ -43,15 +42,14 @@ public class TTFBox extends Element {
 			STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
 			
 			Bitmap[] bitmaps = new Bitmap[text.length()];
-			widths = new int[text.length()];
 			for (int i=0; i<text.length(); i++) {
 				ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
 				bitmaps[i] = new Bitmap(b, width[0], height[0]);
-				bitmaps[i].completeBitmap(pixelHeight);
-				widths[i] = width[0];
+				int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
+				STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
+				bitmaps[i].fillupBitmap(pixelHeight);
+				bitmaps[0].addGlyph(bitmaps[i]);
 			}
-			
-			bitmaps[0].addGlyph(bitmaps[1]);
 			
 			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap();
 			
@@ -73,27 +71,14 @@ public class TTFBox extends Element {
 	private float scaleForReqHeight(float reqHeight) {
 		pixelHeight = Utils.getHeightInPx(reqHeight);
 		return STBTruetype.stbtt_ScaleForPixelHeight(fontInfo, pixelHeight);
-	}
-
-	private ByteBuffer getColoredBitmap(ByteBuffer bitmap) {
-		ByteBuffer newBitmap = BufferUtils.createByteBuffer(bitmap.limit()*4);
-		for (int i=0; i<newBitmap.capacity();) {
-			newBitmap.put(bitmap.get());i++;
-			newBitmap.put((byte)0);i++;
-			newBitmap.put((byte)0);i++;
-			newBitmap.put((byte)255);i++;
-		}
-		newBitmap.flip();
-		return newBitmap;
-	}
-	
+	}	
 	
 	private void initFont() throws IOException{
 		
 		DataInputStream data_in = new DataInputStream(
 				new BufferedInputStream(
 						new FileInputStream(
-								new File("res/fonts/ARIALBD.TTF"))));
+								new File("res/fonts/FreeMono.ttf"))));
 		ByteBuffer fontData = BufferUtils.createByteBuffer(1 << 20);
 		
 		while(true) {

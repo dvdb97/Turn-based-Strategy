@@ -9,9 +9,22 @@ import utils.CustomBufferUtils;
 
 public class Bitmap extends ArrayList<Byte>{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7104940190213034292L;
+	
 	private int width;
 	private int height;
 	
+	/**
+	 * creates Bitmap.
+	 * All needed parameters are returned by {@link org.lwjgl.stb.STBTruetype#stbtt_GetCodepointBitmap stbtt_GetCodepointBitmap}.
+	 * 
+	 * @param byteBuffer the bitmap, but as a ByteBuffer
+	 * @param width width in pixels
+	 * @param height height in pixels
+	 */
 	public Bitmap(ByteBuffer byteBuffer, int width, int height) {
 		super(byteBuffer.limit());
 		for (int i=0; i<byteBuffer.limit(); i++) {
@@ -23,7 +36,15 @@ public class Bitmap extends ArrayList<Byte>{
 		
 	}
 	
+	/**
+	 * combines the bitmaps, such that the added glyph is next to this glyph, right handed
+	 * @param bitmap bitmap of the glyph you want to add
+	 */
 	public void addGlyph(Bitmap bitmap) {
+		
+		if(bitmap == this) {
+			return;
+		}
 		
 		if (this.height != bitmap.height) {
 			throw new IllegalArgumentException("the heights of the bitmaps do not match: " + this.height + ", " + bitmap.height);
@@ -35,11 +56,19 @@ public class Bitmap extends ArrayList<Byte>{
 		width += bitmap.width;
 	}
 	
-	public void completeBitmap(int pixelHeight) {
+	/**
+	 * fills up the bitmap with zeros, such that the new height is equal to "pixelHeight"
+	 * @param pixelHeight height of the new bitmap in pixels
+	 */
+	public void fillupBitmap(int pixelHeight) {
 		addAll(0, Utils.byteZeros(width*(pixelHeight - height)));
 		height = pixelHeight;
 	}
-
+	
+	/**
+	 * creates a ByteBuffer, with RGBA for every pixel
+	 * @return a ByteBuffer-bitmap
+	 */
 	public ByteBuffer getColoredBufferBitmap() {
 		
 		ByteBuffer bufferBitmap = BufferUtils.createByteBuffer(size()*4);
@@ -54,7 +83,10 @@ public class Bitmap extends ArrayList<Byte>{
 	}
 
 	
-	
+	/**
+	 * 
+	 * @return a ByteBuffer representing this bitmap
+	 */
 	public ByteBuffer getByteBuffer() {
 		return CustomBufferUtils.createByteBuffer(this);
 	}
