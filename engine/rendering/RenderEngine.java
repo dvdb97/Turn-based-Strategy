@@ -13,14 +13,9 @@ import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
-<<<<<<< HEAD
 import org.lwjgl.BufferUtils;
-
-=======
-import assets.models.abstractModels.Renderable;
 import assets.textures.ArrayTexture2D;
 import assets.textures.Texture2D;
->>>>>>> master
 import interaction.Window;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
@@ -120,33 +115,6 @@ public class RenderEngine {
 	}
 	
 	
-	public static void drawArrayTexturedModel(Renderable model, ArrayTexture2D texture) {
-		
-		if (texture != null) {
-			texture.bind();
-		}
-		
-
-		model.onDrawStart();
-		
-		model.activateAttributes();
-		
-		
-		model.render();
-		
-		
-		model.deactivateAttributes();
-		
-		model.onDrawStop();
-		
-		
-		if (texture != null) {
-			texture.unbind();
-		}
-		
-	}
-	
-	
 	public static void displayFPS() {
 		
 		double fps = 1.0 / (glfwGetTime() - timer);
@@ -208,11 +176,7 @@ public class RenderEngine {
 		depthTestEnabled = true;
 		
 		glEnable(GL_DEPTH_TEST);
-<<<<<<< HEAD
-		glDepthFunc(GL_LESS);
-=======
 		glDepthFunc(GL_LEQUAL);
->>>>>>> master
 	}
 	
 	

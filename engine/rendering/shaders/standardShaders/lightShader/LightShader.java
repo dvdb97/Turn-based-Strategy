@@ -1,11 +1,8 @@
 package rendering.shaders.standardShaders.lightShader;
 
 
-import java.util.LinkedList;
-
-import assets.light.LightSource;
+import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.material.StandardMaterial;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import rendering.shaders.ShaderProgram;
@@ -17,15 +14,6 @@ public class LightShader extends ShaderProgram {
 	//A constant for loading the files because I'm lazy to type it 4 times ¯\_(ツ)_/¯
 	private static final String path = "Shaders/LightShaders/";
 
-	//The list of LightSources to be rendered next render call
-	private LinkedList<LightSource> lightSources = new LinkedList<LightSource>();
-	
-	private LightSource lightSource = new LightSource(new Vector3f(0.0f, 0.0f, -1.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-	
-	
-	private StandardMaterial standardMaterial = new StandardMaterial();
-	
-	
 	private LightShader(String vertPath, String fragPath) {
 		super(vertPath, fragPath);
 	}
@@ -52,34 +40,6 @@ public class LightShader extends ShaderProgram {
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
 		
 		return new LightShader(vertSource, fragSource);
-	}
-	
-	
-	
-	public void prepareForRendering(Matrix44f modelMatrix, Matrix44f viewMatrix, Matrix44f projMatrix, Vector3f cameraPosition, LightSource light, Vector3f ambient, Material mat) {
-		
-		this.setModelMatrix(modelMatrix);
-		this.setViewMatrix(viewMatrix);
-		this.setProjectionMatrix(projMatrix);
-		
-		this.setCameraPosition(cameraPosition);
-		
-		if (light == null) {
-			this.setLightSource(this.lightSource);
-		} else {
-			this.lightSource = light;
-		
-			this.setLightSource(light);
-		}
-		
-		setAmbientLight(ambient);
-		
-		
-		if (mat == null) {
-			this.setMaterial(standardMaterial);
-		} else{
-			this.setMaterial(mat);	
-		}		
 	}
 	
 	
@@ -136,9 +96,9 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
-	public void setLightSource(LightSource ls) {
+	public void setLightSource(DirectionalLight ls) {
 		
-		this.setUniformMatrix3fv("light.direction", ls.getDirection().toArray());
+		this.setUniformMatrix3fv("light.direction", ls.getLightDirection().toArray());
 		
 		this.setUniformMatrix3fv("light.color", ls.getColor().toArray());
 		

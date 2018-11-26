@@ -53,7 +53,6 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
-<<<<<<< HEAD
 	
 	public static IntBuffer createIntBuffer(List<Integer> list) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(list.size());
@@ -85,8 +84,6 @@ public class CustomBufferUtils {
 		return buffer;
 	}
 	
-	
-=======
 	public static IntBuffer createIntBuffer(int[][] array) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(array.length * array[0].length);
 
@@ -102,7 +99,6 @@ public class CustomBufferUtils {
 		
 	}
 	
->>>>>>> master
 	/**
 	 * 
 	 * creates and flips a FloatBuffer which contains all the elements of list

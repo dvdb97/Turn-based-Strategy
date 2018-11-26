@@ -1,21 +1,13 @@
 package assets.textures;
 
-import static org.lwjgl.opengl.GL11.*;
-<<<<<<< HEAD
-import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
-import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
-
 import java.nio.ByteBuffer;
 import assets.textures.utils.Image;
-=======
-import java.nio.ByteBuffer;
->>>>>>> master
 import assets.textures.utils.ImageLoader;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
 
 public class Texture2D extends Texture {	
-<<<<<<< HEAD
-	
 	
 	/**
 	 * Generates a 2D Texture without any of the properties specified
@@ -48,14 +40,7 @@ public class Texture2D extends Texture {
 		super(GL_TEXTURE_2D);
 		
 		this.setMipMapLevels(mipmapLevels);
-		
-=======
-
-	public Texture2D(String path, int width, int height) {
-		super(GL_TEXTURE_2D, width, height);
-		
->>>>>>> master
-		setImageData(path);
+		this.setImageData(path);
 	}
 	
 	
@@ -70,25 +55,13 @@ public class Texture2D extends Texture {
 	}
 	
 	
-<<<<<<< HEAD
-	public static Texture2D generateDepthTexture(int width, int height) {
-		
-		Texture2D texture = new Texture2D(width, height);
-		
-		texture.bind();
-		
-		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT32, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
-		
-		texture.setFilter(GL_NEAREST);
-		texture.setTextureWrap(GL_CLAMP_TO_EDGE);
-		
-		texture.unbind();
-		
-		return texture;
-		
-	}
-	
-	
+	/**
+	 * 
+	 * Loads a texture from an image file with the given
+	 * path.
+	 * 
+	 * @param path The path of the image file.
+	 */
 	public void setImageData(String path) {
 		bind();
 
@@ -107,21 +80,33 @@ public class Texture2D extends Texture {
 		this.setTextureWrap(this.getWrapMode());
 		
 		generateMipMapLevels();
-=======
-	public void setImageData(String path) {
-		bind();
-
-		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
-		
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-		
-		generateMipMapLevels();
-		
-		this.setFilter(this.getFilterMode());
-		this.setTextureWrap(this.getWrapMode());
->>>>>>> master
 		
 		unbind();
 	}
-
+	
+	
+	/**
+	 * 
+	 * Generates a texture that can be used as the depth component of
+	 * a framebuffer.
+	 * 
+	 * @param width The width of the depth texture.
+	 * @param height The height of the depth texture.
+	 * @return Returns an empty Texture2D as a depth texture.
+	 */
+	public static Texture2D generateDepthTexture(int width, int height) {
+		Texture2D texture = new Texture2D(width, height);
+		
+		texture.bind();
+		
+		glTexImage2D(texture.getType(), 0, GL_DEPTH_COMPONENT32, texture.getWidth(), texture.getHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
+		
+		texture.setFilter(Texture.NEAREST);
+		texture.setTextureWrap(Texture.CLAMP_TO_EDGE);
+		
+		texture.unbind();
+		
+		return texture;
+	}
+	
 }

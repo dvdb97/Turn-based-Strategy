@@ -11,7 +11,6 @@ import assets.Bindable;
 import assets.IBindable;
 import assets.cameras.Camera;
 import assets.material.Material;
-import assets.meshes.geometry.Vertex;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;

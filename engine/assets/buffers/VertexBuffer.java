@@ -3,15 +3,6 @@ package assets.buffers;
 import static org.lwjgl.opengl.GL15.*;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.lwjgl.BufferUtils;
-
-import assets.meshes.geometry.Vertex;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class VertexBuffer extends Buffer {
 	
