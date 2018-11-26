@@ -53,7 +53,8 @@ public class TTFBox extends Element {
 			
 			bitmaps[0].addGlyph(bitmaps[1]);
 			
-			ByteBuffer coloredBitmap = getColoredBitmap(bitmaps[0].getByteBuffer());
+			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap();
+			
 			font = new Texture2D(coloredBitmap, bitmaps[0].getWidth(), pixelHeight);
 			
 			elementMatrix.setXStretch(reqHeight*(bitmaps[0].getWidth())/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
@@ -62,28 +63,7 @@ public class TTFBox extends Element {
 			
 		}
 		
-	}
-	
-	private ByteBuffer completeGlyphBitmap(ByteBuffer bitmap) {
-		
-		ArrayList<Byte> list = Utils.bufferToList(bitmap);
-		list.addAll(0, Utils.byteZeros(width[0]*(pixelHeight - height[0])));
-		return CustomBufferUtils.createByteBuffer(list);
-	}
-	
-	private ByteBuffer addGlyph(ByteBuffer bitmap1, ByteBuffer bitmap2) {
-		
-		ArrayList<Byte> list1 = Utils.bufferToList(bitmap1);
-		ArrayList<Byte> list2 = Utils.bufferToList(bitmap2);
-		
-		for (int row=0; row<pixelHeight; row++) {
-			list1.addAll(row*(widths[0]+widths[1])+widths[0], list2.subList(row*widths[1], (row+1)*widths[1]));
-		}
-		
-		return CustomBufferUtils.createByteBuffer(list1);
-		
-	}
-	
+	}	
 	
 	private void setUpSTBFontinfo() {
 		ByteBuffer container = BufferUtils.createByteBuffer(160);
