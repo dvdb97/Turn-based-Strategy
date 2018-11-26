@@ -2,22 +2,20 @@ package models.worldModels;
 
 import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.meshes.fileLoaders.deprecated.OBJ_FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.VertexLegacy;
-import assets.models.Illuminated_Model;
 import assets.shaders.ShaderManager;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import math.matrices.Matrix44f;
+import mapModes.MapMode;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
-import rendering.lightRenderer.LightRenderer;
 import rendering.matrices.transformation.TransformationMatrix;
 import testing.TextureRenderer;
 import visualize.CoordinateSystem;
@@ -40,7 +38,7 @@ public class BoardModels {
 	
 	private CoordinateSystem coSystem;
 	
-	private Illuminated_Model shadowTest;
+	private HexagonGrid hex;
 	
 	//matrices
 	private TransformationMatrix boardModelMatrix;
@@ -55,8 +53,6 @@ public class BoardModels {
 	
 	private static Color selectedTileColor;
 	
-	private VertexLegacy[] vertices;
-	
 	//***************************** constructor ********************************
 	
 	/**
@@ -67,19 +63,19 @@ public class BoardModels {
 	 * @param coSystem
 	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
-			CoordinateSystem coSystem) {
+			CoordinateSystem coSystem, HexagonGrid hex) {
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.coSystem = coSystem;
 		
+		this.hex = hex;
+		
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
 		
 		hardCode();
-		
-		createVertexArray();
 		
 		boardModelMatrix = new TransformationMatrix();
 		
@@ -101,12 +97,6 @@ public class BoardModels {
 		
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
-		//TODO: Temp
-		shadowTest = OBJ_FileLoader.loadOBJ_File("res/models/Suzanne.obj", mapMaterial, new Color(1.0f, 0.0f, 0.0f, 1.0f));
-		shadowTest.setTransformationMatrix(boardModelMatrix);
-		shadowTest.setMaterial(mapMaterial);
-		TextureRenderer.init();
-		
 	}
 
 	private void createVertexArray() {
@@ -120,8 +110,6 @@ public class BoardModels {
 		}
 		
 	}
-
-	
 	
 	
 	//***************************** render ********************************
@@ -133,22 +121,16 @@ public class BoardModels {
 		
 		renderTerrain();
 		
-		renderSelectedTile();
+		renderBordersSeaCOS();
 		
 		renderHoveredTile();
 		
-		renderBordersSeaCOS();
+		renderSelectedTile();
 		
 	}
 	
 	//*********************************
 	
-	
-	private void renderTerrain() {
-		
-		LightRenderer.render(shadowTest, boardModelMatrix, sun, ambientLight, PlayerCamera.getCamera(), true);
-		
-	}
 	
 	private void renderBordersSeaCOS() {
 		
@@ -161,6 +143,8 @@ public class BoardModels {
 		RenderEngine.render(sea, null);
 		
 		RenderEngine.render(coSystem, null);
+		
+		RenderEngine.draw(hex, null);
 		
 		ShaderManager.disableShader();
 		
@@ -224,6 +208,12 @@ public class BoardModels {
 	 */
 	public int getWidth() {
 		return widthInTiles;
+	}
+	
+	//**************************** set ***************************************
+	
+	public void setHexColor(MapMode mapMode) {
+		hex.setColor(mapMode);
 	}
 	
 }

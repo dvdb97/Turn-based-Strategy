@@ -1,6 +1,7 @@
 package gui.font;
 
-import fontRendering.texture.FontTexture;
+import fontRendering.font.classic.TimesNewRoman;
+import fontRendering.font.FontTexture;
 
 public class FontCollection {
 	

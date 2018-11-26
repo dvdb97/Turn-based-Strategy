@@ -2,6 +2,10 @@ package timer;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
+/*
+ * A class that manages cooldowns. When started it can be used to
+ * track whether the cooldown is still active or has finished.
+ */
 public class Cooldown {
 	
 	private double duration;
@@ -13,24 +17,41 @@ public class Cooldown {
 	
 	public Cooldown(double duration) {
 		
+		this.duration = duration;
+		
 	}
 	
 	
+	/**
+	 * Starts the cooldown if there is no other other cooldown running.
+	 */
 	public void start() {
-		this.active = false;
+		
+		if (!isFinished()) {
+			return;
+		}
+		
+		this.active = true;
 		
 		start = glfwGetTime();
 	}
 	
 	
+	/**
+	 * 
+	 * Returns whether the cooldown is already finished. 
+	 * 
+	 * @return Returns whether the cooldown is already finished.
+	 */
 	public boolean isFinished() {
 		
 		if (!active) {
 			return true;
 		}
 		
-		if (glfwGetTime() - start <= 0) {
+		if (glfwGetTime() - start >= duration) {
 			active = false;
+			
 			return true;
 		}
 		
@@ -44,8 +65,8 @@ public class Cooldown {
 	}
 	
 	
-	public boolean isActive() {
-		return active;
+	public double getDuration() {
+		return duration;
 	}
 	
 }

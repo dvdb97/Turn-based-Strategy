@@ -4,11 +4,14 @@ import static org.lwjgl.opengl.GL30.GL_TEXTURE_2D_ARRAY;
 
 public class ArrayTexture2D extends Texture3D {
 
+<<<<<<< HEAD
 	public ArrayTexture2D() {
 		super(GL_TEXTURE_2D_ARRAY);
 	}
 	
 	
+=======
+>>>>>>> master
 	public ArrayTexture2D(int width, int height, int depth) {
 		super(GL_TEXTURE_2D_ARRAY, width, height, depth);
 	}
@@ -20,4 +23,8 @@ public class ArrayTexture2D extends Texture3D {
 		this.setImageData(paths);
 	}
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

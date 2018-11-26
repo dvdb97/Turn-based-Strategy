@@ -4,7 +4,10 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
+<<<<<<< HEAD
 import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+=======
+>>>>>>> master
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 import assets.GLTargetObject;
@@ -12,6 +15,11 @@ import assets.GLTargetObject;
 
 public abstract class Texture extends GLTargetObject {
 
+<<<<<<< HEAD
+=======
+public abstract class Texture {
+	
+>>>>>>> master
 	//Linear filtering
 	public static final int LINEAR = GL_LINEAR;
 	
@@ -27,6 +35,24 @@ public abstract class Texture extends GLTargetObject {
 	//Clamp mode - clamp the texture to the border.
 	public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
 	
+<<<<<<< HEAD
+	
+	//The number of mipmaplevels
+	private int mipMapLevels = 1;
+	
+	//The width and height of the texture
+	private int width, height;
+=======
+
+	//The opengl ID of this texture
+	private final int ID;
+>>>>>>> master
+	
+	//the filter mode
+	private int filter = LINEAR;
+	
+	//The wrap mode
+	private int wrapMode = CLAMP_TO_EDGE;
 	
 	//The number of mipmaplevels
 	private int mipMapLevels = 1;
@@ -40,9 +66,21 @@ public abstract class Texture extends GLTargetObject {
 	//The wrap mode
 	private int wrapMode = CLAMP_TO_EDGE;
 	
-	
+<<<<<<< HEAD
 	public Texture(int type) {
 		super(glGenTextures(), type);
+=======
+	//storage set.
+	private boolean storageAllocated = false;
+	
+	
+	public Texture(int type, int width, int height) {
+		ID = glGenTextures();
+
+		this.width = width;
+		
+		this.height = height;
+>>>>>>> master
 		
 	}
 	
@@ -85,11 +123,69 @@ public abstract class Texture extends GLTargetObject {
 		
 		this.unbind();
 		
+<<<<<<< HEAD
 	}
 	
 	
 	public int getWrapMode() {
 		return wrapMode;
+=======
+	}
+	
+	
+	public int getWrapMode() {
+		return wrapMode;
+	}
+	
+	
+	public void generateMipMapLevels() {
+		glGenerateMipmap(getType());
+	}
+	
+	
+	protected boolean isStorageAllocated() {
+		return storageAllocated;
+	}
+	
+	
+	protected void setStorageAllocated(boolean value) {
+		this.storageAllocated = value;
+	}
+	
+	
+	public void setMipMapLevels(int mipmaplevels) {
+		this.mipMapLevels = mipmaplevels;
+	}
+	
+	
+	public int getMipMapLevels() {
+		return mipMapLevels;
+	}
+	
+	
+	public int getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+
+	public int getHeight() {
+		return height;
+	}
+
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+
+	public void bind() {
+		glBindTexture(TYPE, ID);
+>>>>>>> master
 	}
 	
 	

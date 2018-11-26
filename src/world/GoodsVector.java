@@ -1,6 +1,6 @@
 package world;
 
-class GoodsVector {
+public class GoodsVector {
 	
 	//--------------------- fields --------------------------------
 	private String[] nameOfGoods;
@@ -8,6 +8,7 @@ class GoodsVector {
 	private static final int NUM_GOODS = 1;
 	
 	//---------------------- constructor --------------------------
+	
 	/**
 	 * not yet implemented
 	 */

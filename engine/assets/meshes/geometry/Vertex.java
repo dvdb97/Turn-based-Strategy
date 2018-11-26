@@ -587,6 +587,7 @@ public class Vertex {
 	}
 	
 	
+<<<<<<< HEAD
 	public static int generateLayout(int posSize, int colorSize, int texPosSize, int normalSize) {
 		
 		int layout = 0;
@@ -603,6 +604,15 @@ public class Vertex {
 		
 		return layout;
 			
+=======
+	public void setNormalVector(Vector3f normalVec) {
+		this.normalVec = normalVec;
+	}
+	
+	//********************************************** print ******************************************
+	public void printColor() {
+		System.out.println(getRed() + " | " + getGreen() + " | " + getBlue() + " | " + getAlpha());
+>>>>>>> master
 	}
 
 

@@ -200,6 +200,15 @@ public class Vector3f extends Vectorf {
 		return new Vector4f(get(0), get(1), get(2), d);
 	}
 	
+	/**
+	 * Transforms this Vector3f to a Vector2f by removing the last element
+	 * 
+	 * @return Returns a Vector2f
+	 */
+	public Vector2f toVector2f() {
+		return new Vector2f(this.getA(), this.getB());
+	}
+	
 	
 	public void random() {
 		

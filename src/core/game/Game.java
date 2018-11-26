@@ -3,6 +3,7 @@ package core.game;
 import core.saves.GameScore;
 import gui.font.FontCollection;
 import interaction.PlayerCamera;
+import gui_core.GUIManager;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
 import rendering.RenderEngine;
@@ -92,7 +93,7 @@ public class Game {
 	
 	private void update() {
 		
-		
+		WorldManager.update();
 		
 	}
 	
@@ -100,7 +101,8 @@ public class Game {
 	private void render() {
 		
 		WorldManager.render();
-		
+		//Draw the gui
+		GUIManager.update();
 	}
 	
 	

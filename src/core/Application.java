@@ -3,6 +3,7 @@ package core;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
+import gui.test.ImplementedWindow;
 import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
@@ -12,6 +13,7 @@ import math.vectors.Vector4f;
 import rendering.RenderEngine;
 
 public class Application {
+	
 	
 	private static Window window;
 	
@@ -58,7 +60,10 @@ public class Application {
 	
 	private static void initGuiCore(StartParams params) {
 		
-		GUIManager.init();
+		GUIManager.init(window);
+		
+		//Disable this to remove the gui window from the screen
+		ImplementedWindow window = new ImplementedWindow(new Vector4f(0f, 1f, 0f, 1f), 0f, 0f, 0.8f, 0.8f);
 		
 	}
 	
@@ -67,7 +72,7 @@ public class Application {
 		
 		//TODO: Add a main menu
 		
-		Game game = new Game(1, 50, 50);
+		Game game = new Game(1, 75, 75);
 		
 		close();
 		

@@ -48,7 +48,6 @@ public class TileSelecter {
 		//TODO: move
 		if (MouseInputManager.isLeftMouseButtonPressed()) {
 			selectedTileIndex = hoveredTileIndex;
-			System.out.println(WorldManager.getFertility(selectedTileIndex));
 		}
 		
 	}

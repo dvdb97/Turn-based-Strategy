@@ -1,15 +1,20 @@
 package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
+<<<<<<< HEAD
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
 
 import java.nio.ByteBuffer;
 import assets.textures.utils.Image;
+=======
+import java.nio.ByteBuffer;
+>>>>>>> master
 import assets.textures.utils.ImageLoader;
 
 
 public class Texture2D extends Texture {	
+<<<<<<< HEAD
 	
 	
 	/**
@@ -44,6 +49,12 @@ public class Texture2D extends Texture {
 		
 		this.setMipMapLevels(mipmapLevels);
 		
+=======
+
+	public Texture2D(String path, int width, int height) {
+		super(GL_TEXTURE_2D, width, height);
+		
+>>>>>>> master
 		setImageData(path);
 	}
 	
@@ -59,6 +70,7 @@ public class Texture2D extends Texture {
 	}
 	
 	
+<<<<<<< HEAD
 	public static Texture2D generateDepthTexture(int width, int height) {
 		
 		Texture2D texture = new Texture2D(width, height);
@@ -95,6 +107,19 @@ public class Texture2D extends Texture {
 		this.setTextureWrap(this.getWrapMode());
 		
 		generateMipMapLevels();
+=======
+	public void setImageData(String path) {
+		bind();
+
+		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
+		
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		
+		generateMipMapLevels();
+		
+		this.setFilter(this.getFilterMode());
+		this.setTextureWrap(this.getWrapMode());
+>>>>>>> master
 		
 		unbind();
 	}

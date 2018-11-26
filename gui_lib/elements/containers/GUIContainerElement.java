@@ -1,55 +1,117 @@
 package elements.containers;
 
 import java.util.LinkedList;
-
-import assets.textures.Texture;
 import assets.textures.Texture2D;
-import elements.Clickable;
 import elements.GUIElement;
-import gui_core.GUIManager;
+import elements.GUIElementBase;
+import elements.containers.layouts.GUILayout;
+import elements.containers.layouts.GUIListLayout;
 import math.vectors.Vector4f;
 import rendering.shapes.GUIShape;
 
 public abstract class GUIContainerElement extends GUIElement {
 	
 	
-	private LinkedList<GUIElement> children;
+	private LinkedList<GUIElementBase> children;
+	
+	private GUILayout layout;
 	
 
 	public GUIContainerElement(GUIShape shape, Texture2D texture, float x, float y, float width, float height) {
 		super(shape, texture, x, y, width, height);
 		
-		children = new LinkedList<GUIElement>();
+		children = new LinkedList<GUIElementBase>();
+		
+		layout = new GUIListLayout();
 	}
 	
 	
 	public GUIContainerElement(GUIShape shape, Vector4f color, float x, float y, float width, float height) {
 		super(shape, color, x, y, width, height);
 		
-		children = new LinkedList<GUIElement>();
+		children = new LinkedList<GUIElementBase>();
 		
+		layout = new GUIListLayout();
 	}
 	
 	
 	@Override
 	public void render() {
 		
+		if (!super.isVisible()) {
+			return;
+		}
+		
 		super.render();
 		
-		for (GUIElement element : children) {
+		for (GUIElementBase element : children) {
 			element.render();
+		}
+		
+	}
+	
+	
+	@Override
+	public void update() {
+		
+		super.update();
+		
+		for (GUIElementBase element : children) {
+			element.update();
 		}
 		
 	}
 
 
-	public void add(GUIElement element) {
+	@Override
+	public boolean processInput(float cursorX, float cursorY, boolean leftMouseButtonDown, boolean rightMouseButtonDown) {
+		
+		//Compute the local space coordinates of the cursor position
+		Vector4f vec = new Vector4f(cursorX, cursorY, 1f, 1f);
+		vec = this.getInvertedRenderingMatrix().times(vec);
+		
+		
+		if (this.getShape().isHit(vec.getA(), vec.getB())) {
+			
+			for (GUIElementBase child : children) {
+				
+				if (child.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
+					return true;
+				}
+				
+			}
+			
+			if (leftMouseButtonDown) {
+				
+				onClick();
+				
+			} else {
+				
+				onHover();
+				
+			}
+			
+			return true;
+			
+		} 
+		
+		return false;		
+		
+	}
+
+	
+	public void setLayout(GUILayout layout) {
+		this.layout = layout;
+	}
+	
+
+	public void add(GUIElementBase element) {
 		children.add(element);
 		element.setParent(this);
 	}
 	
 	
-	public void remove(GUIElement element) {
+	public void remove(GUIElementBase element) {
 		if (children.contains(element)) {
 			children.remove(element);
 		}
