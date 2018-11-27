@@ -69,13 +69,32 @@ public class Bitmap extends ArrayList<Byte>{
 		width += bitmap.width;
 	}
 	
+	public void addLine(Bitmap bitmap) {
+		if(bitmap == this) {
+			return;
+		}
+		
+		if (this.width < bitmap.width) {
+			this.addGlyph(new Bitmap(bitmap.width - width, height));
+		}
+		if (this.width > bitmap.width) {
+			bitmap.addGlyph(new Bitmap(width - bitmap.width, bitmap.height));
+		}
+		
+		addAll(bitmap);
+		height += bitmap.height;
+	}
+	
+	
 	/**
 	 * fills up the bitmap with zeros, such that the new height is equal to "pixelHeight"
 	 * @param pixelHeight height of the new bitmap in pixels
 	 */
 	public void fillupV(int pixelHeight, int spaceAbove) {
 		addAll(0, Utils.byteZeros(width*spaceAbove));
-		addAll((height+spaceAbove)*width, Utils.byteZeros((pixelHeight-height-spaceAbove)*width));
+		if (pixelHeight-height-spaceAbove >= 0) {
+			addAll((height+spaceAbove)*width, Utils.byteZeros((pixelHeight-height-spaceAbove)*width));
+		}
 		height = pixelHeight;
 	}
 	

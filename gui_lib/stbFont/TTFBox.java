@@ -30,11 +30,16 @@ public class TTFBox extends Element {
 	private float scale;
 	private int pixelHeight;
 	
-	
 	public TTFBox(float xShift, float yShift, float reqHeight, String text, Color color) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
 		setUpSTBFontinfo();
+		
+		ArrayList<String> lineStrings = prepare(text);
+		
+		for (String s : lineStrings) {
+			System.out.println(s);
+		}
 		
 		try {
 			initFont();
@@ -42,35 +47,64 @@ public class TTFBox extends Element {
 			scale = scaleForReqHeight(reqHeight);
 			STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
 			
-			Bitmap[] bitmaps = new Bitmap[text.length()];
-			for (int i=0; i<text.length(); i++) {
-				if (text.charAt(i) == ' ') {
-					bitmaps[i] = new Bitmap(pixelHeight/4, pixelHeight);
-				} else {
-					ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
-					bitmaps[i] = new Bitmap(b, width[0], height[0]);
-					int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
-					STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
-					int spaceAbove = (int)((ascent[0] - y1[0])*scale);
-					bitmaps[i].fillupV(pixelHeight, spaceAbove);
-					bitmaps[i].fillupH((int)(x0[0]*scale));
-				}
-				bitmaps[0].addGlyph(bitmaps[i]);
+			Bitmap bitmap = getLineBitmap(lineStrings.get(0));
+			for (int l=1; l<lineStrings.size(); l++) {
+				bitmap.addLine(getLineBitmap(lineStrings.get(l)));
 			}
 			
 			int[] ix0 = new int[1], ix1 = new int[1];
 			STBTruetype.stbtt_GetCodepointBitmapBox(fontInfo, ' ', scale, scale, ix0, null, ix1, null);
 			
-			ByteBuffer coloredBitmap = bitmaps[0].getColoredBufferBitmap(color);
+			ByteBuffer coloredBitmap = bitmap.getColoredBufferBitmap(color);
 			
-			font = new Texture2D(coloredBitmap, bitmaps[0].getWidth(), pixelHeight);
+			font = new Texture2D(coloredBitmap, bitmap.getWidth(), bitmap.getHeight());
 			
-			elementMatrix.setXStretch(reqHeight*(bitmaps[0].getWidth())/pixelHeight*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setXStretch(reqHeight*(bitmap.getWidth())/bitmap.getHeight()*Application.getWindowHeight()/Application.getWindowWidth());
 			
 		} catch (IOException ioe) {
 			
 		}
 		
+	}
+	
+	private ArrayList<String> prepare(String text) {
+		ArrayList<String> strings = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for (int c=0; c<text.length(); c++) {
+			if(text.charAt(c) ==  '\n') {
+				strings.add(sb.toString());
+				sb = new StringBuilder();
+			} else {
+				sb.append(text.charAt(c));
+			}
+		}
+		if (sb.length() > 0) {
+			strings.add(sb.toString());
+		}
+		return strings;
+	}
+	
+	private Bitmap getLineBitmap(String text) {
+		Bitmap[] bitmaps = new Bitmap[text.length()];
+		for (int i=0; i<text.length(); i++) {
+			if (text.charAt(i) == ' ') {
+				bitmaps[i] = new Bitmap(pixelHeight/4, pixelHeight);
+			} else {
+				getCodepointBitmap(text, bitmaps, i);
+			}
+			bitmaps[0].addGlyph(bitmaps[i]);
+		}
+		return bitmaps[0];
+	}
+
+	private void getCodepointBitmap(String text, Bitmap[] bitmaps, int i) {
+		ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
+		bitmaps[i] = new Bitmap(b, width[0], height[0]);
+		int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
+		STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
+		int spaceAbove = (int)((ascent[0] - y1[0])*scale);
+		bitmaps[i].fillupV(pixelHeight, spaceAbove);
+		bitmaps[i].fillupH((int)(x0[0]*scale));
 	}	
 	
 	private void setUpSTBFontinfo() {
