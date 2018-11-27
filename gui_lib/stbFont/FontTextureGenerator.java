@@ -38,6 +38,14 @@ public class FontTextureGenerator {
 	
 	//---------------------------------------- tier 1 ----------------------------------------
 	
+	/**
+	 * you get the width and the height in px via Texture2D.getWidth(),...
+	 * 
+	 * @param reqHeight
+	 * @param text
+	 * @param color
+	 * @return
+	 */
 	public Texture2D getFontTexture(float reqHeight, String text, Color color) {
 		
 		ArrayList<String> lineStrings = Utils.divideInLines(text);
