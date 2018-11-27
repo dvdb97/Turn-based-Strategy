@@ -37,19 +37,16 @@ public class TTFBox extends Element {
 		
 		ArrayList<String> lineStrings = prepare(text);
 		
-		for (String s : lineStrings) {
-			System.out.println(s);
-		}
-		
 		try {
 			initFont();
 			
 			scale = scaleForReqHeight(reqHeight);
 			STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
+			lineGap[0] *= scale;
 			
 			Bitmap bitmap = getLineBitmap(lineStrings.get(0));
 			for (int l=1; l<lineStrings.size(); l++) {
-				bitmap.addLine(getLineBitmap(lineStrings.get(l)));
+				bitmap.addLine(getLineBitmap(lineStrings.get(l)), (int)(lineGap[0]));
 			}
 			
 			int[] ix0 = new int[1], ix1 = new int[1];
@@ -59,7 +56,11 @@ public class TTFBox extends Element {
 			
 			font = new Texture2D(coloredBitmap, bitmap.getWidth(), bitmap.getHeight());
 			
-			elementMatrix.setXStretch(reqHeight*(bitmap.getWidth())/bitmap.getHeight()*Application.getWindowHeight()/Application.getWindowWidth());
+			int totalHeightPx  = (pixelHeight+lineGap[0])*lineStrings.size()-lineGap[0];
+			float totalHeight  = (float)totalHeightPx/Application.getWindowHeight()*2;
+			
+			elementMatrix.setXStretch(totalHeight*bitmap.getWidth()/bitmap.getHeight()*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setYStretch(totalHeight);
 			
 		} catch (IOException ioe) {
 			

@@ -15,7 +15,7 @@ public class FontWindow extends GUIWindow {
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, transformationMatrix);
 		
-		text = new TTFBox(0.1f, 0, 0.2f, "Ladies and Gentlemen!\nDarf ich vorstellen:\nTRUE TYPE FONT, MOTHERFUCKER!", BLACK);
+		text = new TTFBox(0.1f, 0, 0.05f, "Ja?\nNein!", BLACK);
 		children.add(text);
 		
 	}

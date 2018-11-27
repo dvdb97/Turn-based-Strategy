@@ -14,7 +14,7 @@ public class GUIElementMatrix extends Matrix33f {
 				0       , 0       , 1     );
 
 		if(xStretch == 0 || yStretch == 0) {
-			System.out.println("xStretch:  " + xStretch + " , xStretch:  " + yStretch);
+			System.out.println("xStretch:  " + xStretch + " , yStretch:  " + yStretch);
 			throw new IllegalArgumentException();
 		}
 		

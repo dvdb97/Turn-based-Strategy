@@ -69,7 +69,7 @@ public class Bitmap extends ArrayList<Byte>{
 		width += bitmap.width;
 	}
 	
-	public void addLine(Bitmap bitmap) {
+	public void addLine(Bitmap bitmap, int lineGap) {
 		if(bitmap == this) {
 			return;
 		}
@@ -81,8 +81,9 @@ public class Bitmap extends ArrayList<Byte>{
 			bitmap.addGlyph(new Bitmap(width - bitmap.width, bitmap.height));
 		}
 		
+		addAll(new Bitmap(width, lineGap));
 		addAll(bitmap);
-		height += bitmap.height;
+		height += bitmap.height + lineGap;
 	}
 	
 	
