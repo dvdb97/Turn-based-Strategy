@@ -10,14 +10,18 @@ import java.io.IOException;
 
 public class TTFBox extends Element {
 	
+	private FontTextureGenerator ftg;
+	private float reqHeight;
 	private Texture2D font;
 	
 	public TTFBox(float xShift, float yShift, float reqHeight, String text, Color color) {
-		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
+		super(new GUIQuad(), color, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
+		
+		this.reqHeight = reqHeight;
 		
 		try {
-			FontTextureGenerator ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
-	//		FontTextureGenerator ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
+			ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
+	//		ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
 			font = ftg.getFontTexture(reqHeight, text, color);
 			
 			elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());
@@ -25,6 +29,13 @@ public class TTFBox extends Element {
 			
 		} catch (IOException e) {}
 				
+	}
+	
+	public void changeTextTo(String text) {
+		font = ftg.getFontTexture(reqHeight, text, color);
+		
+		elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());
+		elementMatrix.setYStretch((float)2*font.getHeight()/Application.getWindowHeight());
 	}
 	
 	@Override

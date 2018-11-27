@@ -7,6 +7,7 @@ import input.PushButton;
 import output.ColorBox;
 import output.TextBox;
 import rendering.shapes.GUIQuad;
+import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -16,9 +17,9 @@ public class ColorPickWindow extends GUIWindow {
 	
 	private ColorBox colorBox;
 	
-	private TextBox redText;
-	private TextBox greenText;
-	private TextBox blueText;
+	private TTFBox redText;
+	private TTFBox greenText;
+	private TTFBox blueText;
 	
 	private Slider redSlider;
 	private Slider greenSlider;
@@ -27,7 +28,7 @@ public class ColorPickWindow extends GUIWindow {
 	//************************* constructor **************************************
 	
 	public ColorPickWindow() {
-		super(new GUIQuad(), GRAY, new GUIElementMatrix(0.25f, 1f, 0.25f, 0.5f));
+		super(new GUIQuad(), GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
 		
 		setUpColorBox();
 		
@@ -55,9 +56,13 @@ public class ColorPickWindow extends GUIWindow {
 	}
 
 	private void setUpTextBoxes() {
-		redText   = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.0833f, -0.4f, 0.1667f, 0.1f), "R");
-		greenText = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.4167f, -0.4f, 0.1667f, 0.1f), "G");
-		blueText  = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.7500f, -0.4f, 0.1667f, 0.1f), "B");
+	//	redText   = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.0833f, -0.4f, 0.1667f, 0.1f), "R");
+	//	greenText = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.4167f, -0.4f, 0.1667f, 0.1f), "G");
+	//	blueText  = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.7500f, -0.4f, 0.1667f, 0.1f), "B");
+		
+		redText   = new TTFBox(0.0833f, -0.4f, 0.07f, "R", BLACK);
+		greenText = new TTFBox(0.4167f, -0.4f, 0.07f, "G", BLACK);
+		blueText  = new TTFBox(0.7500f, -0.4f, 0.07f, "B", BLACK);
 		
 		children.add(redText);
 		children.add(greenText);
@@ -87,9 +92,9 @@ public class ColorPickWindow extends GUIWindow {
 		
 		colorBox.setColor(color);
 		
-		redText.setLabel(Integer.toString(color.getRedInt()));
-		greenText.setLabel(Integer.toString(color.getGreenInt()));
-		blueText.setLabel(Integer.toString(color.getBlueInt()));
+		redText.changeTextTo(Integer.toString(color.getRedInt()));
+		greenText.changeTextTo(Integer.toString(color.getGreenInt()));
+		blueText.changeTextTo(Integer.toString(color.getBlueInt()));
 		
 	//	redSlider.setValue(color.getRed());
 	//	greenSlider.setValue(color.getGreen());

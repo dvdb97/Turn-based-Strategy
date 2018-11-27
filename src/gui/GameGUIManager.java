@@ -2,6 +2,7 @@ package gui;
 
 import container.GUIWindow;
 import dataType.GUIElementMatrix;
+import work_in_progress.test.ColorPickWindow;
 import work_in_progress.test.FontWindow;
 
 import static utils.ColorPalette.*;
@@ -12,7 +13,8 @@ public class GameGUIManager {
 	
 	public static void init() {
 		
-		window = new FontWindow(BLUE_1, new GUIElementMatrix(-0.5f, 0.5f, 0.8f, 0.2f));
+		window = new ColorPickWindow();
+		
 		
 	}
 	
