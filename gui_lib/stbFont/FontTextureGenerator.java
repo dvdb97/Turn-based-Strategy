@@ -41,22 +41,21 @@ public class FontTextureGenerator {
 	/**
 	 * you get the width and the height in px via Texture2D.getWidth(),...
 	 * 
-	 * @param reqHeight
-	 * @param text
-	 * @param color
-	 * @return
+	 * @param reqHeight requested height of one line of text, measured in openGl-coords = px/pxOfScreen*2
+	 * @param text the text you want to display, \n for line break
+	 * @param color text color, background color is text color but with alpha = 0
+	 * @return the texture of the font
 	 */
 	public Texture2D getFontTexture(float reqHeight, String text, Color color) {
 		
 		ArrayList<String> lineStrings = Utils.divideInLines(text);
 		
 		scale = scaleForReqHeight(reqHeight);
-		STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
-		lineGap[0] *= scale;
+		float lineGapPx = lineGap[0] * scale;
 		
 		Bitmap bitmap = getLineBitmap(lineStrings.get(0));
 		for (int l=1; l<lineStrings.size(); l++) {
-			bitmap.addLine(getLineBitmap(lineStrings.get(l)), (int)(lineGap[0]));
+			bitmap.addLine(getLineBitmap(lineStrings.get(l)), (int)(lineGapPx));
 		}
 		
 		int[] ix0 = new int[1], ix1 = new int[1];
@@ -92,6 +91,7 @@ public class FontTextureGenerator {
 		data_in.close();
 		fontData.flip();
 		STBTruetype.stbtt_InitFont(fontInfo, fontData, 0);
+		STBTruetype.stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
 	}
 	
 	//-------------------------------- tier 2 --------------------------------------------------
@@ -125,6 +125,19 @@ public class FontTextureGenerator {
 		bitmap.fillupV(pixelHeight, spaceAbove);
 		bitmap.fillupH((int)(x0[0]*scale));
 		return bitmap;
+	}
+	
+	//-------------------------------- util -----------------------------------------------------
+	
+	/**
+	 * in case you want to check this before you generate the texture
+	 * @param reqHeight requested height of one line of text, measured in openGl-coords = px/pxOfScreen*2
+	 * @param numLines number of lines you want to display
+	 * @return the totalHeight of the font texture, measure in openGl-coords
+	 */
+	public float getTotalHeight(float reqHeight, int numLines) {
+		float lineGapPx = lineGap[0]*scaleForReqHeight(reqHeight);
+		return (pixelHeight+lineGapPx)*numLines-lineGapPx;
 	}
 	
 }

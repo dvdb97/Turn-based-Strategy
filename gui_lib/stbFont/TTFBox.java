@@ -6,20 +6,7 @@ import core.Application;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
 import rendering.shapes.GUIQuad;
-import utils.CustomBufferUtils;
-
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.stb.STBTruetype;
 
 public class TTFBox extends Element {
 	
