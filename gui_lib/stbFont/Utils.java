@@ -32,4 +32,21 @@ public class Utils {
 		return list;
 	}
 	
+	public static ArrayList<String> divideInLines(String text) {
+		ArrayList<String> strings = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for (int c=0; c<text.length(); c++) {
+			if(text.charAt(c) ==  '\n') {
+				strings.add(sb.toString());
+				sb = new StringBuilder();
+			} else {
+				sb.append(text.charAt(c));
+			}
+		}
+		if (sb.length() > 0) {
+			strings.add(sb.toString());
+		}
+		return strings;
+	}
+	
 }

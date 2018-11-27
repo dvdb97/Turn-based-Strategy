@@ -33,6 +33,22 @@ public class TTFBox extends Element {
 	public TTFBox(float xShift, float yShift, float reqHeight, String text, Color color) {
 		super(new GUIQuad(), null, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
+		try {
+			FontTextureGenerator ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
+	//		FontTextureGenerator ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
+			font = ftg.getFontTexture(reqHeight, text, color);
+			
+			int totalHeightPx  = (pixelHeight+lineGap[0])*lineStrings.size()-lineGap[0];
+			float totalHeight  = (float)totalHeightPx/Application.getWindowHeight()*2;
+			
+			elementMatrix.setXStretch(totalHeight*bitmap.getWidth()/bitmap.getHeight()*Application.getWindowHeight()/Application.getWindowWidth());
+			elementMatrix.setYStretch(totalHeight);
+			
+		} catch (IOException e) {}
+		
+		
+		
+		
 		setUpSTBFontinfo();
 		
 		ArrayList<String> lineStrings = prepare(text);
