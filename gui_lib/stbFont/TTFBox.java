@@ -86,26 +86,27 @@ public class TTFBox extends Element {
 	}
 	
 	private Bitmap getLineBitmap(String text) {
-		Bitmap[] bitmaps = new Bitmap[text.length()];
-		for (int i=0; i<text.length(); i++) {
-			if (text.charAt(i) == ' ') {
-				bitmaps[i] = new Bitmap(pixelHeight/4, pixelHeight);
-			} else {
-				getCodepointBitmap(text, bitmaps, i);
-			}
-			bitmaps[0].addGlyph(bitmaps[i]);
+		Bitmap bitmap = getCodepointBitmap(text.charAt(0));
+		Bitmap bufBitmap;
+		for (int i=1; i<text.length(); i++) {
+			bufBitmap = getCodepointBitmap(text.charAt(i));
+			bitmap.addGlyph(bufBitmap);
 		}
-		return bitmaps[0];
+		return bitmap;
 	}
 
-	private void getCodepointBitmap(String text, Bitmap[] bitmaps, int i) {
-		ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, text.charAt(i), width, height, null, null);
-		bitmaps[i] = new Bitmap(b, width[0], height[0]);
+	private Bitmap getCodepointBitmap(char c) {
+		if (c == ' ') {
+			return new Bitmap(pixelHeight/4, pixelHeight);
+		}
+		ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, c, width, height, null, null);
+		Bitmap bitmap = new Bitmap(b, width[0], height[0]);
 		int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
-		STBTruetype.stbtt_GetCodepointBox(fontInfo, text.charAt(i), x0, y0, x1, y1);
+		STBTruetype.stbtt_GetCodepointBox(fontInfo, c, x0, y0, x1, y1);
 		int spaceAbove = (int)((ascent[0] - y1[0])*scale);
-		bitmaps[i].fillupV(pixelHeight, spaceAbove);
-		bitmaps[i].fillupH((int)(x0[0]*scale));
+		bitmap.fillupV(pixelHeight, spaceAbove);
+		bitmap.fillupH((int)(x0[0]*scale));
+		return bitmap;
 	}	
 	
 	private void setUpSTBFontinfo() {
