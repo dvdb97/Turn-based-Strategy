@@ -32,10 +32,12 @@ public class TTFBox extends Element {
 	}
 	
 	public void changeTextTo(String text) {
+		
 		font = ftg.getFontTexture(reqHeight, text, color);
 		
 		elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());
 		elementMatrix.setYStretch((float)2*font.getHeight()/Application.getWindowHeight());
+		
 	}
 	
 	@Override

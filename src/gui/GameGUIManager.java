@@ -14,7 +14,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		window = new ColorPickWindow();
-		
+		//window = new FontWindow(RED, new GUIElementMatrix());
 		
 	}
 	

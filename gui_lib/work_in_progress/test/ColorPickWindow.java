@@ -56,10 +56,6 @@ public class ColorPickWindow extends GUIWindow {
 	}
 
 	private void setUpTextBoxes() {
-	//	redText   = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.0833f, -0.4f, 0.1667f, 0.1f), "R");
-	//	greenText = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.4167f, -0.4f, 0.1667f, 0.1f), "G");
-	//	blueText  = new TextBox(new GUIQuad(), WHITE, new GUIElementMatrix(0.7500f, -0.4f, 0.1667f, 0.1f), "B");
-		
 		redText   = new TTFBox(0.0833f, -0.4f, 0.07f, "R", BLACK);
 		greenText = new TTFBox(0.4167f, -0.4f, 0.07f, "G", BLACK);
 		blueText  = new TTFBox(0.7500f, -0.4f, 0.07f, "B", BLACK);
@@ -84,7 +80,6 @@ public class ColorPickWindow extends GUIWindow {
 		children.add(blueSlider);
 		
 	}
-	
 	
 	//********************************************************************************
 	

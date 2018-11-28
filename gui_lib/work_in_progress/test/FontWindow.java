@@ -15,11 +15,14 @@ public class FontWindow extends GUIWindow {
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, transformationMatrix);
 		
-		text = new TTFBox(0.1f, 0, 0.05f, "Ja?\nNein!", BLACK);
+		text = new TTFBox(0.1f, 0, 0.05f, "1234567890", BLACK);
 		children.add(text);
 		
 	}
 	
-	
+	@Override
+	public void update() {
+		super.update();
+	}
 	
 }
