@@ -45,5 +45,7 @@ public class Slider extends Container {
 	
 	public void setValue(float value) {
 		handle.setYShift(value*0.9f-0.9f);
+		if(function != null)
+			function.execute(this);
 	}
 }

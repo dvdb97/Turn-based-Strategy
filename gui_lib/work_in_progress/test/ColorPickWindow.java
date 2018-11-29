@@ -56,9 +56,9 @@ public class ColorPickWindow extends GUIWindow {
 	}
 
 	private void setUpTextBoxes() {
-		redText   = new TTFBox(0.0833f, -0.4f, 0.07f, "R", BLACK);
-		greenText = new TTFBox(0.4167f, -0.4f, 0.07f, "G", BLACK);
-		blueText  = new TTFBox(0.7500f, -0.4f, 0.07f, "B", BLACK);
+		redText   = new TTFBox(0.0833f, -0.4f, 0.07f, "255", BLACK);
+		greenText = new TTFBox(0.4167f, -0.4f, 0.07f, "255", BLACK);
+		blueText  = new TTFBox(0.7500f, -0.4f, 0.07f, "255", BLACK);
 		
 		children.add(redText);
 		children.add(greenText);
