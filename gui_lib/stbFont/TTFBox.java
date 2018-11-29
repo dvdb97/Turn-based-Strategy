@@ -32,6 +32,9 @@ public class TTFBox extends Element {
 	}
 	
 	public void changeTextTo(String text) {
+		try {
+		 ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
+		} catch (IOException e) {}
 		
 		font = ftg.getFontTexture(reqHeight, text, color);
 		

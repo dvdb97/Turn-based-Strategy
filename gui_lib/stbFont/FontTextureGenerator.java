@@ -24,7 +24,6 @@ public class FontTextureGenerator {
 	private int[] ascent = new int[1], descent = new int[1], lineGap = new int[1];
 	private float scale;
 	private int pixelHeight;
-	int numCreatedBitmaps;
 	
 	public FontTextureGenerator(String ttfFile) throws IOException {
 		
@@ -34,7 +33,6 @@ public class FontTextureGenerator {
 		} catch (IOException ioe) {
 			throw ioe;
 		}
-		numCreatedBitmaps = 0;
 	}
 	
 	//---------------------------------------- tier 1 ----------------------------------------
@@ -116,7 +114,6 @@ public class FontTextureGenerator {
 			return new Bitmap(pixelHeight/4, pixelHeight);
 		}
 		ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, c, width, height, null, null);
-		System.out.println(++numCreatedBitmaps);
 		Bitmap bitmap = new Bitmap(b, width[0], height[0]);
 		int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];
 		STBTruetype.stbtt_GetCodepointBox(fontInfo, c, x0, y0, x1, y1);
