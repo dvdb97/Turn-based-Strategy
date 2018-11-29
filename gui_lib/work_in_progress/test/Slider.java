@@ -26,7 +26,7 @@ public class Slider extends Container {
 	@Override
 	public void update(GUIElementMatrix parentMatrix) {
 		
-		if(function != null)
+		if(function != null && handle.isPressed())
 			function.execute(this);
 		
 		super.update(parentMatrix);

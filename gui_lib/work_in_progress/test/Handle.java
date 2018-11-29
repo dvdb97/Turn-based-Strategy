@@ -58,4 +58,7 @@ public class Handle extends DragableElement {
 		elementMatrix.setYShift(yShift);
 	}
 	
+	public boolean isPressed() {
+		return pressed;
+	}
 }
