@@ -3,16 +3,15 @@ package elements.input;
 import assets.textures.Texture2D;
 import elements.GUIElementBase;
 import elements.functions.GUIEventHandler;
-import rendering.shapes.GUIShape;
 import rendering.shapes.implemented.GUIQuad;
 
 public class GUIToggleButton extends GUIButton {
 	
 	//The texture for the active button
-	private static final Texture2D active = new Texture2D("res/Icons/Button_Activated.png", 600, 200);
+	private static final Texture2D active = new Texture2D("res/Icons/Button_Activated.png");
 	
 	//The texture for the inactive button
-	private static final Texture2D inactive = new Texture2D("res/Icons/Button_Inactive.png", 600, 200);
+	private static final Texture2D inactive = new Texture2D("res/Icons/Button_Inactive.png");
 	
 	//The relation of the buttons width and height that should be maintained
 	private static final float sizeRelation = 6f / 2f;

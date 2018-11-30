@@ -2,9 +2,11 @@ package models.worldModels;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import math.vectors.Vector3f;
@@ -19,7 +21,7 @@ import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 
-public class HexagonBorderGrid extends Element_Model {
+public class HexagonBorderGrid extends Mesh {
 		
 	private SuperGrid superGrid;
 	
@@ -151,7 +153,7 @@ public class HexagonBorderGrid extends Element_Model {
 		
 		elementBuffer = CustomBufferUtils.createIntBuffer(elementArrays[index]);
 		
-		this.setElementArrayData(elementBuffer);
+		this.setIndexBuffer(elementBuffer);
 		
 	}
 	
@@ -166,7 +168,7 @@ public class HexagonBorderGrid extends Element_Model {
 		
 		elementBuffer.flip();
 		
-		this.setElementArrayData(elementBuffer);
+		this.setIndexBuffer(elementBuffer);
 		
 	}
 	
@@ -184,8 +186,8 @@ public class HexagonBorderGrid extends Element_Model {
 	}
 	
 	@Override
-	public void onDrawStop() {
-		super.onDrawStop();
+	public void onDrawEnd() {
+		super.onDrawEnd();
 		
 		glDisable(GL_PRIMITIVE_RESTART);
 		

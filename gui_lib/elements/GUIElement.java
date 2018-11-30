@@ -71,13 +71,9 @@ public abstract class GUIElement extends GUIElementBase {
 			return;
 		}
 		
-<<<<<<< HEAD
-		RenderEngine.render(this, texture);
-=======
 		if (nativeOnClickFunc != null) {
 			nativeOnClickFunc.function(this);
 		}
->>>>>>> master
 		
 		if (onClickFunc != null) {
 			onClickFunc.function(this);
