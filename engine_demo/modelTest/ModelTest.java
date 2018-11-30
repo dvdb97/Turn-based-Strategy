@@ -20,6 +20,7 @@ import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.shaders.standardShaders.lightShader.LightShader;
+import assets.shaders.standardShaders.skybox.EnvMappingShader;
 import assets.shaders.subshaders.ConstantColorSubshader;
 import assets.shaders.subshaders.Subshader;
 import assets.textures.Skybox;
@@ -72,7 +73,7 @@ public class ModelTest {
 		
 		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
 		
-		Material material = new Material(Color.GREY, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
+		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
 		//Mesh mesh = Terrain.generate(heightmap);
 		mesh.setMaterial(material);
 		
@@ -109,6 +110,7 @@ public class ModelTest {
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
 		skybox = new Skybox(paths);
+		EnvMappingShader emShader = EnvMappingShader.createEnvMappingShader();
 		
 		light.fitToBoundingBox(mesh);
 		
@@ -117,7 +119,7 @@ public class ModelTest {
 			
 			skybox.render(camera);
 			
-			light.startShadowMapPass();
+			/*light.startShadowMapPass();
 			light.passToShadowMap(mesh);
 			light.endShadowMapPass();
 			
@@ -129,13 +131,26 @@ public class ModelTest {
 			shader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
 			shader.setMaterial(mesh.getMaterial());
 			
-			handleInput();
+			
 			
 			mesh.render();
 			
-			shader.unbind();
+			shader.unbind();*/
 			
-			BoxRenderer.draw(mesh.getTransformable().getTransformationMatrix(), camera, Color.RED);
+			handleInput();
+			
+			emShader.bind();
+			emShader.setCamera(camera);
+			emShader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
+			emShader.setMaterial(mesh.getMaterial());
+			skybox.bind();
+			
+			mesh.render();
+			
+			skybox.bind();
+			emShader.unbind();
+			
+			//BoxRenderer.draw(mesh.getTransformable().getTransformationMatrix(), camera, Color.RED);
 			//light.render(camera, Color.YELLOW);
 			//TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
 			
