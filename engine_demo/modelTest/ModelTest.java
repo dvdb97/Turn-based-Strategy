@@ -19,6 +19,7 @@ import assets.meshes.algorithms.terrain.Heightmap;
 import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
+import assets.meshes.prefabs.SkyboxMesh;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.shaders.standardShaders.skybox.EnvMappingShader;
 import assets.shaders.subshaders.ConstantColorSubshader;
@@ -110,6 +111,8 @@ public class ModelTest {
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
 		skybox = new Skybox(paths);
+		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
+		
 		EnvMappingShader emShader = EnvMappingShader.createEnvMappingShader();
 		
 		light.fitToBoundingBox(mesh);
@@ -117,33 +120,10 @@ public class ModelTest {
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			
-			//skybox.render(camera);
-			
-			/*light.startShadowMapPass();
-			light.passToShadowMap(mesh);
-			light.endShadowMapPass();
-			
-			shader.bind();
-			
-			shader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
-			shader.setLightSource(light, shadows);
-			shader.setCamera(camera);
-			shader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
-			shader.setMaterial(mesh.getMaterial());
-			
-			
-			
-			mesh.render();
-			
-			shader.unbind();*/
-			
 			handleInput();
 			
+			skyboxMesh.render(camera, light);
 			mesh.render(camera, light);
-			
-			//BoxRenderer.draw(mesh.getTransformable().getTransformationMatrix(), camera, Color.RED);
-			//light.render(camera, Color.YELLOW);
-			//TextureRenderer.draw(light.getShadowMap().getDepthTexture(), 0.5f, 0.5f, 1f / window.getAspectRatio(), 1f);
 			
 			RenderEngine.swapBuffers();
 		}

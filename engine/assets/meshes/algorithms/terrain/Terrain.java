@@ -4,7 +4,11 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
+import assets.cameras.Camera;
+import assets.light.DirectionalLight;
 import assets.meshes.Mesh;
+import assets.shaders.ShaderProgram;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL31.*;
 
@@ -17,17 +21,6 @@ public class Terrain extends Mesh {
 		
 		this.width = width;
 		this.height = height;
-	}
-	
-	
-	@Override
-	public void render() {
-		glEnable(GL_PRIMITIVE_RESTART);
-		glPrimitiveRestartIndex(-1);
-		
-		super.render();
-		
-		glDisable(GL_PRIMITIVE_RESTART);
 	}
 	
 	
@@ -106,6 +99,18 @@ public class Terrain extends Mesh {
 	public static Terrain generate(ElevationFunction depthFunc) {
 		return generate(depthFunc.getWidth(), depthFunc.getHeight(), depthFunc);
 	}
+	
+	
+	@Override
+	public void render(Camera camera, DirectionalLight light) {
+		glEnable(GL_PRIMITIVE_RESTART);
+		glPrimitiveRestartIndex(-1);
+		
+		super.render(camera, light);
+		
+		glDisable(GL_PRIMITIVE_RESTART);
+	}
+	
 	
 	
 	/**

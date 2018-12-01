@@ -46,10 +46,15 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh() {
+		this(LightShader.createPerFragmentLightShader(), Material.standard); 
+	}
+	
+	
+	public Mesh(ShaderProgram shader, Material material) {
 		this.vao = new VertexArrayObject();
 		this.transformable = new Transformable();
-		this.material = Material.standard;
-		this.shader = LightShader.createPerFragmentLightShader();
+		this.material = material;
+		this.shader = shader;
 		vertexData = new HashMap<Attribute, FloatBuffer>();
 		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
@@ -57,7 +62,6 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	public Mesh(int drawMode) {
 		this();
-		
 		this.drawMode = drawMode;
 	}
 	
@@ -370,13 +374,23 @@ public class Mesh extends Deletable implements IRenderable {
 	}
 	
 	
+	public Material getMaterial() {
+		return material;
+	}
+	
+	
+	public void setShader(ShaderProgram shader) {
+		this.shader = shader;
+	}
+	
+	
 	public ShaderProgram getShader() {
 		return shader;
 	}
 	
 	
-	public Material getMaterial() {
-		return material;
+	public void setTexture(Texture texture) {
+		this.texture = texture;
 	}
 	
 	

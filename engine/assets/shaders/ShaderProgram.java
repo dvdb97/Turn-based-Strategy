@@ -294,6 +294,16 @@ public class ShaderProgram extends Bindable {
 	}
 	
 	
+	public void setViewMatrix(Matrix44f view) {
+		this.setUniformMatrix4fv("viewMatrix", view);
+	}
+	
+	
+	public void setProjectionMatrix(Matrix44f projection) {
+		this.setUniformMatrix4fv("projectionMatrix", projection);
+	}
+	
+	
 	/**
 	 * 
 	 * Sets the values of all the camera related uniform variables
@@ -308,8 +318,8 @@ public class ShaderProgram extends Bindable {
 		this.viewProjectionMatrix = camera.getViewProjectionMatrix();
 		
 		//Pass the view and projection matrix to the shader.
-		this.setUniformMatrix4fv("viewMatrix", camera.getViewMatrix());
-		this.setUniformMatrix4fv("projectionMatrix", camera.getProjectionMatrix());
+		this.setViewMatrix(camera.getViewMatrix());
+		this.setProjectionMatrix(camera.getViewProjectionMatrix());
 	}
 	
 	
