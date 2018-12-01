@@ -1,10 +1,10 @@
 package models.worldModels;
 
+import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
-import assets.shaders.ShaderManager;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
@@ -131,6 +131,20 @@ public class BoardModels {
 	
 	//*********************************
 	
+	private void renderTerrain() {
+		
+		ShaderManager.useLightShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+		
+		RenderEngine.draw(terrain, null);
+		
+		ShaderManager.disableLightShader();
+		
+		
+		terrain.render();
+		
+		
+		
+	}
 	
 	private void renderBordersSeaCOS() {
 		
