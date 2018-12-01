@@ -15,13 +15,9 @@ import math.matrices.Matrix44f;
  *
  */
 public class BoxRenderer {
-	
-	private static final String path = "Shaders/StandardShaders/uniformColor";
-	
+		
 	private static WireframeBox box;
-	
-	private static ShaderProgram shader;
-	
+
 	private static boolean init = false;
 	
 	
@@ -29,7 +25,6 @@ public class BoxRenderer {
 		if (init) return;
 		
 		box = new WireframeBox();		
-		shader = ShaderLoader.loadShader(path + ".vert", path + ".frag");
 		init = true;
 	}
 	
@@ -45,10 +40,7 @@ public class BoxRenderer {
 	public static void draw(Matrix44f model, Camera camera, Color color) {
 		init();
 		
-		shader.bind();
-		shader.setCamera(camera);
-		shader.setModelMatrix(model);
-		shader.setUniformVector4f("u_Color", color);
+		box.getTransformable().adaptTo(mesh);
 		
 		box.render();
 		

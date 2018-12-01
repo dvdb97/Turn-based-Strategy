@@ -257,6 +257,18 @@ public class Transformable {
 	}
 	
 	
+	public void adaptTo(Transformable transform) {
+		this.setTranslation(transform.getTranslation());
+		this.setRotation(transform.getRotation());
+		this.setScaling(transform.getScaling());
+	}
+	
+	
+	public void adaptTo(Mesh mesh) {
+		this.adaptTo(mesh.getTransformable());
+	}
+	
+	
 	/**
 	 * 
 	 * Computes the transformation matrix for this model.

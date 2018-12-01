@@ -20,6 +20,7 @@ import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.prefabs.SkyboxMesh;
+import assets.meshes.prefabs.WireframeBox;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.shaders.standardShaders.skybox.EnvMappingShader;
 import assets.shaders.subshaders.ConstantColorSubshader;
@@ -113,6 +114,10 @@ public class ModelTest {
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
 		
+		WireframeBox box = new WireframeBox();
+		box.setColor(new Color(0f, 1f, 0f, 1f));
+		box.getTransformable().setScaling(3f);
+		
 		EnvMappingShader emShader = EnvMappingShader.createEnvMappingShader();
 		
 		light.fitToBoundingBox(mesh);
@@ -124,6 +129,7 @@ public class ModelTest {
 			
 			skyboxMesh.render(camera, light);
 			mesh.render(camera, light);
+			box.render(camera, light);
 			
 			RenderEngine.swapBuffers();
 		}
