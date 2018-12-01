@@ -22,8 +22,8 @@ public class EnvMappingShader extends ShaderProgram {
 	
 	
 	public static EnvMappingShader createEnvMappingShader() {
-		String vertSource = FileUtils.loadShaderSourceCode("Shaders/EnvironmentMapping/EnvMapping.vert");
-		String fragSource = FileUtils.loadShaderSourceCode("Shaders/EnvironmentMapping/EnvMapping.frag");
+		String vertSource = FileUtils.loadShaderSourceCode("Shaders/EnvironmentMapping/envMapping.vert");
+		String fragSource = FileUtils.loadShaderSourceCode("Shaders/EnvironmentMapping/envMapping.frag");
 		
 		return new EnvMappingShader(vertSource, fragSource);
 	}
