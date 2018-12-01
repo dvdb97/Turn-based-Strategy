@@ -7,6 +7,7 @@ import container.GUIWindow;
 import dataType.GUIElementMatrix;
 import output.TextBox;
 import rendering.shapes.GUIQuad;
+import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -14,7 +15,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	private Tile tile;
 	
-	private TextBox infoText;
+	private TTFBox infoText;
 	
 	//private GUIToggleButton button;
 	
@@ -24,9 +25,9 @@ public class TileInfoWindow extends GUIWindow {
 	public TileInfoWindow() {
 		super(new GUIQuad(), GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
 		
-		infoText = new TextBox(new GUIQuad(), GREEN_1, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.45f), "index");
-		
-		
+		//infoText = new TextBox(new GUIQuad(), GREEN_1, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.45f), "index");
+		infoText = new TTFBox(0.05f, -0.5f, 0.05f, "index", GIANTS_ORANGE);
+		children.add(infoText);
 		
 	/*	button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
 		button.setEnableFunction(  (element) -> enable()  );
@@ -40,7 +41,6 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu.addTab(GIANTS_ORANGE);
 		tabMenu.addTab(TEAL_BLUE);
 		tabMenu.addTab(SAFFRON);
-		children.add(infoText);
 	}
 	
 	private void enable() {
@@ -55,12 +55,15 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {
+		if (this.tile == tile) {
+			return;
+		}
 		this.tile = tile;
-		infoText.setLabel(TileInfoStringIssuer.getTileInfoString(tile));
+		infoText.changeTextTo(TileInfoStringIssuer.getTileInfoString(tile));
 		if(tile.isWater()) {
-			infoText.setColor(BLUE_1);
+			color = BLUE_1;
 		} else {
-			infoText.setColor(GREEN_1);
+			color = GREEN_1;
 		}
 	}
 	
