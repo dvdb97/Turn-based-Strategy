@@ -117,7 +117,7 @@ public class ModelTest {
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			
-			skybox.render(camera);
+			//skybox.render(camera);
 			
 			/*light.startShadowMapPass();
 			light.passToShadowMap(mesh);
@@ -139,16 +139,7 @@ public class ModelTest {
 			
 			handleInput();
 			
-			emShader.bind();
-			emShader.setCamera(camera);
-			emShader.setModelMatrix(mesh.getTransformable().getTransformationMatrix());
-			emShader.setMaterial(mesh.getMaterial());
-			skybox.bind();
-			
-			mesh.render();
-			
-			skybox.bind();
-			emShader.unbind();
+			mesh.render(camera, light);
 			
 			//BoxRenderer.draw(mesh.getTransformable().getTransformationMatrix(), camera, Color.RED);
 			//light.render(camera, Color.YELLOW);

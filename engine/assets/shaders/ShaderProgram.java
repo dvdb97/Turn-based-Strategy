@@ -10,6 +10,7 @@ import java.util.regex.*;
 import assets.Bindable;
 import assets.IBindable;
 import assets.cameras.Camera;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
@@ -309,6 +310,61 @@ public class ShaderProgram extends Bindable {
 		//Pass the view and projection matrix to the shader.
 		this.setUniformMatrix4fv("viewMatrix", camera.getViewMatrix());
 		this.setUniformMatrix4fv("projectionMatrix", camera.getProjectionMatrix());
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the values of all the light source related uniform variables
+	 * 
+	 * @param light The light source
+	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
+	 * @param lightProjectionMatrix The projection matrix that is used for shadow mapping
+	 * @param shadows Enables or disables trying to read from a shadow map.
+	 */	
+	public void setLightSource(DirectionalLight light, boolean shadows) {
+		this.setUniformVector3f("light.direction", light.getViewDirection());
+		
+		this.setUniformVector3f("light.color", light.getColor());
+		
+		this.setAmbientLight(light.getAmbient());
+		
+		this.setLightViewProjectionMatrix(light.getViewProjectionMatrix());
+		
+		if (shadows) {
+			this.setUniform1i("shadowsActive", 1);
+			light.getShadowMap().bind();
+		} else {
+			this.setUniform1i("shadowsActive", 0);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the light view projection matrix as an uniform variable to the gpu
+	 * 
+	 * @param lightViewMatrix The matrix that moves the model into the view space of the light source
+	 */
+	public void setLightViewProjectionMatrix(Matrix44f lightViewProjectionMatrix) {
+		this.setUniformMatrix4fv("lightVPMatrix", lightViewProjectionMatrix);
+	}
+	
+	
+	public void setAmbientLight(Vector3f vec) {
+		this.setUniform3fv("ambientLight", vec.toArray());
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the values of all the light source related uniform variables.
+	 * Sets all shadow related variables to a default value.
+	 * 
+	 * @param light The light source
+	 */
+	public void setLightSource(DirectionalLight light) {
+		this.setLightSource(light, false);
 	}
 	
 	

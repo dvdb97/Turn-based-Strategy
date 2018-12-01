@@ -6,13 +6,16 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import assets.Bindable;
 import assets.Deletable;
-import assets.IDeletable;
 import assets.buffers.VertexBuffer;
+import assets.cameras.Camera;
+import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Vertex;
+import assets.shaders.ShaderProgram;
+import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.textures.Texture;
+import math.vectors.Vector3f;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -33,7 +36,9 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	private Transformable transformable;
 	
-	private Material material = Material.standard;
+	private ShaderProgram shader;
+	
+	private Material material;
 	
 	private Texture texture;
 	
@@ -43,6 +48,8 @@ public class Mesh extends Deletable implements IRenderable {
 	public Mesh() {
 		this.vao = new VertexArrayObject();
 		this.transformable = new Transformable();
+		this.material = Material.standard;
+		this.shader = LightShader.createPerFragmentLightShader();
 		vertexData = new HashMap<Attribute, FloatBuffer>();
 		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
@@ -363,6 +370,11 @@ public class Mesh extends Deletable implements IRenderable {
 	}
 	
 	
+	public ShaderProgram getShader() {
+		return shader;
+	}
+	
+	
 	public Material getMaterial() {
 		return material;
 	}
@@ -374,16 +386,39 @@ public class Mesh extends Deletable implements IRenderable {
 
 
 	@Override
-	public void render() {
-		onDrawStart();
+	public void render(Camera camera, DirectionalLight light) {
+		onDrawStart(camera, light);
 		vao.enableVertexAttribArray();
-		if (texture != null) texture.bind();
 		
 		glDrawElements(drawMode, indexBuffer);
 		
-		if (texture != null) texture.unbind();
 		vao.disableVertexAttribArray();
 		onDrawEnd();
+	}
+	
+	
+	/**
+	 * 
+	 * A function that sets all uniform variables to render this mesh.
+	 * If this function wasn't overwritten, it will use a default light shader
+	 * that uses the material's color as the mesh's color.
+	 * 
+	 * @param camera The camera that is used to look at the mesh.
+	 * @param light The light source that is used to render this mesh.
+	 */
+	protected void onDrawStart(Camera camera, DirectionalLight light) {
+		shader.bind();
+		shader.setCamera(camera);
+		shader.setLightSource(light, material.castShadows);
+		shader.setMaterial(material);
+		shader.setModelMatrix(transformable.getTransformationMatrix());
+		if (texture != null) texture.bind();
+	}
+	
+	
+	protected void onDrawEnd() {
+		if (texture != null) texture.unbind();
+		shader.unbind();
 	}
 
 
@@ -394,16 +429,6 @@ public class Mesh extends Deletable implements IRenderable {
 		}
 		
 		vao.delete();		
-	}
-	
-	
-	public void onDrawStart() {
-		//Can be overridden.
-	}
-	
-	
-	public void onDrawEnd() {
-		//Can be overridden.
 	}
 
 }

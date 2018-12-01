@@ -13,6 +13,8 @@ public class DirectionalLight extends Camera implements IDeletable {
 	
 	private Vector3f color;
 	
+	private Vector3f ambient;
+	
 	private DepthBuffer shadowMap;
 	
 	
@@ -26,7 +28,7 @@ public class DirectionalLight extends Camera implements IDeletable {
 	 * @param color The color of the light source.
 	 */
 	public DirectionalLight(Vector3f color) {
-		super(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, -1f), ProjectionType.ORTHOGRAPHIC);
+		this(new Vector3f(0f, 0f, -1f), color);
 		this.color = color;
 	}
 	
@@ -41,6 +43,7 @@ public class DirectionalLight extends Camera implements IDeletable {
 	public DirectionalLight(Vector3f direction, Vector3f color) {
 		super(new Vector3f(0f, 0f, 0f), direction, ProjectionType.ORTHOGRAPHIC);
 		this.color = color;
+		this.ambient = new Vector3f(0.2f, 0.2f, 0.2f);
 	}
 	
 	
@@ -53,8 +56,7 @@ public class DirectionalLight extends Camera implements IDeletable {
 	 * @param smHeight The height of the light's shadow map.
 	 */
 	public DirectionalLight(Vector3f direction, Vector3f color, int smWidth, int smHeight) {
-		super(new Vector3f(0f, 0f, 0f), direction, ProjectionType.ORTHOGRAPHIC);
-		this.color = color;
+		this(direction, color);
 		this.initializeShadowMap(smWidth, smHeight);
 	}
 	
@@ -248,6 +250,16 @@ public class DirectionalLight extends Camera implements IDeletable {
 
 	public void setColor(Vector3f color) {
 		this.color = color;
+	}
+	
+	
+	public Vector3f getAmbient() {
+		return ambient;
+	}
+	
+	
+	public void setAmbient(Vector3f ambient) {
+		this.ambient = ambient;
 	}
 
 
