@@ -101,7 +101,11 @@ public class FontTextureGenerator {
 		Bitmap bitmap = getCodepointBitmap(text.charAt(0));
 		Bitmap bufBitmap;
 		for (int i=1; i<text.length(); i++) {
-			bufBitmap = getCodepointBitmap(text.charAt(i));
+			if (text.charAt(i) == '\t') {
+				bufBitmap = new Bitmap(2*pixelHeight-bitmap.getWidth()%(2*pixelHeight),pixelHeight);
+			} else {
+				bufBitmap = getCodepointBitmap(text.charAt(i));
+			}
 			bitmap.addGlyph(bufBitmap);
 		}
 		return bitmap;

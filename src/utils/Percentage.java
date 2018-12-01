@@ -69,11 +69,12 @@ public class Percentage implements Cloneable {
 	public String getString() {
 		
 		int rounded = Math.round(value*100);
-		String a = rounded >= 100 ? "" : " ";
-		String b = rounded >= 10 ? "" : " ";
+	//	String a = rounded >= 100 ? "" : " ";
+	//	String b = rounded >= 10 ? "" : " ";
 		
-		return a + b + rounded + "%";
+	//	return a + b + rounded + "%";
 		
+		return rounded + "%";
 	}
 	
 	
