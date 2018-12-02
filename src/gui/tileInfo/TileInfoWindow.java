@@ -25,11 +25,11 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
-		super(new GUIQuad(), GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
+		super(GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
 		
 		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
-		tabMenu = new TabMenu(new GUIQuad(), DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.05f, 0.9f, 0.4f));
+		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.05f, 0.9f, 0.4f));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
 		tabMenu.addTab(TURQUOISE, tabList);

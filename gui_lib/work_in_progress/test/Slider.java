@@ -17,7 +17,7 @@ public class Slider extends Container {
 	//********************************************************************************
 	
 	public Slider(Color color, GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), color, transformationMatrix);
+		super(color, transformationMatrix);
 		
 		handle = new Handle(BLACK, new GUIElementMatrix(0, 0, 1, 0.1f));
 		children.add(handle);

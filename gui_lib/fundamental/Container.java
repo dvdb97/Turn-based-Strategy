@@ -3,6 +3,7 @@ package fundamental;
 import assets.meshes.geometry.Color;
 import dataType.ElementList;
 import dataType.GUIElementMatrix;
+import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 
 public abstract class Container extends Element {
@@ -13,8 +14,8 @@ public abstract class Container extends Element {
 	
 	//******************** constructor *******************************
 	
-	protected Container(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
-		super(shape, color, transformationMatrix);
+	protected Container(Color color, GUIElementMatrix transformationMatrix) {
+		super(new GUIQuad(), color, transformationMatrix);
 		
 		children = new ElementList();
 		

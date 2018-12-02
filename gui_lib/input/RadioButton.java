@@ -11,8 +11,8 @@ public abstract class RadioButton extends Container {
 	private AdvancedElementList<PushButton> buttons;
 	private int currentButton;
 	
-	protected RadioButton(Shape shape, Color color, GUIElementMatrix transformationMatrix, int numButtons) {
-		super(shape, color, transformationMatrix);
+	protected RadioButton(Color color, GUIElementMatrix transformationMatrix, int numButtons) {
+		super(color, transformationMatrix);
 		
 		buttons = new AdvancedElementList<>(numButtons);
 		children.add(buttons);

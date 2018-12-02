@@ -25,7 +25,7 @@ public class ColorPickWindow extends GUIWindow {
 	//************************* constructor **************************************
 	
 	public ColorPickWindow() {
-		super(new GUIQuad(), GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
+		super(GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
 		
 		setUpColorBox();
 		

@@ -8,9 +8,9 @@ import rendering.shapes.Shape;
 
 public abstract class GUIWindow extends Container implements Clickable {
 	//TODO: element matrix vs transformation matrix
-	public GUIWindow(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
+	public GUIWindow(Color color, GUIElementMatrix transformationMatrix) {
 		
-		super(shape, color, transformationMatrix);
+		super(color, transformationMatrix);
 		
 		GUIManager.addWindow(this);
 		

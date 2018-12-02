@@ -13,7 +13,7 @@ public class FontWindow extends GUIWindow {
 	private TTFBox text;
 	
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), color, transformationMatrix);
+		super(color, transformationMatrix);
 		
 		text = new TTFBox(0.1f, 0, 0.05f, "1234567890", BLACK);
 		children.add(text);

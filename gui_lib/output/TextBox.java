@@ -11,6 +11,7 @@ import gui_core.GUIMatrixManager;
 import gui_core.GUIShaderCollection;
 import math.matrices.Matrix44f;
 import rendering.RenderEngine;
+import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 import styles.GUIConst.Position;
 
@@ -27,8 +28,8 @@ public class TextBox extends Element {
 	private Matrix44f labelMatrix;
 	
 	
-	public TextBox(Shape shape, Color color, GUIElementMatrix transformationMatrix, String text) {
-		super(shape, color, transformationMatrix);
+	public TextBox(Color color, GUIElementMatrix transformationMatrix, String text) {
+		super(new GUIQuad(), color, transformationMatrix);
 		
 		labelText = "";
 		font = GUIFontCollection.getFont("Times New Roman");

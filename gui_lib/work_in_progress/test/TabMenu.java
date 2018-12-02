@@ -24,8 +24,8 @@ public class TabMenu extends Container {
 	
 	//************************* constructor **************************
 	
-	public TabMenu(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
-		super(shape, color, transformationMatrix);
+	public TabMenu(Color color, GUIElementMatrix transformationMatrix) {
+		super(color, transformationMatrix);
 		
 		tabs = new ArrayList<>(MAX_NUM_TABS);
 		buttons = new AdvancedElementList<>(MAX_NUM_TABS);
@@ -45,7 +45,7 @@ public class TabMenu extends Container {
 			return;
 		}
 		
-		Tab tab = new Tab(new GUIQuad(), WHITE, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
+		Tab tab = new Tab(WHITE, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
 		tabs.add(tab);
 		tabList.add(tab);
 		

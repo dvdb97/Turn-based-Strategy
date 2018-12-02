@@ -17,8 +17,8 @@ import rendering.shapes.Shape;
  */
 public class Tab extends Container {
 
-	protected Tab(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
-		super(shape, color, transformationMatrix);
+	protected Tab(Color color, GUIElementMatrix transformationMatrix) {
+		super(color, transformationMatrix);
 		// TODO Auto-generated constructor stub
 	}
 	
