@@ -34,7 +34,7 @@ public class TTFBox extends Element {
 	//TODO: constantly creating a new ftg is neither fast nor elegant, but not doing it causes a segmentation error... don't ask me why
 	public void changeTextTo(String text) {
 		try {
-		 ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
+		 ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
 		} catch (IOException e) {}
 		
 		font = ftg.getFontTexture(reqHeight, text, color);

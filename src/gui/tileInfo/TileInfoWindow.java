@@ -1,15 +1,16 @@
 package gui.tileInfo;
 
+import work_in_progress.test.Tab;
 import work_in_progress.test.TabMenu;
 import world.gameBoard.Tile;
-import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
-import output.TextBox;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
+
+import java.util.ArrayList;
 
 public class TileInfoWindow extends GUIWindow {
 	
@@ -20,27 +21,23 @@ public class TileInfoWindow extends GUIWindow {
 	//private GUIToggleButton button;
 	
 	private TabMenu tabMenu;
+	private ArrayList<Tab> tabList;
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
 		super(new GUIQuad(), GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
 		
-		//infoText = new TextBox(new GUIQuad(), GREEN_1, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.45f), "index");
-		infoText = new TTFBox(0.05f, -0.5f, 0.05f, "index", GIANTS_ORANGE);
-		children.add(infoText);
-		
-	/*	button = new GUIToggleButton(0.1f, -0.1f, 0.8f, 0.1f);
-		button.setEnableFunction(  (element) -> enable()  );
-		button.setDisableFunction( (element) -> disable() );
-		addChild(button);*/
+		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
 		tabMenu = new TabMenu(new GUIQuad(), DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.05f, 0.9f, 0.4f));
 		children.add(tabMenu);
-		
-		tabMenu.addTab(TURQUOISE);
-		tabMenu.addTab(GIANTS_ORANGE);
-		tabMenu.addTab(TEAL_BLUE);
-		tabMenu.addTab(SAFFRON);
+		tabList = new ArrayList<>(4);
+		tabMenu.addTab(TURQUOISE, tabList);
+		tabList.get(0).addElement(new TTFBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
+		tabMenu.addTab(GIANTS_ORANGE, tabList);
+		tabList.get(1).addElement(infoText);
+		tabMenu.addTab(TEAL_BLUE, tabList);
+		tabMenu.addTab(SAFFRON, tabList);
 	}
 	
 	private void enable() {

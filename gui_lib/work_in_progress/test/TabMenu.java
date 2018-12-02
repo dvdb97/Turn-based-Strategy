@@ -10,6 +10,8 @@ import input.ToggleButton;
 import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 
+import static utils.ColorPalette.*;
+
 public class TabMenu extends Container {
 
 	private static int MAX_NUM_TABS = 4;
@@ -37,14 +39,15 @@ public class TabMenu extends Container {
 	
 	//********************* tabs **********************************
 	
-	public void addTab(Color color) {
+	public void addTab(Color color, ArrayList<Tab> tabList) {
 		
 		if(getNumTabs() >= MAX_NUM_TABS) {
 			return;
 		}
 		
-		Tab tab = new Tab(new GUIQuad(), color, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
+		Tab tab = new Tab(new GUIQuad(), WHITE, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
 		tabs.add(tab);
+		tabList.add(tab);
 		
 		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(0.1f + buttons.size()*0.2f, -0.1f, 0.2f, 0.2f));
 		buttons.add(button);

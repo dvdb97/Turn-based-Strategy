@@ -6,9 +6,9 @@ public class TileInfoStringIssuer {
 	
 	public static String getTileInfoString(Tile tile) {
 		
-		return "Index\t: " + tile.getIndex() + "\n"
+		return "Index\t\t: " + tile.getIndex() + "\n"
 	         + "Fertility\t: " + tile.getFertility().getString() + "\n"
-		     + "Forest\t: " + tile.getForest().getString();
+		     + "Forest\t\t: " + tile.getForest().getString();
 
 		
 	}

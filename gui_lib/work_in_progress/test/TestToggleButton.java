@@ -7,10 +7,12 @@ import input.ToggleButton;
 import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
 
+import static utils.ColorPalette.*;
+
 public class TestToggleButton extends ToggleButton {
 	
 	private Color color1;
-	private static Color color2 = new Color(1f, 1f, 1f, 1f);
+	private static Color color2 = WHITE;
 	
 	public TestToggleButton(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, color2, transformationMatrix);

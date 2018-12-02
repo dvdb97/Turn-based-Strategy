@@ -19,7 +19,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		tiw = new TileInfoWindow();
-		window = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0, 0, 0.25f, 0.25f));
+	//	window = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0, 0, 0.25f, 0.25f));
 	
 		
 	}

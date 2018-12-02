@@ -3,6 +3,7 @@ package work_in_progress.test;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.Container;
+import fundamental.Element;
 import rendering.shapes.Shape;
 
 /**
@@ -20,5 +21,9 @@ public class Tab extends Container {
 		super(shape, color, transformationMatrix);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public void addElement(Element e) {
+		children.add(e);
+	}
+	
 }
