@@ -20,8 +20,8 @@ public class TTFBox extends Element {
 		this.reqHeight = reqHeight;
 		
 		try {
-			ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
-	//		ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
+	//		ftg = new FontTextureGenerator("res/fonts/ARIALBD.TTF");
+			ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
 			font = ftg.getFontTexture(reqHeight, text, color);
 			
 			elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());

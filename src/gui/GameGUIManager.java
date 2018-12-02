@@ -1,11 +1,11 @@
 package gui;
 
-import container.GUIWindow;
 import dataType.GUIElementMatrix;
+import fundamental.GUIWindow;
 import gui.tileInfo.TileInfoWindow;
 import interaction.TileSelecter;
-import work_in_progress.test.ColorPickWindow;
-import work_in_progress.test.FontWindow;
+import rendering.shapes.GUIQuad;
+import work_in_progress.test.DragableWindow;
 import world.gameBoard.GameBoard;
 
 import static utils.ColorPalette.*;
@@ -18,9 +18,9 @@ public class GameGUIManager {
 	
 	public static void init() {
 		
-		//window = new ColorPickWindow();
-		//window = new FontWindow(RED, new GUIElementMatrix());
 		tiw = new TileInfoWindow();
+		window = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0, 0, 0.25f, 0.25f));
+	
 		
 	}
 	

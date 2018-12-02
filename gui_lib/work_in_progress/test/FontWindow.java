@@ -1,8 +1,8 @@
 package work_in_progress.test;
 
 import assets.meshes.geometry.Color;
-import container.GUIWindow;
 import dataType.GUIElementMatrix;
+import fundamental.GUIWindow;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 

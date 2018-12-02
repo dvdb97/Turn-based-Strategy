@@ -1,11 +1,8 @@
 package work_in_progress.test;
 
-import container.GUIWindow;
 import dataType.GUIElementMatrix;
-import function.Function;
-import input.PushButton;
+import fundamental.GUIWindow;
 import output.ColorBox;
-import output.TextBox;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 

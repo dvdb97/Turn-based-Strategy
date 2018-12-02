@@ -2,12 +2,12 @@ package gui_core;
 
 import java.util.LinkedList;
 
-import container.GUIWindow;
 import fontRendering.font.GUIFontCollection;
 import fundamental.Button;
 import fundamental.ClickableElement;
 import fundamental.Element;
 import fundamental.ElementBase;
+import fundamental.GUIWindow;
 import input.Mouse;
 import interaction.Window;
 
@@ -131,6 +131,18 @@ public class GUIManager {
 		}
 		
 	}
+	
+	//***************************************************************************************
+	
+	public static void setPrimaryWindow(GUIWindow window) {
+		if (windows.contains(window)) {
+			windows.remove(window);
+			windows.add(window);
+		} else {
+			System.err.println("GUIManager: window not found");
+		}
+	}
+	
 	
 	//***************************************************************************************
 	
