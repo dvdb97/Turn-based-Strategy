@@ -32,12 +32,12 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.05f, 0.9f, 0.4f));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
-		tabMenu.addTab(TURQUOISE, tabList);
+		tabMenu.addTab(TURQUOISE, "test", tabList);
 		tabList.get(0).addElement(new TTFBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
-		tabMenu.addTab(GIANTS_ORANGE, tabList);
+		tabMenu.addTab(GIANTS_ORANGE, "info", tabList);
 		tabList.get(1).addElement(infoText);
-		tabMenu.addTab(TEAL_BLUE, tabList);
-		tabMenu.addTab(SAFFRON, tabList);
+		tabMenu.addTab(TEAL_BLUE, "øŋe", tabList);
+		tabMenu.addTab(SAFFRON, "ŧwø", tabList);
 	}
 	
 	private void enable() {

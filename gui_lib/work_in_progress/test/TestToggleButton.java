@@ -6,6 +6,7 @@ import function.Function;
 import input.ToggleButton;
 import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
+import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 

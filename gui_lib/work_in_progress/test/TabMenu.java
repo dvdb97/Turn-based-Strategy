@@ -9,6 +9,7 @@ import fundamental.Container;
 import input.ToggleButton;
 import rendering.shapes.GUIQuad;
 import rendering.shapes.Shape;
+import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -39,7 +40,7 @@ public class TabMenu extends Container {
 	
 	//********************* tabs **********************************
 	
-	public void addTab(Color color, ArrayList<Tab> tabList) {
+	public void addTab(Color color, String label, ArrayList<Tab> tabList) {
 		
 		if(getNumTabs() >= MAX_NUM_TABS) {
 			return;
@@ -50,7 +51,9 @@ public class TabMenu extends Container {
 		tabList.add(tab);
 		
 		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(0.1f + buttons.size()*0.2f, -0.1f, 0.2f, 0.2f));
+		TTFBox buttonLabel = new TTFBox(0.1f + buttons.size()*0.2f, -0.1f, 0.04f, label, BLACK);
 		buttons.add(button);
+		children.add(buttonLabel);
 		button.setEnableFunc(  (element) -> changeToTab(buttons.indexOf(element)) );
 		button.setDisableFunc( (element) -> changeToNoTab() );
 		
