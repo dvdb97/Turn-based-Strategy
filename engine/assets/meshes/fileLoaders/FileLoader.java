@@ -80,9 +80,10 @@ public class FileLoader {
 	 *  - No lines have been added manually to the file as it might cause the programm to crash.
 	 * 
 	 * @param path The path of the file.
-	 * @return Returns a Mesh
+	 * @param The mesh to load the data to.
+	 * @return Returns the mesh Mesh
 	 */
-	public static Mesh loadObjFile(String path) {
+	public static void loadObjFile(Mesh mesh, String path) {
 		ArrayList<Vector3f> positions = new ArrayList<Vector3f>();
 		ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
 		ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
@@ -91,7 +92,6 @@ public class FileLoader {
 		
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();		
-		Mesh mesh = new Mesh();
 		
 		String line = "";
 		
@@ -171,7 +171,12 @@ public class FileLoader {
 		
 		//#################### index data ####################
 		mesh.setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
-		
+	}
+	
+	
+	public static Mesh loadObjFile(String path) {
+		Mesh mesh = new Mesh();
+		loadObjFile(mesh, path);		
 		return mesh;
 	}
 	

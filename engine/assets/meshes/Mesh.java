@@ -12,6 +12,7 @@ import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
 import assets.shaders.ShaderProgram;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.textures.Texture;
@@ -397,21 +398,44 @@ public class Mesh extends Deletable implements IRenderable {
 	public Texture getTexture() {
 		return texture;
 	}
+	
+	
+	
 
 
 	@Override
-	public void render(Camera camera, DirectionalLight light) {
-		onDrawStart(camera, light);
+	public void render() {
 		vao.enableVertexAttribArray();
 		
 		glDrawElements(drawMode, indexBuffer);
 		
 		vao.disableVertexAttribArray();
-		onDrawEnd();
+	}
+
+
+	@Override
+	public void render(Camera camera, DirectionalLight light) {
+		onDrawStart(camera, light);
+		
+		this.render();
+		
+		onDrawEnd(camera, light);
+	}
+	
+	
+	@Override
+	public void render(Scene scene) {
+		onDrawStart(scene);
+		
+		this.render();
+		
+		onDrawEnd(scene);
 	}
 	
 	
 	/**
+	 * 
+	 * ######### Can (and should) be overwritten! #########
 	 * 
 	 * A function that sets all uniform variables to render this mesh.
 	 * If this function wasn't overwritten, it will use a default light shader
@@ -426,13 +450,52 @@ public class Mesh extends Deletable implements IRenderable {
 		shader.setLightSource(light, material.castShadows);
 		shader.setMaterial(material);
 		shader.setModelMatrix(transformable.getTransformationMatrix());
+		
 		if (texture != null) texture.bind();
 	}
 	
 	
-	protected void onDrawEnd() {
+	/**
+	 * 
+	 * ######### Can (and should) be overwritten! #########
+	 * 
+	 * Clean up after rendering.
+	 * 
+	 * @param camera The camera that is used to look at the mesh.
+	 * @param light The light source that is used to render this mesh.
+	 */
+	protected void onDrawEnd(Camera camera, DirectionalLight light) {
 		if (texture != null) texture.unbind();
+		
 		shader.unbind();
+	}
+	
+	
+	/**
+	 * 
+	 * ######### Can (and should) be overwritten! #########
+	 * 
+	 * A function that sets all uniform variables to render this mesh.
+	 * If this function wasn't overwritten, it will use a default light shader
+	 * that uses the material's color as the mesh's color.
+	 * 
+	 * @param scene The scene that is currently being rendered.
+	 */
+	protected void onDrawStart(Scene scene) {
+		this.onDrawStart(scene.getCamera(), scene.getLightSource());
+	}
+	
+	
+	/**
+	 * 
+	 * ######### Can (and should) be overwritten! #########
+	 * 
+	 * Clean up after rendering.
+	 * 
+	 * @param scene The scene that is currently being rendered.
+	 */
+	protected void onDrawEnd(Scene scene) {
+		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
 	}
 
 

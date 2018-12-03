@@ -3,9 +3,7 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
-import rendering.BoxRenderer;
 import rendering.RenderEngine;
-import rendering.TextureRenderer;
 import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -16,11 +14,12 @@ import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
 import assets.meshes.algorithms.terrain.Heightmap;
-import assets.meshes.algorithms.terrain.Terrain;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
-import assets.meshes.prefabs.SkyboxMesh;
-import assets.meshes.prefabs.WireframeBox;
+import assets.meshes.specialized.EnvMappingMesh;
+import assets.meshes.specialized.SkyboxMesh;
+import assets.meshes.specialized.WireframeBox;
+import assets.scene.Scene;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.shaders.standardShaders.skybox.EnvMappingShader;
 import assets.shaders.subshaders.ConstantColorSubshader;
@@ -73,7 +72,8 @@ public class ModelTest {
 	public static Mesh initMesh() {		
 		Heightmap heightmap = new Heightmap("res/heightmaps/HalloWelt.png");
 		
-		Mesh mesh = FileLoader.loadObjFile("res/models/Suzanne.obj");
+		Mesh mesh = new EnvMappingMesh();
+		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
 		//Mesh mesh = Terrain.generate(heightmap);
@@ -119,6 +119,8 @@ public class ModelTest {
 		box.getTransformable().setScaling(3f);
 		
 		EnvMappingShader emShader = EnvMappingShader.createEnvMappingShader();
+
+		Scene scene = new Scene(camera, light, skybox);
 		
 		light.fitToBoundingBox(mesh);
 		
@@ -127,9 +129,9 @@ public class ModelTest {
 			
 			handleInput();
 			
-			skyboxMesh.render(camera, light);
-			mesh.render(camera, light);
-			box.render(camera, light);
+			skyboxMesh.render(scene);
+			mesh.render(scene);
+			box.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}

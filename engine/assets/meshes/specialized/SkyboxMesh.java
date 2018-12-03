@@ -1,9 +1,10 @@
-package assets.meshes.prefabs;
+package assets.meshes.specialized;
 
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Mesh;
+import assets.scene.Scene;
 import assets.shaders.standardShaders.skybox.SkyboxShader;
 import assets.textures.Skybox;
 import utils.CustomBufferUtils;
@@ -51,10 +52,20 @@ public class SkyboxMesh extends Mesh {
 	}
 
 	@Override
-	protected void onDrawEnd() {
+	protected void onDrawEnd(Camera camera, DirectionalLight light) {
 		getTexture().unbind();
 		getShader().unbind();
 		glDepthMask(true);
 	}
+
+	@Override
+	protected void onDrawStart(Scene scene) {
+		this.onDrawStart(scene.getCamera(), scene.getLightSource());
+	}
+
+	@Override
+	protected void onDrawEnd(Scene scene) {
+		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
+	}	
 
 }

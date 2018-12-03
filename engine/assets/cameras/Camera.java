@@ -2,19 +2,11 @@ package assets.cameras;
 
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
-import rendering.BoxRenderer;
 import rendering.matrices.projectionMatrices.ProjectionMatrix;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
 import static math.Trigonometry.*;
-
-import assets.material.Material;
-import assets.meshes.IRenderable;
-import assets.meshes.geometry.Color;
-import assets.meshes.prefabs.WireframeBox;
-import assets.shaders.ShaderProgram;
-import assets.shaders.standardShaders.StandardShader;
 
 public class Camera {
 	
@@ -632,16 +624,6 @@ public class Camera {
 		}
 		
 		return corners;		
-	}
-	
-	
-	public void render(Camera camera) {
-		render(camera, Color.WHITE);
-	}
-	
-	
-	public void render(Camera camera, Color color) {
-		BoxRenderer.draw(invertedViewProjectionMatrix, camera, color);
 	}
 	
 	

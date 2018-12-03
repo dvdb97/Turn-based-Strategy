@@ -1,4 +1,4 @@
-package assets.meshes.prefabs;
+package assets.meshes.specialized;
 
 import assets.meshes.Mesh;
 import utils.CustomBufferUtils;

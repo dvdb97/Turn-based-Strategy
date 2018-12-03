@@ -1,4 +1,4 @@
-package assets.meshes.prefabs;
+package assets.meshes.specialized;
 
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
@@ -56,7 +56,7 @@ public class WireframeBox extends Mesh {
 	}
 
 	@Override
-	protected void onDrawEnd() {
+	protected void onDrawEnd(Camera camera, DirectionalLight light) {
 		getShader().unbind();
 	}
 

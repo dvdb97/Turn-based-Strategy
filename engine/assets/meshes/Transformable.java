@@ -281,7 +281,7 @@ public class Transformable {
 	
 	
 	public Matrix44f getInvertedTransformationMatrix() {
-		return getInvertedTransformationMatrix().inverse();
+		return getTransformationMatrix().inverse();
 	}
 	
 	
