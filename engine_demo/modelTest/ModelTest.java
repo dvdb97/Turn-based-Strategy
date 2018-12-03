@@ -13,17 +13,12 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
-import assets.meshes.algorithms.terrain.Heightmap;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
-import assets.shaders.standardShaders.lightShader.LightShader;
-import assets.shaders.standardShaders.skybox.EnvMappingShader;
-import assets.shaders.subshaders.ConstantColorSubshader;
-import assets.shaders.subshaders.Subshader;
 import assets.textures.Skybox;
 import static java.lang.Math.*;
 
@@ -31,8 +26,6 @@ import static java.lang.Math.*;
 public class ModelTest {
 	
 	private static Window window;
-	
-	private static LightShader shader;
 	
 	private static Camera camera;
 	
@@ -63,21 +56,17 @@ public class ModelTest {
 	}
 	
 	
-	public static void initShader() {
-		Subshader subshader = new ConstantColorSubshader(new Color(1f, 0f, 0f, 1f));//Subshader.loadSubshader("Shaders/subshaders/Terrain.frag");
-		shader = LightShader.createPerFragmentLightShader(subshader);
-	}
-	
-	
-	public static Mesh initMesh() {		
-		Heightmap heightmap = new Heightmap("res/heightmaps/HalloWelt.png");
-		
+	public static Mesh initMesh() {				
 		Mesh mesh = new EnvMappingMesh();
 		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
-		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 256f);
-		//Mesh mesh = Terrain.generate(heightmap);
+		Material material = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		
 		mesh.setMaterial(material);
+		
+		mesh.getTransformable().setScaling(2f, 2f, 2f);
+		mesh.getTransformable().translate(0, 0, 0);
+		mesh.getTransformable().rotate(0f, 0f, 0f);
 		
 		return mesh;	
 	}
@@ -91,16 +80,9 @@ public class ModelTest {
 	
 	
 	private static void testShadows() {
-		initShader();
-		
 		Mesh mesh = initMesh();
 		
-		mesh.getTransformable().setScaling(2f, 2f, 2f);
-		mesh.getTransformable().translate(0, 0, 0);
-		mesh.getTransformable().rotate(0f, 0f, 0f);
-		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
-		
 		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
 		
 		String[] paths = new String[6];
@@ -114,13 +96,11 @@ public class ModelTest {
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
 		
+		Scene scene = new Scene(camera, light, skybox);
+		
 		WireframeBox box = new WireframeBox();
 		box.setColor(new Color(0f, 1f, 0f, 1f));
 		box.getTransformable().setScaling(3f);
-		
-		EnvMappingShader emShader = EnvMappingShader.createEnvMappingShader();
-
-		Scene scene = new Scene(camera, light, skybox);
 		
 		light.fitToBoundingBox(mesh);
 		
