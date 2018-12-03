@@ -75,7 +75,7 @@ public class ModelTest {
 		Mesh mesh = new EnvMappingMesh();
 		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
-		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.5f, 0.5f, 0.5f), 256f);
 		//Mesh mesh = Terrain.generate(heightmap);
 		mesh.setMaterial(material);
 		

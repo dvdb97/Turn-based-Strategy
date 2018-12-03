@@ -25,4 +25,5 @@ void main() {
 	vec4 reflection = vec4(texture(skybox, texCoord).rgb, 1.0);
 
 	fColor = mix(material.color, reflection, vec4(material.specular, 1.0));
+
 }

@@ -41,7 +41,7 @@ public class EnvMappingMesh extends Mesh {
 		this.envMappingShader.bind();
 		this.envMappingShader.setCamera(scene.getCamera());
 		this.envMappingShader.setModelMatrix(getTransformable().getTransformationMatrix());
-		this.setMaterial(getMaterial());
+		this.envMappingShader.setMaterial(getMaterial());
 		scene.getSkybox().bind();
 	}
 
