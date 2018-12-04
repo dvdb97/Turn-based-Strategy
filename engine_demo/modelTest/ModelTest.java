@@ -21,6 +21,7 @@ import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
 import static java.lang.Math.*;
+import static utils.ColorPalette.*;
 
 
 public class ModelTest {
@@ -60,7 +61,7 @@ public class ModelTest {
 		Mesh mesh = new EnvMappingMesh();
 		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
-		Material material = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		Material material = new Material(WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
 		
 		mesh.setMaterial(material);
 		

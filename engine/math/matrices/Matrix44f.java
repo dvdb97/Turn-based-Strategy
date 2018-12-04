@@ -218,7 +218,7 @@ public class Matrix44f extends Matrixf {
 	 * return something if the matrix isn't invertible.
 	 */
 	public Matrix44f inverse() {
-		return MatrixInversion44f.generateMultiplicativeInverse(this);
+		return MatrixInversion44f.computeMultiplicativeInverse(this);
 	}
 	
 	//---------------------- other methods -------------------

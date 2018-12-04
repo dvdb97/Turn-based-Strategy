@@ -3,7 +3,6 @@ package dataType;
 import java.util.ArrayList;
 
 import fundamental.ElementBase;
-import graphics.matrices.TransformationMatrix;
 
 public class ElementList extends ArrayList<ElementBase> implements ElementBase {
 

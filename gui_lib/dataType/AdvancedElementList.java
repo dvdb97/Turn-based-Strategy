@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import fundamental.Element;
 import fundamental.ElementBase;
-import graphics.matrices.TransformationMatrix;
 
 //TODO: shitty name
 public class AdvancedElementList<E extends Element> extends ArrayList<E> implements ElementBase {

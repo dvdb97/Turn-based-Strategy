@@ -53,12 +53,9 @@ public class TileSelecter {
 	}
 
 	private static void refreshVariables() {
-<<<<<<< HEAD
-		invertedViewMatrix33f = MatrixInversion33f.generateMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
-=======
-		invertedViewMatrix33f = MatrixInversion33f.computeMultiplicativeInverse(new Matrix33f(CameraOperator.getViewMatrix()));
->>>>>>> gui_changes
 		
+		invertedViewMatrix33f = MatrixInversion33f.computeMultiplicativeInverse(new Matrix33f(PlayerCamera.getViewMatrix()));
+
 		cursorX = CursorPosInput.getXPosAsOpenglCoord();
 		cursorY = CursorPosInput.getYPosAsOpenglCoord();
 		

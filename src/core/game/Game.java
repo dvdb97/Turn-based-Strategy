@@ -1,13 +1,9 @@
 package core.game;
 
 import core.saves.GameScore;
-<<<<<<< HEAD
 import gui.font.FontCollection;
 import interaction.PlayerCamera;
-=======
-import graphics.shaders.ShaderManager;
 import gui.GameGUIManager;
->>>>>>> gui_changes
 import gui_core.GUIManager;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
@@ -22,31 +18,16 @@ public class Game {
 	
 	
 	//Start a completely new game
-<<<<<<< HEAD
-	public Game(int numberOfAgents, int boardLength, int boardWidth) {
-		//Init the camera
-		PlayerCamera.init();
-=======
 	public Game(int boardLength, int boardWidth) {
 		
-		ShaderManager.init();
->>>>>>> gui_changes
+		PlayerCamera.init();
 		
 		WorldManager.init(boardLength, boardWidth);
 		
-<<<<<<< HEAD
-		//Init tile selecter
-		TileSelecter.init();
-		
 		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
 		FontCollection.init();
-=======
-		CameraOperator.init();
-		
 		TileSelecter.init();
-		
 		GameGUIManager.init();
->>>>>>> gui_changes
 		
 		run();
 	}
@@ -80,48 +61,29 @@ public class Game {
 	
 	
 	private void processInput() {
-<<<<<<< HEAD
-		PlayerCamera.update();
 		
-		TileSelecter.processInput();
-=======
->>>>>>> gui_changes
+		PlayerCamera.update();
 		
 		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}
-<<<<<<< HEAD
-=======
 
-		CameraOperator.update();
-		
 		if(!GUIManager.processInput()) {
 			TileSelecter.processInput();
 		}
-
->>>>>>> gui_changes
 	}
 	
 	
 	private void update() {
 		WorldManager.update();
-<<<<<<< HEAD
-=======
 		GameGUIManager.update();
 		GUIManager.update();
-		
->>>>>>> gui_changes
 	}
 	
 	
 	private void render() {
 		WorldManager.render();
-<<<<<<< HEAD
-		//Draw the gui
-		GUIManager.update();
-=======
 		GUIManager.render();
->>>>>>> gui_changes
 	}
 	
 	

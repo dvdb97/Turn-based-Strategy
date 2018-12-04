@@ -1,17 +1,12 @@
 package assets.textures;
 
-<<<<<<< HEAD
-=======
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
->>>>>>> gui_changes
 import java.nio.ByteBuffer;
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
+import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
 
 public class Texture2D extends Texture {	
 	
@@ -23,7 +18,7 @@ public class Texture2D extends Texture {
 	}
 	
 
-<<<<<<< HEAD
+//HEAD
 	/**
 	 * Generates a 2D texture by loading the data of an image file
 	 * 
@@ -31,15 +26,16 @@ public class Texture2D extends Texture {
 	 */
 	public Texture2D(String path) {
 		super(GL_TEXTURE_2D);
-=======
+		setImageData(path);
+	}
+	
+//gui_changes
 	public Texture2D(String path, int width, int height, int filter, int mipmapFilter) {
 		super(GL_TEXTURE_2D, width, height);
->>>>>>> gui_changes
 		
 		setImageData(path, filter, mipmapFilter);
 	}
 	
-<<<<<<< HEAD
 	
 	/**
 	 * Generates a 2D texture by loading the data of an image file. It also sets 
@@ -63,7 +59,9 @@ public class Texture2D extends Texture {
 	 * @param height The height of the texture
 	 */
 	public Texture2D(int width, int height) {
-=======
+		super(GL_TEXTURE_2D, width, height);
+	}
+	
 	/**
 	 * 
 	 * @param bitmap byte buffer: [r1,g1,b1,a1,r2,g2,b2,a2,r3,...]
@@ -71,14 +69,14 @@ public class Texture2D extends Texture {
 	 * @param height
 	 */
 	public Texture2D(ByteBuffer bitmap, int width, int height) {
->>>>>>> gui_changes
+		
 		super(GL_TEXTURE_2D, width, height);
 		
 		setImageData(bitmap, Texture.LINEAR, Texture.NEAREST);
 	}
 	
 	
-<<<<<<< HEAD
+//HEAD
 	/**
 	 * 
 	 * Loads a texture from an image file with the given
@@ -90,29 +88,31 @@ public class Texture2D extends Texture {
 		bind();
 
 		Image image = ImageLoader.loadImageRGBA(path);
-=======
-	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter) {
-		bind();
-		
-		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
->>>>>>> gui_changes
 		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
-<<<<<<< HEAD
+
 		ByteBuffer buffer = image.getImageDataAsByteBuffer();
 		
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		
 		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-=======
+		this.setFilter(this.getFilterMode());
+		this.setTextureWrap(this.getWrapMode());
+		generateMipMapLevels();
+		unbind();
+	}
+	
+	//gui_changes
+	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter) {
+		bind();
+		
+		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(this.getWrapMode());
-		
 		generateMipMapLevels();
->>>>>>> gui_changes
-		
 		unbind();
 	}
 	
@@ -136,7 +136,6 @@ public class Texture2D extends Texture {
 	}
 	
 	
-<<<<<<< HEAD
 	/**
 	 * 
 	 * Generates a texture that can be used as the depth component of
@@ -162,6 +161,4 @@ public class Texture2D extends Texture {
 	}
 	
 }
-=======
-}
->>>>>>> gui_changes
+
