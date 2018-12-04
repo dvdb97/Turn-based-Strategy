@@ -18,7 +18,7 @@ public class MatrixInversion44f {
 																  1f, 0f, 0f, 0f);
 	
 	
-	public static Matrix44f generateMultiplicativeInverse(Matrix44f matrix) {
+	public static Matrix44f computeMultiplicativeInverse(Matrix44f matrix) {
 		
 		if (matrix.getA1() == 0f) {
 			matrix.setA1(0.00000001f);

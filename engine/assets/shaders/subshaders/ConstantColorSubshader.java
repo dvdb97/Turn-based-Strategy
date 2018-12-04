@@ -15,7 +15,7 @@ public class ConstantColorSubshader extends Subshader {
 	
 	
 	private static String addColor(Color color) {
-		return code.replace("rgba", "vec4(" + color.getA() + ", " + color.getB() + ", " + color.getC() + ", " + color.getD() + ")");
+		return code.replace("rgba", "vec4(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ", " + color.getAlpha() + ")");
 	}
 	
 }

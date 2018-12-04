@@ -156,7 +156,11 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
+<<<<<<< HEAD
 	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
+=======
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, hoveredTileColor.toVector4f());
+>>>>>>> gui_changes
 		
 		tileBorders.render(scene);
 		
@@ -168,7 +172,11 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
+<<<<<<< HEAD
 	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
+=======
+		ShaderManager.useShader(boardModelMatrix, CameraOperator.getViewMatrix(), Matrices.getProjectionMatrix(), true, selectedTileColor.toVector4f());
+>>>>>>> gui_changes
 		
 		tileBorders.render(scene);
 		

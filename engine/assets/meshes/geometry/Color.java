@@ -1,35 +1,114 @@
 package assets.meshes.geometry;
 
-
 import math.vectors.Vector4f;
 
+//TODO: shaders accept colors only in form of Vektor4f
 
-public class Color extends Vector4f {
+public class Color {
 	
-	//Predefined colors. Feel free to add more.
-	public static final Color RED = new Color(1f, 0f, 0f, 1f);
+	private float red;
+	private float green;
+	private float blue;
+	private float alpha;
 	
-	public static final Color GREEN = new Color(0f, 1f, 0f, 1f);
+	//**************************** constructor ******************************
 	
-	public static final Color BLUE = new Color(0f, 0f, 1f, 1f);
+	public Color(float red, float green, float blue, float alpha) {
+		
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
+		this.alpha = alpha;
+	}
 	
-	public static final Color YELLOW = new Color(1f, 1f, 0f, 1f);
+	public Color(int red, int green, int blue, int alpha) {
+		
+		this.red = red/255f;
+		this.green = green/255f;
+		this.blue = blue/255f;
+		this.alpha = alpha/255f;
+	}
 	
-	public static final Color GREY = new Color(0.5f, 0.5f, 0.5f, 1f);
 	
-	public static final Color WHITE = new Color(1f, 1f, 1f, 1f);
 	
+	//***********************************************************************
+	
+	public Color copyOf() {
+		return new Color(red, green, blue, alpha);
+	}
+	
+	public Vector4f toVector4f() {
+		return new Vector4f(red, green, blue, alpha);
+	}
+	
+	public void print() {
+		System.out.println("RGB: " + (int)(red*255) +" "+ (int)(green*255) +" "+ (int)(blue*255) +" "+ (int)(alpha*255));
+	}
+	
+	//****************************    getter    ******************************
+	
+	/**
+	 * @return the red
+	 */
+	public float getRed() {
+		return red;
+	}
+
 
 	/**
-	 * 
-	 * Creates a color.
-	 * 
-	 * @param red The value of the red color channel in the range from [0-1].
-	 * @param green The value of the green color channel in the range from [0-1].
-	 * @param blue The value of the blue color channel in the range from [0-1].
-	 * @param alpha The value of the alpha channel in the range from [0-1].
+	 * @return the green
 	 */
-	public Color(float red, float green, float blue, float alpha) {
-		super(red, green, blue, alpha);
+	public float getGreen() {
+		return green;
 	}
+
+
+	/**
+	 * @return the blue
+	 */
+	public float getBlue() {
+		return blue;
+	}
+
+
+	/**
+	 * @return the alpha
+	 */
+	public float getAlpha() {
+		return alpha;
+	}
+	
+	//***********************************
+	
+	/**
+	 * @return the red
+	 */
+	public int getRedInt() {
+		return (int)(red*255);
+	}
+
+
+	/**
+	 * @return the green
+	 */
+	public int getGreenInt() {
+		return (int)(green*255);
+	}
+
+
+	/**
+	 * @return the blue
+	 */
+	public int getBlueInt() {
+		return (int)(blue*255);
+	}
+
+
+	/**
+	 * @return the alpha
+	 */
+	public int getAlphaInt() {
+		return (int)(alpha*255);
+	}
+
 }

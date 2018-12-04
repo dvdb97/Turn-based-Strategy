@@ -52,7 +52,7 @@ public class WireframeBox extends Mesh {
 		getShader().bind();
 		getShader().setCamera(camera);
 		getShader().setModelMatrix(getTransformable().getTransformationMatrix());
-		getShader().setUniformVector4f("u_Color", getMaterial().color);
+		getShader().setUniformVector4f("u_Color", getMaterial().color.toVector4f());
 	}
 
 	@Override

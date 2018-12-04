@@ -55,12 +55,39 @@ public abstract class Texture extends GLTargetObject {
 	
 	
 	public void setFilter(int filter) {
+		
+		setFilter(filter, filter);	
+	}
+	
+	
+	public void setFilter(int filter, int mipmapFilter) {
+		
 		this.bind();
 		
-		glTexParameteri(getType(), GL_TEXTURE_MAG_FILTER, filter);
-		glTexParameteri(getType(), GL_TEXTURE_MIN_FILTER, filter);
+		int combinedFilters = filter;
 		
-		this.filter = filter;
+		if (filter == GL_LINEAR) {
+			
+			if (mipmapFilter == GL_LINEAR) {
+				combinedFilters = GL_LINEAR_MIPMAP_LINEAR;
+			} else {
+				combinedFilters = GL_LINEAR_MIPMAP_NEAREST;
+			}
+			
+		} else if (filter == GL_NEAREST) {
+			
+			if (mipmapFilter == GL_LINEAR) {
+				combinedFilters = GL_NEAREST_MIPMAP_LINEAR;
+			} else {
+				combinedFilters = GL_NEAREST_MIPMAP_NEAREST;
+			}
+			
+		}
+		
+		glTexParameteri(getType(), GL_TEXTURE_MAG_FILTER, combinedFilters);
+		glTexParameteri(getType(), GL_TEXTURE_MIN_FILTER, combinedFilters);
+		
+		this.filter = combinedFilters;
 		
 		this.unbind();
 	}

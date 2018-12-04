@@ -52,7 +52,7 @@ public class ProjectionMatrix extends Matrix44f {
 		setC3(-(far + near) / (far - near));
 		setC4(-2 * far * near / (far - near));
 		
-		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);
+		this.multiplicativeInverse = MatrixInversion44f.computeMultiplicativeInverse(this);
 		
 	}
 	
@@ -67,7 +67,7 @@ public class ProjectionMatrix extends Matrix44f {
 		setD3(-(far + near) / (far - near));	
 		setD4(1f);
 		
-		this.multiplicativeInverse = MatrixInversion44f.generateMultiplicativeInverse(this);
+		this.multiplicativeInverse = MatrixInversion44f.computeMultiplicativeInverse(this);
 		
 	}
 	

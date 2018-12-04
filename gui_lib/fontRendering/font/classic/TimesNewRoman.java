@@ -5,6 +5,7 @@ import fontRendering.font.FontTexture;
 public class TimesNewRoman extends FontTexture {
 
 	public TimesNewRoman() {
+<<<<<<< HEAD
 <<<<<<< HEAD:src/gui/font/TimesNewRoman.java
 		super("res/fonts/Font.png", 10, 10);
 =======
@@ -26,6 +27,9 @@ public class TimesNewRoman extends FontTexture {
 		
 		this.setChars(correspondingChars);
 		
+=======
+		super("res/fonts/TimesNewRoman.png", 1024, 1024);		
+>>>>>>> gui_changes
 	}
 
 }

@@ -3,7 +3,6 @@ package core;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
-import gui.test.ImplementedWindow;
 import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
@@ -62,9 +61,6 @@ public class Application {
 		
 		GUIManager.init(window);
 		
-		//Disable this to remove the gui window from the screen
-		ImplementedWindow window = new ImplementedWindow(new Vector4f(0f, 1f, 0f, 1f), 0f, 0f, 0.8f, 0.8f);
-		
 	}
 	
 	
@@ -72,7 +68,7 @@ public class Application {
 		
 		//TODO: Add a main menu
 		
-		Game game = new Game(1, 75, 75);
+		Game game = new Game(75, 75);
 		
 		close();
 		
@@ -89,17 +85,18 @@ public class Application {
 	}
 	
 	
+	public static Window getWindow() {
+		return window;
+	}
+	
+	
 	public static int getWindowHeight() {
-		
 		return window.getHeight();
-		
 	}
 	
 	
 	public static int getWindowWidth() {
-		
 		return window.getWidth();
-		
 	}
 
 }

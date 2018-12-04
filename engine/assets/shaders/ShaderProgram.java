@@ -265,7 +265,7 @@ public class ShaderProgram extends Bindable {
 	 * @param material The material of the model.
 	 */
 	public void setMaterial(Material material) {
-		this.setUniformVector4f("material.color", material.color);
+		this.setUniformVector4f("material.color", material.color.toVector4f());
 		this.setUniformVector3f("material.emission", material.emission);
 		this.setUniformVector3f("material.ambient", material.ambient);
 		this.setUniformVector3f("material.diffuse", material.diffuse);
