@@ -1,5 +1,6 @@
 package rendering;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.models.Element_Model;
 import assets.textures.Texture2D;
@@ -19,7 +20,8 @@ import java.nio.IntBuffer;
  * @author jona
  *
  */
-public class GUIElementModel extends Element_Model {
+//TODO: only substituted "Element_Model" by "Mesh"
+public class GUIElementModel extends Mesh {
 	
 	private Color color;
 	private Shape shape;

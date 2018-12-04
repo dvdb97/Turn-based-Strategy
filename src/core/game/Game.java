@@ -1,7 +1,6 @@
 package core.game;
 
 import core.saves.GameScore;
-import gui.font.FontCollection;
 import interaction.PlayerCamera;
 import gui.GameGUIManager;
 import gui_core.GUIManager;
@@ -24,8 +23,6 @@ public class Game {
 		
 		WorldManager.init(boardLength, boardWidth);
 		
-		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
-		FontCollection.init();
 		TileSelecter.init();
 		GameGUIManager.init();
 		

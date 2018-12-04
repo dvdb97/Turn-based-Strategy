@@ -1,25 +1,10 @@
 package gui_core;
 
-<<<<<<< HEAD
-import assets.shaders.ShaderLoader;
-import assets.shaders.ShaderProgram;
-=======
 import java.util.LinkedList;
-
-import fontRendering.font.GUIFontCollection;
 import fundamental.ClickableElement;
 import fundamental.GUIWindow;
 import input.Mouse;
 import interaction.Window;
-<<<<<<< HEAD
-import interaction.input.CursorPosInput;
-import interaction.input.MouseInputManager;
->>>>>>> master
-import math.matrices.Matrix33f;
-import math.matrices.Matrix44f;
-import math.vectors.Vector4f;
-=======
->>>>>>> gui_changes
 
 public class GUIManager {
 	
@@ -49,23 +34,11 @@ public class GUIManager {
 		}
 		
 		GUIShaderCollection.init(window);
-		
-		GUIFontCollection.init();
-		
 		idCounter = 0;
-		
 		initialized = true;
-		
 		windows = new LinkedList<GUIWindow>();
-		
 		width = window.getWidth();
-		
-<<<<<<< HEAD
-		guiShader.bind();
-=======
 		height = window.getHeight();
->>>>>>> master
-		
 		Mouse.init();
 		
 	}
@@ -102,31 +75,17 @@ public class GUIManager {
 	}
 	
 	public static void update() {
-		
 		for (GUIWindow window : windows) {
-			
 			//TODO: Only call it when there were changes
 			//updates rendering matrices (and its inversions)
 			window.update();
 		}
-		
-<<<<<<< HEAD
-<<<<<<< HEAD
-		guiShader.bind();
-=======
->>>>>>> master
-=======
 	}
 
 	public static void render() {
->>>>>>> gui_changes
-		
 		for (GUIWindow window : windows) {
-			
 			window.render();
-			
 		}
-		
 	}
 	
 	//************************** clicked element ******************************************
@@ -167,15 +126,6 @@ public class GUIManager {
 	
 	//***************************************************************************************
 	
-<<<<<<< HEAD
-	public static void disableGuiShader() {
-		
-		if (!initialized) {
-			init();
-		}
-		
-		guiShader.unbind();
-=======
 	public static boolean isInitialized() {
 		return initialized;
 	}
@@ -193,7 +143,6 @@ public class GUIManager {
 	
 	public static void remove(GUIWindow window) {
 		windows.remove(window);
->>>>>>> master
 	}
 
 }

@@ -5,9 +5,10 @@ import interaction.Window;
 import math.matrices.Matrix44f;
 import math.vectors.Vector4f;
 import rendering.matrices.projection.ProjectionMatrix;
-import rendering.shaders.ShaderLoader;
+//import rendering.shaders.ShaderLoader;
 import rendering.shaders.ShaderProgram;
 
+//TODO: while resolving merge conflicts (gui-changes -> master) I just commented the problematic lines
 public class GUIShaderCollection {
 	
 	private static boolean initialized = false;
@@ -22,9 +23,9 @@ public class GUIShaderCollection {
 			return;
 		}
 		
-		projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions());
+	//	projectionMatrix = ProjectionMatrix.generateOrthographicProjectionMatrix(window.getProportions());
 		
-		guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
+	//	guiShader = ShaderLoader.loadShader("Shaders/GUI/GUI.vert", "Shaders/GUI/GUI.frag");
 		
 		initialized = true;
 	}

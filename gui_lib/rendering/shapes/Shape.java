@@ -6,15 +6,16 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
-import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import dataType.GUIElementMatrix;
 import gui_core.GUIShaderCollection;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
 
-public abstract class Shape extends Element_Model {
+//TODO: only substituted "Element_Model" by "Mesh"
+public abstract class Shape extends Mesh {
 	
 	public Shape() {
 		super(GL_TRIANGLES);
