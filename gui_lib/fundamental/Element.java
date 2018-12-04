@@ -45,8 +45,8 @@ public abstract class Element implements ElementBase {
 	@Override
 	public void render() {
 		
-		shape.render(null, color, TM);
-		
+		//shape.render(null, color, TM);
+		shape.render();
 	}
 	
 	/**

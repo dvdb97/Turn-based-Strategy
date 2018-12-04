@@ -54,8 +54,8 @@ public class TTFBox extends Element {
 	@Override
 	public void render() {
 		
-		shape.render(font, null, TM);
-		
+		//shape.render(font, null, TM);
+		shape.render();
 	}
 	
 }

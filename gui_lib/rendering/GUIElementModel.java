@@ -2,7 +2,6 @@ package rendering;
 
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
-import assets.models.Element_Model;
 import assets.textures.Texture2D;
 import dataType.GUIElementMatrix;
 import gui_core.GUIShaderCollection;
@@ -35,6 +34,7 @@ public class GUIElementModel extends Mesh {
 		
 	}
 	
+	
 	//****************************************************************
 	
 	public boolean isHit(float cursorX, float cursorY) {
@@ -53,17 +53,17 @@ public class GUIElementModel extends Mesh {
 	/**
 	 * 
 	 * @return Returns the texture position data to draw this shape
-	 */
+	 *//*
 	public FloatBuffer getTexPosData() {
 		return shape.getTexPosData();
 	}
 	
-	
+	*/
 	/**
 	 * 
 	 * @return Returns the index array to draw this shape
 	 */
-	public IntBuffer getIndexData() {
+/*	public IntBuffer getIndexData() {
 		return shape.getIndexData();
 	}
 	
@@ -90,7 +90,7 @@ public class GUIElementModel extends Mesh {
 		GUIShaderCollection.disableGuiShader();
 		
 	}
-
+	*/
 	
 	
 }

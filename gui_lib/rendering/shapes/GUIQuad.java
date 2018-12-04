@@ -7,7 +7,7 @@ import utils.CustomBufferUtils;
 
 public class GUIQuad extends Shape {
 
-	private static final float[] data = {
+	private static final float[] posData = {
 			0.0f,  0.0f, -1.0f,
 			1.0f,  0.0f, -1.0f,
 			0.0f, -1.0f, -1.0f,
@@ -32,25 +32,12 @@ public class GUIQuad extends Shape {
 		public GUIQuad() {
 			super();
 			
-			this.loadData();
-		}		
+			this.setPositionData(CustomBufferUtils.createFloatBuffer(posData));
+		//	this.setColorData(CustomBufferUtils.createFloatBuffer(color));
+			this.setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
+			
+		}
 		
-		
-	//	@Override
-		public FloatBuffer getPositionData() {
-			return CustomBufferUtils.createFloatBuffer(data);
-		}
-
-	//	@Override
-		public FloatBuffer getTexPosData() {
-			return CustomBufferUtils.createFloatBuffer(texData);
-		}
-
-	//	@Override
-		public IntBuffer getIndexData() {
-			return CustomBufferUtils.createIntBuffer(indices);
-		}
-
 		@Override
 		public boolean isHit(float cursorX, float cursorY) {
 			
