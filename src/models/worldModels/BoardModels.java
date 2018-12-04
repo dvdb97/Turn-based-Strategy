@@ -122,11 +122,11 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		ShaderManager.useLightShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
+	//	ShaderManager.useLightShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
 		
-		RenderEngine.draw(terrain, null);
+	//	RenderEngine.draw(terrain, null);
 		
-		ShaderManager.disableLightShader();
+	//	ShaderManager.disableLightShader();
 		
 		
 		terrain.render(scene);
@@ -138,7 +138,7 @@ public class BoardModels {
 		
 		tileBorders.displayAll();
 		
-		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
+	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
 		
 		tileBorders.render(scene);
 		
@@ -148,7 +148,7 @@ public class BoardModels {
 		
 		hex.render(scene);
 		
-		ShaderManager.disableShader();
+	//	ShaderManager.disableShader();
 		
 	}
 	
@@ -156,11 +156,11 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
+	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
 		
 		tileBorders.render(scene);
 		
-		ShaderManager.disableShader();
+	//	ShaderManager.disableShader();
 		
 	}
 	
@@ -168,11 +168,11 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
+	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
 		
-		RenderEngine.render(tileBorders, null);
+		tileBorders.render(scene);
 		
-		ShaderManager.disableShader();
+	//	ShaderManager.disableShader();
 		
 	}
 	
