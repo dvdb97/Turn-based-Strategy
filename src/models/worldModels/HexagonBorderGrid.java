@@ -9,6 +9,7 @@ import org.lwjgl.BufferUtils;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
@@ -62,8 +63,7 @@ public class HexagonBorderGrid extends Mesh {
 	
 	
 	private void processVerticesAndElementBuffer() {
-
-		Vertex[] triGridVertices = prepareTriGridVertexArray(triangleGrid);
+		
 		vectors = new ArrayList<>((length+1)*2 * (width+1));
 		
 		extractVectorsFromSuperGrid();
@@ -86,29 +86,6 @@ public class HexagonBorderGrid extends Mesh {
 			for (int x=0; x<length; x++) {
 				addHexagon(x, y);
 			}
-		}
-	}
-
-	private Vertex[] prepareTriGridVertexArray(TriangleGrid triangleGrid) {
-		
-		Vector3f[] triGridPos = triangleGrid.getPosArray();
-		Vertex[] triGridVertices = new Vertex[triGridPos.length];
-		
-		float delta = 0.005f*elr;
-		
-		for (int i=0; i<triGridVertices.length; i++) {
-			
-			triGridVertices[i] = new Vertex(triGridPos[i], color);
-			
-			float c;
-			float d = triGridVertices[i].getC();
-			if (d < 0) {
-				c = delta;
-			} else {
-				c = d + delta;
-			}
-			triGridVertices[i].setC(c);
-			
 		}
 	}
 
@@ -176,8 +153,8 @@ public class HexagonBorderGrid extends Mesh {
 	//******************** others *********************************
 	
 	@Override
-	public void onDrawStart() {
-		super.onDrawStart();
+	public void onDrawStart(Scene scene) {
+		super.onDrawStart(scene);
 		
 		glLineWidth(0.1f);
 		
@@ -186,53 +163,13 @@ public class HexagonBorderGrid extends Mesh {
 	}
 	
 	@Override
-	public void onDrawEnd() {
-		super.onDrawEnd();
+	public void onDrawEnd(Scene scene) {
+		super.onDrawEnd(scene);
 		
 		glDisable(GL_PRIMITIVE_RESTART);
 		
 	}
 	
-	
-	private Vertex[] vertexListToArray() {
-		
-		Vertex[] array = new Vertex[vertices.size()];
-		
-		for (int v=0; v<array.length; v++) {
-			array[v] = vertices.get(v);
-		}
-		
-		return array;
-		
-	}
-	
-	
-	private int[] getIndexArrayByID(int index) {
-		
-		if (index < 0) {
-			return getIndexArrayByID(0);
-		}
-		
-		
-		if (index >= indexBuffer.capacity()/7) {
-			return getIndexArrayByID(indexBuffer.capacity()/7 - 1);
-		}
-		
-		int[] indices = new int[7];
-		
-		int positionInElementArray = index * 7;
-		
-		
-		for (int i = 0; i < 7; ++i) {
-			
-			indices[i] = indexBuffer.get(positionInElementArray + i);
-			
-		}
-		
-		
-		return indices;
-		
-	}
 	
 	//************************************ get *****************************
 	

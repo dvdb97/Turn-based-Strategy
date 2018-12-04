@@ -3,6 +3,7 @@ package models.worldModels;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
@@ -158,15 +159,15 @@ public class HexagonGrid extends Mesh {
 	//************************************ draw start stop ***************************
 	
 	@Override
-	public void onDrawStart() {
-		super.onDrawStart();
+	public void onDrawStart(Scene scene) {
+		super.onDrawStart(scene);
 		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
 	}
 	
 	@Override
-	public void onDrawEnd() {		
+	public void onDrawEnd(Scene scene) {
 		glDisable(GL_PRIMITIVE_RESTART);
 		
 	}

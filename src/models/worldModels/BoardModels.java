@@ -5,6 +5,7 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
 import assets.textures.Texture2D;
 import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
@@ -17,7 +18,6 @@ import models.TerrainCol;
 import models.seeds.ColorFunction;
 import rendering.RenderEngine;
 import rendering.matrices.transformation.TransformationMatrix;
-import testing.TextureRenderer;
 import visualize.CoordinateSystem;
 import world.WorldManager;
 
@@ -52,6 +52,8 @@ public class BoardModels {
 	private static Color hoveredTileColor;
 	
 	private static Color selectedTileColor;
+	
+	private static Scene scene;
 	
 	//***************************** constructor ********************************
 	
@@ -90,27 +92,14 @@ public class BoardModels {
 		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
 		sun = new DirectionalLight(new Vector3f(0.5f, 0.5f, 0.3f));
-		
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
 		
 		selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
-	}
-
-	private void createVertexArray() {
-		
-		Vector3f[] positions = terrain.getPosArray();
-		ColorFunction terrainCol = new TerrainCol();
-		
-		vertices = new Vertex[positions.length];
-		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], terrainCol.color(0,0,positions[v].getC()));
-		}
-		
-	}
-	
+		scene = new Scene(new Camera(), sun, null);
+	}	
 	
 	//***************************** render ********************************
 	
@@ -140,8 +129,7 @@ public class BoardModels {
 		ShaderManager.disableLightShader();
 		
 		
-		terrain.render();
-		
+		terrain.render(scene);
 		
 		
 	}
@@ -152,13 +140,13 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
 		
-		RenderEngine.render(tileBorders, null);
+		tileBorders.render(scene);
 		
-		RenderEngine.render(sea, null);
+		sea.render(scene);
 		
-		RenderEngine.render(coSystem, null);
+		coSystem.render(scene);
 		
-		RenderEngine.draw(hex, null);
+		hex.render(scene);
 		
 		ShaderManager.disableShader();
 		
@@ -170,7 +158,7 @@ public class BoardModels {
 		
 		ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
 		
-		RenderEngine.render(tileBorders, null);
+		tileBorders.render(scene);
 		
 		ShaderManager.disableShader();
 		
@@ -191,25 +179,7 @@ public class BoardModels {
 	
 	
 	//**************************** get *************************************
-	
-	/**
-	 * @return an array containing all terrains vertices
-	 */
-	public Vertex[] getVertices() {
 		
-		return vertices;
-		
-	}
-	
-	/**
-	 * @return an array containing the vertex-array-indices of all tile's center
-	 */
-	public int[] getTileCenters() {
-		
-		return tileBorders.getHexCenterIndices();
-		
-	}
-	
 	/**
 	 * @return the game board's length in tiles
 	 */

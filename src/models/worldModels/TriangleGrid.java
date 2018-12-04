@@ -205,10 +205,6 @@ public class TriangleGrid extends Mesh {
 		return normals;
 		
 	}
-
-
-	
-	
 	
 	
 	//********************************** util methods *********************************************
