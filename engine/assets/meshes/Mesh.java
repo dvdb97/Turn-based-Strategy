@@ -11,6 +11,7 @@ import assets.buffers.VertexBuffer;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
+import assets.material.StandardMaterial;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
 import assets.shaders.ShaderProgram;
@@ -47,7 +48,7 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh() {
-		this(LightShader.createPerFragmentLightShader(), Material.standard); 
+		this(LightShader.createPerFragmentLightShader(), new StandardMaterial()); 
 	}
 	
 	
@@ -82,15 +83,7 @@ public class Mesh extends Deletable implements IRenderable {
 		this.texture = texture;
 	}
 	
-	
-	/**
-	 * 
-	 * Stores vertex data on the GPU and makes those vertices available
-	 * for rendering.
-	 * 
-	 * @param vertices The vertices to be stored.
-	 * @param indices The indices that describe the mesh's triangles.
-	 */
+	//TODO
 	public void setData(Vertex[] vertices, IntBuffer indices) {
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
@@ -133,6 +126,54 @@ public class Mesh extends Deletable implements IRenderable {
 		}
 	}
 	
+	/**
+	 * 
+	 * Stores vertex data on the GPU and makes those vertices available
+	 * for rendering.
+	 * 
+	 * @param vertices The vertices to be stored.
+	 * @param indices The indices that describe the mesh's triangles.
+	 */
+
+	public void setData(Vertex[] vertices, IntBuffer indices, boolean normals) {
+		if(normals) {
+			setData(vertices, indices);
+			return;
+		}
+		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
+		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
+		
+		for (int i = 0; i < vertices.length; ++i) {
+			posBuffer.put(vertices[i].getA());
+			posBuffer.put(vertices[i].getB());
+			posBuffer.put(vertices[i].getC());
+			
+			colorBuffer.put(vertices[i].getRed());
+			colorBuffer.put(vertices[i].getGreen());
+			colorBuffer.put(vertices[i].getBlue());
+			colorBuffer.put(vertices[i].getAlpha());
+			
+		}
+		
+		posBuffer.flip();
+		colorBuffer.flip();
+		
+		this.setPositionData(posBuffer);
+		this.setColorData(colorBuffer);
+		this.setIndexBuffer(indices);
+		
+		if (vertices[0].isTextured()) {
+			FloatBuffer texBuffer = BufferUtils.createFloatBuffer(vertices.length * 2);
+			
+			for (int i = 0; i < vertices.length; ++i) {
+				texBuffer.put(vertices[i].getTexturePositions().getA());
+				texBuffer.put(vertices[i].getTexturePositions().getB());
+			}
+			
+			texBuffer.flip();
+			this.setTexCoordData(texBuffer, 2);
+		}
+	}
 	
 	/**
 	 * 

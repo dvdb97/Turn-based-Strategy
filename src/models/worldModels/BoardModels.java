@@ -91,7 +91,8 @@ public class BoardModels {
 		//TODO: no hard coding!
 		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
 		
-		sun = new DirectionalLight(new Vector3f(0.5f, 0.5f, 0.3f));
+		sun = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
+		sun.fitToBoundingBox(terrain);
 		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
 		
 		hoveredTileColor = new Color(1f, 1f, 0f, 1f);

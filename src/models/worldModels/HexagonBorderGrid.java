@@ -74,8 +74,7 @@ public class HexagonBorderGrid extends Mesh {
 		
 		vectors = null;
 		
-		setData(vertices, elementBuffer);
-		
+		setData(vertices, elementBuffer, false);
 	}
 	
 	private void extractVectorsFromSuperGrid() {

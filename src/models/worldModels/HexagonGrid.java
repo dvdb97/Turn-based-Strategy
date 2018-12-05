@@ -61,7 +61,7 @@ public class HexagonGrid extends Mesh {
 		
 		SuperGrid.adjustToTerrainAndSea(vertices);
 		
-		setData(vertices, elementBuffer);
+		setData(vertices, elementBuffer, false);
 		
 	}
 	
