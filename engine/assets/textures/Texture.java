@@ -193,7 +193,8 @@ public abstract class Texture extends GLTargetObject {
 
 	@Override
 	public void delete() {
-		glDeleteTextures(getID());	
+		System.out.println("Texture: deleted");
+		//TODO:glDeleteTextures(getID());	
 	}
 
 }
