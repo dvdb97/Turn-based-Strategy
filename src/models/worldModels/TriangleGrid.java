@@ -16,6 +16,10 @@ import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
+import assets.shaders.ShaderLoader;
+import assets.shaders.standardShaders.lightShader.LightShader;
+import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import math.vectors.Vector3f;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
@@ -78,6 +82,7 @@ public class TriangleGrid extends Mesh {
 	
 	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
 		super(GL_TRIANGLE_STRIP, material, null);
+		//setShader(LightShader.createPerVertexLightShader());
 		
 		length = superGrid.getLengthInVectors();
 		width  = superGrid.getWidthInVectors();
@@ -311,15 +316,17 @@ public class TriangleGrid extends Mesh {
 	
 	//********************************** other stuff **********************************************
 	
-	
-	public void onDrawStart() {
+	@Override
+	protected void onDrawStart(Scene scene) {
+		super.onDrawStart(scene);
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
 	}
 	
-	
-	public void onDrawEnd() {		
+	@Override
+	public void onDrawEnd(Scene scene) {		
 		glDisable(GL_PRIMITIVE_RESTART);
+		super.onDrawEnd(scene);
 	}
 	
 	

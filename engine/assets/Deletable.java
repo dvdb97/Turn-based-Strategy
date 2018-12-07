@@ -6,7 +6,7 @@ public abstract class Deletable {
 
 	@Override
 	protected void finalize() throws Throwable {
-		this.delete();
+		//TODO:this.delete();
 	}
 
 }

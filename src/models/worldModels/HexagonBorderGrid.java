@@ -10,7 +10,10 @@ import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
 
@@ -46,6 +49,9 @@ public class HexagonBorderGrid extends Mesh {
 	public HexagonBorderGrid(SuperGrid superGrid, Color color) {
 		
 		super(GL_LINE_LOOP);
+		String path = "Shaders/StandardShaders/uniformColor";
+		ShaderProgram shader = ShaderLoader.loadShader(path + ".vert", path + ".frag");
+		this.setShader(shader);
 		
 		this.superGrid = superGrid;
 		
@@ -154,7 +160,7 @@ public class HexagonBorderGrid extends Mesh {
 	@Override
 	public void onDrawStart(Scene scene) {
 		super.onDrawStart(scene);
-		
+		getShader().setUniformVector4f("u_Color", new Vector4f(1f, 0f, 0f, 1f));
 		glLineWidth(0.1f);
 		
 		glEnable(GL_PRIMITIVE_RESTART);
