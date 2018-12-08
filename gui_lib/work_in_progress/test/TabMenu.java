@@ -22,12 +22,17 @@ public class TabMenu extends Container {
 	private ArrayList<Tab> tabs;
 	private AdvancedElementList<ToggleButton> buttons;
 	
-	
+	private float buttonHeight, buttonWidth, buttonOffsetX, buttonOffsetY;
 	
 	//************************* constructor **************************
 	
-	public TabMenu(Color color, GUIElementMatrix transformationMatrix) {
+	public TabMenu(Color color, float buttonHeight, GUIElementMatrix transformationMatrix) {
 		super(color, transformationMatrix);
+		
+		this.buttonHeight = buttonHeight;
+		buttonWidth = 1f/MAX_NUM_TABS;
+		buttonOffsetX = 0f;
+		buttonOffsetY = -0f;
 		
 		tabs = new ArrayList<>(MAX_NUM_TABS);
 		buttons = new AdvancedElementList<>(MAX_NUM_TABS);
@@ -41,23 +46,23 @@ public class TabMenu extends Container {
 	
 	//********************* tabs **********************************
 	
-	public void addTab(Color color, String label, ArrayList<Tab> tabList) {
+	public boolean addTab(Color color, String label, ArrayList<Tab> tabList) {
 		
 		if(getNumTabs() >= MAX_NUM_TABS) {
-			return;
+			return false;
 		}
 		
-		Tab tab = new Tab(WHITE, new GUIElementMatrix(0.1f, -0.4f, 0.8f, 0.5f));
+		Tab tab = new Tab(GRAY, new GUIElementMatrix(buttonOffsetX, buttonOffsetY-buttonHeight, 1f, 1f+buttonOffsetY-buttonHeight));
 		tabs.add(tab);
 		tabList.add(tab);
 		
-		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(0.1f + buttons.size()*0.2f, -0.1f, 0.2f, 0.2f));
-		TTFBox buttonLabel = new TTFBox(0.1f + buttons.size()*0.2f, -0.1f, 0.04f, label, BLACK);
+		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(buttonOffsetX + buttons.size()*buttonWidth, buttonOffsetY, buttonWidth, buttonHeight));
+		TTFBox buttonLabel = new TTFBox(buttonOffsetX + buttons.size()*buttonWidth, buttonOffsetY, 0.03f, label, BLACK);
 		buttons.add(button);
 		children.add(buttonLabel);
 		button.setEnableFunc(  (element) -> changeToTab(buttons.indexOf(element)) );
 		button.setDisableFunc( (element) -> changeToNoTab() );
-		
+		return true;
 	}
 	
 	
