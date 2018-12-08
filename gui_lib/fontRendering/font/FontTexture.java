@@ -23,7 +23,7 @@ public class FontTexture extends Texture2D {
 	 * @param height The height of the texture in pixels.
 	 */
 	public FontTexture(String path, int width, int height) {
-		super(path, width, height, Texture.LINEAR, Texture.NEAREST);
+		super(path, Texture.LINEAR, Texture.NEAREST);
 		
 		this.setTextureWrap(Texture.CLAMP_TO_BORDER);
 	}

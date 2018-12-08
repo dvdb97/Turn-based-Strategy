@@ -12,7 +12,7 @@ public class GUITexture extends Element{
 	
 	public GUITexture(String path, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), null, transformationMatrix);
-		texture = new Texture2D(path, 3000, 1000, Texture.LINEAR, Texture.NEAREST);
+		texture = new Texture2D(path, Texture.LINEAR, Texture.NEAREST);
 	}
 	
 	@Override

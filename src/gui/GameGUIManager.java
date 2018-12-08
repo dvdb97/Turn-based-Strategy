@@ -6,6 +6,7 @@ import gui.tileInfo.TileInfoWindow;
 import interaction.TileSelecter;
 import rendering.shapes.GUIQuad;
 import work_in_progress.test.DragableWindow;
+import work_in_progress.test.TexWindow;
 import world.gameBoard.GameBoard;
 
 import static utils.ColorPalette.*;
@@ -18,14 +19,14 @@ public class GameGUIManager {
 	
 	public static void init() {
 		
-		tiw = new TileInfoWindow();
-	//	window = new DragableWindow(new GUIQuad(), WHITE, new GUIElementMatrix(0, 0, 0.25f, 0.25f));
+	//	tiw = new TileInfoWindow();
+		window = new TexWindow();
 	
 		
 	}
 	
 	public static void update() {
-		tiw.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
+	//	tiw.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
 	}
 	
 }
