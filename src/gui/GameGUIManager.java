@@ -19,14 +19,14 @@ public class GameGUIManager {
 	
 	public static void init() {
 		
-	//	tiw = new TileInfoWindow();
+		tiw = new TileInfoWindow();
 		window = new TexWindow();
 	
 		
 	}
 	
 	public static void update() {
-	//	tiw.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
+		tiw.setTile(GameBoard.getTile(TileSelecter.getSelectedTileIndex()));
 	}
 	
 }
