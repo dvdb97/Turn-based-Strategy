@@ -4,14 +4,15 @@ package assets.textures;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
 import java.nio.ByteBuffer;
+
+import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
 
 
 public class Texture2D extends Texture {	
 
-	public Texture2D(String path, int width, int height, int filter, int mipmapFilter) {
-		super(GL_TEXTURE_2D, width, height);
-		
+	public Texture2D(String path, int filter, int mipmapFilter) {
+		super(GL_TEXTURE_2D);
 		setImageData(path, filter, mipmapFilter);
 	}
 	
@@ -46,9 +47,10 @@ public class Texture2D extends Texture {
 	public void setImageData(String path, int filter, int mipmapFilter) {
 		bind();
 		
-		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
-		
-	//	setImageData(buffer, filter, mipmapFilter);
+		Image image = ImageLoader.loadImageRGBA(path);
+		setWidth(image.getWidth());
+		setHeight(image.getHeight());
+		ByteBuffer buffer = image.getImageDataAsByteBuffer();
 		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
 		

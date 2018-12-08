@@ -48,15 +48,15 @@ public abstract class Texture {
 	
 	
 	public Texture(int type, int width, int height) {
-		ID = glGenTextures();
-
+		this(type);
 		this.width = width;
-		
 		this.height = height;
-		
-		this.TYPE = type;
 	}
 	
+	public Texture(int type) {
+		ID = glGenTextures();
+		this.TYPE = type;
+	}
 	
 	public void setFilter(int filter) {
 		setFilter(filter, filter);	
