@@ -35,12 +35,13 @@ public class TileInfoWindow extends GUIWindow {
 		
 		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
-		waterTex = new GUITexture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, 0.4f/0.9f/3f*Application.getWindow().getProportions()));
-		grassTex = new GUITexture("res/PH_Grassland.png", new GUIElementMatrix(0, 0, 1, 0.4f/0.9f/3f*Application.getWindow().getProportions()));
+		float textureHeight = 0.4f/0.9f/3f*Application.getWindow().getProportions();
+		waterTex = new GUITexture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, textureHeight));
+		grassTex = new GUITexture("res/PH_Grassland.png", new GUIElementMatrix(0, 0, 1, textureHeight));
 		
 		children.add(waterTex);
 		
-		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0f, -0.3f, 1f, 0.4f));
+		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0f, -textureHeight, 1f, 1 - textureHeight));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
 		tabMenu.addTab(TURQUOISE, "one", tabList);

@@ -16,6 +16,7 @@ import static utils.ColorPalette.*;
 public class TabMenu extends Container {
 
 	private static int MAX_NUM_TABS = 4;
+	private static final int NO_TAB = -1;
 	
 	private int currentTab;
 	private ArrayList<Tab> tabs;
@@ -30,7 +31,7 @@ public class TabMenu extends Container {
 		
 		tabs = new ArrayList<>(MAX_NUM_TABS);
 		buttons = new AdvancedElementList<>(MAX_NUM_TABS);
-		currentTab = -1;
+		currentTab = NO_TAB;
 		
 		children.add(buttons);
 		
@@ -74,7 +75,7 @@ public class TabMenu extends Container {
 	
 	private void changeToNoTab() {
 		
-		if(currentTab >= 0 && currentTab < MAX_NUM_TABS) {
+		if(currentTab != NO_TAB && currentTab < MAX_NUM_TABS) {
 			children.remove(tabs.get(currentTab));
 		}
 		currentTab = -1;
@@ -85,7 +86,7 @@ public class TabMenu extends Container {
 	
 	private void toggleCurrentButton() {
 		
-		if(currentTab >= 0 && currentTab < MAX_NUM_TABS) {
+		if(currentTab != NO_TAB && currentTab < MAX_NUM_TABS) {
 			buttons.get(currentTab).toggle();
 		}
 		
