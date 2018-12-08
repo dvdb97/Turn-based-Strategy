@@ -5,6 +5,7 @@ import work_in_progress.test.TabMenu;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
+import output.GUITexture;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 
@@ -29,7 +30,9 @@ public class TileInfoWindow extends GUIWindow {
 		
 		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
-		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.05f, 0.9f, 0.4f));
+		children.add(new GUITexture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, 0.333333f)));
+		
+		tabMenu = new TabMenu(DARK_SLATE_GRAY, new GUIElementMatrix(0.05f, -0.5f, 0.9f, 0.4f));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
 		tabMenu.addTab(TURQUOISE, "test", tabList);

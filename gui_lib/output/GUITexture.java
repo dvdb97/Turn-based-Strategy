@@ -10,9 +10,9 @@ public class GUITexture extends Element{
 	
 	private Texture2D texture;
 	
-	protected GUITexture(String path, GUIElementMatrix transformationMatrix) {
+	public GUITexture(String path, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), null, transformationMatrix);
-		texture.setImageData(path, Texture.LINEAR, Texture.NEAREST);
+		texture = new Texture2D(path, 3000, 1000, Texture.LINEAR, Texture.NEAREST);
 	}
 	
 	@Override
