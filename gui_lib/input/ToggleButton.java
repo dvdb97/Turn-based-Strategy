@@ -16,12 +16,12 @@ public abstract class ToggleButton extends Button {
 	protected ToggleButton(Shape shape, Color color1, Color color2, GUIElementMatrix transformationMatrix) {
 		super(shape, color1, transformationMatrix);
 	}
-
+	
 	@Override
 	public void onClick() {
 
 	}
-
+	
 	@Override
 	public void onRelease() {
 		toggle();
@@ -42,11 +42,11 @@ public abstract class ToggleButton extends Button {
 		
 		
 	}
-
+	
 	protected void setEnableFunc(Function<ToggleButton> enableFunc) {
 		this.enableFunc = enableFunc;
 	}
-
+	
 	protected void setDisableFunc(Function<ToggleButton> disableFunc) {
 		this.disableFunc = disableFunc;
 	}

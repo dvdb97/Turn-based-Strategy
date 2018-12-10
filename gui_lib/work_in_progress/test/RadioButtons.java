@@ -20,8 +20,8 @@ public class RadioButtons extends Container {
 	public RadioButtons(Color color, float labelHeight, GUIElementMatrix transformationMatrix) {
 		super(color, transformationMatrix);
 		
-		buttonHeight = 0.2f;
-		buttonWidth = 0.2f;
+		buttonHeight = 0.4f;
+		buttonWidth = 0.4f;
 		buttonOffsetX = 0.2f;
 		buttonOffsetY = -0.2f;
 		
@@ -33,18 +33,24 @@ public class RadioButtons extends Container {
 	}
 	
 	public void addButton(String label, Color color) {
-		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(buttonOffsetX, buttonOffsetY-buttonHeight*buttons.size(), buttonWidth, buttonHeight));
+		RadioToggleButton button = new RadioToggleButton(color, new GUIElementMatrix(buttonOffsetX, buttonOffsetY-buttonHeight*buttons.size(), buttonWidth, buttonHeight));
 		buttons.add(button);
 		labels.add(new TTFBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
 		button.setEnableFunc(  (element) -> changeToButton(buttons.indexOf(element)) );
 		button.setDisableFunc( (element) -> disableFunc(buttons.indexOf(element)) );
+		button.setSuspendFunc(suspendFunc);
 	}
 	
-	private void changeToButton(int index) {
-		if (currentButton != index) {
-			toggleCurrentButton();
-			currentButton = index;
+	private TestFunction<ToggleButton> suspendFunc = new TestFunction<ToggleButton>() {
+		@Override
+		public boolean test(ToggleButton e) {
+			return currentButton == buttons.indexOf(e);
 		}
+	};
+	
+	private void changeToButton(int index) {
+		toggleCurrentButton();
+		currentButton = index;
 	}
 	
 	private void toggleCurrentButton() {
@@ -52,8 +58,6 @@ public class RadioButtons extends Container {
 	}
 	
 	private void disableFunc(int index) {
-		if (currentButton == index) {
-			buttons.get(index).toggle();
-		}
+		buttons.get(index).toggle();
 	}
 }

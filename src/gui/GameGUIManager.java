@@ -6,7 +6,6 @@ import gui.tileInfo.TileInfoWindow;
 import interaction.TileSelecter;
 import rendering.shapes.GUIQuad;
 import work_in_progress.test.DragableWindow;
-import work_in_progress.test.TexWindow;
 import world.gameBoard.GameBoard;
 
 import static utils.ColorPalette.*;
@@ -20,7 +19,6 @@ public class GameGUIManager {
 	public static void init() {
 		
 		tiw = new TileInfoWindow();
-		window = new TexWindow();
 	
 		
 	}
