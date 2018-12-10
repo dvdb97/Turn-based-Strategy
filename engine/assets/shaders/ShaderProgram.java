@@ -12,6 +12,7 @@ import assets.IBindable;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
+import assets.textures.Texture;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -19,65 +20,11 @@ import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class ShaderProgram extends Bindable {
-	
-	private class Uniform {
-		
-		final String identifier;
-		
-		final String type;
-		
-		final int shader;
-		
-		final int location;
-		
-		public Uniform(String identifier, String type, int shader, int location) {
-			this.identifier = identifier;
-			this.type = type;
-			this.location = location;
-			this.shader = shader;
-		}
-		
-	}
-	
-	private class Attribute {
-		
-		final String identifier;
-		
-		final String type;
-		
-		final int location;
-		
-		public Attribute(String identifier, String type, int location) {
-			this.identifier = identifier;
-			this.type = type;
-			this.location = location;
-		}
-		
-		public int getDataSize() {
-			if (type.equals("vec3")) {
-				return 3;
-			}
-			
-			if (type.equals("vec4")) {
-				return 4;
-			}
-			
-			return 2;
-		}
-
-		@Override
-		public String toString() {
-			return "location " + location + ": " + type + " " + identifier;
-		}
-		
-	}
-	
+public class ShaderProgram extends Bindable {	
 	
 	private static String type = "(vec.|mat.|int|float)";
 	
 	private static Pattern uniformPattern = Pattern.compile("uniform " + type + " (([A-Za-z0-9]+));");
-	
 	private static Pattern attributePattern = Pattern.compile("layout.location[ ]?=[ ]?(\\d). in " + type + " (([a-zA-Z0-9]+));");
 	
 	
@@ -88,13 +35,10 @@ public class ShaderProgram extends Bindable {
 	
 	
 	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Uniform> uniforms = null;
+	private HashMap<String, Integer> uniforms = null;
 	
 	//A hashmap we are going to store attribute locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Attribute> attributes = null;
-	
-	//The layout of the data that a mesh needs to have to match the shaders requirements
-	private int layout;
+	private HashMap<String, Integer> attributes = null;
 	
 	//The view projection matrix used for the current pass. It will be stored here to use it in later computation
 	protected Matrix44f viewProjectionMatrix;
@@ -115,7 +59,6 @@ public class ShaderProgram extends Bindable {
 	private void parseCode(String vertSource, String fragSource) {
 		parseUniforms(vertSource, fragSource);
 		parseAttributes(vertSource);
-		parseLayout();
 	}
 	
 	
@@ -129,37 +72,24 @@ public class ShaderProgram extends Bindable {
 	 */
 	private void parseUniforms(String vert, String frag) {
 		
-		this.uniforms = new HashMap<String, Uniform>();
+		this.uniforms = new HashMap<String, Integer>();
 		
 		//Extract all the uniforms out of the vertex shader 
 		Matcher uniformMatcher = uniformPattern.matcher(vert);
 		
 		while (uniformMatcher.find()) {
-			
-			String type = uniformMatcher.group(1);
-			
 			String identifier = uniformMatcher.group(2);
-			
 			int location = getUniformLocation(identifier);
-			
-			uniforms.put(identifier, new Uniform(identifier, type, GL_VERTEX_SHADER, location));
-			
+			uniforms.put(identifier, location);
 		}
-		
 		
 		//Extract all the uniforms out of the fragment shader
 		uniformMatcher = uniformPattern.matcher(frag);
 		
 		while (uniformMatcher.find()) {
-			
-			String type = uniformMatcher.group(1);
-			
 			String identifier = uniformMatcher.group(2);
-
 			int location = getUniformLocation(identifier);
-			
-			uniforms.put(identifier, new Uniform(identifier, type, GL_FRAGMENT_SHADER, location));
-			
+			uniforms.put(identifier, location);
 		}
 		
 	}
@@ -174,39 +104,16 @@ public class ShaderProgram extends Bindable {
 	 */
 	private void parseAttributes(String vert) {
 		
-		this.attributes = new HashMap<String, Attribute>();
+		this.attributes = new HashMap<String, Integer>();
 		
 		Matcher attributeMatcher = attributePattern.matcher(vert);
 		
 		while (attributeMatcher.find()) {
-			
 			int location = Integer.parseInt(attributeMatcher.group(1));
-			
-			String type = attributeMatcher.group(2);
-			
 			String identifier = attributeMatcher.group(3);
-			
-			this.attributes.put(identifier, new Attribute(identifier, type, location));
-			
+			this.attributes.put(identifier, location);
 		}
 		
-	}
-	
-	
-	private void parseLayout() {
-		Collection<Attribute> attribCollection = attributes.values();
-		
-		int layout = 0;
-		
-		for (int i = 0; i < 8; ++i) {
-			for (Attribute attrib : attribCollection) {
-				if (attrib.location == i) {					
-					layout |= attrib.getDataSize() << (i * 4);
-				}
-			}
-		}
-		
-		this.layout = layout;
 	}
 	
 	
@@ -237,7 +144,6 @@ public class ShaderProgram extends Bindable {
 		}
 		
 		parseCode(vertSource, fragSource);
-		
 	}
 	
 	
@@ -474,6 +380,11 @@ public class ShaderProgram extends Bindable {
 	}
 	
 	
+	public void bindTexture(String target, Texture texture) {
+		
+	}
+	
+	
 	/**
 	 * 
 	 * Gets the uniform location in this shader programm
@@ -482,35 +393,15 @@ public class ShaderProgram extends Bindable {
 	 * @return Returns the uniform's location
 	 */
 	public int getUniformLocation(String name) {
-		
 		if (uniforms == null) {
-			return 0;
+			return -1;
 		}
 		
 		if (!uniforms.containsKey(name)) {
-			return glGetUniformLocation(ID, name);
+			this.uniforms.put(name, glGetUniformLocation(ID, name));
 		}
 		
-		return uniforms.get(name).location;
-				
-	}
-	
-	
-	/**
-	 * 
-	 * Gets the uniform's type 
-	 * 
-	 * @param name The name of the uniform variable
-	 * @return Returns the type of the uniform as a String; Returns an empty String if the uniform doesn't exist.
-	 */
-	public String getUniformType(String name) {
-		
-		if (!uniforms.containsKey(name)) {
-			return "";
-		}
-		
-		return uniforms.get(name).type;
-		
+		return uniforms.get(name);	
 	}
 	
 	
@@ -522,40 +413,11 @@ public class ShaderProgram extends Bindable {
 	 * @return Returns the attribute's location
 	 */
 	public int getAttributeLocation(String name) {
-		
 		if (!attributes.containsKey(name)) {
 			return -1;
 		}
 		
-		return attributes.get(name).location;
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Gets the attribute's type 
-	 * 
-	 * @param name The name of the attribute variable
-	 * @return Returns the type of the attribute as a String; Returns an empty String if the uniform doesn't exist.
-	 */
-	public String getAttributeType(String name) {
-		
-		if (!attributes.containsKey(name)) {
-			return "";
-		}
-		
-		return attributes.get(name).type;
-		
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the data layout required for this shader
-	 */
-	public int getLayout() {
-		return layout;
+		return attributes.get(name);
 	}
 	
 	

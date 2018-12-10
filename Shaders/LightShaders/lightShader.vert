@@ -21,9 +21,9 @@ uniform mat4 lightVPMatrix;
 out VS_OUT {
 	vec3 fragCoordModelSpace;
 	vec3 fragCoordWorldSpace;
-	vec3 fragCoordLightSpace;
 	vec4 fragColor;
 	vec2 fragTexPos;
+	vec3 shadowTexCoords;
 	vec3 fragNormalModelSpace;
 	vec3 fragNormalWorldSpace;
 } vs_out;
@@ -49,7 +49,10 @@ void main() {
 	vs_out.fragCoordWorldSpace = vec3(modelMatrix * vec4(vPosition, 1.0f));
 
 	//The light-space coordinates of the vertex
-	vs_out.fragCoordLightSpace = vec3(lightVPMatrix * vec4(vs_out.fragCoordWorldSpace, 1.0f));
+	vec3 fragCoordLightSpace = vec3(lightVPMatrix * vec4(vs_out.fragCoordWorldSpace, 1.0f));
+
+	//The texture coordinates to read from the shadow map.
+	vs_out.shadowTexCoords = 0.5f * fragCoordLightSpace + vec3(0.5f, 0.5f, 0.5f);
 
 	//The projective space coordinates of the vertex
 	gl_Position = mvpMatrix * vec4(vPosition, 1.0f);

@@ -1,8 +1,8 @@
-package assets.shaders.subshaders;
+package assets.shaders.subshaders.colorSubshaders;
 
 import assets.meshes.geometry.Color;
 
-public class ConstantColorSubshader extends Subshader {
+public class ConstantColorSubshader extends ColorSubshader {
 
 	private static final String code = "vec4 color() {\r\n" + 
 									   "	return rgba;\r\n" + 

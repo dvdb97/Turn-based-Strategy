@@ -1,8 +1,8 @@
-package assets.shaders.subshaders;
+package assets.shaders.subshaders.colorSubshaders;
 
 import utils.FileUtils;
 
-public class Subshader {
+public class ColorSubshader {
 	
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class Subshader {
 	private String sourceCode;
 	
 	
-	public Subshader(String sourceCode) {
+	public ColorSubshader(String sourceCode) {
 		if (!sourceCode.contains("vec4 color()")) {
 			System.err.println("Failed to load the subshader. Please make sure the code is valid glsl code.");
 			throw new InvalidSubshaderException();
@@ -27,8 +27,8 @@ public class Subshader {
 	}
 	
 	
-	public static Subshader loadSubshader(String path) {
-		return new Subshader(FileUtils.loadShaderSourceCode(path));
+	public static ColorSubshader loadSubshader(String path) {
+		return new ColorSubshader(FileUtils.loadShaderSourceCode(path));
 	}
 	
 	public String getSourceCode() {

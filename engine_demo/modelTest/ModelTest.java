@@ -116,6 +116,10 @@ public class ModelTest {
 			RenderEngine.swapBuffers();
 		}
 		
+		box.delete();
+		skyboxMesh.delete();
+		light.delete();
+		skybox.delete();
 	}
 	
 	

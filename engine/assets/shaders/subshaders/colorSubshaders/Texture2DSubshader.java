@@ -1,6 +1,6 @@
-package assets.shaders.subshaders;
+package assets.shaders.subshaders.colorSubshaders;
 
-public class Texture2DSubshader extends Subshader {
+public class Texture2DSubshader extends ColorSubshader {
 
 	private static final String code =  "uniform sampler2D tex;\r\n" + 
 										"\r\n" + 

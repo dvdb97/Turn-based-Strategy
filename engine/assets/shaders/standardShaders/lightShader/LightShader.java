@@ -1,14 +1,8 @@
 package assets.shaders.standardShaders.lightShader;
 
-import assets.cameras.Camera;
-import assets.light.DirectionalLight;
-import assets.light.DepthBuffer;
-import assets.material.Material;
-import assets.material.StandardMaterial;
 import assets.shaders.ShaderProgram;
-import assets.shaders.subshaders.Subshader;
+import assets.shaders.subshaders.colorSubshaders.ColorSubshader;
 import math.matrices.Matrix44f;
-import math.vectors.Vector3f;
 import utils.FileUtils;
 
 
@@ -54,7 +48,7 @@ public class LightShader extends ShaderProgram {
 	 * @param subshader A subshader to compute the color values.
 	 * @return returns a LightShader that does per fragment light computing
 	 */
-	public static LightShader createPerFragmentLightShader(Subshader subshader) {
+	public static LightShader createPerFragmentLightShader(ColorSubshader subshader) {
 		
 		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
