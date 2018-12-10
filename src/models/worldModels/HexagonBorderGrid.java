@@ -161,7 +161,7 @@ public class HexagonBorderGrid extends Mesh {
 		getShader().bind();
 		getShader().setCamera(scene.getCamera());
 		getShader().setModelMatrix(this.getTransformable().getTransformationMatrix());
-		getShader().setUniformVector4f("u_Color", new Vector4f(1f, 0f, 0f, 1f));
+		getShader().setUniformVector4f("u_Color", this.color.toVector4f());
 		glLineWidth(0.1f);
 		
 		glEnable(GL_PRIMITIVE_RESTART);

@@ -110,7 +110,7 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		terrain.render(scene);
+		//terrain.render(scene);
 		
 	}
 	
@@ -118,7 +118,7 @@ public class BoardModels {
 		
 		tileBorders.displayAll();
 
-		//tileBorders.render(scene);
+		tileBorders.render(scene);
 		
 		//sea.render(scene);
 		
@@ -132,7 +132,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 
-		//tileBorders.render(scene);
+		tileBorders.render(scene);
 		
 	}
 	
@@ -140,11 +140,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
-		
-		//tileBorders.render(scene);
-		
-	//	ShaderManager.disableShader();
+		tileBorders.render(scene);
 		
 	}
 	
