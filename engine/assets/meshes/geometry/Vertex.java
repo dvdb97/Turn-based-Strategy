@@ -111,7 +111,6 @@ public class Vertex extends Vector3f {
 		this.normalVec = this.normalVec.plus(surfaceNormal);
 		
 		this.normalVec = this.normalVec.timesEQ(1.0f / (float)++numberOfSurfaceNormals);
-		
 	}
 	
 	

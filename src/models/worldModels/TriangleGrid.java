@@ -20,6 +20,7 @@ import assets.scene.Scene;
 import assets.shaders.ShaderLoader;
 import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
+import assets.shaders.subshaders.AttributeColorSubshader;
 import math.vectors.Vector3f;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
@@ -54,6 +55,14 @@ public class TriangleGrid extends Mesh {
 	public TriangleGrid(SuperGrid superGrid, ColorFunction colorFunc, Material material, boolean sea) {
 		
 		this(superGrid, material, sea);
+		
+		/*
+		 * Replace the current shader with a shader that uses the attribute color (color specified 
+		 * per vertex when generating a mesh) instead of the material's color value.
+		 * 
+		 * This code will be replaced once shader-rework is merged with master.
+		 */
+		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
 		
 		this.colorFunc = colorFunc;
 		
@@ -318,15 +327,15 @@ public class TriangleGrid extends Mesh {
 	
 	@Override
 	protected void onDrawStart(Scene scene) {
-		super.onDrawStart(scene);
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
+		super.onDrawStart(scene);
 	}
 	
 	@Override
-	public void onDrawEnd(Scene scene) {		
-		glDisable(GL_PRIMITIVE_RESTART);
+	public void onDrawEnd(Scene scene) {
 		super.onDrawEnd(scene);
+		glDisable(GL_PRIMITIVE_RESTART);
 	}
 	
 	

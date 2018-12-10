@@ -1,5 +1,6 @@
 package models.worldModels;
 
+import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
 import math.vectors.Vector3f;
@@ -90,7 +91,8 @@ public class ModelCreater {
 	
 	private void createTerrain() {
 		
-		terrain = new TriangleGrid(superGrid, new TerrainCol(), new StandardMaterial(), false);
+		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
+		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
 		
 	}
 	

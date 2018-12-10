@@ -123,12 +123,10 @@ vec4 computeLight() {
 
 	vec3 finalColor = (computeAmbientLight() + shadow * (diffuseLight + specularLight)) * col.rgb;
 
-	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), material.color.a);
+	return vec4(min(vec3(1.0f, 1.0f, 1.0f), finalColor), col.a);
 }
 
 
 void main() {
-	vec2 shadowTexCoords = 0.5f * fs_in.fragCoordLightSpace.xy + vec2(0.5f, 0.5f);
-
 	fColor = computeLight();
 }

@@ -169,7 +169,7 @@ public class HexagonGrid extends Mesh {
 	@Override
 	public void onDrawEnd(Scene scene) {
 		glDisable(GL_PRIMITIVE_RESTART);
-		
+		super.onDrawEnd(scene);
 	}
 	
 	

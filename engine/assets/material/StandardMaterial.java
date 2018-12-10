@@ -9,6 +9,7 @@ public class StandardMaterial extends Material {
 	
 	public StandardMaterial() {
 		super(new Color(1f, 0f, 0f, 1f), vec, vec, vec, vec, 1.0f);
+		this.castShadows = true;
 	}
 
 }

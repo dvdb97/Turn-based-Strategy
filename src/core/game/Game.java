@@ -80,7 +80,7 @@ public class Game {
 	
 	private void render() {
 		WorldManager.render();
-		GUIManager.render();
+		//GUIManager.render();
 	}
 	
 	

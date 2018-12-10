@@ -47,7 +47,6 @@ public class HexagonBorderGrid extends Mesh {
 	//******************** constructor ***************************
 	
 	public HexagonBorderGrid(SuperGrid superGrid, Color color) {
-		
 		super(GL_LINE_LOOP);
 		String path = "Shaders/StandardShaders/uniformColor";
 		ShaderProgram shader = ShaderLoader.loadShader(path + ".vert", path + ".frag");
@@ -159,7 +158,9 @@ public class HexagonBorderGrid extends Mesh {
 	
 	@Override
 	public void onDrawStart(Scene scene) {
-		super.onDrawStart(scene);
+		getShader().bind();
+		getShader().setCamera(scene.getCamera());
+		getShader().setModelMatrix(this.getTransformable().getTransformationMatrix());
 		getShader().setUniformVector4f("u_Color", new Vector4f(1f, 0f, 0f, 1f));
 		glLineWidth(0.1f);
 		
@@ -169,10 +170,8 @@ public class HexagonBorderGrid extends Mesh {
 	
 	@Override
 	public void onDrawEnd(Scene scene) {
-		super.onDrawEnd(scene);
-		
 		glDisable(GL_PRIMITIVE_RESTART);
-		
+		getShader().unbind();
 	}
 	
 	
