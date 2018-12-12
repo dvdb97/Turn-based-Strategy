@@ -4,6 +4,8 @@ import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
+import assets.shaders.standardShaders.lightShader.LightShader;
+import assets.shaders.subshaders.AttributeColorSubshader;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
@@ -39,6 +41,8 @@ public class HexagonGrid extends Mesh {
 	public HexagonGrid(SuperGrid superGrid, Color[] colors) {
 		
 		super(GL_TRIANGLE_FAN);
+		
+		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
 		
 		this.superGrid = superGrid;
 		

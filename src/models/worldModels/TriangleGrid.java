@@ -62,7 +62,8 @@ public class TriangleGrid extends Mesh {
 		 * 
 		 * This code will be replaced once shader-rework is merged with master.
 		 */
-		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
+		//MOVED TO CONTRUCTOR BELOW
+	//	this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
 		
 		this.colorFunc = colorFunc;
 		
@@ -92,7 +93,8 @@ public class TriangleGrid extends Mesh {
 	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
 		super(GL_TRIANGLE_STRIP, material, null);
 		//setShader(LightShader.createPerVertexLightShader());
-		
+		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
+
 		length = superGrid.getLengthInVectors();
 		width  = superGrid.getWidthInVectors();
 		

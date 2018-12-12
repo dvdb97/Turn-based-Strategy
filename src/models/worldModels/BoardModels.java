@@ -32,14 +32,7 @@ public class BoardModels {
 	private TransformationMatrix boardModelMatrix;
 	
 	//others
-	private static Material mapMaterial;
-	
 	private static DirectionalLight sun;
-	private static Vector3f ambientLight;
-	
-	private static Color hoveredTileColor;
-	
-	private static Color selectedTileColor;
 	
 	private static Scene scene;
 	
@@ -77,14 +70,12 @@ public class BoardModels {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
-		
-		sun = new DirectionalLight(new Vector3f(-1f, 0f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
+		sun = new DirectionalLight(new Vector3f(0.2f, 0.2f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
 		sun.fitToBoundingBox(terrain);
 		
-		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
+	//	hoveredTileColor = new Color(1f, 1f, 0f, 1f);
 		
-		selectedTileColor = new Color(1f, 0f, 0f, 1f);
+	//	selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
 		scene = new Scene(PlayerCamera.getCamera(), sun, null);
 	}	
@@ -110,7 +101,7 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-		//terrain.render(scene);
+		terrain.render(scene);
 		
 	}
 	
@@ -120,11 +111,11 @@ public class BoardModels {
 
 		tileBorders.render(scene);
 		
-		//sea.render(scene);
+		sea.render(scene);
 		
 		coSystem.render(scene);
 		
-		//hex.render(scene);
+		hex.render(scene);
 		
 	}
 	
