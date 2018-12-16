@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glDisable;
-
+import static utils.Const.SQRT3;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -103,6 +103,8 @@ public class TriangleGrid extends Mesh {
 		PRI = -1;
 		
 		this.superGrid = superGrid;
+		edgeLength = superGrid.getTriEdgeLength();
+		triangleAltitude = superGrid.getTriangleAltitude();
 		
 		this.sea = sea;
 	}

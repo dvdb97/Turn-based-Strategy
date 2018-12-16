@@ -99,7 +99,7 @@ public class Vertex extends Vector3f {
 		return true;		
 	}
 	
-	
+	//TODO: that is wrong, i'd guess
 	public void addSurfaceNormal(Vector3f surfaceNormal) {
 		
 		if (this.normalVec == null) {
