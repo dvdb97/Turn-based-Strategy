@@ -113,15 +113,15 @@ public class HexagonGrid extends Mesh {
 	
 	private void updateColor() {
 		
-		float[] colorsF = new float[colors.length*4];
+		float[] colorsF = new float[colors.length*7*4];
 		
 		for (int i=0; i<colors.length; i++) {
-			
-			colorsF[i*4 + 0] = colors[i].getRed();
-			colorsF[i*4 + 1] = colors[i].getGreen();
-			colorsF[i*4 + 2] = colors[i].getBlue();
-			colorsF[i*4 + 3] = colors[i].getAlpha();
-			
+			for (int j=0; j<7; j++) {
+				colorsF[i*4*7 + j*4 + 0] = colors[i].getRed();
+				colorsF[i*4*7 + j*4 + 1] = colors[i].getGreen();
+				colorsF[i*4*7 + j*4 + 2] = colors[i].getBlue();
+				colorsF[i*4*7 + j*4 + 3] = colors[i].getAlpha();
+			}
 		}
 		
 		FloatBuffer colorDataBuffer = CustomBufferUtils.createFloatBuffer(colorsF);
@@ -142,7 +142,6 @@ public class HexagonGrid extends Mesh {
 	}
 	
 	public void setColor(MapMode mapMode) {
-		
 		for (int i=0; i<length*width; i++) {
 			this.colors[i] = mapMode.getColor(i);
 		}
