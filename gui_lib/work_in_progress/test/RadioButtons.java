@@ -3,6 +3,7 @@ package work_in_progress.test;
 import assets.meshes.geometry.Color;
 import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
+import function.Function;
 import fundamental.Container;
 import input.ToggleButton;
 import stbFont.TTFBox;
@@ -32,7 +33,7 @@ public class RadioButtons extends Container {
 		children.add(labels);
 	}
 	
-	public void addButton(String label, Color color) {
+	public void addButton(String label, Color color, Function<ToggleButton> func) {
 		RadioToggleButton button = new RadioToggleButton(color, new GUIElementMatrix(buttonOffsetX, buttonOffsetY-buttonHeight*buttons.size(), buttonWidth, buttonHeight));
 		if (buttons.size() == 0) {
 			button.setEnableFunc((element) -> {});
@@ -40,7 +41,7 @@ public class RadioButtons extends Container {
 		}
 		buttons.add(button);
 		labels.add(new TTFBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
-		button.setEnableFunc(  (element) -> changeToButton(buttons.indexOf(element)) );
+		button.setEnableFunc(  (element) -> {changeToButton(buttons.indexOf(element));func.execute(button);} );
 		button.setDisableFunc( (element) -> {} );
 		button.setSuspendFunc(suspendFunc);
 	}

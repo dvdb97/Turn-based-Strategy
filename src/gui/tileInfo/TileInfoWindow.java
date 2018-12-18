@@ -64,8 +64,9 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu.addTab(SAFFRON, "map mode", tabList);
 		RadioButtons rb = new RadioButtons(WHITE, 0.05f, new GUIElementMatrix(0.1f, -0.1f, 0.8f, 0.5f));
 		tabList.get(3).addElement(rb);
-		rb.addButton("one", SAFFRON);
-		rb.addButton("two", BLACK);
+		rb.addButton("zero", SAFFRON, (e) -> {/*change to mapmode 0*/});
+		rb.addButton("one", BLACK, (e) -> {/*change to mapmode 1*/});
+		rb.addButton("two", RED, (e) -> {/*change to mapmode 2*/});
 	}
 	
 	private void enable() {
