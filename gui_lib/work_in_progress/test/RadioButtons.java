@@ -34,10 +34,14 @@ public class RadioButtons extends Container {
 	
 	public void addButton(String label, Color color) {
 		RadioToggleButton button = new RadioToggleButton(color, new GUIElementMatrix(buttonOffsetX, buttonOffsetY-buttonHeight*buttons.size(), buttonWidth, buttonHeight));
+		if (buttons.size() == 0) {
+			button.setEnableFunc((element) -> {});
+			button.toggle();
+		}
 		buttons.add(button);
 		labels.add(new TTFBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
 		button.setEnableFunc(  (element) -> changeToButton(buttons.indexOf(element)) );
-		button.setDisableFunc( (element) -> disableFunc(buttons.indexOf(element)) );
+		button.setDisableFunc( (element) -> {} );
 		button.setSuspendFunc(suspendFunc);
 	}
 	
@@ -57,7 +61,4 @@ public class RadioButtons extends Container {
 		buttons.get(currentButton).toggle();
 	}
 	
-	private void disableFunc(int index) {
-		buttons.get(index).toggle();
-	}
 }
