@@ -4,6 +4,7 @@ import work_in_progress.test.RadioButtons;
 import work_in_progress.test.Tab;
 import work_in_progress.test.TabMenu;
 import work_in_progress.test.TestPushButton;
+import world.WorldManager;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
@@ -64,9 +65,9 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu.addTab(SAFFRON, "map mode", tabList);
 		RadioButtons rb = new RadioButtons(WHITE, 0.05f, new GUIElementMatrix(0.1f, -0.1f, 0.8f, 0.5f));
 		tabList.get(3).addElement(rb);
-		rb.addButton("zero", SAFFRON, (e) -> {/*change to mapmode 0*/});
-		rb.addButton("one", BLACK, (e) -> {/*change to mapmode 1*/});
-		rb.addButton("two", RED, (e) -> {/*change to mapmode 2*/});
+		rb.addButton("zero", SAFFRON, (e) -> WorldManager.changeMM(0));
+		rb.addButton("one", BLACK, (e) -> WorldManager.changeMM(1));
+		rb.addButton("two", RED, (e) -> WorldManager.changeMM(2));
 	}
 	
 	private void enable() {

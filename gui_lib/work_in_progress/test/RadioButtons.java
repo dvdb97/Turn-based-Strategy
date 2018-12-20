@@ -21,7 +21,7 @@ public class RadioButtons extends Container {
 	public RadioButtons(Color color, float labelHeight, GUIElementMatrix transformationMatrix) {
 		super(color, transformationMatrix);
 		
-		buttonHeight = 0.4f;
+		buttonHeight = 0.2f;
 		buttonWidth = 0.4f;
 		buttonOffsetX = 0.2f;
 		buttonOffsetY = -0.2f;
@@ -39,8 +39,8 @@ public class RadioButtons extends Container {
 			button.setEnableFunc((element) -> {});
 			button.toggle();
 		}
-		buttons.add(button);
 		labels.add(new TTFBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
+		buttons.add(button);
 		button.setEnableFunc(  (element) -> {changeToButton(buttons.indexOf(element));func.execute(button);} );
 		button.setDisableFunc( (element) -> {} );
 		button.setSuspendFunc(suspendFunc);

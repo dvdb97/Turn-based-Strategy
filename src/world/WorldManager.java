@@ -90,6 +90,10 @@ public class WorldManager {
 		ui = new ProvisionalUI(mmm);
 	}
 	
+	//TODO
+	public static void changeMM(int m) {
+		ui.mmm.changeModeTo(m);
+	}
 	
 	
 	//*************************** utils  ****************************
