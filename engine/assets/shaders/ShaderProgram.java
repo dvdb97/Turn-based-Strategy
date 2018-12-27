@@ -1,14 +1,12 @@
 package assets.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL40.*;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
 import assets.Bindable;
-import assets.IBindable;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
@@ -20,13 +18,15 @@ import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class ShaderProgram extends Bindable {	
+public class ShaderProgram extends Bindable {
+	
+	public static final int VERTEX_SHADER = GL_VERTEX_SHADER;
+	public static final int FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
 	
 	private static String type = "(vec.|mat.|int|float)";
 	
 	private static Pattern uniformPattern = Pattern.compile("uniform " + type + " (([A-Za-z0-9]+));");
 	private static Pattern attributePattern = Pattern.compile("layout.location[ ]?=[ ]?(\\d). in " + type + " (([a-zA-Z0-9]+));");
-	
 	
 	private int ID;
 	
@@ -34,11 +34,25 @@ public class ShaderProgram extends Bindable {
 	private int fragShaderID;
 	
 	
-	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
+	//A hashmap in which we are going to store uniform locations in.
 	private HashMap<String, Integer> uniforms = null;
 	
-	//A hashmap we are going to store attribute locations in. Thus we don't have to look it up every time this uniform is used.
+	//A hashmap in which we are going to store attribute locations in.
 	private HashMap<String, Integer> attributes = null;
+	
+	//A hashmap in which we will store the corresponding texture targets for each uniform sampler.
+	private HashMap<String, Integer> texTargets = null;
+	private int usedTextureUnits = 0;
+	
+	//A hashmap in which we are going to store subroutine uniform locations in.
+	private HashMap<String, Integer> subroutineUniforms = null;
+	
+	//A hashmap in which we will store the ids of the subroutine functions.
+	private HashMap<String, Integer> subroutineFunctions = null;
+	
+	//Arrays that maps all subroutine uniforms with the assigned subroutines.
+	private int[] fragSubroutines;
+	private int[] vertSubroutines;
 	
 	//The view projection matrix used for the current pass. It will be stored here to use it in later computation
 	protected Matrix44f viewProjectionMatrix;
@@ -46,6 +60,55 @@ public class ShaderProgram extends Bindable {
 	
 	public ShaderProgram(String vertSource, String fragSource) {
 		init(vertSource, fragSource);
+	}
+	
+	
+	public void init(String vertSource, String fragSource) {
+		
+		ID = glCreateProgram();
+		
+		vertShaderID = glCreateShader(GL_VERTEX_SHADER);
+		fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+		
+		compileShader(vertSource, vertShaderID);
+		compileShader(fragSource, fragShaderID);
+		
+		glAttachShader(ID, vertShaderID);
+		glAttachShader(ID, fragShaderID);
+		
+		glLinkProgram(ID);
+		
+		if (glGetProgrami(ID, GL_LINK_STATUS) == GL_FALSE) {
+			System.err.println("Failed to link shader!");
+			
+			int logLength = glGetProgrami(ID, GL_INFO_LOG_LENGTH);
+			if (logLength > 1) {
+				System.out.println(glGetProgramInfoLog(ID, logLength));
+				
+				return;
+			}
+		}
+		
+		bind();
+		parseCode(vertSource, fragSource);
+		unbind();
+	}
+	
+	
+	private void compileShader(String sourceCode, int id) {
+		
+		glShaderSource(id, sourceCode);
+		glCompileShader(id);
+		
+		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
+			System.err.println("Failed to compile Shader " + glGetShaderi(id, GL_SHADER_TYPE) + "!");
+			//get InfoLog
+			int logLength = glGetShaderi(id, GL_INFO_LOG_LENGTH);
+			System.out.println("logLength = " + logLength);
+			if (logLength > 1) {
+				System.out.println(glGetShaderInfoLog(id, logLength));
+			}
+		}
 	}
 	
 	
@@ -71,8 +134,15 @@ public class ShaderProgram extends Bindable {
 	 * @param frag
 	 */
 	private void parseUniforms(String vert, String frag) {
-		
+		//Set up all look-up tables for uniform and attribute locations.
 		this.uniforms = new HashMap<String, Integer>();
+		this.texTargets = new HashMap<String, Integer>();
+		this.subroutineUniforms = new HashMap<String, Integer>();
+		this.subroutineFunctions = new HashMap<String, Integer>();
+		
+		//The values set to all subroutine uniforms.
+		this.vertSubroutines = new int[getActiveSubroutineUniforms(VERTEX_SHADER)];
+		this.fragSubroutines = new int[getActiveSubroutineUniforms(FRAGMENT_SHADER)];
 		
 		//Extract all the uniforms out of the vertex shader 
 		Matcher uniformMatcher = uniformPattern.matcher(vert);
@@ -115,53 +185,6 @@ public class ShaderProgram extends Bindable {
 		}
 		
 	}
-	
-	
-	public void init(String vertSource, String fragSource) {
-		
-		ID = glCreateProgram();
-		
-		vertShaderID = glCreateShader(GL_VERTEX_SHADER);
-		fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-		
-		compileShader(vertSource, vertShaderID);
-		compileShader(fragSource, fragShaderID);
-		
-		glAttachShader(ID, vertShaderID);
-		glAttachShader(ID, fragShaderID);
-		
-		glLinkProgram(ID);
-		
-		if (glGetProgrami(ID, GL_LINK_STATUS) == GL_FALSE) {
-			System.err.println("Failed to link shader!");
-			
-			int logLength = glGetProgrami(ID, GL_INFO_LOG_LENGTH);
-			if (logLength > 1) {
-				System.out.println(glGetProgramInfoLog(ID, logLength));
-				
-				return;
-			}
-		}
-		
-		parseCode(vertSource, fragSource);
-	}
-	
-	
-	private void compileShader(String sourceCode, int id) {
-		
-		glShaderSource(id, sourceCode);
-		glCompileShader(id);
-		
-		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
-			System.err.println("Failed to compile Shader " + glGetShaderi(id, GL_SHADER_TYPE) + "!");
-			//get InfoLog
-			int logLength = glGetShaderi(id, GL_INFO_LOG_LENGTH);
-			System.out.println("logLength = " + logLength);
-			if (logLength > 1) {
-				System.out.println(glGetShaderInfoLog(id, logLength));
-			}
-		}
-	}
 
 	
 	/**
@@ -172,7 +195,6 @@ public class ShaderProgram extends Bindable {
 	 */
 	public void setMaterial(Material material) {
 		this.setUniformVector4f("material.color", material.color);
-		this.setUniformVector3f("material.emission", material.emission);
 		this.setUniformVector3f("material.ambient", material.ambient);
 		this.setUniformVector3f("material.diffuse", material.diffuse);
 		this.setUniformVector3f("material.specular", material.specular);
@@ -380,8 +402,110 @@ public class ShaderProgram extends Bindable {
 	}
 	
 	
-	public void bindTexture(String target, Texture texture) {
+	/**
+	 * 
+	 * Assigns a subroutine to a subroutine uniform.
+	 * 
+	 * @param uniform The name of the subroutine uniform.
+	 * @param subroutine The name of the subroutine function.
+	 * @param stage The shader stage.
+	 */
+	public void setUniformSubroutine(String uniform, String subroutine, int stage) {
+		if (stage == VERTEX_SHADER) {
+			vertSubroutines[getSubroutineUniformLocation(uniform, stage)] = getSubroutineIndex(subroutine, stage);
+		} else {
+			fragSubroutines[getSubroutineUniformLocation(uniform, stage)] = getSubroutineIndex(subroutine, stage);
+		}
+	}
+	
+	
+	/**
+	 * Uplaods all subroutine settings to the gpu.
+	 */
+	public void setUniformSubroutines() {
+		glUniformSubroutinesuiv(VERTEX_SHADER, vertSubroutines);
+		glUniformSubroutinesuiv(FRAGMENT_SHADER, fragSubroutines);
+	}
+	
+	
+	/**
+	 * 
+	 * @param stage The shader stage.
+	 * @return Returns the number of active subroutine uniforms in the specified shader stage.
+	 */
+	public int getActiveSubroutineUniforms(int stage) {		
+		return glGetProgramStagei(ID, stage, GL_ACTIVE_SUBROUTINE_UNIFORMS);
+	}
+	
+	
+	/**
+	 * 
+	 * Returns the index associated with the shader subroutine
+	 * with the given name.
+	 * 
+	 * @param name The name of the subroutine
+	 * @param stage The shader stage.
+	 * @return Returns the index of the subroutine.
+	 */
+	public int getSubroutineIndex(String name, int stage) {
+		if (!subroutineFunctions.containsKey(name)) {
+			int index = glGetSubroutineIndex(ID, stage, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L456: The subroutine " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			subroutineFunctions.put(name, index);
+		}
 		
+		return subroutineFunctions.get(name);
+	}
+	
+	
+	/**
+	 * 
+	 * Returns the subroutine uniform location associated with the
+	 * given name.
+	 * 
+	 * @param name The name of the subroutine uniform.
+	 * @param stage The shader stage.
+	 * @return Returns the location of the subroutine uniform.
+	 */
+	public int getSubroutineUniformLocation(String name, int stage) {
+		if (!subroutineUniforms.containsKey(name)) {
+			int index = glGetSubroutineUniformLocation(ID, stage, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L475: The subroutine uniform " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			subroutineUniforms.put(name, index);
+		}
+		
+		return subroutineUniforms.get(name);
+	}
+
+	
+	/**
+	 * 
+	 * Binds a texture to a specific target.
+	 * 
+	 * @param name The name of the texture target (e.g. the name of the uniform sampler).
+	 * @param texture The texture to bind to the target.
+	 */
+	public void bindTexture(String name, Texture texture) {
+		if (!texTargets.containsKey(name)) {
+			setUniform1i(name, GL_TEXTURE0 + usedTextureUnits);
+			this.texTargets.put(name, GL_TEXTURE0 + usedTextureUnits);
+			++usedTextureUnits;
+		}
+		
+		glActiveTexture(texTargets.get(name));
+		texture.bind();
 	}
 	
 	
@@ -392,13 +516,17 @@ public class ShaderProgram extends Bindable {
 	 * @param name The name of this uniform variable
 	 * @return Returns the uniform's location
 	 */
-	public int getUniformLocation(String name) {
-		if (uniforms == null) {
-			return -1;
-		}
-		
+	public int getUniformLocation(String name) {		
 		if (!uniforms.containsKey(name)) {
-			this.uniforms.put(name, glGetUniformLocation(ID, name));
+			int index = glGetUniformLocation(ID, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L529: The uniform " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			this.uniforms.put(name, index);
 		}
 		
 		return uniforms.get(name);	
@@ -414,6 +542,8 @@ public class ShaderProgram extends Bindable {
 	 */
 	public int getAttributeLocation(String name) {
 		if (!attributes.containsKey(name)) {
+			System.err.println("ERROR L550: The attribute " + name + " doesn't exist!");
+			
 			return -1;
 		}
 		

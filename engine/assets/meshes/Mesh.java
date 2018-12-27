@@ -451,6 +451,10 @@ public class Mesh extends Deletable implements IRenderable {
 		shader.setMaterial(material);
 		shader.setModelMatrix(transformable.getTransformationMatrix());
 		
+		shader.setUniformSubroutine("colorFunc", "materialColor", ShaderProgram.FRAGMENT_SHADER);
+		shader.setUniformSubroutine("finalColorFunc", "finalLightColor", ShaderProgram.FRAGMENT_SHADER);
+		shader.setUniformSubroutines();
+		
 		if (texture != null) texture.bind();
 	}
 	

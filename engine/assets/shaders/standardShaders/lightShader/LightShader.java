@@ -44,6 +44,7 @@ public class LightShader extends ShaderProgram {
 	
 	
 	/**
+	 * @deprecated
 	 * 
 	 * @param subshader A subshader to compute the color values.
 	 * @return returns a LightShader that does per fragment light computing
@@ -87,6 +88,43 @@ public class LightShader extends ShaderProgram {
 	}
 	
 	
+	/**
+	 * Tells the shader to look up the fragment's color from the texture.
+	 */
+	public void useTextureColor() {
+		this.setUniformSubroutine("colorFunc", "textureColor", FRAGMENT_SHADER);
+	}
 	
+	
+	/**
+	 * Tells the shader to take the material's color as the fragment's color.	
+	 */
+	public void useMaterialColor() {
+		this.setUniformSubroutine("colorFunc", "materialColor", FRAGMENT_SHADER);
+	}
+	
+	
+	/**
+	 * Tells the shader to take the attribute's color as the fragment's color.
+	 */
+	public void useAttribColor() {
+		this.setUniformSubroutine("colorFunc", "attribColor", FRAGMENT_SHADER);
+	}
+	
+	
+	/**
+	 * Tells the shader to use the fragment's final color as it is.
+	 */
+	public void useDefaultFinalColorFunction() {
+		this.setUniformSubroutine("finalColorFunc", "finalLightColor", FRAGMENT_SHADER);
+	}
+	
+	
+	/**
+	 * tells the shader to apply toon shading to the final color.
+	 */
+	public void useToonShading() {
+		this.setUniformSubroutine("finalColorFunc", "toonShading", VERTEX_SHADER);
+	}
 
 }

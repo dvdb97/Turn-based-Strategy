@@ -56,11 +56,11 @@ public class ModelTest {
 	}
 	
 	
-	public static Mesh initMesh() {				
-		Mesh mesh = new EnvMappingMesh();
+	public static Mesh initMesh() {
+		TestMesh mesh = new TestMesh();
 		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
-		Material material = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
 		
 		mesh.setMaterial(material);
 		
@@ -111,7 +111,7 @@ public class ModelTest {
 			
 			skyboxMesh.render(scene);
 			mesh.render(scene);
-			box.render(scene);
+			//box.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}
