@@ -271,7 +271,7 @@ public class ShaderProgram extends Bindable {
 		
 		if (shadows) {
 			this.setUniform1i("shadowsActive", 1);
-			light.getShadowMap().bind();
+			bindTexture("shadowMap", light.getShadowMap().getDepthTexture());
 		} else {
 			this.setUniform1i("shadowsActive", 0);
 		}
@@ -502,6 +502,8 @@ public class ShaderProgram extends Bindable {
 			setUniform1i(name, GL_TEXTURE0 + usedTextureUnits);
 			this.texTargets.put(name, GL_TEXTURE0 + usedTextureUnits);
 			++usedTextureUnits;
+			
+			System.out.println("Assigning " + name + " to " + texTargets.get(name));
 		}
 		
 		glActiveTexture(texTargets.get(name));

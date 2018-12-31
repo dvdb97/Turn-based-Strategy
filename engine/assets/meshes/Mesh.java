@@ -455,7 +455,7 @@ public class Mesh extends Deletable implements IRenderable {
 		shader.setUniformSubroutine("finalColorFunc", "finalLightColor", ShaderProgram.FRAGMENT_SHADER);
 		shader.setUniformSubroutines();
 		
-		if (texture != null) texture.bind();
+		if (texture != null) shader.bindTexture("material.texture", texture);
 	}
 	
 	
@@ -468,9 +468,7 @@ public class Mesh extends Deletable implements IRenderable {
 	 * @param camera The camera that is used to look at the mesh.
 	 * @param light The light source that is used to render this mesh.
 	 */
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		if (texture != null) texture.unbind();
-		
+	protected void onDrawEnd(Camera camera, DirectionalLight light) {		
 		shader.unbind();
 	}
 	

@@ -48,12 +48,11 @@ public class SkyboxMesh extends Mesh {
 		getShader().bind();
 		getShader().setViewMatrix(camera.getViewMatrix());
 		getShader().setProjectionMatrix(camera.getProjectionMatrix());
-		getTexture().bind();
+		getShader().bindTexture("skybox", getTexture());
 	}
 
 	@Override
 	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		getTexture().unbind();
 		getShader().unbind();
 		glDepthMask(true);
 	}

@@ -12,6 +12,7 @@ import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
 import assets.meshes.Mesh;
+import assets.textures.Texture2D;
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 import utils.CustomBufferUtils;
@@ -174,6 +175,12 @@ public class FileLoader {
 	}
 	
 	
+	public static void loadObjFile(Mesh mesh, String path, String texture) {
+		loadObjFile(mesh, path);
+		mesh.setTexture(new Texture2D(texture));
+	}
+	
+	
 	public static Mesh loadObjFile(String path) {
 		Mesh mesh = new Mesh();
 		loadObjFile(mesh, path);		
@@ -181,8 +188,10 @@ public class FileLoader {
 	}
 	
 	
-	public static Material loadMaterialFromMTL(String file) {		
-		return null;
+	public static Mesh loadObjFile(String path, String texture) {
+		Mesh mesh = loadObjFile(path);
+		mesh.setTexture(new Texture2D(texture));
+		return mesh;
 	}
-
+	
 }

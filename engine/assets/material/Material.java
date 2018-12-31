@@ -34,7 +34,7 @@ public class Material {
 		this.diffuse = diffuse;
 		this.specular = specular;
 		this.shininess = shininess;
-		this.castShadows = true;
+		this.castShadows = false;
 	}
 	
 	
@@ -47,7 +47,7 @@ public class Material {
 		this.diffuse = Vector3f.ZERO;
 		this.specular = Vector3f.ZERO;
 		this.shininess = 0f;
-		this.castShadows = true;
+		this.castShadows = false;
 	}
 	
 }

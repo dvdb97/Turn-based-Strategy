@@ -16,6 +16,7 @@ import assets.meshes.Mesh;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
+import assets.meshes.specialized.Plane;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
@@ -58,9 +59,10 @@ public class ModelTest {
 	
 	public static Mesh initMesh() {
 		TestMesh mesh = new TestMesh();
-		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
+		FileLoader.loadObjFile(mesh, "res/models/cube/Würfel.obj", "res/models/cube/Würfel_Texture.png");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		material.castShadows = true;
 		
 		mesh.setMaterial(material);
 		
@@ -81,6 +83,9 @@ public class ModelTest {
 	
 	private static void testShadows() {
 		Mesh mesh = initMesh();
+		
+		Plane plane = new Plane();
+		plane.getTransformable().setScaling(0.5f);
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
@@ -109,9 +114,12 @@ public class ModelTest {
 			
 			handleInput();
 			
+			light.startShadowMapPass();
+			light.passToShadowMap(mesh);
+			light.endShadowMapPass();
+			
 			skyboxMesh.render(scene);
 			mesh.render(scene);
-			//box.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}

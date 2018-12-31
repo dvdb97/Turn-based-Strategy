@@ -11,8 +11,8 @@ public class TestMesh extends Mesh {
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		super.onDrawStart(camera, light);
-		this.getShader().setUniformSubroutine("colorFunc", "materialColor", ShaderProgram.FRAGMENT_SHADER);
-		this.getShader().setUniformSubroutine("finalColorFunc", "toonShading", ShaderProgram.FRAGMENT_SHADER);
+		this.getShader().setUniformSubroutine("colorFunc", "textureColor", ShaderProgram.FRAGMENT_SHADER);
+		this.getShader().setUniformSubroutine("finalColorFunc", "finalLightColor", ShaderProgram.FRAGMENT_SHADER);
 		this.getShader().setUniformSubroutines();
 	}
 
