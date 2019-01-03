@@ -1,5 +1,6 @@
 package assets.shaders.standardShaders.skybox;
 
+import assets.material.Material;
 import assets.shaders.ShaderProgram;
 import utils.FileUtils;
 
@@ -26,6 +27,12 @@ public class EnvMappingShader extends ShaderProgram {
 		String fragSource = FileUtils.loadShaderSourceCode("Shaders/EnvironmentMapping/envMapping.frag");
 		
 		return new EnvMappingShader(vertSource, fragSource);
+	}
+
+	@Override
+	public void setMaterial(Material material) {
+		// TODO Auto-generated method stub
+		super.setMaterial(material);
 	}
 
 }

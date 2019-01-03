@@ -13,17 +13,13 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
-import assets.meshes.Mesh3D;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
-import assets.meshes.specialized.Plane;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
-import assets.textures.Texture2D;
-
 import static java.lang.Math.*;
 
 
@@ -61,10 +57,11 @@ public class ModelTest {
 	
 	
 	public static Mesh initMesh() {
-		Mesh3D mesh = new Mesh3D();
+		//Mesh3D mesh = new Mesh3D();
+		EnvMappingMesh mesh = new EnvMappingMesh();
 		FileLoader.loadObjFile(mesh, "res/models/cube/Würfel.obj", "res/models/cube/Würfel_Texture.png");
 		
-		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.6f, 0.6f, 0.6f), 256f);
 		material.castShadows = true;
 		
 		mesh.setMaterial(material);
@@ -118,8 +115,9 @@ public class ModelTest {
 			light.passToShadowMap(mesh);
 			light.endShadowMapPass();
 			
-			skyboxMesh.render(scene);
-			mesh.render(scene);
+			//skyboxMesh.render(scene);
+			//mesh.render(scene);
+			box.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}

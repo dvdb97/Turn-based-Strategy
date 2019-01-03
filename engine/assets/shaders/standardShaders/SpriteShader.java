@@ -39,6 +39,11 @@ public class SpriteShader extends ShaderProgram {
 	public void setMaterial(Material material) {
 		this.setUniformVector4f("material.color", material.color);
 	}
+	
+	
+	public void setMaterialTexture(Texture texture) {
+		this.bindTexture("material.texture", texture);
+	}
 
 
 	/**
