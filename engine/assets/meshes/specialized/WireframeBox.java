@@ -1,16 +1,13 @@
 package assets.meshes.specialized;
 
-import assets.cameras.Camera;
-import assets.light.DirectionalLight;
-import assets.meshes.Mesh;
+import assets.material.Material;
+import assets.meshes.Mesh2D;
 import assets.meshes.geometry.Color;
-import assets.shaders.ShaderLoader;
-import assets.shaders.ShaderProgram;
 import utils.CustomBufferUtils;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
-public class WireframeBox extends Mesh {	
+public class WireframeBox extends Mesh2D {	
 	
 	public WireframeBox() {
 		super(GL_LINES);
@@ -35,29 +32,20 @@ public class WireframeBox extends Mesh {
 		
 		this.setPositionData(CustomBufferUtils.createFloatBuffer(positions));
 		this.setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
+		this.setMaterial(Material.standard);
+		this.useMaterialColor();
+	}
+	
+	
+	public WireframeBox(Material material) {
+		this();
 		
-		String path = "Shaders/StandardShaders/uniformColor";
-		ShaderProgram shader = ShaderLoader.loadShader(path + ".vert", path + ".frag");
-		this.setShader(shader);
+		this.setMaterial(material);
 	}
 	
 	
 	public void setColor(Color color) {
 		this.getMaterial().color = color;
-	}
-	
-
-	@Override
-	protected void onDrawStart(Camera camera, DirectionalLight light) {
-		getShader().bind();
-		getShader().setCamera(camera);
-		getShader().setModelMatrix(getTransformable().getTransformationMatrix());
-		getShader().setUniformVector4f("u_Color", getMaterial().color);
-	}
-
-	@Override
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		getShader().unbind();
 	}
 
 }

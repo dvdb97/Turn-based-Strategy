@@ -13,6 +13,7 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
@@ -21,6 +22,8 @@ import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
+import assets.textures.Texture2D;
+
 import static java.lang.Math.*;
 
 
@@ -58,7 +61,7 @@ public class ModelTest {
 	
 	
 	public static Mesh initMesh() {
-		TestMesh mesh = new TestMesh();
+		Mesh3D mesh = new Mesh3D();
 		FileLoader.loadObjFile(mesh, "res/models/cube/Würfel.obj", "res/models/cube/Würfel_Texture.png");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
@@ -69,6 +72,8 @@ public class ModelTest {
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
+		
+		mesh.useTextureColor();
 		
 		return mesh;	
 	}
@@ -83,9 +88,6 @@ public class ModelTest {
 	
 	private static void testShadows() {
 		Mesh mesh = initMesh();
-		
-		Plane plane = new Plane();
-		plane.getTransformable().setScaling(0.5f);
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
@@ -104,8 +106,6 @@ public class ModelTest {
 		Scene scene = new Scene(camera, light, skybox);
 		
 		WireframeBox box = new WireframeBox();
-		box.setColor(new Color(0f, 1f, 0f, 1f));
-		box.getTransformable().setScaling(3f);
 		
 		light.fitToBoundingBox(mesh);
 		

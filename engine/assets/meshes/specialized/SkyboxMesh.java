@@ -13,8 +13,10 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 
 public class SkyboxMesh extends Mesh {
 	
+	private SkyboxShader shader;
+	
 	public SkyboxMesh(Skybox skybox) {
-		super(SkyboxShader.createSkyboxShader(), Material.standard);
+		super(Material.standard);
 		
 		float[] vertices = {
 			-10.0f,  10.0f, -10.0f,
@@ -40,20 +42,21 @@ public class SkyboxMesh extends Mesh {
 		this.setPositionData(CustomBufferUtils.createFloatBuffer(vertices));
 		this.setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
 		this.setTexture(skybox);
+		shader = SkyboxShader.createSkyboxShader();
 	}
 
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		glDepthMask(false);
-		getShader().bind();
-		getShader().setViewMatrix(camera.getViewMatrix());
-		getShader().setProjectionMatrix(camera.getProjectionMatrix());
-		getShader().bindTexture("skybox", getTexture());
+		shader.bind();
+		shader.setViewMatrix(camera.getViewMatrix());
+		shader.setProjectionMatrix(camera.getProjectionMatrix());
+		shader.bindTexture("skybox", getTexture());
 	}
 
 	@Override
 	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		getShader().unbind();
+		shader.unbind();
 		glDepthMask(true);
 	}
 

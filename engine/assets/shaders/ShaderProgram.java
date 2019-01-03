@@ -452,7 +452,7 @@ public class ShaderProgram extends Bindable {
 			int index = glGetSubroutineIndex(ID, stage, name);
 			
 			if (index == -1) {
-				System.err.println("ERROR L456: The subroutine " + name + " doesn't exist!");
+				System.err.println("ERROR L455: The subroutine " + name + " doesn't exist!");
 				
 				return index;
 			}
@@ -478,7 +478,7 @@ public class ShaderProgram extends Bindable {
 			int index = glGetSubroutineUniformLocation(ID, stage, name);
 			
 			if (index == -1) {
-				System.err.println("ERROR L475: The subroutine uniform " + name + " doesn't exist!");
+				System.err.println("ERROR L481: The subroutine uniform " + name + " doesn't exist!");
 				
 				return index;
 			}
@@ -499,14 +499,12 @@ public class ShaderProgram extends Bindable {
 	 */
 	public void bindTexture(String name, Texture texture) {
 		if (!texTargets.containsKey(name)) {
-			setUniform1i(name, GL_TEXTURE0 + usedTextureUnits);
-			this.texTargets.put(name, GL_TEXTURE0 + usedTextureUnits);
+			this.texTargets.put(name, usedTextureUnits);
 			++usedTextureUnits;
-			
-			System.out.println("Assigning " + name + " to " + texTargets.get(name));
 		}
 		
-		glActiveTexture(texTargets.get(name));
+		setUniform1i(name, texTargets.get(name));
+		glActiveTexture(GL_TEXTURE0 + texTargets.get(name));
 		texture.bind();
 	}
 	

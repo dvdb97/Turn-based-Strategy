@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 
-import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.textures.Texture2D;
 import math.vectors.Vector2f;
@@ -178,20 +177,6 @@ public class FileLoader {
 	public static void loadObjFile(Mesh mesh, String path, String texture) {
 		loadObjFile(mesh, path);
 		mesh.setTexture(new Texture2D(texture));
-	}
-	
-	
-	public static Mesh loadObjFile(String path) {
-		Mesh mesh = new Mesh();
-		loadObjFile(mesh, path);		
-		return mesh;
-	}
-	
-	
-	public static Mesh loadObjFile(String path, String texture) {
-		Mesh mesh = loadObjFile(path);
-		mesh.setTexture(new Texture2D(texture));
-		return mesh;
 	}
 	
 }

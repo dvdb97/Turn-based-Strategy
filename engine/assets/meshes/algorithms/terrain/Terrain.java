@@ -6,13 +6,11 @@ import org.lwjgl.BufferUtils;
 
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
-import assets.meshes.Mesh;
-import assets.shaders.ShaderProgram;
-
+import assets.meshes.Mesh3D;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL31.*;
 
-public class Terrain extends Mesh {
+public class Terrain extends Mesh3D {
 	
 	private int width, height;
 

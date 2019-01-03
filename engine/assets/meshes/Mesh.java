@@ -21,7 +21,7 @@ import math.vectors.Vector3f;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public class Mesh extends Deletable implements IRenderable {
+public abstract class Mesh extends Deletable implements IRenderable {
 	
 	private enum Attribute {
 		POSITION, COLOR, TEXCOORD, NORMAL
@@ -37,8 +37,6 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	private Transformable transformable;
 	
-	private ShaderProgram shader;
-	
 	private Material material;
 	
 	private Texture texture;
@@ -47,22 +45,21 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh() {
-		this(LightShader.createPerFragmentLightShader(), Material.standard); 
-	}
-	
-	
-	public Mesh(ShaderProgram shader, Material material) {
 		this.vao = new VertexArrayObject();
 		this.transformable = new Transformable();
-		this.material = material;
-		this.shader = shader;
 		vertexData = new HashMap<Attribute, FloatBuffer>();
 		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
 	
 	
-	public Mesh(int drawMode) {
+	public Mesh(Material material) {
 		this();
+		this.material = material;
+	}
+	
+	
+	public Mesh(int drawMode) {
+		this(Material.standard);
 		this.drawMode = drawMode;
 	}
 	
@@ -76,9 +73,8 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh(Material material, Texture texture) {
-		this();
+		this(material);
 		
-		this.material = material;
 		this.texture = texture;
 	}
 	
@@ -377,18 +373,7 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	public Material getMaterial() {
 		return material;
-	}
-	
-	
-	public void setShader(ShaderProgram shader) {
-		this.shader = shader;
-	}
-	
-	
-	public ShaderProgram getShader() {
-		return shader;
-	}
-	
+	}	
 	
 	public void setTexture(Texture texture) {
 		this.texture = texture;
@@ -398,10 +383,6 @@ public class Mesh extends Deletable implements IRenderable {
 	public Texture getTexture() {
 		return texture;
 	}
-	
-	
-	
-
 
 	@Override
 	public void render() {
@@ -435,70 +416,36 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	/**
 	 * 
-	 * ######### Can (and should) be overwritten! #########
-	 * 
-	 * A function that sets all uniform variables to render this mesh.
-	 * If this function wasn't overwritten, it will use a default light shader
-	 * that uses the material's color as the mesh's color.
-	 * 
 	 * @param camera The camera that is used to look at the mesh.
 	 * @param light The light source that is used to render this mesh.
 	 */
-	protected void onDrawStart(Camera camera, DirectionalLight light) {
-		shader.bind();
-		shader.setCamera(camera);
-		shader.setLightSource(light, material.castShadows);
-		shader.setMaterial(material);
-		shader.setModelMatrix(transformable.getTransformationMatrix());
-		
-		shader.setUniformSubroutine("colorFunc", "materialColor", ShaderProgram.FRAGMENT_SHADER);
-		shader.setUniformSubroutine("finalColorFunc", "finalLightColor", ShaderProgram.FRAGMENT_SHADER);
-		shader.setUniformSubroutines();
-		
-		if (texture != null) shader.bindTexture("material.texture", texture);
-	}
+	protected abstract void onDrawStart(Camera camera, DirectionalLight light);
 	
 	
 	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
 	 * 
 	 * Clean up after rendering.
 	 * 
 	 * @param camera The camera that is used to look at the mesh.
 	 * @param light The light source that is used to render this mesh.
 	 */
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {		
-		shader.unbind();
-	}
+	protected abstract void onDrawEnd(Camera camera, DirectionalLight light);
 	
 	
 	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
-	 * 
-	 * A function that sets all uniform variables to render this mesh.
-	 * If this function wasn't overwritten, it will use a default light shader
-	 * that uses the material's color as the mesh's color.
 	 * 
 	 * @param scene The scene that is currently being rendered.
 	 */
-	protected void onDrawStart(Scene scene) {
-		this.onDrawStart(scene.getCamera(), scene.getLightSource());
-	}
+	protected abstract void onDrawStart(Scene scene);
 	
 	
 	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
 	 * 
 	 * Clean up after rendering.
 	 * 
 	 * @param scene The scene that is currently being rendered.
 	 */
-	protected void onDrawEnd(Scene scene) {
-		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
-	}
+	protected abstract void onDrawEnd(Scene scene);
 
 
 	@Override

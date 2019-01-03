@@ -126,5 +126,7 @@ public class LightShader extends ShaderProgram {
 	public void useToonShading() {
 		this.setUniformSubroutine("finalColorFunc", "toonShading", VERTEX_SHADER);
 	}
+	
+	//TODO: Add functions to directly bind textures
 
 }
