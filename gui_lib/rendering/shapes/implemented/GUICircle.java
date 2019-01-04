@@ -15,9 +15,9 @@ import org.lwjgl.BufferUtils;
 
 import math.vectors.Vector2f;
 
-public class Circle extends GUIShape {
+public class GUICircle extends GUIShape {
 
-	public Circle(int numVertices) {
+	public GUICircle(int numVertices) {
 		super(GL_TRIANGLE_FAN);
 		
 		FloatBuffer posData = BufferUtils.createFloatBuffer((numVertices + 1) * 3);
