@@ -39,6 +39,7 @@ public class Mesh2D extends Mesh {
 		shader.bind();
 		shader.setMVPMatrix(getTransformable().getTransformationMatrix());
 		shader.setMaterial(getMaterial());
+		shader.setUniformSubroutines();
 		
 		if (getTexture() != null)
 			shader.bindTexture("material.texture", getTexture());

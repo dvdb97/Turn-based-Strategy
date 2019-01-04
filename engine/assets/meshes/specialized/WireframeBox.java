@@ -1,24 +1,13 @@
 package assets.meshes.specialized;
 
-import assets.cameras.Camera;
-import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
-import assets.scene.Scene;
-import assets.shaders.standardShaders.StandardShader;
 import utils.CustomBufferUtils;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
-
-public class WireframeBox extends Mesh {	
+public class WireframeBox extends WireframeMesh {	
 	
-	private StandardShader shader;
 	
 	public WireframeBox() {
-		super(GL_LINES);
-		
-		shader = StandardShader.create();
 		
 		float[] positions = {
 			-1f, 1f, 1f, 1f, 1f, 1f,
@@ -53,34 +42,6 @@ public class WireframeBox extends Mesh {
 	
 	public void setColor(Color color) {
 		this.getMaterial().color = color;
-	}
-
-
-	@Override
-	protected void onDrawStart(Camera camera, DirectionalLight light) {
-		shader.bind();
-		shader.setMaterial(getMaterial());
-		shader.setCamera(camera);
-		shader.setModelMatrix(getTransformable().getTransformationMatrix());
-		shader.setUniformSubroutines();
-	}
-
-
-	@Override
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		shader.unbind();		
-	}
-
-
-	@Override
-	protected void onDrawStart(Scene scene) {
-		this.onDrawStart(scene.getCamera(), scene.getLightSource());
-	}
-
-
-	@Override
-	protected void onDrawEnd(Scene scene) {
-		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
 	}
 
 }

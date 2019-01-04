@@ -4,6 +4,7 @@ import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
+import rendering.shapes.implemented.GUIQuad;
 import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -16,10 +17,13 @@ import assets.meshes.Mesh;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
+import assets.meshes.specialized.Plane;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
+import assets.textures.Texture2D;
+
 import static java.lang.Math.*;
 
 
@@ -102,6 +106,9 @@ public class ModelTest {
 		
 		Scene scene = new Scene(camera, light, skybox);
 		
+		GUIQuad quad = new GUIQuad();
+		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
+		
 		WireframeBox box = new WireframeBox();
 		
 		light.fitToBoundingBox(mesh);
@@ -111,19 +118,14 @@ public class ModelTest {
 			
 			handleInput();
 			
-			light.startShadowMapPass();
-			light.passToShadowMap(mesh);
-			light.endShadowMapPass();
-			
-			//skyboxMesh.render(scene);
-			//mesh.render(scene);
-			box.render(scene);
+			quad.render(texture);
 			
 			RenderEngine.swapBuffers();
 		}
 		
 		box.delete();
 		skyboxMesh.delete();
+		quad.delete();
 		light.delete();
 		skybox.delete();
 	}

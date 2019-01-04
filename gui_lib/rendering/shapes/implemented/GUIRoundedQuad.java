@@ -8,26 +8,16 @@ import utils.CustomBufferUtils;
 
 public class GUIRoundedQuad extends GUIShape {
 	
-	
 	private float cornerEdgeLength;
-	
 	
 	public GUIRoundedQuad(float cornerEdgeLength) {
 		super();
-		
-		this.cornerEdgeLength = cornerEdgeLength;
-		
-		loadData();		
-	}
-	
 
-	@Override
-	public FloatBuffer getPositionData() {
-		
+		this.cornerEdgeLength = cornerEdgeLength;
 		float a = cornerEdgeLength;
 		float b = 1.0f - cornerEdgeLength;
 		
-		float[] positionData = {
+		float[] posData = {
 			a   , -0.0f, -1.0f, //0
 			0.0f, -a   , -1.0f, //1
 			a   , -a   , -1.0f, //2
@@ -45,17 +35,7 @@ public class GUIRoundedQuad extends GUIShape {
 			b   , -b   , -1.0f  //11
 		};
 		
-		return CustomBufferUtils.createFloatBuffer(positionData);
-	}
-	
-
-	@Override
-	public FloatBuffer getTexPosData() {
-		
-		float a = cornerEdgeLength;
-		float b = 1.0f - cornerEdgeLength;
-		
-		float[] texPosData = {
+		float[] texCoords = {
 			a   , 0.0f, 0.9f, //0
 			0.0f, a   , 0.9f, //1
 			a   , a   , 0.9f, //2
@@ -73,14 +53,8 @@ public class GUIRoundedQuad extends GUIShape {
 			b   , b   , 0.9f  //11
 		};
 		
-		return CustomBufferUtils.createFloatBuffer(texPosData);
-	}
-	
-
-	@Override
-	public IntBuffer getIndexData() {
 		
-		int[] indexArray = {
+		int[] indices = {
 			0, 1, 2,
 			0, 3, 2,
 			2, 3, 4,
@@ -97,15 +71,14 @@ public class GUIRoundedQuad extends GUIShape {
 			11, 10, 9
 		};
 		
-		return CustomBufferUtils.createIntBuffer(indexArray);
+		setPositionData(CustomBufferUtils.createFloatBuffer(posData));
+		setTexCoordData(CustomBufferUtils.createFloatBuffer(texCoords), 2);
+		setIndexBuffer(CustomBufferUtils.createIntBuffer(indices));
 	}
 	
 
 	@Override
 	public boolean isHit(float cursorX, float cursorY) {
-		
-		float a = cornerEdgeLength;
-		float b = 1.0f - cornerEdgeLength;
 		
 		if (cursorX < 0.0f || cursorX > 1.0f) {
 			return false;
