@@ -1,9 +1,10 @@
 package models.worldModels;
 
-import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
+import assets.shaders.standardShaders.lightShader.LightShader;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
@@ -20,7 +21,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 
-public class HexagonGrid extends Mesh {
+public class HexagonGrid extends Mesh3D {
 	
 	private SuperGrid superGrid;
 	
@@ -40,6 +41,8 @@ public class HexagonGrid extends Mesh {
 		
 		super(GL_TRIANGLE_FAN);
 		
+		//Use the attribute color instead of the material color.
+		this.useAttributeColor();
 		this.superGrid = superGrid;
 		
 		length = superGrid.getLengthInHexagons();
@@ -61,7 +64,7 @@ public class HexagonGrid extends Mesh {
 		
 		SuperGrid.adjustToTerrainAndSea(vertices);
 		
-		setData(vertices, elementBuffer);
+		setData(vertices, elementBuffer, false);
 		
 	}
 	
@@ -109,15 +112,15 @@ public class HexagonGrid extends Mesh {
 	
 	private void updateColor() {
 		
-		float[] colorsF = new float[colors.length*4];
+		float[] colorsF = new float[colors.length*7*4];
 		
 		for (int i=0; i<colors.length; i++) {
-			
-			colorsF[i*4 + 0] = colors[i].getA();
-			colorsF[i*4 + 1] = colors[i].getB();
-			colorsF[i*4 + 2] = colors[i].getC();
-			colorsF[i*4 + 3] = colors[i].getD();
-			
+			for (int j=0; j<7; j++) {
+				colorsF[i*4*7 + j*4 + 0] = colors[i].getRed();
+				colorsF[i*4*7 + j*4 + 1] = colors[i].getGreen();
+				colorsF[i*4*7 + j*4 + 2] = colors[i].getBlue();
+				colorsF[i*4*7 + j*4 + 3] = colors[i].getAlpha();
+			}
 		}
 		
 		FloatBuffer colorDataBuffer = CustomBufferUtils.createFloatBuffer(colorsF);
@@ -138,7 +141,6 @@ public class HexagonGrid extends Mesh {
 	}
 	
 	public void setColor(MapMode mapMode) {
-		
 		for (int i=0; i<length*width; i++) {
 			this.colors[i] = mapMode.getColor(i);
 		}
@@ -169,7 +171,7 @@ public class HexagonGrid extends Mesh {
 	@Override
 	public void onDrawEnd(Scene scene) {
 		glDisable(GL_PRIMITIVE_RESTART);
-		
+		super.onDrawEnd(scene);
 	}
 	
 	

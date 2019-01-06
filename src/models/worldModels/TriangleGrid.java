@@ -5,22 +5,21 @@ import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glDisable;
-
-
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
-import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
+import assets.scene.Scene;
 import math.vectors.Vector3f;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
 
-public class TriangleGrid extends Mesh {
+public class TriangleGrid extends Mesh3D {
 	
 	private int length, width;
 	
@@ -51,6 +50,15 @@ public class TriangleGrid extends Mesh {
 		
 		this(superGrid, material, sea);
 		
+		/*
+		 * Replace the current shader with a shader that uses the attribute color (color specified 
+		 * per vertex when generating a mesh) instead of the material's color value.
+		 * 
+		 * This code will be replaced once shader-rework is merged with master.
+		 */
+		//MOVED TO CONTRUCTOR BELOW
+	//	this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
+		
 		this.colorFunc = colorFunc;
 		
 		processVertices();
@@ -79,6 +87,8 @@ public class TriangleGrid extends Mesh {
 	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
 		super(GL_TRIANGLE_STRIP, material, null);
 		
+		this.useAttributeColor();
+		
 		length = superGrid.getLengthInVectors();
 		width  = superGrid.getWidthInVectors();
 		
@@ -87,6 +97,8 @@ public class TriangleGrid extends Mesh {
 		PRI = -1;
 		
 		this.superGrid = superGrid;
+		edgeLength = superGrid.getTriEdgeLength();
+		triangleAltitude = superGrid.getTriangleAltitude();
 		
 		this.sea = sea;
 	}
@@ -311,14 +323,16 @@ public class TriangleGrid extends Mesh {
 	
 	//********************************** other stuff **********************************************
 	
-	
-	public void onDrawStart() {
+	@Override
+	protected void onDrawStart(Scene scene) {
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
+		super.onDrawStart(scene);
 	}
 	
-	
-	public void onDrawEnd() {		
+	@Override
+	public void onDrawEnd(Scene scene) {
+		super.onDrawEnd(scene);
 		glDisable(GL_PRIMITIVE_RESTART);
 	}
 	

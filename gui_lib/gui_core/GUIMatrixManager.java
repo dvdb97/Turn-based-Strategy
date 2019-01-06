@@ -7,21 +7,21 @@ public class GUIMatrixManager {
 	
 	/**
 	 * 
-	 * @param x The x position of the element
-	 * @param y The y position of the element
+	 * @param xPos The x position of the element
+	 * @param yPos The y position of the element
 	 * @param width The width of the element
 	 * @param height The height of the element
 	 * @return Returns a transformation matrix based on the parameters
 	 */	
-	public static Matrix44f generateRenderingMatrix(float x, float y, float width, float height) {
+	public static Matrix44f generateTransformationMatrix44(float xPos, float yPos, float width, float height) {
 		
 		Matrix44f scalingMatrix = new Matrix44f(width, 0f, 0f, 0f,
 												0f, height, 0f, 0f,
 												0f, 0f, 1.0f, 0f,
 												0f, 0f, 0f, 1f);
 
-		Matrix44f translationMatrix = new Matrix44f(1f, 0f, 0f, x,
-													0f, 1f, 0f, y,
+		Matrix44f translationMatrix = new Matrix44f(1f, 0f, 0f, xPos,
+													0f, 1f, 0f, yPos,
 													0f, 0f, 1f, 0f,
 													0f, 0f, 0f, 1f);
 
@@ -30,8 +30,15 @@ public class GUIMatrixManager {
 		
 	}
 	
-	
-	public static Matrix33f generateTransformationMatrix(float xPos, float yPos, float width, float height) {
+	/**
+	 * 
+	 * @param xPos The x position of the element
+	 * @param yPos The y position of the element
+	 * @param width The width of the element
+	 * @param height The height of the element
+	 * @return Returns a transformation matrix based on the parameters
+	 */	
+	public static Matrix33f generateTransformationMatrix33(float xPos, float yPos, float width, float height) {
 		
 		Matrix33f scalingMatrx = new Matrix33f(width, 0, 0,
 											   0, height, 0,

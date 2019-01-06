@@ -1,8 +1,8 @@
 package core.game;
 
 import core.saves.GameScore;
-import gui.font.FontCollection;
 import interaction.PlayerCamera;
+import gui.GameGUIManager;
 import gui_core.GUIManager;
 import interaction.TileSelecter;
 import interaction.input.KeyInput;
@@ -13,23 +13,18 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 public class Game {
 	
-	
 	private boolean running;
 	
 	
 	//Start a completely new game
-	public Game(int numberOfAgents, int boardLength, int boardWidth) {
-		//Init the camera
+	public Game(int boardLength, int boardWidth) {
+		
 		PlayerCamera.init();
 		
-		//Init world
 		WorldManager.init(boardLength, boardWidth);
 		
-		//Init tile selecter
 		TileSelecter.init();
-		
-		//Load all fonts. TODO: Init it somewhere else (maybe as a bundle together with other gui stuff)
-		FontCollection.init();
+		GameGUIManager.init();
 		
 		run();
 	}
@@ -48,11 +43,11 @@ public class Game {
 			
 			RenderEngine.clear();
 			
-			processInput();
-			
 			update();
 			
 			render();
+			
+			processInput();
 			
 			RenderEngine.swapBuffers();
 			
@@ -63,25 +58,29 @@ public class Game {
 	
 	
 	private void processInput() {
-		PlayerCamera.update();
 		
-		TileSelecter.processInput();
+		PlayerCamera.update();
 		
 		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
+		}
+
+		if(!GUIManager.processInput()) {
+			TileSelecter.processInput();
 		}
 	}
 	
 	
 	private void update() {
 		WorldManager.update();
+		GameGUIManager.update();
+		GUIManager.update();
 	}
 	
 	
 	private void render() {
 		WorldManager.render();
-		//Draw the gui
-		GUIManager.update();
+		//GUIManager.render();
 	}
 	
 	

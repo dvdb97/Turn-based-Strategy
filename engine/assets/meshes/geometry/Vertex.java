@@ -56,7 +56,7 @@ public class Vertex extends Vector3f {
 	
 	
 	public Vertex(float x, float y, float z, Color color) {
-		this(x, y, z, color.getA(), color.getB(), color.getC(), color.getD());
+		this(x, y, z, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 	
 	
@@ -99,7 +99,7 @@ public class Vertex extends Vector3f {
 		return true;		
 	}
 	
-	
+	//TODO: that is wrong, i'd guess
 	public void addSurfaceNormal(Vector3f surfaceNormal) {
 		
 		if (this.normalVec == null) {
@@ -111,7 +111,6 @@ public class Vertex extends Vector3f {
 		this.normalVec = this.normalVec.plus(surfaceNormal);
 		
 		this.normalVec = this.normalVec.timesEQ(1.0f / (float)++numberOfSurfaceNormals);
-		
 	}
 	
 	
@@ -191,7 +190,7 @@ public class Vertex extends Vector3f {
 	}
 		public void setColor(Color color) {
 		
-		setColor(color.getA(), color.getB(), color.getC(), color.getD());
+		setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 		
 	}
 	

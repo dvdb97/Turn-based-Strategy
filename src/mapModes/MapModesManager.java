@@ -25,23 +25,23 @@ public class MapModesManager {
 	
 	/**
 	 * 
-	 * @param mode index of the mode in "Color[][] modes"
+	 * @param modeKey index of the mode in "Color[][] modes"
 	 * @return true, if mode truely changed
 	 */
-	public boolean changeModeTo(int mode) {
+	public boolean changeModeTo(int modeKey) {
 		
 		//TODO: work with exceptions here
-		if (!modes.containsKey(mode)) {
+		if (!modes.containsKey(modeKey)) {
 			System.err.println("mode not found");
 			return false;
 		}
 		
-		if (currentMode == mode) {
+		if (currentMode == modeKey) {
 			return false;
 		}
 		
-		boardModels.setHexColor(modes.get(mode));
-		currentMode = mode;
+		boardModels.setHexColor(modes.get(modeKey));
+		currentMode = modeKey;
 		
 		return true;
 		

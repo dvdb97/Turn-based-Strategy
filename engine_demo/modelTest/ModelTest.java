@@ -25,6 +25,7 @@ import assets.textures.Skybox;
 import assets.textures.Texture2D;
 
 import static java.lang.Math.*;
+import static utils.ColorPalette.*;
 
 
 public class ModelTest {

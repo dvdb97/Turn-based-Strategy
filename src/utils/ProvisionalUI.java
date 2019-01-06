@@ -5,6 +5,9 @@ import mapModes.MapModesManager;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import gui.GameGUIManager;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 
@@ -28,9 +31,9 @@ public class ProvisionalUI {
 	private void setUp() {
 		
 		map = new HashMap<>(3);
-		map.put(GLFW_KEY_B, ()-> {mmm.changeModeTo(0);System.out.println("changed to blank mode");});
-		map.put(GLFW_KEY_N, ()-> {mmm.changeModeTo(1);System.out.println("changed to fertility mode");});
-		map.put(GLFW_KEY_M, ()-> {mmm.changeModeTo(2);System.out.println("changed to forest mode");});
+		map.put(GLFW_KEY_B, () -> mmm.changeModeTo(0));
+		map.put(GLFW_KEY_N, () -> mmm.changeModeTo(1));
+		map.put(GLFW_KEY_M, () -> mmm.changeModeTo(2));
 		keySet = map.keySet();
 		
 	}

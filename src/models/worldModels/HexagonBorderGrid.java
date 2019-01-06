@@ -6,11 +6,17 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import assets.cameras.Camera;
+import assets.light.DirectionalLight;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
+import assets.shaders.ShaderLoader;
+import assets.shaders.ShaderProgram;
+import assets.shaders.standardShaders.StandardShader;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import models.seeds.SuperGrid;
 import utils.CustomBufferUtils;
 
@@ -23,7 +29,9 @@ import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 
 
 public class HexagonBorderGrid extends Mesh {
-		
+	
+	private StandardShader shader;
+	
 	private SuperGrid superGrid;
 	
 	//dimensions
@@ -44,8 +52,9 @@ public class HexagonBorderGrid extends Mesh {
 	//******************** constructor ***************************
 	
 	public HexagonBorderGrid(SuperGrid superGrid, Color color) {
-		
 		super(GL_LINE_LOOP);
+		
+		this.shader = StandardShader.create();
 		
 		this.superGrid = superGrid;
 		
@@ -74,8 +83,7 @@ public class HexagonBorderGrid extends Mesh {
 		
 		vectors = null;
 		
-		setData(vertices, elementBuffer);
-		
+		setData(vertices, elementBuffer, false);
 	}
 	
 	private void extractVectorsFromSuperGrid() {
@@ -154,20 +162,12 @@ public class HexagonBorderGrid extends Mesh {
 	
 	@Override
 	public void onDrawStart(Scene scene) {
-		super.onDrawStart(scene);
-		
-		glLineWidth(0.1f);
-		
-		glEnable(GL_PRIMITIVE_RESTART);
-		glPrimitiveRestartIndex(PRI);
+		this.onDrawStart(scene.getCamera(), scene.getLightSource());
 	}
 	
 	@Override
 	public void onDrawEnd(Scene scene) {
-		super.onDrawEnd(scene);
-		
-		glDisable(GL_PRIMITIVE_RESTART);
-		
+		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
 	}
 	
 	
@@ -186,6 +186,24 @@ public class HexagonBorderGrid extends Mesh {
 	public int getWidth() {
 		return width;
 	}
-	
+
+
+	@Override
+	protected void onDrawStart(Camera camera, DirectionalLight light) {
+		shader.bind();
+		shader.setCamera(camera);
+		shader.setModelMatrix(this.getTransformable().getTransformationMatrix());
+		shader.setMaterial(getMaterial());
+		glLineWidth(0.1f);
+		
+		glEnable(GL_PRIMITIVE_RESTART);
+		glPrimitiveRestartIndex(PRI);
+	}
+
+
+	@Override
+	protected void onDrawEnd(Camera camera, DirectionalLight light) {
+		glDisable(GL_PRIMITIVE_RESTART);
+	}
 	
 }

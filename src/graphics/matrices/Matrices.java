@@ -22,11 +22,11 @@ public class Matrices {
 		
 		perspProjectionMatrix = ProjectionMatrix.perspective();
 		
-		invertedPerspProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(perspProjectionMatrix);
+		invertedPerspProjectionMatrix = MatrixInversion44f.computeMultiplicativeInverse(perspProjectionMatrix);
 		
 		orthProjectionMatrix = ProjectionMatrix.orthographic();
 		
-		invertedOrthProjectionMatrix = MatrixInversion44f.generateMultiplicativeInverse(orthProjectionMatrix);
+		invertedOrthProjectionMatrix = MatrixInversion44f.computeMultiplicativeInverse(orthProjectionMatrix);
 		
 		windowProportions = window.getAspectRatio();
 		

@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
+import input.Mouse;
+
 
 public class MouseInputManager extends GLFWMouseButtonCallback {
 

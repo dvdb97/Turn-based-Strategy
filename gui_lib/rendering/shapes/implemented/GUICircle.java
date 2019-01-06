@@ -1,7 +1,5 @@
 package rendering.shapes.implemented;
 
-import rendering.shapes.GUIShape;
-
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 
 import java.nio.FloatBuffer;
@@ -14,6 +12,7 @@ import static java.lang.Math.PI;
 import org.lwjgl.BufferUtils;
 
 import math.vectors.Vector2f;
+import rendering.shapes.GUIShape;
 
 public class GUICircle extends GUIShape {
 

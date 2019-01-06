@@ -128,4 +128,17 @@ public class CustomBufferUtils {
 		return buffer;
 		
 	}
+	
+	public static ByteBuffer createByteBuffer(ArrayList<Byte> list) {
+		
+		ByteBuffer buffer = BufferUtils.createByteBuffer(list.size());
+		for (Byte b : list) {
+			buffer.put((byte)b);
+		}
+		buffer.flip();
+		
+		return buffer;
+		
+	}
+	
 }

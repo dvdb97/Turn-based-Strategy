@@ -3,36 +3,22 @@
 in vec2 texCoords;
 
 uniform sampler2D tex;
-
 uniform vec4 u_Color;
-uniform int u_textured;
 
 out vec4 fColor;
 
 
-vec4 fetchGUITexels() {
-
+vec4 fetchTexels() {
 	vec4 color = texture(tex, texCoords);
-	
-	if (length(color) >= length(vec4(0.3, 0.3, 0.3, 1.0))) {
-		color = vec4(u_Color.r, u_Color.g, u_Color.b, 0.0);
-	}
-	
-	return color;
 
+	float alpha = pow(step(0.2, color.a) * color.a, 1f);
+
+	return vec4(u_Color.rgb, alpha);
 }
 
 
 void main() {
 
-	vec4 color;
 
-	if(u_textured == 1) {
-		color = fetchGUITexels();
-	} else {
-		color = u_Color;
-	}
-
-	fColor = color;
-
+	fColor = texture(tex, texCoords);//fetchTexels();
 }

@@ -12,7 +12,7 @@ public class MatrixInversion33f {
 																  0f, 1f, 0f,
 																  1f, 0f, 0f);
 	
-	public static Matrix33f generateMultiplicativeInverse(Matrix33f matrix) {
+	public static Matrix33f computeMultiplicativeInverse(Matrix33f matrix) {
 		
 		Matrix33f l_Matrix = new Matrix33f(0);
 		Matrix33f u_Matrix = new Matrix33f(0);

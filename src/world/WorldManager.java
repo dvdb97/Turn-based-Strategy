@@ -7,7 +7,7 @@ import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import models.worldModels.BoardModels;
 import models.worldModels.ModelCreater;
-import utils.Calc;
+import utils.Statistics;
 import utils.Percentage;
 import utils.ProvisionalUI;
 import world.gameBoard.GameBoard;
@@ -76,8 +76,8 @@ public class WorldManager {
 			
 			float[] heights = getHeights(t);
 			
-			float avgHeight = Calc.averageOf(heights);
-			float heightSTDV = Calc.standardDeviationOf(heights, avgHeight);
+			float avgHeight = Statistics.averageOf(heights);
+			float heightSTDV = Statistics.standardDeviationOf(heights, avgHeight);
 			
 			tiles[t] = new Tile(t, avgHeight, heightSTDV, new Percentage(fertility[t]));
 			

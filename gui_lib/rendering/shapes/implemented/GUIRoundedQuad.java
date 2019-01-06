@@ -1,8 +1,5 @@
 package rendering.shapes.implemented;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import rendering.shapes.GUIShape;
 import utils.CustomBufferUtils;
 

@@ -1,12 +1,12 @@
 package models.worldModels;
 
+import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
 import math.vectors.Vector3f;
 import models.TerrainCol;
 import models.seeds.ElevationMap;
 import models.seeds.SuperGrid;
-import visualize.CoordinateSystem;
 
 public class ModelCreater {
 	
@@ -40,8 +40,6 @@ public class ModelCreater {
 	
 	private TriangleGrid sea;
 	
-	private CoordinateSystem coSystem;
-	
 	private HexagonGrid hexagons;
 	
 	//********************************** initialization ************************
@@ -72,10 +70,9 @@ public class ModelCreater {
 		createTerrain();
 		createTileBorders();
 		createSea();
-		createCoSystem();
 		createHexagons();
 		
-		return new BoardModels(terrain, tileBorders, sea, coSystem, hexagons);
+		return new BoardModels(terrain, tileBorders, sea, hexagons);
 		
 	}
 	
@@ -90,24 +87,19 @@ public class ModelCreater {
 	
 	private void createTerrain() {
 		
-		terrain = new TriangleGrid(superGrid, new TerrainCol(), new StandardMaterial(), false);
+		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
+		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
 		
 	}
 	
 	private void createTileBorders() {
 		
-		tileBorders = new HexagonBorderGrid(superGrid, new Color(0, 0, 0, 1));
+		tileBorders = new HexagonBorderGrid(superGrid, new Color(0f, 0f, 0f, 1f));
 	}
 	
 	private void createSea() {
 		
 		sea = new TriangleGrid(superGrid, new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial(), true);
-		
-	}
-	
-	private void createCoSystem() {
-		
-		coSystem = new CoordinateSystem(100.0f);
 		
 	}
 	

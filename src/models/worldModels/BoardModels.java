@@ -1,27 +1,12 @@
 package models.worldModels;
 
-import assets.cameras.Camera;
 import assets.light.DirectionalLight;
-import assets.material.Material;
-import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
-import assets.textures.Texture2D;
-import graphics.matrices.Matrices;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
-import math.matrices.Matrix44f;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
-import models.TerrainCol;
-import models.seeds.ColorFunction;
-import rendering.RenderEngine;
 import rendering.matrices.transformation.TransformationMatrix;
-import visualize.CoordinateSystem;
-import world.WorldManager;
-
-import static math.Trigonometry.*;
 
 public class BoardModels {
 	
@@ -36,22 +21,13 @@ public class BoardModels {
 	
 	private TriangleGrid sea;
 	
-	private CoordinateSystem coSystem;
-	
 	private HexagonGrid hex;
 	
 	//matrices
 	private TransformationMatrix boardModelMatrix;
 	
 	//others
-	private static Material mapMaterial;
-	
 	private static DirectionalLight sun;
-	private static Vector3f ambientLight;
-	
-	private static Color hoveredTileColor;
-	
-	private static Color selectedTileColor;
 	
 	private static Scene scene;
 	
@@ -65,12 +41,11 @@ public class BoardModels {
 	 * @param coSystem
 	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
-			CoordinateSystem coSystem, HexagonGrid hex) {
+			HexagonGrid hex) {
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
-		this.coSystem = coSystem;
 		
 		this.hex = hex;
 		
@@ -89,16 +64,14 @@ public class BoardModels {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		mapMaterial = new Material(new Color(0f, 0f, 0f, 0f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(1.0f, 1.0f, 1.0f), 1f);
+		sun = new DirectionalLight(new Vector3f(0.2f, 0.2f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
+		sun.fitToBoundingBox(terrain);
 		
-		sun = new DirectionalLight(new Vector3f(0.5f, 0.5f, 0.3f));
-		ambientLight = new Vector3f(0.5f, 0.5f, 0.5f);
+	//	hoveredTileColor = new Color(1f, 1f, 0f, 1f);
 		
-		hoveredTileColor = new Color(1f, 1f, 0f, 1f);
+	//	selectedTileColor = new Color(1f, 0f, 0f, 1f);
 		
-		selectedTileColor = new Color(1f, 0f, 0f, 1f);
-		
-		scene = new Scene(new Camera(), sun, null);
+		scene = new Scene(PlayerCamera.getCamera(), sun, null);
 	}	
 	
 	//***************************** render ********************************
@@ -122,45 +95,27 @@ public class BoardModels {
 	
 	private void renderTerrain() {
 		
-	//	ShaderManager.useLightShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getProjectionMatrix(), Camera.getPosition(), sun, ambientLight, mapMaterial);
-		
-	//	RenderEngine.draw(terrain, null);
-		
-	//	ShaderManager.disableLightShader();
-		
-		
 		terrain.render(scene);
-		
 		
 	}
 	
 	private void renderBordersSeaCOS() {
 		
 		tileBorders.displayAll();
-		
-	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), false, null);
-		
+
 		tileBorders.render(scene);
 		
 		sea.render(scene);
 		
-		coSystem.render(scene);
-		
 		hex.render(scene);
-		
-	//	ShaderManager.disableShader();
 		
 	}
 	
 	private void renderHoveredTile() {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
-		
-	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, hoveredTileColor);
-		
+
 		tileBorders.render(scene);
-		
-	//	ShaderManager.disableShader();
 		
 	}
 	
@@ -168,11 +123,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-	//	ShaderManager.useShader(boardModelMatrix, PlayerCamera.getViewMatrix(), Matrices.getPerspectiveProjectionMatrix(), true, selectedTileColor);
-		
 		tileBorders.render(scene);
-		
-	//	ShaderManager.disableShader();
 		
 	}
 	

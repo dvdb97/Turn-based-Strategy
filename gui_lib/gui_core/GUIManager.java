@@ -1,23 +1,10 @@
 package gui_core;
 
-<<<<<<< HEAD
-import assets.shaders.ShaderLoader;
-import assets.shaders.ShaderProgram;
-=======
 import java.util.LinkedList;
-
-import assets.textures.Texture;
-import assets.textures.Texture2D;
-import elements.containers.GUIWindow;
-import fontRendering.font.GUIFontCollection;
-import graphics.matrices.Matrices;
+import fundamental.ClickableElement;
+import fundamental.GUIWindow;
+import input.Mouse;
 import interaction.Window;
-import interaction.input.CursorPosInput;
-import interaction.input.MouseInputManager;
->>>>>>> master
-import math.matrices.Matrix33f;
-import math.matrices.Matrix44f;
-import math.vectors.Vector4f;
 
 public class GUIManager {
 	
@@ -33,6 +20,8 @@ public class GUIManager {
 	
 	private static int height;
 	
+	private static ClickableElement clickedElement;
+	
 	
 	private GUIManager() {
 		
@@ -45,68 +34,98 @@ public class GUIManager {
 		}
 		
 		GUIShaderCollection.init(window);
-		
-		GUIFontCollection.init();
-		
 		idCounter = 0;
-		
 		initialized = true;
-		
 		windows = new LinkedList<GUIWindow>();
-		
 		width = window.getWidth();
-		
-<<<<<<< HEAD
-		guiShader.bind();
-=======
 		height = window.getHeight();
->>>>>>> master
+		Mouse.init();
 		
 	}
 	
+	//***************************************************************************************
 	
-	public static void update() {
+	/**
+	 * 
+	 * @return true,  if any window is hit
+	 */
+	public static boolean processInput() {
 		
-		float cursorX = CursorPosInput.getXPosAsOpengl();
-		float cursorY = CursorPosInput.getYPosAsOpengl();
+		Mouse.update();
 		
-		boolean leftMouseButtonDown = MouseInputManager.isLeftMouseButtonPressed();
-		boolean rightMouseButtonDown = MouseInputManager.isRightMouseButtonPressed();
-		
-		for (GUIWindow window : windows) {
+		if (clickedElement != null) {
 			
-			//TODO: Only call it when there were changes
-			window.update();
+			clickedElement.processInput();
+			return true;
 			
-			if (window.processInput(cursorX, cursorY, leftMouseButtonDown, rightMouseButtonDown)) {
-				break;
+		} else {
+			
+			for (GUIWindow window : windows) {
+				
+				if (window.processInput()) {
+					return true;
+				}
+				
 			}
 			
 		}
 		
-<<<<<<< HEAD
-		guiShader.bind();
-=======
->>>>>>> master
+		return false;
 		
+	}
+	
+	public static void update() {
 		for (GUIWindow window : windows) {
-			
+			//TODO: Only call it when there were changes
+			//updates rendering matrices (and its inversions)
+			window.update();
+		}
+	}
+
+	public static void render() {
+		for (GUIWindow window : windows) {
 			window.render();
-			
+		}
+	}
+	
+	//************************** clicked element ******************************************
+	
+	public static void setClickedElement(ClickableElement element) {
+		
+		if (clickedElement == null) {
+			clickedElement = element;
+		} else {
+			System.err.println("GUIManager: clickedElement already set");
 		}
 		
 	}
 	
 	
-<<<<<<< HEAD
-	public static void disableGuiShader() {
+	public static void resetClickedELement(ClickableElement element) {
 		
-		if (!initialized) {
-			init();
+		if (clickedElement == element) {
+			clickedElement = null;
+		} else {
+			//TODO: error report
+			System.err.println("GUIManager: TODO");
 		}
 		
-		guiShader.unbind();
-=======
+	}
+	
+	//***************************************************************************************
+	
+	public static void setPrimaryWindow(GUIWindow window) {
+		if (windows.contains(window)) {
+			windows.remove(window);
+			windows.add(window);
+		} else {
+			System.err.println("GUIManager: window not found");
+		}
+	}
+	
+	
+	//***************************************************************************************
+	
 	public static boolean isInitialized() {
 		return initialized;
 	}
@@ -124,7 +143,6 @@ public class GUIManager {
 	
 	public static void remove(GUIWindow window) {
 		windows.remove(window);
->>>>>>> master
 	}
 
 }

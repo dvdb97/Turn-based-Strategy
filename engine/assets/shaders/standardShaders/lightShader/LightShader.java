@@ -1,7 +1,6 @@
 package assets.shaders.standardShaders.lightShader;
 
 import assets.shaders.ShaderProgram;
-import assets.shaders.subshaders.colorSubshaders.ColorSubshader;
 import math.matrices.Matrix44f;
 import utils.FileUtils;
 
@@ -38,26 +37,6 @@ public class LightShader extends ShaderProgram {
 		
 		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
-		
-		return new LightShader(vertSource, fragSource);
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * 
-	 * @param subshader A subshader to compute the color values.
-	 * @return returns a LightShader that does per fragment light computing
-	 */
-	public static LightShader createPerFragmentLightShader(ColorSubshader subshader) {
-		
-		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
-		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
-		
-		//Replace the standard color-function with the subshader's function.
-		fragSource = fragSource.replace("vec4 color() {\n" + 
-				"	return material.color;\n" + 
-				"}", subshader.getSourceCode());
 		
 		return new LightShader(vertSource, fragSource);
 	}

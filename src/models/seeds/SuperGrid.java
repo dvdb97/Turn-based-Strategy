@@ -179,9 +179,15 @@ public class SuperGrid {
 	public int getWidthInVectors() {
 		return widthInVectors;
 	}
-
-
-
+	
+	public float getTriEdgeLength() {
+		return triEdgeLength;
+	}
+	
+	public float getTriangleAltitude() {
+		return triangleAltitude;
+	}
+	
 	public Vector3f[] getVectors() {
 		
 		Vector3f[] copyOfPositionVectors = new Vector3f[positionVectors.length];

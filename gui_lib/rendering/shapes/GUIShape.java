@@ -1,6 +1,7 @@
 package rendering.shapes;
 
 import assets.meshes.Mesh2D;
+import assets.meshes.geometry.Color;
 import assets.textures.Texture;
 
 public abstract class GUIShape extends Mesh2D {
@@ -21,6 +22,15 @@ public abstract class GUIShape extends Mesh2D {
 		
 		onDrawStart(null);
 		this.render();		
+		onDrawEnd(null);
+	}
+	
+	
+	public void render(Color color) {
+		this.getMaterial().color = color;
+		
+		onDrawStart(null);
+		this.render();
 		onDrawEnd(null);
 	}
 	
