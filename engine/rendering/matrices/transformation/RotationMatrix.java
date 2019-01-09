@@ -65,7 +65,6 @@ public class RotationMatrix {
 	
 	private static Matrix44f getXRotationMatrix(float value) {
 		Matrix44f matrix = new Matrix44f();
-		matrix.setIdentity();
 		
 		matrix.setB2(cos(value));
 		matrix.setB3(-sin(value));
@@ -78,7 +77,6 @@ public class RotationMatrix {
 	
 	private static Matrix44f getYRotationMatrix(float value) {
 		Matrix44f matrix = new Matrix44f();
-		matrix.setIdentity();
 		
 		matrix.setA1(cos(value));
 		matrix.setA3(sin(value));
@@ -91,7 +89,6 @@ public class RotationMatrix {
 	
 	private static Matrix44f getZRotationMatrix(float value) {
 		Matrix44f matrix = new Matrix44f();
-		matrix.setIdentity();
 		
 		matrix.setA1(cos(value));
 		matrix.setA2(-sin(value));

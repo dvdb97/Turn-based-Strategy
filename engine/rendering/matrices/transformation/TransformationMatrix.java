@@ -73,13 +73,13 @@ public class TransformationMatrix extends Matrix44f{
 	protected void updateData() {
 		
 		setA1( scale.getA() * cRY * cRZ);
-		setA2(-scale.getA() * sRZ);
-		setA3( scale.getA() * sRY);
-		setA4( scale.getA() * translation.getA());
+		setA2(-scale.getB() * sRZ * cRY);
+		setA3( scale.getC() * sRY);
+		setA4( translation.getA());
 		setB1( scale.getB() * sRZ);
 		setB2( scale.getB() * cRX * cRZ);
 		setB3(-scale.getB() * sRX);
-		setB4( scale.getB() * translation.getB());
+		setB4( translation.getB());
 		setC1(-scale.getC() * sRY);
 		setC2( scale.getC() * sRX);
 		setC3( scale.getC() * cRX * cRY);

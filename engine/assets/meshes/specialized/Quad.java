@@ -5,9 +5,9 @@ import assets.meshes.Mesh2D;
 import assets.textures.Texture;
 import utils.CustomBufferUtils;
 
-public class Plane extends Mesh2D {
+public class Quad extends Mesh2D {
 	
-	public Plane() {
+	public Quad() {
 		
 		float[] pos = {
 			-1f, 1f, 0f, 1f, 1f, 0f,
@@ -30,14 +30,14 @@ public class Plane extends Mesh2D {
 	}
 	
 	
-	public Plane(Texture texture) {
+	public Quad(Texture texture) {
 		this();
 		
 		this.setTexture(texture);
 	}
 	
 	
-	public Plane(Material material) {
+	public Quad(Material material) {
 		this();
 		
 		this.setMaterial(material);

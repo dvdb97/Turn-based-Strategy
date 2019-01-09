@@ -17,7 +17,7 @@ import assets.meshes.Mesh;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
-import assets.meshes.specialized.Plane;
+import assets.meshes.specialized.Quad;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;

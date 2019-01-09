@@ -31,7 +31,7 @@ public abstract class Mesh extends Deletable implements IRenderable {
 	
 	private IntBuffer indexBuffer;
 	
-	private Transformable transformable;
+	public final Transformable transformable;
 	
 	private Material material;
 	
