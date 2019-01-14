@@ -19,6 +19,7 @@ public abstract class GUIShape extends Mesh2D {
 	
 	public void render(Texture texture) {
 		this.setTexture(texture);
+		this.useTextureColor();
 		
 		onDrawStart(null);
 		this.render();		
