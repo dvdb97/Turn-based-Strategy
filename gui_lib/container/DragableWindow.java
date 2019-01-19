@@ -1,9 +1,11 @@
-package work_in_progress.test;
+package container;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
+import fundamental.Moveable;
 import rendering.shapes.Shape;
+import work_in_progress.DragBar;
 
 import static utils.ColorPalette.*;
 

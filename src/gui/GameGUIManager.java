@@ -5,10 +5,11 @@ import fundamental.GUIWindow;
 import gui.tileInfo.TileInfoWindow;
 import interaction.TileSelecter;
 import rendering.shapes.GUIQuad;
-import work_in_progress.test.DragableWindow;
 import world.gameBoard.GameBoard;
 
 import static utils.ColorPalette.*;
+
+import container.DragableWindow;
 
 public class GameGUIManager {
 	

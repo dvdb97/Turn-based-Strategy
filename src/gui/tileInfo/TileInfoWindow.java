@@ -1,9 +1,5 @@
 package gui.tileInfo;
 
-import work_in_progress.test.RadioButtons;
-import work_in_progress.test.Tab;
-import work_in_progress.test.TabMenu;
-import work_in_progress.test.TestPushButton;
 import world.WorldManager;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
@@ -12,11 +8,15 @@ import input.RadioButton;
 import output.GUITexture;
 import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
+import work_in_progress.TestPushButton;
 
 import static utils.ColorPalette.*;
 
 import java.util.ArrayList;
 
+import container.RadioButtons;
+import container.Tab;
+import container.TabMenu;
 import core.Application;
 
 public class TileInfoWindow extends GUIWindow {

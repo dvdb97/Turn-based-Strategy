@@ -1,10 +1,12 @@
-package work_in_progress.test;
+package container;
 
 import assets.meshes.geometry.Color;
 import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
+import function.BooleanFunction;
 import function.Function;
 import fundamental.Container;
+import input.RadioToggleButton;
 import input.ToggleButton;
 import stbFont.TTFBox;
 import static utils.ColorPalette.*;
@@ -46,7 +48,7 @@ public class RadioButtons extends Container {
 		button.setSuspendFunc(suspendFunc);
 	}
 	
-	private TestFunction<ToggleButton> suspendFunc = new TestFunction<ToggleButton>() {
+	private BooleanFunction<ToggleButton> suspendFunc = new BooleanFunction<ToggleButton>() {
 		@Override
 		public boolean test(ToggleButton e) {
 			return currentButton == buttons.indexOf(e);

@@ -1,4 +1,4 @@
-package work_in_progress.test;
+package work_in_progress;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
@@ -7,6 +7,7 @@ import fundamental.Button;
 import fundamental.ClickableElement;
 import fundamental.DragableElement;
 import fundamental.Element;
+import fundamental.Moveable;
 import graphics.matrices.TransformationMatrix;
 import input.Mouse;
 import math.vectors.Vector2f;

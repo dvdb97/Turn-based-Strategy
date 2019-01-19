@@ -1,33 +1,23 @@
-package work_in_progress.test;
-
-import static utils.ColorPalette.WHITE;
+package work_in_progress;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import input.ToggleButton;
 import rendering.shapes.GUIQuad;
+import rendering.shapes.Shape;
+import stbFont.TTFBox;
 
-public class RadioToggleButton  extends ToggleButton {
+import static utils.ColorPalette.*;
+
+public class TestToggleButton extends ToggleButton {
 	
 	private Color color1;
 	private static Color color2 = WHITE;
 	
-	private TestFunction<ToggleButton> suspendFunc;
-	
-	public RadioToggleButton(Color color, GUIElementMatrix transformationMatrix) {
+	public TestToggleButton(Color color, GUIElementMatrix transformationMatrix) {
 		super(new GUIQuad(), color, color2, transformationMatrix);
 		color1 = color;
-	}
-	
-	@Override
-	public void onRelease() {
-		if (!suspendFunc.test(this))
-			toggle();
-	}
-	
-	public void setSuspendFunc(TestFunction<ToggleButton> suspendFunc) {
-		this.suspendFunc = suspendFunc;
 	}
 	
 	@Override
