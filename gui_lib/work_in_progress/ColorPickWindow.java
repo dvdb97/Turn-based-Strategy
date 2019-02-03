@@ -1,4 +1,4 @@
-package work_in_progress.test;
+package work_in_progress;
 
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;

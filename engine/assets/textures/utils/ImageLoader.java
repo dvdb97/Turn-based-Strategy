@@ -4,6 +4,8 @@ package assets.textures.utils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 
@@ -71,16 +73,16 @@ public class ImageLoader {
 			
 			int index = 0;
 			for (int y = 0; y < image.getHeight(); ++y) {
-                for (int x = 0; x < image.getWidth(); ++x) {
-                     
-                	//Extract the 4 bytes of the 32-Bit-Integer and store them in the array:
-                    convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 16) & 0xFF); //RED
-                    convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 8)  & 0xFF); //GREEN
-                    convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 0)  & 0xFF); //BLUE
-                    convertedData[index++] = (byte)((byte)(imageData[y * image.getWidth() + x] >> 24) & 0xFF); //ALPHA
-                                        
-                }
-            }
+				for (int x = 0; x < image.getWidth(); ++x) {
+					
+					//Extract the 4 bytes of the 32-Bit-Integer and store them in the array:
+					int rgba = imageData[y * image.getWidth() + x];
+					convertedData[index++] = (byte)((rgba >> 16) & 0xFF); //RED
+					convertedData[index++] = (byte)((rgba >> 8)  & 0xFF); //GREEN
+					convertedData[index++] = (byte)((rgba >> 0)  & 0xFF); //BLUE
+					convertedData[index++] = (byte)((rgba >> 24) & 0xFF); //ALPHA
+				}
+			}
 			
 			width = image.getWidth();
 			height = image.getHeight();

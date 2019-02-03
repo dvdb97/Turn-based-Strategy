@@ -14,7 +14,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class ProvisionalUI {
 	
-	private MapModesManager mmm;
+	//TODO: private
+	public MapModesManager mmm;
 	
 	private HashMap<Integer, KeyAction> map;
 	private Set<Integer> keySet;

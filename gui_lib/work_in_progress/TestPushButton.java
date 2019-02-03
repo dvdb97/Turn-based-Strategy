@@ -1,4 +1,4 @@
-package work_in_progress.test;
+package work_in_progress;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;

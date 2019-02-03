@@ -48,11 +48,9 @@ public abstract class Texture extends GLTargetObject {
 	
 	public Texture(int type, int width, int height) {
 		this(type);
-		
 		this.width = width;
 		this.height = height;
 	}
-	
 	
 	public void setFilter(int filter) {
 		

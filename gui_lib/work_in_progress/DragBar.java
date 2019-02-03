@@ -1,15 +1,12 @@
-package work_in_progress.test;
+package work_in_progress;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.DragFunction;
-import fundamental.Button;
-import fundamental.ClickableElement;
 import fundamental.DragableElement;
-import fundamental.Element;
+import fundamental.Moveable;
 import input.Mouse;
 import math.vectors.Vector2f;
-import math.vectors.Vector3f;
 import rendering.shapes.GUIQuad;
 
 public class DragBar extends DragableElement {
