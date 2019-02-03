@@ -30,8 +30,8 @@ public class Texture2D extends Texture {
 	}
 	
 //gui_changes
-	public Texture2D(String path, int width, int height, int filter, int mipmapFilter) {
-		super(GL_TEXTURE_2D, width, height);
+	public Texture2D(String path, int filter, int mipmapFilter) {
+		super(GL_TEXTURE_2D);
 		
 
 		setImageData(path, filter, mipmapFilter);

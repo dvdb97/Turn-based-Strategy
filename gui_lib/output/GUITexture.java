@@ -17,7 +17,8 @@ public class GUITexture extends Element{
 	
 	@Override
 	public void render() {
-		shape.render(texture, null, TM);
+	//	shape.render(texture, null, TM);
+		shape.render();
 	}
 	
 }
