@@ -55,13 +55,11 @@ public abstract class Texture extends GLTargetObject {
 	
 	
 	public void setFilter(int filter) {
-		
 		setFilter(filter, filter);	
 	}
 	
 	
 	public void setFilter(int filter, int mipmapFilter) {
-		
 		this.bind();
 		
 		int combinedFilters = filter;

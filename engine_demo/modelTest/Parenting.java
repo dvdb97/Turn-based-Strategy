@@ -30,23 +30,25 @@ public class Parenting {
 	}
 	
 	public static void run() {
-		
 		Circle redCircle = new Circle();
 		redCircle.getTransformable().setScaling(0.3f);
-		redCircle.setTexture(new Texture2D("res/Textures/TestTexture.png"));
-		//circle.useTextureColor();
+		redCircle.setTexture(new Texture2D("res/Textures/Homer.jpg"));
+		redCircle.useTextureColor();
 		
 		Circle blueCircle = new Circle();
-		blueCircle.setMaterial(new Material(new Color(0f, 0f, 1f, 1f)));
-		blueCircle.transformable.setScaling(0.3f);
+		blueCircle.transformable.setScaling(0.4f);
 		blueCircle.transformable.translate(-2f, 0f, 0f);
 		blueCircle.transformable.setParent(redCircle);
+		blueCircle.setTexture(new Texture2D("res/Textures/Homer.jpg"));
+		blueCircle.useTextureColor();
 		
 		Circle greenCircle = new Circle();
 		greenCircle.setMaterial(new Material(new Color(0f, 1f, 0f, 1f)));
 		greenCircle.transformable.setScaling(0.4f);
-		greenCircle.transformable.translate(-2f, 0f, 0f);
+		greenCircle.transformable.translate(-1.8f, 0f, 0f);
 		greenCircle.transformable.setParent(blueCircle);
+		greenCircle.setTexture(new Texture2D("res/Textures/Homer.jpg"));
+		greenCircle.useTextureColor();
 		
 		Camera camera = new Camera(new Vector3f(0f, 0f, 1f));
 		Scene scene = new Scene(camera, null, null);
@@ -54,8 +56,9 @@ public class Parenting {
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			
-			redCircle.transformable.rotate(0, 0, 0.01f);
-			blueCircle.transformable.rotate(0f, 0f, 0.02f);
+			redCircle.transformable.rotate(0, 0, -0.01f);
+			blueCircle.transformable.rotate(0f, 0f, -0.02f);
+			greenCircle.transformable.rotate(0, 0, -0.03f);
 			
 			redCircle.render(scene);
 			blueCircle.render(scene);

@@ -74,7 +74,7 @@ public abstract class Mesh extends Deletable implements IRenderable {
 		this.texture = texture;
 	}
 	
-	//TODO
+	
 	public void setData(Vertex[] vertices, IntBuffer indices) {
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
@@ -117,6 +117,7 @@ public abstract class Mesh extends Deletable implements IRenderable {
 		}
 	}
 	
+	
 	/**
 	 * 
 	 * Stores vertex data on the GPU and makes those vertices available
@@ -125,7 +126,6 @@ public abstract class Mesh extends Deletable implements IRenderable {
 	 * @param vertices The vertices to be stored.
 	 * @param indices The indices that describe the mesh's triangles.
 	 */
-
 	public void setData(Vertex[] vertices, IntBuffer indices, boolean normals) {
 		if(normals) {
 			setData(vertices, indices);

@@ -29,10 +29,9 @@ public class Texture2D extends Texture {
 		setImageData(path);
 	}
 	
-//gui_changes
-	public Texture2D(String path, int width, int height, int filter, int mipmapFilter) {
-		super(GL_TEXTURE_2D, width, height);
-		
+	
+	public Texture2D(String path, int filter, int mipmapFilter) {
+		super(GL_TEXTURE_2D);
 		setImageData(path, filter, mipmapFilter);
 	}
 	
@@ -69,70 +68,158 @@ public class Texture2D extends Texture {
 	 * @param height
 	 */
 	public Texture2D(ByteBuffer bitmap, int width, int height) {
-		
 		super(GL_TEXTURE_2D, width, height);
 		
-		setImageData(bitmap, Texture.LINEAR, Texture.NEAREST);
+		setImageData(new Image(width, height, bitmap), Texture.LINEAR, Texture.NEAREST);
 	}
 	
 	
-//HEAD
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param image The image to be used as a texture
+	 */
+	public void setImageData(Image image) {
+		bind();
+		
+		this.setWidth(image.getWidth());
+		this.setHeight(image.getHeight());
+		
+		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		
+		this.setFilter(this.getFilterMode());
+		this.setTextureWrap(this.getWrapMode());
+		generateMipMapLevels();
+		
+		unbind();
+	}
+	
+	
 	/**
 	 * 
 	 * Loads a texture from an image file with the given
 	 * path.
 	 * 
-	 * @param path The path of the image file.
+	 * @param path The path of the image file
 	 */
 	public void setImageData(String path) {
+		setImageData(ImageLoader.loadImageRGBA(path));
+	}
+	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param image The image to be used as a texture
+	 * @param filter The filter mode for the regular texture
+	 * @param mipmapFilter The filter mode for the mipmap textures
+	 */
+	public void setImageData(Image image, int filter, int mipmapFilter) {
 		bind();
-
-		Image image = ImageLoader.loadImageRGBA(path);
 		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
-
-		ByteBuffer buffer = image.getImageDataAsByteBuffer();
-		
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-		this.setFilter(this.getFilterMode());
-		this.setTextureWrap(this.getWrapMode());
-		generateMipMapLevels();
-		unbind();
-	}
-	
-	//gui_changes
-	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter) {
-		bind();
-		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(this.getWrapMode());
 		generateMipMapLevels();
+		
 		unbind();
 	}
 	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param path The path of the image file
+	 * @param filter The filter mode for the regular texture
+	 * @param mipmapFilter The filter mode for the mipmap textures
+	 */
 	public void setImageData(String path, int filter, int mipmapFilter) {
+		setImageData(ImageLoader.loadImageRGBA(path), filter, mipmapFilter);
+	}
+	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param image The image to be used as a texture
+	 * @param wrapMode The wrap mode for the texture
+	 */
+	public void setImageData(Image image, int wrapMode) {
 		bind();
 		
-		ByteBuffer buffer = ImageLoader.loadImageRGBA(path).getImageDataAsByteBuffer();
-		
-	//	setImageData(buffer, filter, mipmapFilter);
+		this.setWidth(image.getWidth());
+		this.setHeight(image.getHeight());
 		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
 		
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-		
-		this.setFilter(filter, mipmapFilter);
-		this.setTextureWrap(this.getWrapMode());
-		
+		this.setFilter(getFilterMode());
+		this.setTextureWrap(wrapMode);
 		generateMipMapLevels();
 		
-		unbind();
+		unbind();		
+	}
+	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param path The path of the image file
+	 * @param wrapMode The wrap mode for the texture
+	 */
+	public void setImageData(String path, int wrapMode) {
+		setImageData(ImageLoader.loadImageRGBA(path), wrapMode);
+	}
+	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param image The image to be used as a texture
+	 * @param filter The filter mode for the regular texture
+	 * @param mipmapFilter The filter mode for the mipmap textures
+	 * @param wrapMode The wrap mode for the texture
+	 */
+	public void setImageData(Image image, int filter, int mipmapFilter, int wrapMode) {
+		bind();
+		
+		this.setWidth(image.getWidth());
+		this.setHeight(image.getHeight());
+		
+		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		
+		this.setFilter(filter, mipmapFilter);
+		this.setTextureWrap(wrapMode);
+		generateMipMapLevels();
+		
+		unbind();	
+	}
+	
+	
+	/**
+	 * 
+	 * Set the pixel data for the texture.
+	 * 
+	 * @param path The path of the image file
+	 * @param filter The filter mode for the regular texture
+	 * @param mipmapFilter The filter mode for the mipmap textures
+	 * @param wrapMode The wrap mode for the texture
+	 */
+	public void setImageData(String path, int filter, int mipmapFilter, int wrapMode) {
+		setImageData(ImageLoader.loadImageRGBA(path), filter, mipmapFilter, wrapMode);
 	}
 	
 	

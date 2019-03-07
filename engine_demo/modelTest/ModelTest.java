@@ -3,6 +3,7 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import rendering.RenderEngine;
 import rendering.shapes.implemented.GUIQuad;
 import utils.Cooldown;
@@ -14,6 +15,7 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
@@ -62,9 +64,8 @@ public class ModelTest {
 	
 	
 	public static Mesh initMesh() {
-		//Mesh3D mesh = new Mesh3D();
-		EnvMappingMesh mesh = new EnvMappingMesh();
-		FileLoader.loadObjFile(mesh, "res/models/cube/Würfel.obj", "res/models/cube/Würfel_Texture.png");
+		Mesh3D mesh = new Mesh3D();
+		FileLoader.loadObjFile(mesh, "res/models/Box.obj", "res/models/Box_Textur.png");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.6f, 0.6f, 0.6f), 256f);
 		material.castShadows = true;
@@ -74,8 +75,7 @@ public class ModelTest {
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
-		
-		mesh.useTextureColor();
+		//mesh.useTextureColor();
 		
 		return mesh;	
 	}
@@ -102,13 +102,12 @@ public class ModelTest {
 		paths[Skybox.LEFT] = "res/Textures/Skyboxes/ice/left.jpg";
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
+		RenderEngine.setClearColor(new Vector4f(1f, 1f, 1f, 1f));
+		
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
 		
 		Scene scene = new Scene(camera, light, skybox);
-		
-		GUIQuad quad = new GUIQuad();
-		Texture2D texture = new Texture2D("res/Textures/TestTexture.png");
 		
 		WireframeBox box = new WireframeBox();
 		
@@ -116,17 +115,16 @@ public class ModelTest {
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
-			
 			handleInput();
 			
-			quad.render(texture);
+			mesh.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}
 		
+		mesh.delete();
 		box.delete();
 		skyboxMesh.delete();
-		quad.delete();
 		light.delete();
 		skybox.delete();
 	}
