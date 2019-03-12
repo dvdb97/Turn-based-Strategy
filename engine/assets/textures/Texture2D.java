@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT32;
 import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
 
-public class Texture2D extends Texture {	
+public class Texture2D extends Texture {		
 	
 	/**
 	 * Generates a 2D Texture without any of the properties specified
@@ -17,8 +17,7 @@ public class Texture2D extends Texture {
 		super(GL_TEXTURE_2D);
 	}
 	
-
-//HEAD
+	
 	/**
 	 * Generates a 2D texture by loading the data of an image file
 	 * 
@@ -76,18 +75,36 @@ public class Texture2D extends Texture {
 	
 	/**
 	 * 
+	 * This function call was put into a seperate function to easily change
+	 * the behavior of the other functions by overriding this function.
+	 * 
+	 * @param buffer The buffer of data to be used as this texture's data
+	 */
+	protected void setData(ByteBuffer buffer) {
+		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	}
+	
+	
+	/**
+	 * 
 	 * Set the pixel data for the texture.
 	 * 
 	 * @param image The image to be used as a texture
 	 */
 	public void setImageData(Image image) {
-		bind();
-		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
+		this.setImageData(image.getImageDataAsByteBuffer());
+	}
+	
+	
+	public void setImageData(ByteBuffer buffer) {
+		bind();
+		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		
+		setData(buffer);
 		
 		this.setFilter(this.getFilterMode());
 		this.setTextureWrap(this.getWrapMode());
@@ -118,13 +135,18 @@ public class Texture2D extends Texture {
 	 * @param mipmapFilter The filter mode for the mipmap textures
 	 */
 	public void setImageData(Image image, int filter, int mipmapFilter) {
-		bind();
-		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
+		this.setImageData(image.getImageDataAsByteBuffer(), filter, mipmapFilter);
+	}
+	
+	
+	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter) {
+		bind();
+		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		setData(buffer);
 		
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(this.getWrapMode());
@@ -155,19 +177,24 @@ public class Texture2D extends Texture {
 	 * @param wrapMode The wrap mode for the texture
 	 */
 	public void setImageData(Image image, int wrapMode) {
-		bind();
-		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
+		setImageData(image.getImageDataAsByteBuffer(), wrapMode);
+	}
+	
+	
+	public void setImageData(ByteBuffer buffer, int wrapMode) {
+		bind();
+		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		setData(buffer);
 		
 		this.setFilter(getFilterMode());
 		this.setTextureWrap(wrapMode);
 		generateMipMapLevels();
 		
-		unbind();		
+		unbind();
 	}
 	
 	
@@ -193,19 +220,24 @@ public class Texture2D extends Texture {
 	 * @param wrapMode The wrap mode for the texture
 	 */
 	public void setImageData(Image image, int filter, int mipmapFilter, int wrapMode) {
-		bind();
-		
 		this.setWidth(image.getWidth());
 		this.setHeight(image.getHeight());
 		
+		setImageData(image.getImageDataAsByteBuffer(), filter, mipmapFilter, wrapMode);			
+	}
+	
+	
+	public void setImageData(ByteBuffer buffer, int filter, int mipmapFilter, int wrapMode) {
+		bind();
+		
 		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		glTexImage2D(getType(), 0, GL_RGBA, this.getWidth(), this.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getImageDataAsByteBuffer());
+		setData(buffer);
 		
 		this.setFilter(filter, mipmapFilter);
 		this.setTextureWrap(wrapMode);
 		generateMipMapLevels();
 		
-		unbind();	
+		unbind();
 	}
 	
 	
@@ -243,6 +275,14 @@ public class Texture2D extends Texture {
 		texture.setTextureWrap(Texture.CLAMP_TO_EDGE);
 		
 		texture.unbind();
+		
+		return texture;
+	}
+	
+	
+	public static Texture2D generateColorTexture(int width, int height) {
+		Texture2D texture = new Texture2D(width, height);
+		texture.setImageData((ByteBuffer) null);
 		
 		return texture;
 	}

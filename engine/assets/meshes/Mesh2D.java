@@ -21,7 +21,7 @@ public class Mesh2D extends Mesh {
 	public Mesh2D(int drawMode) {
 		super(drawMode);
 		
-		shader = SpriteShader.create();
+		loadShader();
 		useMaterialColor();
 	}
 	
@@ -31,6 +31,11 @@ public class Mesh2D extends Mesh {
 		
 		this.setMaterial(material);
 		this.setTexture(texture);
+	}
+	
+	
+	protected void loadShader() {
+		shader = SpriteShader.create();
 	}
 	
 	

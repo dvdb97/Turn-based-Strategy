@@ -75,7 +75,7 @@ public class ModelTest {
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
-		//mesh.useTextureColor();
+		mesh.useTextureColor();
 		
 		return mesh;	
 	}

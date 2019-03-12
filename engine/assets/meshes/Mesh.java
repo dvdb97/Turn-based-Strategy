@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import assets.Deletable;
+import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
@@ -17,7 +17,7 @@ import assets.textures.Texture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public abstract class Mesh extends Deletable implements IRenderable {
+public abstract class Mesh implements IDeletable, IRenderable {
 	
 	private enum Attribute {
 		POSITION, COLOR, TEXCOORD, NORMAL
@@ -447,6 +447,11 @@ public abstract class Mesh extends Deletable implements IRenderable {
 		this.render();
 		
 		onDrawEnd(scene);
+	}
+	
+	
+	public boolean castShadows() {
+		return material.castShadows;
 	}
 	
 	

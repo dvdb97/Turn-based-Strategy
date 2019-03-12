@@ -12,6 +12,7 @@ import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
+import rendering.RenderQueue;
 
 public class Parenting {
 	
@@ -53,21 +54,24 @@ public class Parenting {
 		Camera camera = new Camera(new Vector3f(0f, 0f, 1f));
 		Scene scene = new Scene(camera, null, null);
 		
+		RenderQueue renderQueue = new RenderQueue(window, scene);
+		renderQueue.addMesh(redCircle);
+		renderQueue.addMesh(blueCircle);
+		renderQueue.addMesh(greenCircle);
+		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
-			RenderEngine.clear();
+			renderQueue.clear();
 			
+			//Update
 			redCircle.transformable.rotate(0, 0, -0.01f);
 			blueCircle.transformable.rotate(0f, 0f, -0.02f);
 			greenCircle.transformable.rotate(0, 0, -0.03f);
 			
-			redCircle.render(scene);
-			blueCircle.render(scene);
-			greenCircle.render(scene);
-			
-			RenderEngine.swapBuffers();
+			renderQueue.render();
+			renderQueue.show();
 		}
 		
-		redCircle.delete();
+		renderQueue.delete();
 	}
 
 }

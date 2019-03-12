@@ -2,6 +2,7 @@ package assets.light;
 
 import assets.IDeletable;
 import assets.cameras.Camera;
+import assets.meshes.IRenderable;
 import assets.meshes.Mesh;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
@@ -142,6 +143,11 @@ public class DirectionalLight extends Camera implements IDeletable {
 		}
 		
 		shadowMap.endRenderPass();
+	}
+	
+	
+	public boolean hasShadowMap() {
+		return shadowMap != null;
 	}
 	
 	
