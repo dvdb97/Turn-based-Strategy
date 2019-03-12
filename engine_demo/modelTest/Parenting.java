@@ -60,7 +60,7 @@ public class Parenting {
 		renderQueue.addMesh(greenCircle);
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
-			renderQueue.clear();
+			RenderEngine.clear();
 			
 			//Update
 			redCircle.transformable.rotate(0, 0, -0.01f);
@@ -68,7 +68,7 @@ public class Parenting {
 			greenCircle.transformable.rotate(0, 0, -0.03f);
 			
 			renderQueue.render();
-			renderQueue.show();
+			RenderEngine.swapBuffers();
 		}
 		
 		renderQueue.delete();
