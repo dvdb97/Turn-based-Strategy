@@ -4,9 +4,9 @@ import assets.textures.Texture;
 import assets.textures.Texture2D;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
 
-public class GUITexture extends Element{
+public class GUITexture extends Element {
 	
 	private Texture2D texture;
 	
