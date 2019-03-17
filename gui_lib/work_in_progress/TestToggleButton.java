@@ -4,9 +4,7 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import input.ToggleButton;
-import rendering.shapes.GUIQuad;
-import rendering.shapes.Shape;
-import stbFont.TTFBox;
+import rendering.shapes.implemented.GUIQuad;
 
 import static utils.ColorPalette.*;
 

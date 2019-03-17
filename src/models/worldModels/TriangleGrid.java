@@ -5,27 +5,21 @@ import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;
 import static org.lwjgl.opengl.GL31.glPrimitiveRestartIndex;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glDisable;
-import static utils.Const.SQRT3;
-
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
 import assets.material.Material;
-import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
-import assets.shaders.ShaderLoader;
-import assets.shaders.standardShaders.lightShader.LightShader;
-import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
-import assets.shaders.subshaders.AttributeColorSubshader;
 import math.vectors.Vector3f;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
 
-public class TriangleGrid extends Mesh {
+public class TriangleGrid extends Mesh3D {
 	
 	private int length, width;
 	
@@ -92,9 +86,9 @@ public class TriangleGrid extends Mesh {
 	
 	private TriangleGrid(SuperGrid superGrid, Material material, boolean sea) {
 		super(GL_TRIANGLE_STRIP, material, null);
-		//setShader(LightShader.createPerVertexLightShader());
-		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
-
+		
+		this.useAttributeColor();
+		
 		length = superGrid.getLengthInVectors();
 		width  = superGrid.getWidthInVectors();
 		

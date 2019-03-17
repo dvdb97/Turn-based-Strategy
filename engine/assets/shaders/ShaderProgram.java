@@ -1,17 +1,16 @@
 package assets.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL40.*;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.*;
 
 import assets.Bindable;
-import assets.IBindable;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
+import assets.textures.Texture;
 import math.matrices.Matrix33f;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
@@ -21,65 +20,13 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 
 public class ShaderProgram extends Bindable {
 	
-	private class Uniform {
-		
-		final String identifier;
-		
-		final String type;
-		
-		final int shader;
-		
-		final int location;
-		
-		public Uniform(String identifier, String type, int shader, int location) {
-			this.identifier = identifier;
-			this.type = type;
-			this.location = location;
-			this.shader = shader;
-		}
-		
-	}
-	
-	private class Attribute {
-		
-		final String identifier;
-		
-		final String type;
-		
-		final int location;
-		
-		public Attribute(String identifier, String type, int location) {
-			this.identifier = identifier;
-			this.type = type;
-			this.location = location;
-		}
-		
-		public int getDataSize() {
-			if (type.equals("vec3")) {
-				return 3;
-			}
-			
-			if (type.equals("vec4")) {
-				return 4;
-			}
-			
-			return 2;
-		}
-
-		@Override
-		public String toString() {
-			return "location " + location + ": " + type + " " + identifier;
-		}
-		
-	}
-	
+	public static final int VERTEX_SHADER = GL_VERTEX_SHADER;
+	public static final int FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
 	
 	private static String type = "(vec.|mat.|int|float)";
 	
 	private static Pattern uniformPattern = Pattern.compile("uniform " + type + " (([A-Za-z0-9]+));");
-	
 	private static Pattern attributePattern = Pattern.compile("layout.location[ ]?=[ ]?(\\d). in " + type + " (([a-zA-Z0-9]+));");
-	
 	
 	private int ID;
 	
@@ -87,14 +34,25 @@ public class ShaderProgram extends Bindable {
 	private int fragShaderID;
 	
 	
-	//A hashmap we are going to store uniform locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Uniform> uniforms = null;
+	//A hashmap in which we are going to store uniform locations in.
+	private HashMap<String, Integer> uniforms = null;
 	
-	//A hashmap we are going to store attribute locations in. Thus we don't have to look it up every time this uniform is used.
-	private HashMap<String, Attribute> attributes = null;
+	//A hashmap in which we are going to store attribute locations in.
+	private HashMap<String, Integer> attributes = null;
 	
-	//The layout of the data that a mesh needs to have to match the shaders requirements
-	private int layout;
+	//A hashmap in which we will store the corresponding texture targets for each uniform sampler.
+	private HashMap<String, Integer> texTargets = null;
+	private int usedTextureUnits = 0;
+	
+	//A hashmap in which we are going to store subroutine uniform locations in.
+	private HashMap<String, Integer> subroutineUniforms = null;
+	
+	//A hashmap in which we will store the ids of the subroutine functions.
+	private HashMap<String, Integer> subroutineFunctions = null;
+	
+	//Arrays that maps all subroutine uniforms with the assigned subroutines.
+	private int[] fragSubroutines;
+	private int[] vertSubroutines;
 	
 	//The view projection matrix used for the current pass. It will be stored here to use it in later computation
 	protected Matrix44f viewProjectionMatrix;
@@ -102,111 +60,6 @@ public class ShaderProgram extends Bindable {
 	
 	public ShaderProgram(String vertSource, String fragSource) {
 		init(vertSource, fragSource);
-	}
-	
-	
-	/**
-	 * 
-	 * Parses the code for uniform and attribute values
-	 * 
-	 * @param vertSource
-	 * @param fragSource
-	 */
-	private void parseCode(String vertSource, String fragSource) {
-		parseUniforms(vertSource, fragSource);
-		parseAttributes(vertSource);
-		parseLayout();
-	}
-	
-	
-	/**
-	 * 
-	 * Stores all the information about the shader's uniform variables in
-	 * a hashmap.
-	 * 
-	 * @param vert
-	 * @param frag
-	 */
-	private void parseUniforms(String vert, String frag) {
-		
-		this.uniforms = new HashMap<String, Uniform>();
-		
-		//Extract all the uniforms out of the vertex shader 
-		Matcher uniformMatcher = uniformPattern.matcher(vert);
-		
-		while (uniformMatcher.find()) {
-			
-			String type = uniformMatcher.group(1);
-			
-			String identifier = uniformMatcher.group(2);
-			
-			int location = getUniformLocation(identifier);
-			
-			uniforms.put(identifier, new Uniform(identifier, type, GL_VERTEX_SHADER, location));
-			
-		}
-		
-		
-		//Extract all the uniforms out of the fragment shader
-		uniformMatcher = uniformPattern.matcher(frag);
-		
-		while (uniformMatcher.find()) {
-			
-			String type = uniformMatcher.group(1);
-			
-			String identifier = uniformMatcher.group(2);
-
-			int location = getUniformLocation(identifier);
-			
-			uniforms.put(identifier, new Uniform(identifier, type, GL_FRAGMENT_SHADER, location));
-			
-		}
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Stores all the information about the incoming attribute values in
-	 * a hashmap.
-	 * 
-	 * @param vert
-	 */
-	private void parseAttributes(String vert) {
-		
-		this.attributes = new HashMap<String, Attribute>();
-		
-		Matcher attributeMatcher = attributePattern.matcher(vert);
-		
-		while (attributeMatcher.find()) {
-			
-			int location = Integer.parseInt(attributeMatcher.group(1));
-			
-			String type = attributeMatcher.group(2);
-			
-			String identifier = attributeMatcher.group(3);
-			
-			this.attributes.put(identifier, new Attribute(identifier, type, location));
-			
-		}
-		
-	}
-	
-	
-	private void parseLayout() {
-		Collection<Attribute> attribCollection = attributes.values();
-		
-		int layout = 0;
-		
-		for (int i = 0; i < 8; ++i) {
-			for (Attribute attrib : attribCollection) {
-				if (attrib.location == i) {					
-					layout |= attrib.getDataSize() << (i * 4);
-				}
-			}
-		}
-		
-		this.layout = layout;
 	}
 	
 	
@@ -236,8 +89,9 @@ public class ShaderProgram extends Bindable {
 			}
 		}
 		
+		bind();
 		parseCode(vertSource, fragSource);
-		
+		unbind();
 	}
 	
 	
@@ -256,6 +110,81 @@ public class ShaderProgram extends Bindable {
 			}
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * Parses the code for uniform and attribute values
+	 * 
+	 * @param vertSource
+	 * @param fragSource
+	 */
+	private void parseCode(String vertSource, String fragSource) {
+		parseUniforms(vertSource, fragSource);
+		parseAttributes(vertSource);
+	}
+	
+	
+	/**
+	 * 
+	 * Stores all the information about the shader's uniform variables in
+	 * a hashmap.
+	 * 
+	 * @param vert
+	 * @param frag
+	 */
+	private void parseUniforms(String vert, String frag) {
+		//Set up all look-up tables for uniform and attribute locations.
+		this.uniforms = new HashMap<String, Integer>();
+		this.texTargets = new HashMap<String, Integer>();
+		this.subroutineUniforms = new HashMap<String, Integer>();
+		this.subroutineFunctions = new HashMap<String, Integer>();
+		
+		//The values set to all subroutine uniforms.
+		this.vertSubroutines = new int[getActiveSubroutineUniforms(VERTEX_SHADER)];
+		this.fragSubroutines = new int[getActiveSubroutineUniforms(FRAGMENT_SHADER)];
+		
+		//Extract all the uniforms out of the vertex shader 
+		Matcher uniformMatcher = uniformPattern.matcher(vert);
+		
+		while (uniformMatcher.find()) {
+			String identifier = uniformMatcher.group(2);
+			int location = getUniformLocation(identifier);
+			uniforms.put(identifier, location);
+		}
+		
+		//Extract all the uniforms out of the fragment shader
+		uniformMatcher = uniformPattern.matcher(frag);
+		
+		while (uniformMatcher.find()) {
+			String identifier = uniformMatcher.group(2);
+			int location = getUniformLocation(identifier);
+			uniforms.put(identifier, location);
+		}
+		
+	}
+	
+	
+	/**
+	 * 
+	 * Stores all the information about the incoming attribute values in
+	 * a hashmap.
+	 * 
+	 * @param vert
+	 */
+	private void parseAttributes(String vert) {
+		
+		this.attributes = new HashMap<String, Integer>();
+		
+		Matcher attributeMatcher = attributePattern.matcher(vert);
+		
+		while (attributeMatcher.find()) {
+			int location = Integer.parseInt(attributeMatcher.group(1));
+			String identifier = attributeMatcher.group(3);
+			this.attributes.put(identifier, location);
+		}
+		
+	}
 
 	
 	/**
@@ -266,7 +195,6 @@ public class ShaderProgram extends Bindable {
 	 */
 	public void setMaterial(Material material) {
 		this.setUniformVector4f("material.color", material.color.toVector4f());
-		this.setUniformVector3f("material.emission", material.emission);
 		this.setUniformVector3f("material.ambient", material.ambient);
 		this.setUniformVector3f("material.diffuse", material.diffuse);
 		this.setUniformVector3f("material.specular", material.specular);
@@ -343,7 +271,7 @@ public class ShaderProgram extends Bindable {
 		
 		if (shadows) {
 			this.setUniform1i("shadowsActive", 1);
-			light.getShadowMap().bind();
+			bindTexture("shadowMap", light.getShadowMap().getDepthTexture());
 		} else {
 			this.setUniform1i("shadowsActive", 0);
 		}
@@ -476,41 +404,132 @@ public class ShaderProgram extends Bindable {
 	
 	/**
 	 * 
-	 * Gets the uniform location in this shader programm
+	 * Assigns a subroutine to a subroutine uniform.
 	 * 
-	 * @param name The name of this uniform variable
-	 * @return Returns the uniform's location
+	 * @param uniform The name of the subroutine uniform.
+	 * @param subroutine The name of the subroutine function.
+	 * @param stage The shader stage.
 	 */
-	public int getUniformLocation(String name) {
-		
-		if (uniforms == null) {
-			return 0;
+	public void setUniformSubroutine(String uniform, String subroutine, int stage) {
+		if (stage == VERTEX_SHADER) {
+			vertSubroutines[getSubroutineUniformLocation(uniform, stage)] = getSubroutineIndex(subroutine, stage);
+		} else {
+			fragSubroutines[getSubroutineUniformLocation(uniform, stage)] = getSubroutineIndex(subroutine, stage);
 		}
-		
-		if (!uniforms.containsKey(name)) {
-			return glGetUniformLocation(ID, name);
-		}
-		
-		return uniforms.get(name).location;
-				
+	}
+	
+	
+	/**
+	 * Uplaods all subroutine settings to the gpu.
+	 */
+	public void setUniformSubroutines() {
+		glUniformSubroutinesuiv(VERTEX_SHADER, vertSubroutines);
+		glUniformSubroutinesuiv(FRAGMENT_SHADER, fragSubroutines);
 	}
 	
 	
 	/**
 	 * 
-	 * Gets the uniform's type 
-	 * 
-	 * @param name The name of the uniform variable
-	 * @return Returns the type of the uniform as a String; Returns an empty String if the uniform doesn't exist.
+	 * @param stage The shader stage.
+	 * @return Returns the number of active subroutine uniforms in the specified shader stage.
 	 */
-	public String getUniformType(String name) {
-		
-		if (!uniforms.containsKey(name)) {
-			return "";
+	public int getActiveSubroutineUniforms(int stage) {		
+		return glGetProgramStagei(ID, stage, GL_ACTIVE_SUBROUTINE_UNIFORMS);
+	}
+	
+	
+	/**
+	 * 
+	 * Returns the index associated with the shader subroutine
+	 * with the given name.
+	 * 
+	 * @param name The name of the subroutine
+	 * @param stage The shader stage.
+	 * @return Returns the index of the subroutine.
+	 */
+	public int getSubroutineIndex(String name, int stage) {
+		if (!subroutineFunctions.containsKey(name)) {
+			int index = glGetSubroutineIndex(ID, stage, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L455: The subroutine " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			subroutineFunctions.put(name, index);
 		}
 		
-		return uniforms.get(name).type;
+		return subroutineFunctions.get(name);
+	}
+	
+	
+	/**
+	 * 
+	 * Returns the subroutine uniform location associated with the
+	 * given name.
+	 * 
+	 * @param name The name of the subroutine uniform.
+	 * @param stage The shader stage.
+	 * @return Returns the location of the subroutine uniform.
+	 */
+	public int getSubroutineUniformLocation(String name, int stage) {
+		if (!subroutineUniforms.containsKey(name)) {
+			int index = glGetSubroutineUniformLocation(ID, stage, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L481: The subroutine uniform " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			subroutineUniforms.put(name, index);
+		}
 		
+		return subroutineUniforms.get(name);
+	}
+
+	
+	/**
+	 * 
+	 * Binds a texture to a specific target.
+	 * 
+	 * @param name The name of the texture target (e.g. the name of the uniform sampler).
+	 * @param texture The texture to bind to the target.
+	 */
+	public void bindTexture(String name, Texture texture) {
+		if (!texTargets.containsKey(name)) {
+			this.texTargets.put(name, usedTextureUnits);
+			++usedTextureUnits;
+		}
+		
+		setUniform1i(name, texTargets.get(name));
+		glActiveTexture(GL_TEXTURE0 + texTargets.get(name));
+		texture.bind();
+	}
+	
+	
+	/**
+	 * 
+	 * Gets the uniform location in this shader programm
+	 * 
+	 * @param name The name of this uniform variable
+	 * @return Returns the uniform's location
+	 */
+	public int getUniformLocation(String name) {		
+		if (!uniforms.containsKey(name)) {
+			int index = glGetUniformLocation(ID, name);
+			
+			if (index == -1) {
+				System.err.println("ERROR L524: The uniform " + name + " doesn't exist!");
+				
+				return index;
+			}
+			
+			this.uniforms.put(name, index);
+		}
+		
+		return uniforms.get(name);	
 	}
 	
 	
@@ -522,40 +541,13 @@ public class ShaderProgram extends Bindable {
 	 * @return Returns the attribute's location
 	 */
 	public int getAttributeLocation(String name) {
-		
 		if (!attributes.containsKey(name)) {
+			System.err.println("ERROR L550: The attribute " + name + " doesn't exist!");
+			
 			return -1;
 		}
 		
-		return attributes.get(name).location;
-		
-	}
-	
-	
-	/**
-	 * 
-	 * Gets the attribute's type 
-	 * 
-	 * @param name The name of the attribute variable
-	 * @return Returns the type of the attribute as a String; Returns an empty String if the uniform doesn't exist.
-	 */
-	public String getAttributeType(String name) {
-		
-		if (!attributes.containsKey(name)) {
-			return "";
-		}
-		
-		return attributes.get(name).type;
-		
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the data layout required for this shader
-	 */
-	public int getLayout() {
-		return layout;
+		return attributes.get(name);
 	}
 	
 	

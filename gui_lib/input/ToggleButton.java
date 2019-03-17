@@ -4,7 +4,7 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import fundamental.Button;
-import rendering.shapes.Shape;
+import rendering.shapes.GUIShape;
 
 public abstract class ToggleButton extends Button {
 	
@@ -13,7 +13,7 @@ public abstract class ToggleButton extends Button {
 	private Function<ToggleButton> enableFunc;
 	private Function<ToggleButton> disableFunc;
 	
-	protected ToggleButton(Shape shape, Color color1, Color color2, GUIElementMatrix transformationMatrix) {
+	protected ToggleButton(GUIShape shape, Color color1, Color color2, GUIElementMatrix transformationMatrix) {
 		super(shape, color1, transformationMatrix);
 	}
 	

@@ -3,7 +3,6 @@ package work_in_progress;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
 import output.ColorBox;
-import rendering.shapes.GUIQuad;
 import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;

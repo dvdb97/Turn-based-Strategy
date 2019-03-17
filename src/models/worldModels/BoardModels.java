@@ -1,15 +1,12 @@
 package models.worldModels;
 
 import assets.light.DirectionalLight;
-import assets.material.Material;
-import assets.meshes.geometry.Color;
 import assets.scene.Scene;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import rendering.matrices.transformation.TransformationMatrix;
-import visualize.CoordinateSystem;
 
 public class BoardModels {
 	
@@ -23,8 +20,6 @@ public class BoardModels {
 	private HexagonBorderGrid tileBorders;
 	
 	private TriangleGrid sea;
-	
-	private CoordinateSystem coSystem;
 	
 	private HexagonGrid hex;
 	
@@ -46,12 +41,11 @@ public class BoardModels {
 	 * @param coSystem
 	 */
 	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
-			CoordinateSystem coSystem, HexagonGrid hex) {
+			HexagonGrid hex) {
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
-		this.coSystem = coSystem;
 		
 		this.hex = hex;
 		
@@ -112,8 +106,6 @@ public class BoardModels {
 		tileBorders.render(scene);
 		
 		sea.render(scene);
-		
-		coSystem.render(scene);
 		
 		hex.render(scene);
 		

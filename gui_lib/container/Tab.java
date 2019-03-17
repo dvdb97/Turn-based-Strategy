@@ -4,7 +4,6 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.Container;
 import fundamental.Element;
-import rendering.shapes.Shape;
 
 /**
  * 

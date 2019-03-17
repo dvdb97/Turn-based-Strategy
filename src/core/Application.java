@@ -18,22 +18,16 @@ public class Application {
 	
 	
 	public static void init(StartParams params) {
-		
 		initWindow(params);
-		
 		initRenderEngine(params);
-		
 		initGuiCore(params);
 		
 		start();
-		
 		close();
-		
 	}
 	
 	
 	private static void initWindow(StartParams params) {
-		
 		window = new Window();
 		//TODO: Implement the window mode
 		window.createFullscreenWindow(params.getTitle() + "-" + params.getVersion());
@@ -42,12 +36,10 @@ public class Application {
 		window.setKeyInputCallback(new KeyInput());
 		window.setMouseInputCallback(new MouseInputManager());
 		window.setMousePosInput(new CursorPosInput(window));
-		
 	}
 	
 	
 	private static void initRenderEngine(StartParams params) {
-		
 		RenderEngine.init(window);
 		RenderEngine.setClearColor(new Vector4f(0.2f, 0.4f, 1f, 1f));
 		RenderEngine.enableDepthTest();
@@ -58,30 +50,24 @@ public class Application {
 	
 	
 	private static void initGuiCore(StartParams params) {
-		
 		GUIManager.init(window);
-		
 	}
 	
 	
 	private static void start() {
-		
 		//TODO: Add a main menu
 		
 		Game game = new Game(75, 75);
 		
 		close();
-		
 	}
 	
 	
 	private static void close() {
-		
 		RenderEngine.close();
 		
 		//TODO: This method makes the program crash
 		//window.close();
-		
 	}
 	
 	

@@ -1,11 +1,10 @@
 package models.worldModels;
 
-import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
 import assets.shaders.standardShaders.lightShader.LightShader;
-import assets.shaders.subshaders.AttributeColorSubshader;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.seeds.SuperGrid;
@@ -22,7 +21,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 
-public class HexagonGrid extends Mesh {
+public class HexagonGrid extends Mesh3D {
 	
 	private SuperGrid superGrid;
 	
@@ -42,8 +41,8 @@ public class HexagonGrid extends Mesh {
 		
 		super(GL_TRIANGLE_FAN);
 		
-		this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
-		
+		//Use the attribute color instead of the material color.
+		this.useAttributeColor();
 		this.superGrid = superGrid;
 		
 		length = superGrid.getLengthInHexagons();

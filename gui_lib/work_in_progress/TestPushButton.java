@@ -4,7 +4,7 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import input.PushButton;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
 
 public class TestPushButton extends PushButton {
 

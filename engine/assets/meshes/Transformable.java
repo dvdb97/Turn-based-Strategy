@@ -23,6 +23,8 @@ public class Transformable {
 	
 	public static final float _1_DEGREE = 0.0174533f;
 	
+	private Transformable parent;
+	
 	private Vector3f translation;
 	
 	private Matrix44f translationMatrix;
@@ -269,6 +271,26 @@ public class Transformable {
 	}
 	
 	
+	public void setParent(Transformable parent) {
+		this.parent = parent;
+	}
+	
+	
+	public void setParent(Mesh mesh) {
+		this.setParent(mesh.getTransformable());
+	}
+	
+	
+	public void removeParent() {
+		this.parent = null;
+	}
+	
+	
+	private Matrix44f computeTransformationMatrix() {
+		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
+	}
+	
+	
 	/**
 	 * 
 	 * Computes the transformation matrix for this model.
@@ -276,11 +298,15 @@ public class Transformable {
 	 * @return Returns the transformation matrix.
 	 */
 	public Matrix44f getTransformationMatrix() {
-		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
+		if (parent != null) {
+			return parent.getTransformationMatrix().times(computeTransformationMatrix());
+		}
+		
+		return computeTransformationMatrix();
 	}
 	
 	
-	public Matrix44f getInvertedTransformationMatrix() {
+	public Matrix44f getInvertedTransformationMatrix() {		
 		return getTransformationMatrix().inverse();
 	}
 	

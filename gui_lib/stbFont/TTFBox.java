@@ -5,7 +5,8 @@ import assets.textures.Texture2D;
 import core.Application;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
+
 import java.io.IOException;
 
 public class TTFBox extends Element {
@@ -53,9 +54,7 @@ public class TTFBox extends Element {
 	
 	@Override
 	public void render() {
-		
-		//shape.render(font, null, TM);
-		shape.render();
+		shape.render(font);
 	}
 	
 }

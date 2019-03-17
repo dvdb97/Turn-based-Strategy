@@ -5,7 +5,7 @@ import assets.meshes.Mesh;
 import assets.shaders.standardShaders.shadowMapping.ShadowMappingShader;
 import assets.textures.Texture2D;
 import interaction.Window;
-import rendering.framebuffers.FrameBuffer;
+import rendering.framebuffers.Framebuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -16,7 +16,7 @@ public class DepthBuffer implements IBindable {
 	
 	private Texture2D depthTexture;
 	
-	private FrameBuffer frameBuffer;
+	private Framebuffer frameBuffer;
 	
 
 	/**
@@ -25,7 +25,7 @@ public class DepthBuffer implements IBindable {
 	 * @param height The height of the depth texture.
 	 */
 	public DepthBuffer(int width, int height) {
-		this.frameBuffer = new FrameBuffer();
+		this.frameBuffer = new Framebuffer();
 		this.depthTexture = Texture2D.generateDepthTexture(width, height);
 		
 		frameBuffer.addDepthAttachment(depthTexture);

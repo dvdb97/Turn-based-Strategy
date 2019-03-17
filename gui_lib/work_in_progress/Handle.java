@@ -4,12 +4,10 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.DragFunction;
 import function.TestDragFunction;
-import fundamental.Button;
 import fundamental.DragableElement;
 import input.Mouse;
 import math.vectors.Vector2f;
-import math.vectors.Vector3f;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
 
 public class Handle extends DragableElement {
 	

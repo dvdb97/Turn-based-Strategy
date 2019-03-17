@@ -4,7 +4,6 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import gui_core.GUIManager;
 import input.Mouse;
-import rendering.shapes.Shape;
 
 public abstract class GUIWindow extends Container implements Clickable {
 	//TODO: element matrix vs transformation matrix

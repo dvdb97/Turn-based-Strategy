@@ -24,7 +24,7 @@ public class Heightmap implements ElevationFunction {
 	
 	private void loadHeightmap(String path) {
 		Image image = ImageLoader.loadImageRGBA(path);
-		byte[] pixelData = image.getImageData();
+		byte[] pixelData = image.getImageDataAsByteBuffer().array();
 		
 		this.width = image.getWidth();
 		this.height = image.getHeight();

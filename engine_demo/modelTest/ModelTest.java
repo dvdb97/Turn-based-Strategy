@@ -3,7 +3,9 @@ package modelTest;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import rendering.RenderEngine;
+import rendering.shapes.implemented.GUIQuad;
 import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -13,13 +15,17 @@ import assets.light.DirectionalLight;
 import assets.material.Material;
 import assets.meshes.Transformable;
 import assets.meshes.Mesh;
+import assets.meshes.Mesh3D;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.EnvMappingMesh;
+import assets.meshes.specialized.Quad;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
+import assets.textures.Texture2D;
+
 import static java.lang.Math.*;
 import static utils.ColorPalette.*;
 
@@ -57,17 +63,19 @@ public class ModelTest {
 	}
 	
 	
-	public static Mesh initMesh() {				
-		Mesh mesh = new EnvMappingMesh();
-		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
+	public static Mesh initMesh() {
+		Mesh3D mesh = new Mesh3D();
+		FileLoader.loadObjFile(mesh, "res/models/Box.obj", "res/models/Box_Textur.png");
 		
-		Material material = new Material(WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.8f, 0.8f, 0.8f), 256f);
+		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.6f, 0.6f, 0.6f), 256f);
+		material.castShadows = true;
 		
 		mesh.setMaterial(material);
 		
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
+		mesh.useTextureColor();
 		
 		return mesh;	
 	}
@@ -94,29 +102,31 @@ public class ModelTest {
 		paths[Skybox.LEFT] = "res/Textures/Skyboxes/ice/left.jpg";
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
+		RenderEngine.setClearColor(new Vector4f(1f, 1f, 1f, 1f));
+		
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
 		
 		Scene scene = new Scene(camera, light, skybox);
 		
 		WireframeBox box = new WireframeBox();
-		box.setColor(new Color(0f, 1f, 0f, 1f));
-		box.getTransformable().setScaling(3f);
 		
 		light.fitToBoundingBox(mesh);
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
-			
 			handleInput();
 			
-			skyboxMesh.render(scene);
 			mesh.render(scene);
-			box.render(scene);
 			
 			RenderEngine.swapBuffers();
 		}
 		
+		mesh.delete();
+		box.delete();
+		skyboxMesh.delete();
+		light.delete();
+		skybox.delete();
 	}
 	
 	

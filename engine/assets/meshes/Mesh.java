@@ -6,23 +6,18 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import assets.Deletable;
+import assets.IDeletable;
 import assets.buffers.VertexBuffer;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.material.Material;
-import assets.material.StandardMaterial;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
-import assets.shaders.ShaderProgram;
-import assets.shaders.standardShaders.lightShader.LightShader;
 import assets.textures.Texture;
-import math.vectors.Vector3f;
-
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
-public class Mesh extends Deletable implements IRenderable {
+public abstract class Mesh implements IDeletable, IRenderable {
 	
 	private enum Attribute {
 		POSITION, COLOR, TEXCOORD, NORMAL
@@ -36,9 +31,7 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	private IntBuffer indexBuffer;
 	
-	private Transformable transformable;
-	
-	private ShaderProgram shader;
+	public final Transformable transformable;
 	
 	private Material material;
 	
@@ -48,22 +41,21 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh() {
-		this(LightShader.createPerFragmentLightShader(), new StandardMaterial()); 
-	}
-	
-	
-	public Mesh(ShaderProgram shader, Material material) {
 		this.vao = new VertexArrayObject();
 		this.transformable = new Transformable();
-		this.material = material;
-		this.shader = shader;
 		vertexData = new HashMap<Attribute, FloatBuffer>();
 		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
 	
 	
-	public Mesh(int drawMode) {
+	public Mesh(Material material) {
 		this();
+		this.material = material;
+	}
+	
+	
+	public Mesh(int drawMode) {
+		this(Material.standard);
 		this.drawMode = drawMode;
 	}
 	
@@ -77,13 +69,12 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	
 	public Mesh(Material material, Texture texture) {
-		this();
+		this(material);
 		
-		this.material = material;
 		this.texture = texture;
 	}
 	
-	//TODO
+	
 	public void setData(Vertex[] vertices, IntBuffer indices) {
 		FloatBuffer posBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
 		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertices.length * 4);
@@ -126,6 +117,7 @@ public class Mesh extends Deletable implements IRenderable {
 		}
 	}
 	
+	
 	/**
 	 * 
 	 * Stores vertex data on the GPU and makes those vertices available
@@ -134,7 +126,6 @@ public class Mesh extends Deletable implements IRenderable {
 	 * @param vertices The vertices to be stored.
 	 * @param indices The indices that describe the mesh's triangles.
 	 */
-
 	public void setData(Vertex[] vertices, IntBuffer indices, boolean normals) {
 		if(normals) {
 			setData(vertices, indices);
@@ -418,18 +409,7 @@ public class Mesh extends Deletable implements IRenderable {
 	
 	public Material getMaterial() {
 		return material;
-	}
-	
-	
-	public void setShader(ShaderProgram shader) {
-		this.shader = shader;
-	}
-	
-	
-	public ShaderProgram getShader() {
-		return shader;
-	}
-	
+	}	
 	
 	public void setTexture(Texture texture) {
 		this.texture = texture;
@@ -439,10 +419,6 @@ public class Mesh extends Deletable implements IRenderable {
 	public Texture getTexture() {
 		return texture;
 	}
-	
-	
-	
-
 
 	@Override
 	public void render() {
@@ -474,70 +450,43 @@ public class Mesh extends Deletable implements IRenderable {
 	}
 	
 	
-	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
-	 * 
-	 * A function that sets all uniform variables to render this mesh.
-	 * If this function wasn't overwritten, it will use a default light shader
-	 * that uses the material's color as the mesh's color.
-	 * 
-	 * @param camera The camera that is used to look at the mesh.
-	 * @param light The light source that is used to render this mesh.
-	 */
-	protected void onDrawStart(Camera camera, DirectionalLight light) {
-		shader.bind();
-		shader.setCamera(camera);
-		shader.setLightSource(light, material.castShadows);
-		shader.setMaterial(material);
-		shader.setModelMatrix(transformable.getTransformationMatrix());
-		
-		if (texture != null) texture.bind();
+	public boolean castShadows() {
+		return material.castShadows;
 	}
 	
 	
 	/**
 	 * 
-	 * ######### Can (and should) be overwritten! #########
+	 * @param camera The camera that is used to look at the mesh.
+	 * @param light The light source that is used to render this mesh.
+	 */
+	protected abstract void onDrawStart(Camera camera, DirectionalLight light);
+	
+	
+	/**
 	 * 
 	 * Clean up after rendering.
 	 * 
 	 * @param camera The camera that is used to look at the mesh.
 	 * @param light The light source that is used to render this mesh.
 	 */
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		if (texture != null) texture.unbind();
-		
-		shader.unbind();
-	}
+	protected abstract void onDrawEnd(Camera camera, DirectionalLight light);
 	
 	
 	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
-	 * 
-	 * A function that sets all uniform variables to render this mesh.
-	 * If this function wasn't overwritten, it will use a default light shader
-	 * that uses the material's color as the mesh's color.
 	 * 
 	 * @param scene The scene that is currently being rendered.
 	 */
-	protected void onDrawStart(Scene scene) {
-		this.onDrawStart(scene.getCamera(), scene.getLightSource());
-	}
+	protected abstract void onDrawStart(Scene scene);
 	
 	
 	/**
-	 * 
-	 * ######### Can (and should) be overwritten! #########
 	 * 
 	 * Clean up after rendering.
 	 * 
 	 * @param scene The scene that is currently being rendered.
 	 */
-	protected void onDrawEnd(Scene scene) {
-		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
-	}
+	protected abstract void onDrawEnd(Scene scene);
 
 
 	@Override

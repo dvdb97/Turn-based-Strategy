@@ -4,7 +4,7 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.Function;
 import fundamental.Button;
-import rendering.shapes.Shape;
+import rendering.shapes.GUIShape;
 
 //TODO: bullshit
 
@@ -15,7 +15,7 @@ public abstract class PushButton extends Button {
 	protected Function<PushButton> onClickFunc;
 	private Function<PushButton> resetFunc;
 	
-	protected PushButton(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
+	protected PushButton(GUIShape shape, Color color, GUIElementMatrix transformationMatrix) {
 		super(shape, color, transformationMatrix);
 		// TODO Auto-generated constructor stub
 	}

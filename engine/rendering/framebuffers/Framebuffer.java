@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import assets.GLTargetObject;
+import assets.textures.Texture;
 import assets.textures.Texture2D;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -13,19 +14,16 @@ import static org.lwjgl.opengl.GL20.glDrawBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
-public class FrameBuffer extends GLTargetObject {	
+public class Framebuffer extends GLTargetObject {	
 	
 	private GLTargetObject depthAttachment = null;
+	private int depthWidth, depthHeight;
 	
-	private ArrayList<GLTargetObject> colorAttachments;
+	private GLTargetObject colorAttachment = null;
+	private int colorWidth, colorHeight;
 	
-	private final int ATTACHMENT_PARAM = 36064;
-	
-	
-	public FrameBuffer() {
+	public Framebuffer() {
 		super(glGenFramebuffers(), GL_FRAMEBUFFER);
-		
-		colorAttachments = new ArrayList<GLTargetObject>();
 	}
 	
 	
@@ -40,9 +38,12 @@ public class FrameBuffer extends GLTargetObject {
 		
 		depthAttachment = RenderBuffer.generateDepthRenderBuffer(width, height);
 		
+		depthWidth = width;
+		depthHeight = height;
+		
 		glFramebufferRenderbuffer(getType(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthAttachment.getID());
 		
-		if (!validate()) {
+		if (!validate(46)) {
 			unbind();
 			return false;
 		}
@@ -58,15 +59,18 @@ public class FrameBuffer extends GLTargetObject {
 	 * @param texture The depth texture
 	 * @return Returns true when adding the depth component was successful
 	 */
-	public boolean addDepthAttachment(Texture2D texture) {
+	public boolean addDepthAttachment(Texture texture) {
 		bind();
 		texture.bind();
 		
 		depthAttachment = texture;
 		
+		depthWidth = texture.getWidth();
+		depthHeight = texture.getHeight();
+		
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.getType(), texture.getID(), 0);
 		
-		if (!validate()) {			
+		if (!validate(73)) {			
 			unbind();
 			return false;
 		}
@@ -74,7 +78,6 @@ public class FrameBuffer extends GLTargetObject {
 		unbind();
 		
 		return true;
-		
 	}
 	
 	
@@ -90,23 +93,16 @@ public class FrameBuffer extends GLTargetObject {
 	public boolean addColorAttachment(int width, int height) {
 		bind();
 		
+		colorAttachment = RenderBuffer.generateColorRenderBuffer(width, height);
+		glFramebufferRenderbuffer(getType(), GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorAttachment.getID());
 		
-		if (colorAttachments.size() == 15) {
+		this.colorWidth = width;
+		this.colorHeight = height;
+		
+		if (!validate(102)) {
 			unbind();
 			return false;
 		}
-		
-		
-		colorAttachments.add(RenderBuffer.generateColorRenderBuffer(width, height));
-		
-		glFramebufferRenderbuffer(getType(), ATTACHMENT_PARAM + colorAttachments.size(), GL_RENDERBUFFER, colorAttachments.get(colorAttachments.size() - 1).getID());
-		
-		
-		if (!validate()) {
-			unbind();
-			return false;
-		}
-		
 		
 		glDrawBuffers(colorBufferList());
 		
@@ -121,31 +117,21 @@ public class FrameBuffer extends GLTargetObject {
 	 * @param texture The texture that will be rendered to
 	 * @return Returns true when adding the color attachment was successful
 	 */
-	public boolean addColorAttachment(Texture2D texture) {
+	public boolean addColorAttachment(Texture texture) {
 		bind();
 		texture.bind();
 		
+		this.colorWidth = texture.getWidth();
+		this.colorHeight = texture.getHeight();
 		
-		if (colorAttachments.size() == 15) {
-			System.err.println("The maximum amount of color attachments per FrameBuffer is 15!");
-			
+		colorAttachment = texture;
+		glFramebufferTexture2D(getType(), GL_COLOR_ATTACHMENT0, texture.getType(), texture.getID(), 0);
+		
+		if (!validate(130)) {
 			texture.unbind();
 			unbind();
 			return false;
 		}
-		
-		
-		colorAttachments.add(texture);
-		
-		glFramebufferTexture(getType(), ATTACHMENT_PARAM + colorAttachments.size(), texture.getID(), 0);
-		
-		
-		if (!validate()) {
-			texture.unbind();
-			unbind();
-			return false;
-		}
-		
 		
 		glDrawBuffers(colorBufferList());
 		
@@ -160,7 +146,7 @@ public class FrameBuffer extends GLTargetObject {
 		this.bind();
 		glDrawBuffers(GL_NONE);
 		
-		validate();
+		validate(149);
 		
 		this.unbind();
 	}
@@ -170,24 +156,19 @@ public class FrameBuffer extends GLTargetObject {
 		this.bind();
 		glReadBuffer(GL_NONE);
 		
-		validate();
+		validate(159);
 		
 		this.unbind();
 	}
 	
 	
 	private IntBuffer colorBufferList() {
+		IntBuffer buffer = BufferUtils.createIntBuffer(1);
 		
-		IntBuffer buffer = BufferUtils.createIntBuffer(colorAttachments.size());
-		
-		for (GLTargetObject object : colorAttachments) {
-			buffer.put(object.getID());
-		}
-		
+		buffer.put(colorAttachment.getID());		
 		buffer.flip();
 		
 		return buffer;
-		
 	}
 	
 	
@@ -197,34 +178,34 @@ public class FrameBuffer extends GLTargetObject {
 	 * 
 	 * @return Returns true if there are no problems with the framebuffer.
 	 */
-	public boolean validate() {
+	public boolean validate(int line) {
 		int error = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		
 		if (error != GL_FRAMEBUFFER_COMPLETE) {
 			switch (error) {
 				case GL_FRAMEBUFFER_UNDEFINED:
-					System.err.println("Framebuffer Error: FRAMEBUFFER_UNDEFINED");
+					System.err.println("Framebuffer Error l." + line + ": FRAMEBUFFER_UNDEFINED");
 					break;
 				case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
 					break;
 				case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
 					break;
 				case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
 					break;
 				case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
 					break;
 				case GL_FRAMEBUFFER_UNSUPPORTED:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_UNSUPPORTED");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_UNSUPPORTED");
 					break;
 				case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-					System.err.println("Framebuffer Error: GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
+					System.err.println("Framebuffer Error l." + line + ": GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
 					break;
 				default:
-					System.err.println("Framebuffer Error: Unknown error.");
+					System.err.println("Framebuffer Error l." + line + ": Unknown error.");
 			}
 			
 			return false;
@@ -234,13 +215,80 @@ public class FrameBuffer extends GLTargetObject {
 	}
 	
 	
+	public int getWidth() {
+		return colorWidth;
+	}
+	
+	
+	public int getHeight() {
+		return colorHeight;
+	}
+	
+	
+	public int getDepthWidth() {
+		return depthWidth;
+	}
+	
+	
+	public int getDepthHeight() {
+		return depthHeight;
+	}
+	
+	
+	/**
+	 * 
+	 * Copy a block of pixels from the source framebuffer to this framebuffer.
+	 * 
+	 * @param source The source framebuffer to take the pixels from
+	 */
+	public void blitFramebuffer(Framebuffer source) {
+		source.bindAsReadFramebuffer();
+		this.bindAsDrawFramebuffer();
+		
+		glBlitFramebuffer(0, 0, source.getWidth(), source.getHeight(), 0, 0, this.getWidth(), this.getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		
+		source.unbindAsReadFramebuffer();
+		this.unbindAsDrawFramebuffer();
+	}
+	
+	
+	public void blitToDefaultFramebuffer(int windowWidth, int windowHeight) {
+		this.bindAsReadFramebuffer();
+		this.unbindAsDrawFramebuffer();
+		
+		glBlitFramebuffer(0, 0, this.getWidth(), this.getHeight(), 0, 0, windowWidth, windowHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		
+		this.unbindAsReadFramebuffer();		
+	}
+	
+	
 	public void clear() {
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	}
 	
 	
+	public void bindAsReadFramebuffer() {
+		glBindFramebuffer(GL_READ_BUFFER, getID());
+	}
+	
+	
+	public void unbindAsReadFramebuffer() {
+		glBindFramebuffer(GL_READ_BUFFER, 0);
+	}
+	
+	
 	public void bind() {
 		glBindFramebuffer(getType(), getID());
+	}
+	
+	
+	public void bindAsDrawFramebuffer() {
+		glBindFramebuffer(GL_DRAW_BUFFER, getID());
+	}
+	
+	
+	public void unbindAsDrawFramebuffer() {
+		glBindFramebuffer(GL_DRAW_BUFFER, 0);;
 	}
 	
 	
@@ -250,6 +298,14 @@ public class FrameBuffer extends GLTargetObject {
 	
 	
 	public void delete() {
+		if (colorAttachment != null) {
+			colorAttachment.delete();
+		}
+		
+		if (depthAttachment != null) {
+			depthAttachment.delete();
+		}
+		
 		glDeleteFramebuffers(getID());
 	}
 
@@ -273,24 +329,20 @@ class RenderBuffer extends GLTargetObject {
 	
 	
 	public static RenderBuffer generateDepthRenderBuffer(int width, int height) {
-		
 		RenderBuffer rb = new RenderBuffer();
 		
 		rb.setDepthStorage(width, height);
 		
 		return rb;
-		
 	}
 	
 	
 	public static RenderBuffer generateColorRenderBuffer(int width, int height) {
-		
 		RenderBuffer rb = new RenderBuffer();
 		
 		rb.setColorStorage(width, height);
 		
 		return rb;
-		
 	}
 	
 	

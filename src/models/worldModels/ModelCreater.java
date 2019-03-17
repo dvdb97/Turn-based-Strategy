@@ -7,7 +7,6 @@ import math.vectors.Vector3f;
 import models.TerrainCol;
 import models.seeds.ElevationMap;
 import models.seeds.SuperGrid;
-import visualize.CoordinateSystem;
 
 public class ModelCreater {
 	
@@ -41,8 +40,6 @@ public class ModelCreater {
 	
 	private TriangleGrid sea;
 	
-	private CoordinateSystem coSystem;
-	
 	private HexagonGrid hexagons;
 	
 	//********************************** initialization ************************
@@ -73,10 +70,9 @@ public class ModelCreater {
 		createTerrain();
 		createTileBorders();
 		createSea();
-		createCoSystem();
 		createHexagons();
 		
-		return new BoardModels(terrain, tileBorders, sea, coSystem, hexagons);
+		return new BoardModels(terrain, tileBorders, sea, hexagons);
 		
 	}
 	
@@ -104,12 +100,6 @@ public class ModelCreater {
 	private void createSea() {
 		
 		sea = new TriangleGrid(superGrid, new Color(0, 0.2f, 0.7f, 0.7f), new StandardMaterial(), true);
-		
-	}
-	
-	private void createCoSystem() {
-		
-		coSystem = new CoordinateSystem(100.0f);
 		
 	}
 	

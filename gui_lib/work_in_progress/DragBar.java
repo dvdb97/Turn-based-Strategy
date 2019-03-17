@@ -4,10 +4,9 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import function.DragFunction;
 import fundamental.DragableElement;
-import fundamental.Moveable;
 import input.Mouse;
 import math.vectors.Vector2f;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
 
 public class DragBar extends DragableElement {
 	

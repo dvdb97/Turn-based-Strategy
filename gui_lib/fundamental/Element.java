@@ -4,11 +4,11 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import input.Mouse;
 import math.vectors.Vector3f;
-import rendering.shapes.Shape;
+import rendering.shapes.GUIShape;
 
 public abstract class Element implements ElementBase {
 	
-	protected Shape shape;
+	protected GUIShape shape;
 	protected Color color;
 	
 	//TODO: shity names
@@ -23,7 +23,7 @@ public abstract class Element implements ElementBase {
 	
 	//***************** constructor *************************
 	
-	protected Element(Shape shape, Color color, GUIElementMatrix transformationMatrix) {
+	protected Element(GUIShape shape, Color color, GUIElementMatrix transformationMatrix) {
 		
 		this.shape = shape;
 		this.color = color;
@@ -44,9 +44,7 @@ public abstract class Element implements ElementBase {
 	
 	@Override
 	public void render() {
-		
-		//shape.render(null, color, TM);
-		shape.render();
+		shape.render(color);
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package assets;
 
-public abstract class Bindable extends Deletable {
+public abstract class Bindable implements IDeletable {
 	
 	public abstract void bind();
 	

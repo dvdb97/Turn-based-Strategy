@@ -5,14 +5,9 @@ import math.vectors.Vector3f;
 
 public class TransformationMatrix extends Matrix44f{
 	
-	protected float transX = 0.0f;
-	protected float transY = 0.0f;
-	protected float transZ = 0.0f;
-	protected float rotX   = 0.0f;
-	protected float rotY   = 0.0f;
-	protected float rotZ   = 0.0f;
-	//TODO: add scaleX,Y,Z ??
-	protected float scale  = 1.0f;
+	protected Vector3f translation = Vector3f.ZERO;
+	protected Vector3f rotation = Vector3f.ZERO;
+	protected Vector3f scale = new Vector3f(1f, 1f, 1f);
 	
 	//c=cosine, s=sine, r=rotation
 	protected float cRX = 1.0f;
@@ -29,13 +24,9 @@ public class TransformationMatrix extends Matrix44f{
 		//gives an 4x4 identy matrix
 		super();
 		
-		this.transX = transX;
-		this.transY = transY;
-		this.transZ = transZ;
-		this.rotX   = rotX;
-		this.rotY   = rotY;
-		this.rotZ   = rotZ;
-		this.scale  = scale;
+		this.translation = new Vector3f(transX, transY, transZ);
+		this.rotation = new Vector3f(rotX, rotY, rotZ);
+		this.scale = new Vector3f(scale, scale, scale);
 		
 		//precalc cos and sin
 		calcCosAndSin();
@@ -49,10 +40,8 @@ public class TransformationMatrix extends Matrix44f{
 		//gives an 4x4 identity matrix
 		super();
 		
-		this.transX = transX;
-		this.transY = transY;
-		this.transZ = transZ;
-		this.scale  = scale;
+		this.translation = new Vector3f(transX, transY, transZ);
+		this.scale = new Vector3f(scale, scale, scale);
 		
 		updateData();
 		
@@ -60,7 +49,16 @@ public class TransformationMatrix extends Matrix44f{
 	
 	
 	public TransformationMatrix(Vector3f translation, Vector3f rotation, float scale) {
-		this(translation.getA(), translation.getB(), translation.getC(), rotation.getA(), rotation.getB(), rotation.getC(), scale);		
+		this.translation = translation;
+		this.rotation = rotation;
+		this.scale = new Vector3f(scale, scale, scale);
+	}
+	
+	
+	public TransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+		this.translation = translation;		
+		this.rotation = rotation;
+		this.scale = scale;
 	}
 	
 	
@@ -74,18 +72,18 @@ public class TransformationMatrix extends Matrix44f{
 	//updates the components of the matrix using the given values
 	protected void updateData() {
 		
-		setA1( scale*cRY*cRZ);
-		setA2(-scale*sRZ);
-		setA3( scale*sRY);
-		setA4( scale*transX);
-		setB1( scale*sRZ);
-		setB2( scale*cRX*cRZ);
-		setB3(-scale*sRX);
-		setB4( scale*transY);
-		setC1(-scale*sRY);
-		setC2( scale*sRX);
-		setC3( scale*cRX*cRY);
-		setC4( scale*transZ);
+		setA1( scale.getA() * cRY * cRZ);
+		setA2(-scale.getB() * sRZ * cRY);
+		setA3( scale.getC() * sRY);
+		setA4( translation.getA());
+		setB1( scale.getB() * sRZ);
+		setB2( scale.getB() * cRX * cRZ);
+		setB3(-scale.getB() * sRX);
+		setB4( translation.getB());
+		setC1(-scale.getC() * sRY);
+		setC2( scale.getC() * sRX);
+		setC3( scale.getC() * cRX * cRY);
+		setC4( scale.getC() * translation.getC());
 		
 	//	setD4( scale);
 		setD4( 1.0f);
@@ -93,94 +91,117 @@ public class TransformationMatrix extends Matrix44f{
 	
 	//pre calc cos and sin of the rot-values 
 	private void calcCosAndSin() {
-		cRX = (float)Math.cos(rotX);
-		sRX = (float)Math.sin(rotX);
-		cRY = (float)Math.cos(rotY);
-		sRY = (float)Math.sin(rotY);
-		cRZ = (float)Math.cos(rotZ);
-		sRZ = (float)Math.sin(rotZ);
+		cRX = (float)Math.cos(rotation.getA());
+		sRX = (float)Math.sin(rotation.getA());
+		cRY = (float)Math.cos(rotation.getB());
+		sRY = (float)Math.sin(rotation.getB());
+		cRZ = (float)Math.cos(rotation.getC());
+		sRZ = (float)Math.sin(rotation.getC());
 	}
 	
 	//------------------------ Get & Set --------------------------------
+	
 	public void setScale(float scale) {
+		this.scale = new Vector3f(scale, scale, scale);
+		
+		updateData();
+	}
+	
+	public void setScale(Vector3f scale) {
 		this.scale = scale;
 		
 		updateData();
 	}
-	//TODO: maybe decide: vector or 3 scalars
-	//decision: vector3f because a position can be nicely represented by a vector
+	
 	public void setTrans(float x, float y, float z) {
-		transX = x;
-		transY = y;
-		transZ = z;
+		this.translation = new Vector3f(x, y, z);
 		
 		updateData();
 	}
+	
 	public void setTrans(Vector3f xyz) {
-		transX = xyz.getA();
-		transY = xyz.getB();
-		transZ = xyz.getC();
+		this.translation = xyz;
 		
 		updateData();
 	}
+	
 	public void setTransScale(Vector3f xyz, float scale) {
-		transX = xyz.getA();
-		transY = xyz.getB();
-		transZ = xyz.getC();
+		this.translation = xyz;
+		
+		//The data update is already included in this function.
+		this.setScale(scale);
+	}
+	
+	public void setRot(float x, float y, float z) {
+		this.rotation = new Vector3f(x, y, z);
+		
+		calcCosAndSin();
+		
+		updateData();
+	}
+	
+	public void setRot(Vector3f rotation) {
+		this.setRot(rotation.getA(), rotation.getB(), rotation.getC());
+	}
+	
+	public void setAll(Vector3f translation, float rotX, float rotY, float rotZ, float scale) {
+		this.translation = translation;
+		this.rotation = new Vector3f(rotX, rotY, rotZ);
+		this.scale  = new Vector3f(scale, scale, scale);
+		
+		calcCosAndSin();
+		
+		updateData();
+	}
+	
+	public void setAll(Vector3f translation, Vector3f rotation, Vector3f scale) {
+		this.translation = translation;
+		this.rotation = rotation;
 		this.scale = scale;
 		
-		updateData();
-	}
-	public void setRot(float x, float y, float z) {
-		rotX = x;
-		rotY = y;
-		rotZ = z;
-		
 		calcCosAndSin();
 		
 		updateData();
 	}
-	public void setAll(Vector3f transition, float rotX, float rotY, float rotZ, float scale) {
-		
-		this.transX = transition.getA();
-		this.transY = transition.getB();
-		this.transZ = transition.getC();
-		this.rotX   = rotX;
-		this.rotY   = rotY;
-		this.rotZ   = rotZ;
-		this.scale  = scale;
-		
-		calcCosAndSin();
-		
-		updateData();
+	
+	public void setAll(Vector3f translation, Vector3f rotation, float scale) {
+		this.setAll(translation, rotation, new Vector3f(scale, scale, scale));
+	}
+	
+	public Vector3f getTranslation() {
+		return translation;
 	}
 	
 	//TODO: maybe not needed
 	public float getTransX() {
-		return transX;
+		return translation.getA();
 	}
 
 	public float getTransY() {
-		return transY;
+		return translation.getB();
 	}
 
 	public float getTransZ() {
-		return transZ;
+		return translation.getC();
+	}
+	
+	public Vector3f getRotation() {
+		return rotation;
 	}
 
 	public float getRotX() {
-		return rotX;
+		return rotation.getA();
 	}
 
 	public float getRotY() {
-		return rotY;
+		return rotation.getB();
 	}
 
 	public float getRotZ() {
-		return rotZ;
+		return rotation.getC();
 	}
 
-	public float getScale() {
+	public Vector3f getScale() {
 		return scale;
 	}
 	

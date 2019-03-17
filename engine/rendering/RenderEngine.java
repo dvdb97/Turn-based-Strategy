@@ -14,8 +14,6 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import assets.textures.ArrayTexture2D;
-import assets.textures.Texture2D;
 import interaction.Window;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
@@ -27,8 +25,7 @@ public class RenderEngine {
 	
 	//A reference to the window this RenderEngine is supposed to draw on 
 	private static Window window;
-	
-	
+		
 	//Settings:
 	private static boolean depthTestEnabled = false;
 	
@@ -47,7 +44,6 @@ public class RenderEngine {
 		glEnable(GL_BLEND);
 		
 		glEnable(GL_STENCIL_TEST);
-
 	}
 	
 	

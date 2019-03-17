@@ -7,8 +7,6 @@ import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
 import fundamental.Container;
 import input.ToggleButton;
-import rendering.shapes.GUIQuad;
-import rendering.shapes.Shape;
 import stbFont.TTFBox;
 import work_in_progress.TestToggleButton;
 

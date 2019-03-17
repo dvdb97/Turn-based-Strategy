@@ -3,7 +3,7 @@ package output;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
-import rendering.shapes.GUIQuad;
+import rendering.shapes.implemented.GUIQuad;
 
 public class ColorBox extends Element {
 	

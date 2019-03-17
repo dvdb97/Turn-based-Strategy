@@ -3,8 +3,7 @@ package fundamental;
 import assets.meshes.geometry.Color;
 import dataType.ElementList;
 import dataType.GUIElementMatrix;
-import rendering.shapes.GUIQuad;
-import rendering.shapes.Shape;
+import rendering.shapes.implemented.GUIQuad;
 
 public abstract class Container extends Element {
 	
@@ -36,11 +35,8 @@ public abstract class Container extends Element {
 	
 	@Override
 	public void render() {
-		
 		super.render();
 		children.render();
-		
-
 	}
 	
 	@Override
