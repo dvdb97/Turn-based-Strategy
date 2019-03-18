@@ -5,7 +5,6 @@ import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
-import rendering.shapes.implemented.GUIQuad;
 import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -18,16 +17,11 @@ import assets.meshes.Mesh;
 import assets.meshes.Mesh3D;
 import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.geometry.Color;
-import assets.meshes.specialized.EnvMappingMesh;
-import assets.meshes.specialized.Quad;
 import assets.meshes.specialized.SkyboxMesh;
 import assets.meshes.specialized.WireframeBox;
 import assets.scene.Scene;
 import assets.textures.Skybox;
-import assets.textures.Texture2D;
-
 import static java.lang.Math.*;
-import static utils.ColorPalette.*;
 
 
 public class ModelTest {
@@ -65,7 +59,7 @@ public class ModelTest {
 	
 	public static Mesh initMesh() {
 		Mesh3D mesh = new Mesh3D();
-		FileLoader.loadObjFile(mesh, "res/models/Box.obj", "res/models/Box_Textur.png");
+		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.6f, 0.6f, 0.6f), 256f);
 		material.castShadows = true;
@@ -75,7 +69,7 @@ public class ModelTest {
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
-		mesh.useTextureColor();
+		mesh.useMaterialColor();
 		
 		return mesh;	
 	}
@@ -117,6 +111,11 @@ public class ModelTest {
 			RenderEngine.clear();
 			handleInput();
 			
+			light.startShadowMapPass();
+			light.passToShadowMap(mesh);
+			light.endShadowMapPass();
+			
+			skyboxMesh.render();
 			mesh.render(scene);
 			
 			RenderEngine.swapBuffers();
@@ -132,8 +131,6 @@ public class ModelTest {
 	
 	private static void handleInput() {
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_W)) {
-			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
-			
 			xRot += Transformable._1_DEGREE;
 			float l = camera.getPosition().norm();
 			
@@ -142,8 +139,6 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_S)) {
-			//model.getTransformable().rotate(-Transformable._1_DEGREE, 0f, 0f);
-			
 			xRot -= Transformable._1_DEGREE;
 			float l = camera.getPosition().norm();
 			
@@ -152,8 +147,6 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_A)) {
-			//model.getTransformable().rotate(0f, -Transformable._1_DEGREE, 0f);
-			
 			yRot -= Transformable._1_DEGREE;
 			float l = camera.getPosition().norm();
 			
@@ -162,8 +155,6 @@ public class ModelTest {
 		}
 		
 		if (KeyInput.keyPressed(GLFW.GLFW_KEY_D)) {
-			//model.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
-			
 			yRot += Transformable._1_DEGREE;
 			float l = camera.getPosition().norm();
 			

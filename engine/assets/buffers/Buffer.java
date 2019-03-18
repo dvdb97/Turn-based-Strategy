@@ -1,11 +1,11 @@
 package assets.buffers;
 
 import assets.GLTargetObject;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL44.*;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -37,10 +37,32 @@ public class Buffer extends GLTargetObject {
 	
 	
 	/**
+	 * 
+	 * @author admin
+	 *
+	 * Custom exception to handle the unsuccessful attempts to map a buffer.
+	 *
+	 */
+	private class GLBufferMappingFailedException extends RuntimeException {}
+	
+	
+	/**
 	 * The contents of the data store may be updated after creation
 	 */
 	public static final int DYNAMIC_STORAGE = GL_DYNAMIC_STORAGE_BIT;
 	
+	public static final int MAP_READ_ONLY = GL_READ_ONLY;
+	public static final int MAP_WRITE_ONLY = GL_WRITE_ONLY;
+	public static final int MAP_READ_WRITE = GL_READ_WRITE;
+	
+	public static final int USAGE_DYNAMIC_READ = GL_DYNAMIC_READ;
+	public static final int USAGE_DYNAMIC_DRAW = GL_DYNAMIC_DRAW;	
+	public static final int USAGE_DYNAMIC_COPY = GL_DYNAMIC_COPY;
+	
+	public static final int USAGE_STREAM_READ = GL_STREAM_READ;
+	public static final int USAGE_STREAM_DRAW = GL_STREAM_DRAW;	
+	public static final int USAGE_STREAM_COPY = GL_STREAM_COPY;
+
 	
 	private int dataType;
 	
@@ -63,6 +85,28 @@ public class Buffer extends GLTargetObject {
 	}
 	
 	
+	public void unmapBuffer() {
+		bind();
+		
+		if (!glUnmapBuffer(getType())) {
+			throw new GLBufferMappingFailedException();
+		}
+		
+		unbind();
+	}
+	
+	
+	public ByteBuffer mapBuffer(int access) {
+		bind();
+		
+		ByteBuffer buffer = glMapBuffer(getType(), access);
+		
+		unbind();
+		
+		return buffer;
+	}
+	
+	
 	/**
 	 * 
 	 * Stores data on the gpu
@@ -77,6 +121,13 @@ public class Buffer extends GLTargetObject {
 		this.flag = flag;
 		this.dataStored = true;
 		
+		unbind();
+	}
+	
+	
+	public void setBufferData(long size, int usage) {
+		bind();
+		glBufferData(getType(), size, usage);
 		unbind();
 	}
 	

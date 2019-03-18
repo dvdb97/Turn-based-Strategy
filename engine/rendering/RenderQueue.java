@@ -1,20 +1,13 @@
 package rendering;
 
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-
 import java.util.LinkedList;
 import java.util.List;
 
 import assets.IDeletable;
 import assets.light.DirectionalLight;
 import assets.meshes.Mesh;
-import assets.meshes.specialized.Quad;
 import assets.scene.Scene;
-import assets.textures.Texture2D;
-import assets.textures.Texture2DMultisample;
 import interaction.Window;
-import rendering.framebuffers.Framebuffer;
 
 public class RenderQueue implements IDeletable {
 	

@@ -15,6 +15,7 @@ public class Mesh2D extends Mesh {
 
 	public Mesh2D() {
 		this(GL_TRIANGLES);
+		useMaterialColor();
 	}
 	
 	
@@ -42,7 +43,7 @@ public class Mesh2D extends Mesh {
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		shader.bind();
-		shader.setMVPMatrix(getTransformable().getTransformationMatrix());
+		shader.setMVPMatrix(transformable.getTransformationMatrix());
 		shader.setMaterial(getMaterial());
 		shader.setUniformSubroutines();
 		
@@ -57,12 +58,12 @@ public class Mesh2D extends Mesh {
 
 	@Override
 	protected void onDrawStart(Scene scene) {
-		this.onDrawStart(null, null);	
+		this.onDrawStart(scene.getCamera(), scene.getLightSource());	
 	}
 
 	@Override
 	protected void onDrawEnd(Scene scene) {
-		this.onDrawEnd(null, null);		
+		this.onDrawEnd(scene.getCamera(), scene.getLightSource());		
 	}
 	
 	

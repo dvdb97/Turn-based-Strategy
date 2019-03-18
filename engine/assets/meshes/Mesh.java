@@ -371,8 +371,14 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	}
 	
 	
-	private void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size) {
+
+	public void setVertexBuffer(VertexBuffer buffer, int pos, int size) {
 		vao.setVertexAttributePointer(buffer, pos, size, 0, 0);
+	}
+	
+	
+	private void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size) {
+		this.setVertexBuffer(buffer, pos, size);
 		this.vertexBuffers.put(attribute, buffer);
 	}
 	

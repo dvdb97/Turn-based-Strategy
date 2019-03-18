@@ -7,7 +7,7 @@ import math.vectors.Vector4f;
 public class Color {
 	
 	//More colours you'll find in src/utils.ColorPalette
-	public static final Color RED = new Color(1f, 0f, 0f, 0f);
+	public static final Color RED = new Color(1f, 0f, 0f, 1f);
 	public static final Color WHITE = new Color(1f, 1f, 1f, 1f);
 	
 	private float red;
@@ -113,6 +113,11 @@ public class Color {
 	 */
 	public int getAlphaInt() {
 		return (int)(alpha*255);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + red + "," + green + "," + blue + "," + alpha + ")";
 	}
 
 }
