@@ -37,7 +37,6 @@ public class SpriteShader extends ShaderProgram {
 	
 	@Override
 	public void setMaterial(Material material) {
-		System.out.println("Setting material.color to " + material.color.toString());
 		this.setUniformVector4f("material.color", material.color.toVector4f());
 	}
 	

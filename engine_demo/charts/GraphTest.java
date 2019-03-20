@@ -6,6 +6,8 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import java.util.LinkedList;
 import java.util.Random;
 
+import com.sun.glass.ui.Timer;
+
 import assets.cameras.Camera;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
@@ -15,9 +17,10 @@ import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import output.charts.Graph2D;
 import output.charts.Group;
-import output.charts.PiChart;
+import output.charts.PieChart;
 import rendering.RenderEngine;
 import timer.Cooldown;
+import utils.ColorPalette;
 
 public class GraphTest {
 
@@ -32,7 +35,7 @@ public class GraphTest {
 		RenderEngine.enableDepthTest();
 		RenderEngine.setSwapInterval(1);
 		
-		run1();
+		run2();
 	}
 	
 	public static void run1() {		
@@ -75,13 +78,32 @@ public class GraphTest {
 		Scene scene = new Scene(camera, null, null);
 		
 		LinkedList<Group> groups = new LinkedList<Group>();
-		groups.add(new Group("A", Color.RED, 10));
-		groups.add(new Group("B", new Color(0f,1f,0f,1f), 20));
+		groups.add(new Group("A", new Color(0.2f, 0.2f, 0.2f, 1f), 1));
+		groups.add(new Group("B", new Color(0.4f, 0.4f, 0.4f, 1f), 1));
+		groups.add(new Group("C", new Color(0.6f, 0.6f, 0.6f, 1f), 1));
+		groups.add(new Group("D", new Color(0.8f, 0.8f, 0.8f, 1f), 1));
 		
-		PiChart chart = new PiChart();
+		PieChart chart = new PieChart(groups);
+		
+		Cooldown timer = new Cooldown(0.2f);
+		Random random = new Random();
 		
 		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
+			
+			if (timer.isFinished()) {
+				float value = (float)random.nextGaussian() * 1f;
+				
+				if (value < -1f) {
+					chart.incrementGroup("A");
+				} else if (value < 0f && value > -1f) {
+					chart.incrementGroup("B");
+				} else if (value > 0f && value < 1f) {
+					chart.incrementGroup("C");
+				} else if (value > 1f) {
+					chart.incrementGroup("D");
+				}
+			}
 			
 			chart.render(scene);
 						
