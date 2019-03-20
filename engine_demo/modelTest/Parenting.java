@@ -13,6 +13,8 @@ import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import rendering.RenderQueue;
+import rendering.shapes.implemented.GUIQuad;
+import utils.ColorPalette;
 
 public class Parenting {
 	

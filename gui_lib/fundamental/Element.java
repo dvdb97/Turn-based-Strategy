@@ -24,13 +24,11 @@ public abstract class Element implements ElementBase {
 	//***************** constructor *************************
 	
 	protected Element(GUIShape shape, Color color, GUIElementMatrix transformationMatrix) {
-		
 		this.shape = shape;
 		this.color = color;
 		
 		this.elementMatrix = transformationMatrix;
 		this.invertedTM = transformationMatrix.getInverse();
-		
 	}
 	
 	
@@ -44,7 +42,7 @@ public abstract class Element implements ElementBase {
 	
 	@Override
 	public void render() {
-		shape.render(color);
+		shape.render(color, elementMatrix);
 	}
 	
 	/**
