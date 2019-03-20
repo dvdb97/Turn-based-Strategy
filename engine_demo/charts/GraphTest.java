@@ -6,8 +6,6 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import java.util.LinkedList;
 import java.util.Random;
 
-import com.sun.glass.ui.Timer;
-
 import assets.cameras.Camera;
 import assets.material.Material;
 import assets.meshes.geometry.Color;
@@ -20,7 +18,6 @@ import output.charts.Group;
 import output.charts.PieChart;
 import rendering.RenderEngine;
 import timer.Cooldown;
-import utils.ColorPalette;
 
 public class GraphTest {
 
