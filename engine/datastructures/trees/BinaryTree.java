@@ -13,6 +13,13 @@ public class BinaryTree<K extends Comparable<K>, V> {
 			this.key = key;
 			this.value = value;
 		}
+
+		@Override
+		public String toString() {
+			return "( {" + key + ", " + value + "} " + (left != null ? left : "") + " " + 
+								 (right != null ? right : "") + ")";
+		}
+		
 	}
 	
 	
@@ -170,6 +177,24 @@ public class BinaryTree<K extends Comparable<K>, V> {
 		}
 		
 		return node;
+	}
+
+
+	@Override
+	public String toString() {
+		return head.toString();
+	}
+	
+	
+	public void main(String[] args) {
+		int[] is = {1,3,2,5,4};
+		BinaryTree<Integer, Integer> tree = new BinaryTree<Integer, Integer>();
+		
+		for (int i : is) {
+			tree.insert(i, i);
+		}
+		
+		System.out.println(tree);
 	}
 
 }
