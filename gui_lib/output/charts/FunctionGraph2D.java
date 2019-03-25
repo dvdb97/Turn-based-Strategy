@@ -18,14 +18,14 @@ import java.util.LinkedList;
 
 import org.lwjgl.BufferUtils;
 
-public class Graph2D extends Mesh2D {
+public class FunctionGraph2D extends Mesh2D {
 	
 	private VertexBuffer positions;
 	
 	private LinkedList<Float> values;
 	
 	
-	public Graph2D(int numSamples) {
+	public FunctionGraph2D(int numSamples) {
 		super(GL_LINE_STRIP);
 		initBuffers(numSamples);
 	}

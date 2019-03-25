@@ -54,7 +54,7 @@ public class Parenting {
 		Camera camera = new Camera(new Vector3f(0f, 0f, 1f));
 		Scene scene = new Scene(camera, null, null);
 		
-		RenderQueue renderQueue = new RenderQueue(window, scene);
+		RenderQueue renderQueue = new RenderQueue(scene);
 		renderQueue.addMesh(redCircle);
 		renderQueue.addMesh(blueCircle);
 		renderQueue.addMesh(greenCircle);

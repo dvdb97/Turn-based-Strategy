@@ -13,7 +13,7 @@ import assets.scene.Scene;
 import interaction.Window;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
-import output.charts.Graph2D;
+import output.charts.FunctionGraph2D;
 import output.charts.Group;
 import output.charts.PieChart;
 import rendering.RenderEngine;
@@ -39,10 +39,10 @@ public class GraphTest {
 		Camera camera = new Camera(new Vector3f(0f, 0f, 1f));
 		Scene scene = new Scene(camera, null, null);
 		
-		Graph2D graph = new Graph2D(100);
+		FunctionGraph2D graph = new FunctionGraph2D(100);
 		graph.setMaterial(new Material(Color.WHITE));
 		
-		Graph2D graph2 = new Graph2D(1000);
+		FunctionGraph2D graph2 = new FunctionGraph2D(1000);
 		graph2.setMaterial(new Material(Color.WHITE));
 		graph2.transformable.setTranslation(0f, -0.5f, 0f);
 		graph2.transformable.setScaling(-1f, 0.5f, 1f);

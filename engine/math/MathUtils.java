@@ -7,10 +7,13 @@ public class MathUtils {
 	}
 	
 	
+	public static float sqrt(float value) {
+		return (float)Math.sqrt(value);
+	}
+	
+	
 	public static float getAbsoluteValue(float value) {
-		
 		return value < 0 ? -1f * value : value;
-		
 	}
 	
 	

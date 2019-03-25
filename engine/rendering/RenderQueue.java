@@ -7,11 +7,8 @@ import assets.IDeletable;
 import assets.light.DirectionalLight;
 import assets.meshes.Mesh;
 import assets.scene.Scene;
-import interaction.Window;
 
 public class RenderQueue implements IDeletable {
-	
-	protected Window window;
 	
 	protected LinkedList<Mesh> meshes;
 	
@@ -21,8 +18,7 @@ public class RenderQueue implements IDeletable {
 	/**
 	 * Set up the render queue.
 	 */
-	public RenderQueue(Window window, Scene scene) {
-		this.window = window;
+	public RenderQueue(Scene scene) {
 		this.meshes = new LinkedList<Mesh>();
 		
 		this.scene = scene;
