@@ -88,8 +88,18 @@ public class ProjectionMatrix extends Matrix44f {
 	}
 	
 	
+	/**
+	 * 
+	 * Generates an orthographic projection matrix that also factors
+	 * in the window's aspect ratio.
+	 * 
+	 * @return Returns an orthographic projection matrix.
+	 */
 	public static ProjectionMatrix orthographic() {
-		return orthographic(-1f, 1f, -1f, 1f, -1f, 1f);
+		//The window's aspect ratio.
+		float a = Window.main.getAspectRatio();
+		
+		return orthographic(-1f, 1f, -a, a, -1f, 1f);
 	}
 	
 	

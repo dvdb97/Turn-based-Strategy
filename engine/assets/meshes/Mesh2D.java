@@ -6,6 +6,7 @@ import assets.material.Material;
 import assets.scene.Scene;
 import assets.shaders.standardShaders.SpriteShader;
 import assets.textures.Texture;
+import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
@@ -43,7 +44,8 @@ public class Mesh2D extends Mesh {
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		shader.bind();
-		shader.setMVPMatrix(transformable.getTransformationMatrix());
+		
+		shader.setMVPMatrix(camera.getViewProjectionMatrix().times(transformable.getTransformationMatrix()));
 		shader.setMaterial(getMaterial());
 		shader.setUniformSubroutines();
 		

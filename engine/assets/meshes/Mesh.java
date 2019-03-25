@@ -425,6 +425,26 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	public Texture getTexture() {
 		return texture;
 	}
+	
+	
+	/**
+	 * 
+	 * Copies all data from this mesh to the target mesh.
+	 * It creates shallow copies except for the transformable.
+	 * 
+	 * @param target The target mesh to copy all data to.
+	 */
+	public void copy(Mesh target) {
+		target.transformable.adaptTo(this.transformable);
+		target.vao = this.vao;
+		target.indexBuffer = this.indexBuffer;
+		target.drawMode = this.drawMode;
+		target.vertexBuffers = this.vertexBuffers;
+		target.vertexData = this.vertexData;
+		target.texture = this.texture;
+		target.material = this.material;
+	}
+	
 
 	@Override
 	public void render() {
