@@ -18,6 +18,14 @@ import math.vectors.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
+
+/**
+ * Exception that will be thrown on attempt to set a uniform
+ * that doesn't exist.
+ */
+class UniformNotFoundException extends RuntimeException {}
+
+
 public class ShaderProgram extends Bindable {
 	
 	public static final int VERTEX_SHADER = GL_VERTEX_SHADER;
@@ -229,6 +237,17 @@ public class ShaderProgram extends Bindable {
 	
 	public void setProjectionMatrix(Matrix44f projection) {
 		this.setUniformMatrix4fv("projectionMatrix", projection);
+	}
+	
+	
+	/**
+	 * 
+	 * Passes the MVPMatrix as an uniform to the shader. 
+	 * 
+	 * @param matrix The matrix to use as the MVPMatrix.
+	 */
+	public void setMVPMatrix(Matrix44f matrix) {
+		this.setUniformMatrix4fv("mvpMatrix", matrix);
 	}
 	
 	

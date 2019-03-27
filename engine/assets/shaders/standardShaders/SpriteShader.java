@@ -24,17 +24,6 @@ public class SpriteShader extends ShaderProgram {
 	}
 	
 	
-	/**
-	 * 
-	 * Passes the MVPMatrix as an uniform to the shader. 
-	 * 
-	 * @param matrix The matrix to use as the MVPMatrix.
-	 */
-	public void setMVPMatrix(Matrix44f matrix) {
-		this.setUniformMatrix4fv("mvpMatrix", matrix);
-	}
-	
-	
 	@Override
 	public void setMaterial(Material material) {
 		this.setUniformVector4f("material.color", material.color.toVector4f());

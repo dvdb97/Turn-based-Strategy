@@ -191,8 +191,7 @@ public class HexagonBorderGrid extends Mesh {
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		shader.bind();
-		shader.setCamera(camera);
-		shader.setModelMatrix(this.getTransformable().getTransformationMatrix());
+		shader.setMVPMatrix(camera.getViewProjectionMatrix().times(transformable.getTransformationMatrix()));
 		shader.setMaterial(getMaterial());
 		glLineWidth(0.1f);
 		
