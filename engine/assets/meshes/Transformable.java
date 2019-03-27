@@ -25,32 +25,14 @@ public class Transformable {
 	
 	private Transformable parent;
 	
-	private Vector3f translation;
-	
-	private Matrix44f translationMatrix;
-	
-	
-	private Vector3f rotation;
-	
-	private Matrix44f rotationMatrix;
-	
-	
-	private Vector3f scaling;
-	
-	private Matrix44f scalingMatrix;
+	private TransformationMatrix transformationMatrix;
 	
 	
 	/**
 	 * Initializes the Transformable with zero vectors for each transformation
 	 */
 	public Transformable() {
-		this.translation = new Vector3f(0f, 0f, 0f);
-		this.rotation = new Vector3f(0f, 0f, 0f);
-		this.scaling = new Vector3f(1f, 1f, 1f);
-		
-		this.translationMatrix = new Matrix44f();
-		this.rotationMatrix = new Matrix44f();
-		this.scalingMatrix = new Matrix44f();		
+		transformationMatrix = new TransformationMatrix();	
 	}
 	
 	
@@ -63,13 +45,9 @@ public class Transformable {
 	 * @param scale The scale of the Transformable
 	 */
 	public Transformable(Vector3f translation, Vector3f rotation, Vector3f scale) {
-		this.translation = translation.copyOf();
-		this.rotation = rotation.copyOf();
-		this.scaling = scale.copyOf();
-		
-		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
-		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scale);
+		transformationMatrix.setTranslation(translation);
+		transformationMatrix.setScale(scale);
+		transformationMatrix.setRot(rotation);
 	}
 	
 	
@@ -80,10 +58,7 @@ public class Transformable {
 	 * @param translation The additional translation
 	 */
 	public void translate(Vector3f translation) {
-		this.translation.plus(translation);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
+		transformationMatrix.setTranslation(translation);
 	}
 	
 	
@@ -96,36 +71,29 @@ public class Transformable {
 	 * @param z The z translation
 	 */
 	public void translate(float x, float y, float z) {
-		this.translation.increaseA(x);
-		this.translation.increaseB(y);
-		this.translation.increaseC(z);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
+		transformationMatrix.setTranslation(transformationMatrix.getTransX() + x,
+											transformationMatrix.getTransY() + y,
+											transformationMatrix.getTransZ() + z);
 	}
 	
 	
 	public void setTranslation(Vector3f translation) {
-		this.translation = translation.copyOf();
-		
-		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
+		transformationMatrix.setTranslation(translation);
 	}
 	
 	
 	public void setTranslation(float x, float y, float z) {
-		this.translation = new Vector3f(x, y, z);
-		
-		this.translationMatrix = TranslationMatrix.getTranslationMatrix(translation);
+		transformationMatrix.setTranslation(x, y, z);
 	}
 	
 	
 	public Vector3f getPosition() {
-		return translation;
+		return transformationMatrix.getTranslation();
 	}
 	
 	
 	public Vector3f getTranslation() {
-		return translation;
+		return transformationMatrix.getTranslation();
 	}
 	
 	
@@ -137,10 +105,9 @@ public class Transformable {
 	 * @param rotation The rotations vector
 	 */
 	public void rotate(Vector3f rotation) {
-		this.rotation.plus(rotation);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+		transformationMatrix.setRot(transformationMatrix.getRotX() + rotation.getA(),
+									transformationMatrix.getRotY() + rotation.getB(),
+									transformationMatrix.getRotZ() + rotation.getC());
 	}
 	
 	
@@ -154,33 +121,24 @@ public class Transformable {
 	 * @param z The z rotation
 	 */
 	public void rotate(float x, float y, float z) {
-		this.rotation.increaseA(x);
-		this.rotation.increaseB(y);
-		this.rotation.increaseC(z);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+		transformationMatrix.setRot(transformationMatrix.getRotX() + x,
+									transformationMatrix.getRotY() + y,
+									transformationMatrix.getRotZ() + z);
 	}
 	
 	
 	public void setRotation(Vector3f rotation) {
-		this.rotation = rotation.copyOf();
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+		transformationMatrix.setRot(rotation);
 	}
 	
 	
 	public void setRotation(float x, float y, float z) {
-		this.rotation = new Vector3f(x, y, z);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.rotationMatrix = RotationMatrix.getRotationMatrix(rotation);
+		transformationMatrix.setRot(x, y, z);
 	}
 	
 	
 	public Vector3f getRotation() {
-		return rotation;
+		return transformationMatrix.getRotation();
 	}
 	
 	
@@ -192,12 +150,9 @@ public class Transformable {
 	 * @param scale The scaling vector
 	 */
 	public void scale(Vector3f scale) {
-		this.scaling.increaseA(scale.getA());
-		this.scaling.increaseB(scale.getB());
-		this.scaling.increaseC(scale.getC());
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
+		transformationMatrix.setScale(transformationMatrix.getScaleX() * scale.getA(),
+									  transformationMatrix.getScaleY() * scale.getB(),
+									  transformationMatrix.getScaleZ() * scale.getC());
 	}
 	
 	
@@ -211,51 +166,34 @@ public class Transformable {
 	 * @param z The z scale
 	 */
 	public void scale(float x, float y, float z) {
-		this.scaling.increaseA(x);
-		this.scaling.increaseB(y);
-		this.scaling.increaseC(z);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);		
+		transformationMatrix.setScale(transformationMatrix.getScaleX() * x,
+									  transformationMatrix.getScaleY() * y,
+									  transformationMatrix.getScaleZ() * z);	
 	}
 	
 	
 	public void scale(float xyz) {
-		this.scaling.increaseA(xyz);
-		this.scaling.increaseB(xyz);
-		this.scaling.increaseC(xyz);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);	
+		scale(xyz, xyz, xyz);	
 	}
 	
 	
 	public void setScaling(Vector3f scale) {
-		this.scaling = scale.copyOf();
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
+		transformationMatrix.setScale(scale);
 	}
 	
 	
 	public void setScaling(float x, float y, float z) {
-		this.scaling = new Vector3f(x, y, z);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
+		transformationMatrix.setScale(x, y, z);
 	}
 	
 	
 	public void setScaling(float xyz) {
-		this.setScaling(xyz, xyz, xyz);
-		
-		//TODO: Change the matrix' values instead of creating a completely new one.
-		this.scalingMatrix = ScalingMatrix.getScalingMatrix(scaling);
+		transformationMatrix.setScale(xyz);
 	}
 	
 	
 	public Vector3f getScaling() {
-		return scaling;
+		return transformationMatrix.getScale();
 	}
 	
 	
@@ -286,11 +224,6 @@ public class Transformable {
 	}
 	
 	
-	private Matrix44f computeTransformationMatrix() {
-		return translationMatrix.times(rotationMatrix.times(scalingMatrix));
-	}
-	
-	
 	/**
 	 * 
 	 * Computes the transformation matrix for this model.
@@ -299,10 +232,10 @@ public class Transformable {
 	 */
 	public Matrix44f getTransformationMatrix() {
 		if (parent != null) {
-			return parent.getTransformationMatrix().times(computeTransformationMatrix());
+			return parent.getTransformationMatrix().times(transformationMatrix);
 		}
 		
-		return computeTransformationMatrix();
+		return transformationMatrix;
 	}
 	
 	

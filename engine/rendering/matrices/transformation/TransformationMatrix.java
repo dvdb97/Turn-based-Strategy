@@ -3,6 +3,7 @@ package rendering.matrices.transformation;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 
+
 public class TransformationMatrix extends Matrix44f{
 	
 	protected Vector3f translation = Vector3f.ZERO;
@@ -43,6 +44,9 @@ public class TransformationMatrix extends Matrix44f{
 		this.translation = new Vector3f(transX, transY, transZ);
 		this.scale = new Vector3f(scale, scale, scale);
 		
+		//precalc cos and sin
+		calcCosAndSin();
+		//change all components of the matrix in way, it can be called a transformation matrix
 		updateData();
 		
 	}
@@ -52,6 +56,11 @@ public class TransformationMatrix extends Matrix44f{
 		this.translation = translation;
 		this.rotation = rotation;
 		this.scale = new Vector3f(scale, scale, scale);
+		
+		//precalc cos and sin
+		calcCosAndSin();
+		//change all components of the matrix in way, it can be called a transformation matrix
+		updateData();
 	}
 	
 	
@@ -59,6 +68,11 @@ public class TransformationMatrix extends Matrix44f{
 		this.translation = translation;		
 		this.rotation = rotation;
 		this.scale = scale;
+		
+		//precalc cos and sin
+		calcCosAndSin();
+		//change all components of the matrix in way, it can be called a transformation matrix
+		updateData();
 	}
 	
 	
@@ -71,21 +85,21 @@ public class TransformationMatrix extends Matrix44f{
 	//---------------------- utils ------------------------------
 	//updates the components of the matrix using the given values
 	protected void updateData() {
-		
 		setA1( scale.getA() * cRY * cRZ);
 		setA2(-scale.getB() * sRZ * cRY);
 		setA3( scale.getC() * sRY);
 		setA4( translation.getA());
-		setB1( scale.getB() * sRZ);
-		setB2( scale.getB() * cRX * cRZ);
-		setB3(-scale.getB() * sRX);
-		setB4( translation.getB());
-		setC1(-scale.getC() * sRY);
-		setC2( scale.getC() * sRX);
-		setC3( scale.getC() * cRX * cRY);
-		setC4( scale.getC() * translation.getC());
 		
-	//	setD4( scale);
+		setB1( scale.getA() * (cRX * sRZ + sRX * sRY * cRZ));
+		setB2( scale.getB() * (cRX * cRZ + (-sRX * (-sRY * -sRZ))));
+		setB3(-scale.getC() * sRX * cRY);
+		setB4( translation.getB());
+		
+		setC1( scale.getA() * (sRX * sRZ + cRX * (-sRY * cRZ)));
+		setC2( scale.getB() * (sRX * cRZ + cRX * (-sRY * -sRZ)));
+		setC3( scale.getC() * cRX * cRY);
+		setC4( translation.getC());
+		
 		setD4( 1.0f);
 	}
 	
@@ -107,19 +121,25 @@ public class TransformationMatrix extends Matrix44f{
 		updateData();
 	}
 	
+	public void setScale(float x, float y, float z) {
+		this.scale = new Vector3f(x, y, z);
+		
+		updateData();
+	}
+	
 	public void setScale(Vector3f scale) {
 		this.scale = scale;
 		
 		updateData();
 	}
 	
-	public void setTrans(float x, float y, float z) {
+	public void setTranslation(float x, float y, float z) {
 		this.translation = new Vector3f(x, y, z);
 		
 		updateData();
 	}
 	
-	public void setTrans(Vector3f xyz) {
+	public void setTranslation(Vector3f xyz) {
 		this.translation = xyz;
 		
 		updateData();
@@ -203,6 +223,18 @@ public class TransformationMatrix extends Matrix44f{
 
 	public Vector3f getScale() {
 		return scale;
+	}
+	
+	public float getScaleX() {
+		return scale.getA();
+	}
+	
+	public float getScaleY() {
+		return scale.getB();
+	}
+	
+	public float getScaleZ() {
+		return scale.getC();
 	}
 	
 }

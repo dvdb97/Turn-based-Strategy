@@ -63,9 +63,9 @@ public class Parenting {
 			RenderEngine.clear();
 			
 			//Update
-			redCircle.transformable.rotate(0, 0, -0.01f);
+			redCircle.transformable.rotate(0f, 0f, -0.01f);
 			blueCircle.transformable.rotate(0f, 0f, -0.02f);
-			greenCircle.transformable.rotate(0, 0, -0.03f);
+			greenCircle.transformable.rotate(0f, 0f, -0.03f);
 			
 			renderQueue.render();
 			RenderEngine.swapBuffers();
