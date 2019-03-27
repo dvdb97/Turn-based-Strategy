@@ -42,7 +42,7 @@ public abstract class Element implements ElementBase {
 	
 	@Override
 	public void render() {
-		shape.render(color, elementMatrix);
+		shape.render(color, TM);
 	}
 	
 	/**
