@@ -1,8 +1,11 @@
 package pathfinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
+import datastructures.Tuple;
 
 /**
  * 
@@ -55,7 +58,7 @@ class Step<N> implements Comparable<Step<N>> {
 
 
 public class AStarSearch<N> {	
-	
+		
 	/**
 	 * 
 	 * Finds the shortest path between two nodes using the A*-Algorithm.
@@ -90,6 +93,54 @@ public class AStarSearch<N> {
 		}
 		
 		return current;
+	}
+	
+	
+	/**
+	 * 
+	 * Find all nodes that are reachable from the start using the given budget.
+	 * 
+	 * @param graph The graph to work with.
+	 * @param start The node that is the start of our path search.
+	 * @param budget The maximum distance that we can walk from the start node.
+	 * @return Returns a set of nodes that is reachable from the start node.
+	 */
+	public static <N> Set<N> getReachableNodes(IGraph<N> graph, N start, float budget) {
+		
+		class Node extends Tuple<N, Float> implements Comparable<Float> {
+			public Node(N x, Float y) {
+				super(x, y);
+			}
+
+			@Override
+			public int compareTo(Float o) {
+				return y.compareTo(o);
+			}
+		}
+		
+		//All nodes have already been visited by a path and the according path costs.
+		HashMap<N, Float> visited = new HashMap<N, Float>();
+		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		
+		Tuple<N, Float> current = null;
+		
+		while (!queue.isEmpty()) {
+			current = queue.poll();
+			
+			//Only look at this node if it hasn't been visited yet or we have found a shorter path to this node.
+			if (!visited.containsKey(current.x) || visited.get(current.x) > current.y) {
+				//Mark this node as visited or override the path costs for this node with an updated value.
+				visited.put(current.x, current.y);
+				
+				//Add all successors of the current node to the priorityQueue.
+				for (N node : graph.getSuccessors(current.x)) {
+					float distance = current.y + graph.getCosts(current.x, node);
+					queue.add(new Node(node, distance));
+				}
+			}
+		}
+		
+		return visited.keySet();
 	}
 	
 	
