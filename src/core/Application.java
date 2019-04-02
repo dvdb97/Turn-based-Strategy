@@ -1,5 +1,6 @@
 package core;
 
+import assets.meshes.geometry.Color;
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
@@ -41,7 +42,7 @@ public class Application {
 	
 	private static void initRenderEngine(StartParams params) {
 		RenderEngine.init(window);
-		RenderEngine.setClearColor(new Vector4f(0.2f, 0.4f, 1f, 1f));
+		RenderEngine.setClearColor(new Color(0.2f, 0.4f, 1f, 1f));
 		RenderEngine.enableDepthTest();
 		RenderEngine.setSwapInterval(1);
 		

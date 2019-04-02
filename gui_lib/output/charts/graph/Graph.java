@@ -5,27 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+import assets.material.Material;
+import assets.meshes.Mesh;
+import assets.meshes.geometry.Color;
+import assets.meshes.specialized.Circle;
+import assets.meshes.specialized.Line2D;
+import math.vectors.Vector2f;
 import pathfinding.IGraph;
 
 import static math.MathUtils.*;
-
-class Edge implements Comparable<Edge> {
-	public Node a;
-	public Node b;
-	public Integer hash;
-	
-	public Edge(Node a, Node b) {
-		this.a = a;
-		this.b = b;
-		hash = (a.label + b.label).hashCode();
-	}
-
-	@Override
-	public int compareTo(Edge o) {
-		return hash.compareTo(o.hash);
-	}
-}
-
 
 public class Graph implements IGraph<Node> {
 
@@ -41,6 +29,29 @@ public class Graph implements IGraph<Node> {
 		
 		nodeLookUp = new HashMap<String, Node>();
 		lookUpTable = new HashMap<Node, TreeSet<Node>>();
+	}
+	
+	
+	public Mesh[] getMeshes() {
+		Mesh[] meshes = new Mesh[nodes.size() + edges.size()];
+		int index = 0;
+		
+		Material edgeMat = new Material(Color.WHITE);
+		
+		for (Node node : nodes) {
+			meshes[index] = new Circle();
+			meshes[index].transformable.setTranslation(node.x, node.y, 0.01f);
+			meshes[index].transformable.setScaling(0.1f);
+			index++;			
+		}
+		
+		for (Edge edge : edges) {
+			meshes[index] = new Line2D(new Vector2f(edge.a.x, edge.a.y), new Vector2f(edge.b.x, edge.b.y));
+			meshes[index].setMaterial(edgeMat);
+			index++;
+		}
+		
+		return meshes;
 	}
 	
 	

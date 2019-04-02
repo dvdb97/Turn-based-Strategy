@@ -5,6 +5,7 @@ import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
+import utils.ColorPalette;
 import utils.Cooldown;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -96,7 +97,7 @@ public class ModelTest {
 		paths[Skybox.LEFT] = "res/Textures/Skyboxes/ice/left.jpg";
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
-		RenderEngine.setClearColor(new Vector4f(1f, 1f, 1f, 1f));
+		RenderEngine.setClearColor(ColorPalette.WHITE);
 		
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);

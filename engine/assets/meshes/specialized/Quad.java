@@ -10,13 +10,17 @@ public class Quad extends Mesh2D {
 	public Quad() {
 		
 		float[] pos = {
-			-1f, 1f, 0f, 1f, 1f, 0f,
-			-1f, -1f, 0f, 1f, -1f, 0f
+			-1f, 1f, 0f, 
+			 1f, 1f, 0f,
+			-1f, -1f, 0f, 
+			 1f, -1f, 0f
 		};
 		
 		float[] texPos = {
-			0f, 1f, 1f, 1f,
-			0f, 0f, 1f, 0f
+			0f, 1f, 
+			1f, 1f,
+			0f, 0f, 
+			1f, 0f
 		};
 		
 		int[] indices = {

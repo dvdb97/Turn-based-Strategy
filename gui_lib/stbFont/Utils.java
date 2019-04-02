@@ -3,16 +3,16 @@ package stbFont;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-import core.Application;
+import interaction.Window;
 
 public class Utils {
 	
 	public static int getWidthInPx(float width) {
-		return (int)(width*Application.getWindowWidth()/2f);
+		return (int)(width*Window.main.getWidth()/2f);
 	}
 	
 	public static int getHeightInPx(float height) {
-		return (int)(height*Application.getWindowHeight()/2f);
+		return (int)(height*Window.main.getHeight()/2f);
 	}
 
 	public static ArrayList<Byte> bufferToList(ByteBuffer buffer) {

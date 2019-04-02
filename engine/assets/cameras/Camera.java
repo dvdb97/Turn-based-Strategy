@@ -496,6 +496,16 @@ public class Camera {
 	}
 	
 	
+	public void zoom(Vector3f zoom) {
+		this.zoom.plusEQ(zoom);
+	}
+	
+	
+	public void zoom(float x, float y, float z) {
+		this.zoom(new Vector3f(x, y, z));
+	}
+	
+	
 	/**
 	 * 
 	 * @param zoom The camera's zoom

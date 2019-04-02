@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+
+import assets.meshes.geometry.Color;
 import interaction.Window;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
@@ -204,8 +206,8 @@ public class RenderEngine {
 	}
 	
 	
-	public static void setClearColor(Vector4f colorVec) {
-		glClearColor(colorVec.getA(), colorVec.getB(), colorVec.getC(), colorVec.getD());
+	public static void setClearColor(Color colorVec) {
+		glClearColor(colorVec.getRed(), colorVec.getGreen(), colorVec.getBlue(), colorVec.getAlpha());
 	}
 	
 	
