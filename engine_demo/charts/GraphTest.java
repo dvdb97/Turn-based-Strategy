@@ -12,7 +12,6 @@ import assets.material.Material;
 import assets.meshes.geometry.Color;
 import assets.scene.Scene;
 import interaction.Window;
-import interaction.input.KeyEvent;
 import interaction.input.KeyInput;
 import math.vectors.Vector3f;
 import output.charts.FunctionGraph2D;
@@ -22,7 +21,6 @@ import output.charts.graph.Graph;
 import rendering.RenderEngine;
 import rendering.RenderQueue;
 import timer.Cooldown;
-import utils.ColorPalette;
 
 public class GraphTest {
 

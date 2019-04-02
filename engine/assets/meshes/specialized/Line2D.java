@@ -70,6 +70,7 @@ public class Line2D extends Mesh2D {
 		}
 		
 		float scale = MathUtils.sqrt(dx * dx + dy * dy);
+		System.out.println("(" + p1.getA() + ", " + p1.getB() + "), (" + p2.getA() + ", " + p2.getB() + ")" + "; " + scale);
 		
 		transformable.setTranslation(p1.getA(), p1.getB(), 0f);
 		transformable.setRotation(0f, 0f, angle);

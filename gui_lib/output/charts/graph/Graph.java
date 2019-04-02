@@ -38,17 +38,17 @@ public class Graph implements IGraph<Node> {
 		
 		Material edgeMat = new Material(Color.WHITE);
 		
-		for (Node node : nodes) {
-			meshes[index] = new Circle();
-			meshes[index].transformable.setTranslation(node.x, node.y, 0.01f);
-			meshes[index].transformable.setScaling(0.1f);
-			index++;			
-		}
-		
 		for (Edge edge : edges) {
 			meshes[index] = new Line2D(new Vector2f(edge.a.x, edge.a.y), new Vector2f(edge.b.x, edge.b.y));
 			meshes[index].setMaterial(edgeMat);
 			index++;
+		}
+		
+		for (Node node : nodes) {
+			meshes[index] = new Circle();
+			meshes[index].transformable.setTranslation(node.x, node.y, 0.1f);
+			meshes[index].transformable.setScaling(0.1f);
+			index++;			
 		}
 		
 		return meshes;

@@ -44,7 +44,6 @@ public class Mesh2D extends Mesh {
 	@Override
 	protected void onDrawStart(Camera camera, DirectionalLight light) {
 		shader.bind();
-		
 		shader.setMVPMatrix(camera.getViewProjectionMatrix().times(transformable.getTransformationMatrix()));
 		shader.setMaterial(getMaterial());
 		shader.setUniformSubroutines();
