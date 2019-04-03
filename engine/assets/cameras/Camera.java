@@ -498,6 +498,20 @@ public class Camera {
 	
 	public void zoom(Vector3f zoom) {
 		this.zoom.plusEQ(zoom);
+		
+		if (this.zoom.getA() < 0f) {
+			this.zoom.setA(0f);
+		}
+		
+		if (this.zoom.getB() < 0f) {
+			this.zoom.setB(0f);
+		}
+		
+		if (this.zoom.getC() < 0f) {
+			this.zoom.setC(0f);
+		}
+		
+		this.updateViewMatrix();
 	}
 	
 	

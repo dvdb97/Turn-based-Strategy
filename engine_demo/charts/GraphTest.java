@@ -120,7 +120,7 @@ public class GraphTest {
 		
 		Graph graph = new Graph();
 		
-		float camSpeed = 0.1f;
+		float camSpeed = 0.05f;
 		KeyInput.addKeyEvent(GLFW_KEY_A, (key) -> camera.move(-camSpeed, 0f, 0f));
 		KeyInput.addKeyEvent(GLFW_KEY_D, (key) -> camera.move(camSpeed, 0f, 0f));
 		KeyInput.addKeyEvent(GLFW_KEY_W, (key) -> camera.move(0f, camSpeed, 0f));
