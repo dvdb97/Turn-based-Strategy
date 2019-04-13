@@ -7,9 +7,9 @@ import input.Mouse;
 
 public abstract class GUIWindow extends Container implements Clickable {
 	//TODO: element matrix vs transformation matrix
-	public GUIWindow(Color color, GUIElementMatrix transformationMatrix) {
+	public GUIWindow(Color color, GUIElementMatrix elementMatrix) {
 		
-		super(color, transformationMatrix);
+		super(color, elementMatrix);
 		
 		GUIManager.addWindow(this);
 		

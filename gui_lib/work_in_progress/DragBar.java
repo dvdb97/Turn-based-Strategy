@@ -54,6 +54,7 @@ public class DragBar extends DragableElement {
 	@Override
 	public void onRelease() {
 		color = color1;
+		movedElement.onConcludedMovement();
 	}
 	
 	

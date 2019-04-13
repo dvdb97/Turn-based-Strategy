@@ -23,12 +23,12 @@ public abstract class Element implements ElementBase {
 	
 	//***************** constructor *************************
 	
-	protected Element(GUIShape shape, Color color, GUIElementMatrix transformationMatrix) {
+	protected Element(GUIShape shape, Color color, GUIElementMatrix elementMatrix) {
 		this.shape = shape;
 		this.color = color;
 		
-		this.elementMatrix = transformationMatrix;
-		this.invertedTM = transformationMatrix.getInverse();
+		this.elementMatrix = elementMatrix;
+		this.invertedTM = TM.getInverse();
 	}
 	
 	

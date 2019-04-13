@@ -51,8 +51,10 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu = new TabMenu(DARK_SLATE_GRAY, 0.1f, new GUIElementMatrix(0f, -textureHeight, 1f, 1 - textureHeight));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
+		//**************************************************************
 		tabMenu.addTab(TURQUOISE, "overview", tabList);
 		tabList.get(0).addElement(new TTFBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
+		//**************************************************************
 		tabMenu.addTab(GIANTS_ORANGE, "geopgraphy", tabList);
 		tabList.get(1).addElement(infoText);
 		//**************************************************************

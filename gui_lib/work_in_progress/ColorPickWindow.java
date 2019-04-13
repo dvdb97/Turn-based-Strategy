@@ -87,10 +87,6 @@ public class ColorPickWindow extends GUIWindow {
 		greenText.changeTextTo(Integer.toString(color.getGreenInt()));
 		blueText.changeTextTo(Integer.toString(color.getBlueInt()));
 		
-	//	redSlider.setValue(color.getRed());
-	//	greenSlider.setValue(color.getGreen());
-	//	blueSlider.setValue(color.getBlue());
-		
 	}
 	
 }

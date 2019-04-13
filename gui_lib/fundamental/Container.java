@@ -13,8 +13,8 @@ public abstract class Container extends Element {
 	
 	//******************** constructor *******************************
 	
-	protected Container(Color color, GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), color, transformationMatrix);
+	protected Container(Color color, GUIElementMatrix elementMatrix) {
+		super(new GUIQuad(), color, elementMatrix);
 		
 		children = new ElementList();
 		
