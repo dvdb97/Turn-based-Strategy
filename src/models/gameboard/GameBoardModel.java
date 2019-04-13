@@ -10,6 +10,7 @@ import mapModes.MapMode;
 import math.vectors.Vector3f;
 import models.meeples.CityModel;
 import rendering.matrices.transformation.TransformationMatrix;
+import world.WorldManager;
 
 public class GameBoardModel {
 	
@@ -31,10 +32,9 @@ public class GameBoardModel {
 	//others
 	private static DirectionalLight sun;
 	
-	private static Scene scene;
+	//TODO: private
+	public static Scene scene;
 	
-	
-	private CityModel TEST;
 	
 	//***************************** constructor ********************************
 	
@@ -59,9 +59,6 @@ public class GameBoardModel {
 		tileBorders.transformable.setParent(transformable);
 		sea.transformable.setParent(transformable);
 		hex.transformable.setParent(transformable);
-		
-		this.TEST = new CityModel(transformable);
-		TEST.transformable.setScaling(0.3f);
 		
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
@@ -106,8 +103,6 @@ public class GameBoardModel {
 	private void renderTerrain() {
 		
 		terrain.render(scene);
-		
-		TEST.render(scene);
 		
 	}
 	

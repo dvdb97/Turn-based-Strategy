@@ -1,9 +1,11 @@
 package gui.tileInfo;
 
+import world.BuildingAuthority;
 import world.WorldManager;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
+import interaction.TileSelecter;
 import output.GUITexture;
 import stbFont.TTFBox;
 import work_in_progress.TestPushButton;
@@ -55,11 +57,14 @@ public class TileInfoWindow extends GUIWindow {
 		tabList.get(1).addElement(infoText);
 		//**************************************************************
 		tabMenu.addTab(TEAL_BLUE, "buildings", tabList);
-		TTFBox ttfBox = new TTFBox(0.1f, -0.1f, 0.05f, Integer.toString(counter), BLACK);
+		TTFBox ttfBox = new TTFBox(0.1f, -0.1f, 0.05f, "total number of cities: " + Integer.toString(counter), BLACK);
 		tabList.get(2).addElement(ttfBox);
 		TestPushButton button = new TestPushButton(SAFFRON, new GUIElementMatrix(0.1f, -0.2f, 0.3f, 0.1f));
 		tabList.get(2).addElement(button);
-		button.setFunction((e) -> ttfBox.changeTextTo(Integer.toString(++counter)));
+		button.setFunction((e) -> {
+			if (BuildingAuthority.requestCityOnTile(TileSelecter.getSelectedTileIndex()))
+				ttfBox.changeTextTo("total number of cities: " + Integer.toString(++counter));
+			});
 		//**************************************************************
 		tabMenu.addTab(GREEN_1, "map mode", tabList);
 		RadioButtons rb = new RadioButtons(WHITE, 0.05f, new GUIElementMatrix(0.1f, -0.1f, 0.8f, 0.5f));

@@ -9,6 +9,7 @@ import mapModes.MapModesManager;
 import math.vectors.Vector3f;
 import models.gameboard.GameBoardModel;
 import models.gameboard.ModelCreater;
+import models.meeples.CityModel;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
 import utils.Statistics;
@@ -40,13 +41,15 @@ public class WorldManager {
 		
 		NUM_TILES = lengthInTiles*widthInTiles;
 		
+		meepleModels = new ArrayList<>();
+		
 		initModels();
 		initFertility();
 		initGameBoard();
 		initMapModes();
 		
-		meepleModels = new ArrayList<>();
-		BuildingAuthority.init(gameBoardModel, meepleModels);
+		BuildingAuthority.init(gameBoardModel, meepleModels, superGrid);
+		
 	}
 	
 	private static void initModels() {
@@ -132,8 +135,9 @@ public class WorldManager {
 	public static void render() {
 		
 		gameBoardModel.render();
+		
 		for (Mesh3D meeple : meepleModels) {
-			meeple.render();
+			meeple.render(GameBoardModel.scene);
 		}
 		
 	}

@@ -11,7 +11,7 @@ public class GameBoard {
 	
 	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;
-	private static HashMap<Tile, City> cities;
+	private static HashMap<Tile, City> cities = new HashMap<>();
 	
 	public static boolean tileAvailableForCity(Tile tile) {
 		//TODO: maybe use exceptions here
@@ -22,6 +22,7 @@ public class GameBoard {
 		
 		if (tile.isWater()) {
 			System.out.println("can't place a city on water");
+			System.out.println(tile.getAvgHeight());
 			return false;
 		}
 		

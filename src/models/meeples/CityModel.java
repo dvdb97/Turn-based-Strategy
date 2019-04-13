@@ -14,14 +14,14 @@ public class CityModel extends Mesh3D {
 	public CityModel(Transformable gameBoard) {
 		super(new Material(ColorPalette.BORDEAUX, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f));
 		
-		float[] posData = new float[] {0,0,0,
-		                               0,1,0,
-		                               1,0,0,
-		                               1,1,0,
-		                               0,0,1,
-		                               0,1,1,
-		                               1,0,1,
-		                               1,1,1};
+		float[] posData = new float[] {-1,-1, 0,
+		                               -1, 1, 0,
+		                                1,-1, 0,
+		                                1, 1, 0,
+		                               -1,-1, 2,
+		                               -1, 1, 2,
+		                                1,-1, 2,
+		                                1, 1, 2};
 		
 		FloatBuffer posBuffer = CustomBufferUtils.createFloatBuffer(posData);
 		
