@@ -1,6 +1,7 @@
 package models.worldModels;
 
 import assets.light.DirectionalLight;
+import assets.meshes.geometry.Color;
 import assets.scene.Scene;
 import interaction.PlayerCamera;
 import interaction.TileSelecter;
@@ -67,10 +68,6 @@ public class BoardModels {
 		sun = new DirectionalLight(new Vector3f(0.2f, 0.2f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
 		sun.fitToBoundingBox(terrain);
 		
-	//	hoveredTileColor = new Color(1f, 1f, 0f, 1f);
-		
-	//	selectedTileColor = new Color(1f, 0f, 0f, 1f);
-		
 		scene = new Scene(PlayerCamera.getCamera(), sun, null);
 	}	
 	
@@ -115,7 +112,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 
-		tileBorders.render(scene);
+		tileBorders.render(scene, new Color(1f, 1f, 0f, 1f));
 		
 	}
 	
@@ -123,7 +120,7 @@ public class BoardModels {
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		
-		tileBorders.render(scene);
+		tileBorders.render(scene, new Color(1f, 0f, 0f, 1f));
 		
 	}
 	

@@ -166,7 +166,7 @@ public class PlayerCamera {
 	}
 	
 	
-	public static Matrix44f getInvertedMatrix() {
+	public static Matrix44f getInvertedViewMatrix() {
 		return camera.getInvertedViewMatrix();
 	}
 	

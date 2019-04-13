@@ -167,6 +167,14 @@ public class HexagonBorderGrid extends Mesh {
 		this.onDrawStart(scene.getCamera(), scene.getLightSource());
 	}
 	
+	
+	public void render(Scene scene, Color color) {
+		this.getMaterial().color = color;
+		render(scene);
+		getMaterial().color = this.color;
+	}
+	
+	
 	@Override
 	public void onDrawEnd(Scene scene) {
 		this.onDrawEnd(scene.getCamera(), scene.getLightSource());
@@ -195,15 +203,14 @@ public class HexagonBorderGrid extends Mesh {
 		shader.bind();
 		shader.setCamera(camera);
 		shader.setModelMatrix(this.getTransformable().getTransformationMatrix());
-		this.getMaterial().color = color;
 		shader.setMaterial(getMaterial());
 		glLineWidth(0.1f);
 		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(PRI);
 	}
-
-
+	
+	
 	@Override
 	protected void onDrawEnd(Camera camera, DirectionalLight light) {
 		glDisable(GL_PRIMITIVE_RESTART);
