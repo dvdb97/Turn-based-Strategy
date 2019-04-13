@@ -94,7 +94,7 @@ public class ModelCreater {
 	
 	private void createTileBorders() {
 		
-		tileBorders = new HexagonBorderGrid(superGrid, new Color(0f, 0f, 0f, 1f));
+		tileBorders = new HexagonBorderGrid(superGrid, new Material(new Color(0f, 0f, 0f, 1f)));
 	}
 	
 	private void createSea() {

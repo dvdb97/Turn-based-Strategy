@@ -8,6 +8,7 @@ import org.lwjgl.BufferUtils;
 
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
+import assets.material.Material;
 import assets.meshes.Mesh;
 import assets.meshes.geometry.Color;
 import assets.meshes.geometry.Vertex;
@@ -51,8 +52,9 @@ public class HexagonBorderGrid extends Mesh {
 	
 	//******************** constructor ***************************
 	
-	public HexagonBorderGrid(SuperGrid superGrid, Color color) {
+	public HexagonBorderGrid(SuperGrid superGrid, Material material) {
 		super(GL_LINE_LOOP);
+		this.setMaterial(material);
 		
 		this.shader = StandardShader.create();
 		
@@ -61,7 +63,7 @@ public class HexagonBorderGrid extends Mesh {
 		length = superGrid.getLengthInHexagons();
 		width  = superGrid.getWidthInHexagons();
 		
-		this.color = color;
+		this.color = material.color;
 		
 		processVerticesAndElementBuffer();
 		
@@ -193,6 +195,7 @@ public class HexagonBorderGrid extends Mesh {
 		shader.bind();
 		shader.setCamera(camera);
 		shader.setModelMatrix(this.getTransformable().getTransformationMatrix());
+		this.getMaterial().color = color;
 		shader.setMaterial(getMaterial());
 		glLineWidth(0.1f);
 		

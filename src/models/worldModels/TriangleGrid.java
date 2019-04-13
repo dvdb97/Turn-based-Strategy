@@ -129,7 +129,7 @@ public class TriangleGrid extends Mesh3D {
 			vertices[v].setNormalVector(normals.get(v));
 		}
 		
-		setData(vertices, processElementBuffer());
+		setData(vertices, processElementBuffer(), false);
 		
 	}
 	

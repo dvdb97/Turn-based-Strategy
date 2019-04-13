@@ -45,6 +45,7 @@ public class TileInfoWindow extends GUIWindow {
 		
 		children.add(waterTex);
 		
+		
 		tabMenu = new TabMenu(DARK_SLATE_GRAY, 0.1f, new GUIElementMatrix(0f, -textureHeight, 1f, 1 - textureHeight));
 		children.add(tabMenu);
 		tabList = new ArrayList<>(4);
@@ -56,16 +57,17 @@ public class TileInfoWindow extends GUIWindow {
 		tabMenu.addTab(TEAL_BLUE, "buildings", tabList);
 		TTFBox ttfBox = new TTFBox(0.1f, -0.1f, 0.05f, Integer.toString(counter), BLACK);
 		tabList.get(2).addElement(ttfBox);
-		TestPushButton button = new TestPushButton(GREEN_1, new GUIElementMatrix(0.1f, -0.2f, 0.3f, 0.1f));
+		TestPushButton button = new TestPushButton(SAFFRON, new GUIElementMatrix(0.1f, -0.2f, 0.3f, 0.1f));
 		tabList.get(2).addElement(button);
 		button.setFunction((e) -> ttfBox.changeTextTo(Integer.toString(++counter)));
 		//**************************************************************
-		tabMenu.addTab(SAFFRON, "map mode", tabList);
+		tabMenu.addTab(GREEN_1, "map mode", tabList);
 		RadioButtons rb = new RadioButtons(WHITE, 0.05f, new GUIElementMatrix(0.1f, -0.1f, 0.8f, 0.5f));
 		tabList.get(3).addElement(rb);
 		rb.addButton("zero", SAFFRON, (e) -> WorldManager.changeMM(0));
 		rb.addButton("one", BLACK, (e) -> WorldManager.changeMM(1));
-		rb.addButton("two", RED, (e) -> WorldManager.changeMM(2));
+		rb.addButton("two", RED, (e) -> WorldManager.changeMM(2));	
+		
 	}
 	
 	private void enable() {
