@@ -33,7 +33,7 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	
 	public final Transformable transformable;
 	
-	private Material material;
+	private Material material = Material.standard;
 	
 	private Texture texture;
 	
@@ -47,7 +47,6 @@ public abstract class Mesh implements IDeletable, IRenderable {
 		vertexBuffers = new HashMap<Attribute, VertexBuffer>();
 	}
 	
-	
 	public Mesh(Material material) {
 		this();
 		this.material = material;
@@ -55,22 +54,22 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	
 	
 	public Mesh(int drawMode) {
-		this(Material.standard);
+		this();
 		this.drawMode = drawMode;
 	}
 	
 	
 	public Mesh(int drawMode, Material material, Texture texture) {
-		this(drawMode);
-		
+		this();
+		this.drawMode = drawMode;
 		this.material = material;
 		this.texture = texture;
 	}
 	
 	
 	public Mesh(Material material, Texture texture) {
-		this(material);
-		
+		this();
+		this.material = material;
 		this.texture = texture;
 	}
 	
