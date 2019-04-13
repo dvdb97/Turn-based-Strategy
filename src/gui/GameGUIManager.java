@@ -3,9 +3,9 @@ package gui;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
 import gui.tileInfo.TileInfoWindow;
+import implementations.ColorPickWindow;
+import implementations.FontWindow;
 import interaction.TileSelecter;
-import work_in_progress.ColorPickWindow;
-import work_in_progress.test.FontWindow;
 import world.gameBoard.GameBoard;
 
 import static utils.ColorPalette.*;
@@ -21,7 +21,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		tiw = new TileInfoWindow();
-		new DragableWindow(WHITE, new GUIElementMatrix(-0.5f, 0.5f, 0.4f, 0.4f));
+		new FontWindow(WHITE, new GUIElementMatrix(-0.5f, 0.5f, 0.4f, 0.4f));
 		new ColorPickWindow();
 	
 		

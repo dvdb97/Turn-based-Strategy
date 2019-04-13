@@ -1,4 +1,4 @@
-package timer;
+package obsolete;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 

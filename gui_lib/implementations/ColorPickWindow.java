@@ -1,7 +1,8 @@
-package work_in_progress;
+package implementations;
 
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
+import input.Slider;
 import output.ColorBox;
 import stbFont.TTFBox;
 

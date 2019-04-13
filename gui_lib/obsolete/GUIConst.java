@@ -1,4 +1,4 @@
-package styles;
+package obsolete;
 
 public class GUIConst {
 	

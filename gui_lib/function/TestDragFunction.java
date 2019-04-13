@@ -5,6 +5,7 @@ import input.Mouse;
 import math.vectors.Vector2f;
 import math.vectors.Vector3f;
 
+//TODO: remove hard code
 public class TestDragFunction implements DragFunction {
 	
 	@Override

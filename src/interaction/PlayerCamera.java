@@ -9,7 +9,7 @@ import assets.cameras.Camera;
 import interaction.input.KeyInput;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
-import timer.Cooldown;
+import obsolete.Cooldown;
 
 public class PlayerCamera {
 	

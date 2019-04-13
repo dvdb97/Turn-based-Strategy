@@ -4,11 +4,11 @@ import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import fundamental.GUIWindow;
 import fundamental.Moveable;
-import work_in_progress.DragBar;
+import moving_parts.DragBar;
 
 import static utils.ColorPalette.*;
 
-public class DragableWindow extends GUIWindow implements Moveable {
+public abstract class DragableWindow extends GUIWindow implements Moveable {
 	
 	private DragBar bar;
 	

@@ -1,4 +1,4 @@
-package work_in_progress;
+package moving_parts;
 
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
