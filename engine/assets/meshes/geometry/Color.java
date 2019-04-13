@@ -49,6 +49,15 @@ public class Color {
 		System.out.println("RGB: " + (int)(red*255) +" "+ (int)(green*255) +" "+ (int)(blue*255) +" "+ (int)(alpha*255));
 	}
 	
+	/**
+	 * 
+	 * @param color input color
+	 * @return complementary color with same alpha
+	 */
+	public static Color getComplement(Color color) {
+		return new Color(1-color.red, 1-color.green, 1-color.blue, color.alpha);
+	}
+	
 	//****************************    getter    ******************************
 	
 	/**

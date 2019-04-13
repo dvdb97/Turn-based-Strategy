@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import assets.meshes.geometry.Color;
 import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
+import font.TextBox;
 import fundamental.Container;
 import implementations.TestToggleButton;
 import input.ToggleButton;
-import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -56,7 +56,7 @@ public class TabMenu extends Container {
 		tabList.add(tab);
 		
 		TestToggleButton button = new TestToggleButton(color, new GUIElementMatrix(buttonOffsetX + buttons.size()*buttonWidth, buttonOffsetY, buttonWidth, buttonHeight));
-		TTFBox buttonLabel = new TTFBox(buttonOffsetX + buttons.size()*buttonWidth, buttonOffsetY, 0.03f, label, BLACK);
+		TextBox buttonLabel = new TextBox(buttonOffsetX + buttons.size()*buttonWidth, buttonOffsetY, 0.03f, label, BLACK);
 		buttons.add(button);
 		children.add(buttonLabel);
 		button.setEnableFunc(  (element) -> changeToTab(buttons.indexOf(element)) );

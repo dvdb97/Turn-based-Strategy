@@ -1,4 +1,4 @@
-package stbFont;
+package font;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

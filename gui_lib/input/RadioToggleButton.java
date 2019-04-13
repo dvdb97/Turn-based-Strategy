@@ -16,7 +16,7 @@ public class RadioToggleButton  extends ToggleButton {
 	private BooleanFunction<ToggleButton> suspendFunc;
 	
 	public RadioToggleButton(Color color, GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), color, color2, transformationMatrix);
+		super(new GUIQuad(), color, transformationMatrix);
 		color1 = color;
 	}
 	

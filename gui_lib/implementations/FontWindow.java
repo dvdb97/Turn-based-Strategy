@@ -1,21 +1,22 @@
 package implementations;
 
 import assets.meshes.geometry.Color;
-import container.DragableWindow;
 import dataType.GUIElementMatrix;
-import stbFont.TTFBox;
+import font.EditableTextBox;
+import fundamental.GUIWindow;
 
 import static utils.ColorPalette.*;
 
-public class FontWindow extends DragableWindow {
+public class FontWindow extends GUIWindow {
 	
-	private TTFBox text;
+	private EditableTextBox text;
 	
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
 		super(color, transformationMatrix);
 		
-		text = new TTFBox(0.1f, -0.2f, 0.05f, "1234567890", BLACK);
+		text = new EditableTextBox(0.05f, -0.2f, 0.9f, 0.3f, GREEN);
 		children.add(text);
+		children.add(text.textBox);
 		
 	}
 	

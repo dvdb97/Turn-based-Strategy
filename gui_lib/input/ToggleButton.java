@@ -13,8 +13,8 @@ public abstract class ToggleButton extends Button {
 	private Function<ToggleButton> enableFunc;
 	private Function<ToggleButton> disableFunc;
 	
-	protected ToggleButton(GUIShape shape, Color color1, Color color2, GUIElementMatrix transformationMatrix) {
-		super(shape, color1, transformationMatrix);
+	protected ToggleButton(GUIShape shape, Color color, GUIElementMatrix transformationMatrix) {
+		super(shape, color, transformationMatrix);
 	}
 	
 	@Override
@@ -51,4 +51,7 @@ public abstract class ToggleButton extends Button {
 		this.disableFunc = disableFunc;
 	}
 	
+	protected boolean isEnabled() {
+		return enabled;
+	}
 }

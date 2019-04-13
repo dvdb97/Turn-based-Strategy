@@ -1,10 +1,10 @@
 package implementations;
 
 import dataType.GUIElementMatrix;
+import font.TextBox;
 import fundamental.GUIWindow;
 import input.Slider;
 import output.ColorBox;
-import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -14,9 +14,9 @@ public class ColorPickWindow extends GUIWindow {
 	
 	private ColorBox colorBox;
 	
-	private TTFBox redText;
-	private TTFBox greenText;
-	private TTFBox blueText;
+	private TextBox redText;
+	private TextBox greenText;
+	private TextBox blueText;
 	
 	private Slider redSlider;
 	private Slider greenSlider;
@@ -53,9 +53,9 @@ public class ColorPickWindow extends GUIWindow {
 	}
 
 	private void setUpTextBoxes() {
-		redText   = new TTFBox(0.0833f, -0.4f, 0.07f, "255", BLACK);
-		greenText = new TTFBox(0.4167f, -0.4f, 0.07f, "255", BLACK);
-		blueText  = new TTFBox(0.7500f, -0.4f, 0.07f, "255", BLACK);
+		redText   = new TextBox(0.0833f, -0.4f, 0.07f, "255", BLACK);
+		greenText = new TextBox(0.4167f, -0.4f, 0.07f, "255", BLACK);
+		blueText  = new TextBox(0.7500f, -0.4f, 0.07f, "255", BLACK);
 		
 		children.add(redText);
 		children.add(greenText);

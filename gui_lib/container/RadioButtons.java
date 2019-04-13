@@ -3,18 +3,19 @@ package container;
 import assets.meshes.geometry.Color;
 import dataType.AdvancedElementList;
 import dataType.GUIElementMatrix;
+import font.TextBox;
 import function.BooleanFunction;
 import function.Function;
 import fundamental.Container;
 import input.RadioToggleButton;
 import input.ToggleButton;
-import stbFont.TTFBox;
+
 import static utils.ColorPalette.*;
 
 public class RadioButtons extends Container {
 	
 	private int currentButton;
-	private AdvancedElementList<TTFBox> labels;
+	private AdvancedElementList<TextBox> labels;
 	private AdvancedElementList<ToggleButton> buttons;
 	
 	private float buttonHeight, buttonWidth, buttonOffsetX, buttonOffsetY;
@@ -41,7 +42,7 @@ public class RadioButtons extends Container {
 			button.setEnableFunc((element) -> {});
 			button.toggle();
 		}
-		labels.add(new TTFBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
+		labels.add(new TextBox(buttonOffsetX+buttonWidth, buttonOffsetY-buttonHeight*buttons.size(), labelHeight, label, color));
 		buttons.add(button);
 		button.setEnableFunc(  (element) -> {changeToButton(buttons.indexOf(element));func.execute(button);} );
 		button.setDisableFunc( (element) -> {} );

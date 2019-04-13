@@ -1,4 +1,4 @@
-package stbFont;
+package font;
 
 import assets.meshes.geometry.Color;
 import assets.textures.Texture2D;
@@ -9,13 +9,13 @@ import rendering.shapes.implemented.GUIQuad;
 
 import java.io.IOException;
 
-public class TTFBox extends Element {
+public class TextBox extends Element {
 	
 	private FontTextureGenerator ftg;
 	private float reqHeight;
 	private Texture2D font;
 	
-	public TTFBox(float xShift, float yShift, float reqHeight, String text, Color color) {
+	public TextBox(float xShift, float yShift, float reqHeight, String text, Color color) {
 		super(new GUIQuad(), color, new GUIElementMatrix(xShift, yShift, 1, reqHeight));
 		
 		this.reqHeight = reqHeight;

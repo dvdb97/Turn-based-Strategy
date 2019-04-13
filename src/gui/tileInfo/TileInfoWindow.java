@@ -4,11 +4,11 @@ import world.BuildingAuthority;
 import world.WorldManager;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
+import font.TextBox;
 import fundamental.GUIWindow;
 import implementations.TestPushButton;
 import interaction.TileSelecter;
 import output.GUITexture;
-import stbFont.TTFBox;
 
 import static utils.ColorPalette.*;
 
@@ -23,7 +23,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	private Tile tile;
 	
-	private TTFBox infoText;
+	private TextBox infoText;
 	
 	//private GUIToggleButton button;
 	
@@ -39,7 +39,7 @@ public class TileInfoWindow extends GUIWindow {
 	public TileInfoWindow() {
 		super(GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
 		
-		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
+		infoText = new TextBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
 		float textureHeight = 0.4f/0.9f/3f*Application.getWindow().getAspectRatio();
 		waterTex = new GUITexture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, textureHeight));
@@ -53,13 +53,13 @@ public class TileInfoWindow extends GUIWindow {
 		tabList = new ArrayList<>(4);
 		//**************************************************************
 		tabMenu.addTab(TURQUOISE, "overview", tabList);
-		tabList.get(0).addElement(new TTFBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
+		tabList.get(0).addElement(new TextBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
 		//**************************************************************
 		tabMenu.addTab(GIANTS_ORANGE, "geopgraphy", tabList);
 		tabList.get(1).addElement(infoText);
 		//**************************************************************
 		tabMenu.addTab(TEAL_BLUE, "buildings", tabList);
-		TTFBox ttfBox = new TTFBox(0.1f, -0.1f, 0.05f, "total number of cities: " + Integer.toString(counter), BLACK);
+		TextBox ttfBox = new TextBox(0.1f, -0.1f, 0.05f, "total number of cities: " + Integer.toString(counter), BLACK);
 		tabList.get(2).addElement(ttfBox);
 		TestPushButton button = new TestPushButton(SAFFRON, new GUIElementMatrix(0.1f, -0.2f, 0.3f, 0.1f));
 		tabList.get(2).addElement(button);

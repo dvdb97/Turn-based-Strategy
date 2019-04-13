@@ -1,4 +1,4 @@
-package stbFont;
+package font;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

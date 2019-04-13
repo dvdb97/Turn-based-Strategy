@@ -14,7 +14,7 @@ public class TestToggleButton extends ToggleButton {
 	private static Color color2 = WHITE;
 	
 	public TestToggleButton(Color color, GUIElementMatrix transformationMatrix) {
-		super(new GUIQuad(), color, color2, transformationMatrix);
+		super(new GUIQuad(), color, transformationMatrix);
 		color1 = color;
 	}
 	
