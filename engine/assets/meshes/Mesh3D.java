@@ -27,6 +27,10 @@ public class Mesh3D extends Mesh {
 		useDefaultFinalColor();
 	}
 	
+	public Mesh3D(Material material) {
+		this();
+		this.setMaterial(material);
+	}
 	
 	public Mesh3D(Material material, Texture texture) {
 		this(GL_TRIANGLES);

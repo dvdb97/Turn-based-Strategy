@@ -26,7 +26,7 @@ public class ColorPalette {
 	public static Color DARK_SLATE_GRAY = new Color( 47,  72,  88, 255);
 	public static Color SAFFRON         = new Color(246, 174,  45, 255);
 	public static Color GIANTS_ORANGE   = new Color(242, 100,  25, 255);
-	
+	public static Color BORDEAUX		= new Color( 95,   2,  31, 255);
 	
 	
 	public static Color gray(float grade) {

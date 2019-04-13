@@ -7,6 +7,7 @@ import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
+import models.CityModel;
 import rendering.matrices.transformation.TransformationMatrix;
 
 public class BoardModels {
@@ -32,6 +33,9 @@ public class BoardModels {
 	
 	private static Scene scene;
 	
+	
+	private CityModel TEST;
+	
 	//***************************** constructor ********************************
 	
 	/**
@@ -47,8 +51,10 @@ public class BoardModels {
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
-		
 		this.hex = hex;
+		
+		this.TEST = new CityModel(terrain);
+		TEST.transformable.setScaling(0.3f);
 		
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
@@ -93,6 +99,8 @@ public class BoardModels {
 	private void renderTerrain() {
 		
 		terrain.render(scene);
+		
+		TEST.render(scene);
 		
 	}
 	
