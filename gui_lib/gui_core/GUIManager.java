@@ -33,7 +33,6 @@ public class GUIManager {
 			return;
 		}
 		
-		GUIShaderCollection.init(window);
 		idCounter = 0;
 		initialized = true;
 		windows = new LinkedList<GUIWindow>();

@@ -46,8 +46,9 @@ public class Mesh2D extends Mesh {
 		shader.setMaterial(getMaterial());
 		shader.setUniformSubroutines();
 		
-		if (getTexture() != null)
+		if (getTexture() != null) {
 			shader.setMaterialTexture(getTexture());
+		}
 	}
 
 	@Override

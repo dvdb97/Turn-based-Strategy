@@ -1,29 +1,28 @@
 package rendering;
 
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-
 import java.util.LinkedList;
 import java.util.List;
 
 import assets.IDeletable;
+import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.meshes.Mesh;
 import assets.meshes.specialized.Quad;
 import assets.scene.Scene;
 import assets.textures.Texture2D;
-import assets.textures.Texture2DMultisample;
 import interaction.Window;
 import rendering.framebuffers.Framebuffer;
+import rendering.postprocessing.PostprocessingLayer;
+
 
 public class RenderQueue implements IDeletable {
-	
 	protected Window window;
-	
 	protected LinkedList<Mesh> meshes;
-	
 	protected Scene scene;
 	
+	private PostprocessingLayer postprocessing = null;
+	private Framebuffer framebuffer;
+	private Texture2D texture;
 	
 	/**
 	 * Set up the render queue.
@@ -31,8 +30,15 @@ public class RenderQueue implements IDeletable {
 	public RenderQueue(Window window, Scene scene) {
 		this.window = window;
 		this.meshes = new LinkedList<Mesh>();
-		
 		this.scene = scene;
+		this.setUpFramebuffer();
+	}
+	
+	
+	private void setUpFramebuffer() {
+		this.framebuffer = new Framebuffer();
+		this.texture = Texture2D.generateColorTexture(window.getWidth(), window.getHeight());
+		this.framebuffer.addColorAttachment(texture);
 	}
 	
 	
@@ -84,9 +90,15 @@ public class RenderQueue implements IDeletable {
 	}
 	
 	
+	public void setPostprocessingLayer(PostprocessingLayer layer) {
+		this.postprocessing = layer;
+	}
+	
+	
 	public void render() {
 		mapShadows();
 		renderMeshes();
+		runPostprocessing();
 	}
 	
 	
@@ -110,9 +122,19 @@ public class RenderQueue implements IDeletable {
 	
 	
 	protected void renderMeshes() {
+		framebuffer.bind();
+		framebuffer.clear();
+		
 		for (Mesh mesh : meshes) {
 			mesh.render(scene);
 		}
+		
+		framebuffer.unbind();
+	}
+	
+	
+	protected void runPostprocessing() {
+		postprocessing.runPostprocessing(texture);
 	}
 
 
@@ -121,6 +143,8 @@ public class RenderQueue implements IDeletable {
 		for (Mesh mesh : meshes) {
 			mesh.delete();
 		}
+		
+		postprocessing.delete();
 	}
 	
 }
