@@ -1,5 +1,9 @@
 package world;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import assets.meshes.Mesh3D;
 import mapModes.MapModesCreater;
 import mapModes.MapModesManager;
 import math.vectors.Vector3f;
@@ -19,8 +23,9 @@ public class WorldManager {
 	private static int lengthInTiles, widthInTiles;
 	private static int NUM_TILES;
 	
-	private static GameBoardModel gameBoardModel;
 	private static SuperGrid superGrid;
+	private static GameBoardModel gameBoardModel;
+	private static List<Mesh3D> meepleModels;
 	
 	private static float[] fertility;
 	
@@ -40,6 +45,8 @@ public class WorldManager {
 		initGameBoard();
 		initMapModes();
 		
+		meepleModels = new ArrayList<>();
+		BuildingAuthority.init(gameBoardModel, meepleModels);
 	}
 	
 	private static void initModels() {
@@ -125,7 +132,9 @@ public class WorldManager {
 	public static void render() {
 		
 		gameBoardModel.render();
-		
+		for (Mesh3D meeple : meepleModels) {
+			meeple.render();
+		}
 		
 	}
 	

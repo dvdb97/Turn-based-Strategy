@@ -1,4 +1,4 @@
-package models;
+package models.meeples;
 
 import java.nio.FloatBuffer;
 

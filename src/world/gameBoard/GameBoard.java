@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import world.city.City;
 
+//this class is a sort of data structure
 public class GameBoard {
 	
 	private static int length, width;
@@ -12,10 +13,7 @@ public class GameBoard {
 	private static Tile[] tiles;
 	private static HashMap<Tile, City> cities;
 	
-	
-	
-	public static boolean addCity(Tile tile, City city) {
-		
+	public static boolean tileAvailableForCity(Tile tile) {
 		//TODO: maybe use exceptions here
 		if (cities.containsKey(tile)) {
 			System.out.println("can't place two cities on one tile");
@@ -27,9 +25,16 @@ public class GameBoard {
 			return false;
 		}
 		
+		return true;
+	}
+	
+	/**
+	 * BuildingAuthority is the only authority that has the authority to use this method!
+	 */
+	public static void addCity(Tile tile, City city) {
+		
 		cities.put(tile, city);
 		city.setTile(tile);
-		return true;
 		
 	}
 	

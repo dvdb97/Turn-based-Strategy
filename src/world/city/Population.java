@@ -23,6 +23,12 @@ public class Population {
 		
 	}
 	
+	/**
+	 * TODO: standard values
+	 */
+	public Population() {
+		this(new Percentage(0f), new Percentage(0f), new Percentage(0f), new Percentage(0f));
+	}
 	
 	
 	//**************************** get & set *******************************

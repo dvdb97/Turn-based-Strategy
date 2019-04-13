@@ -8,7 +8,7 @@ import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
-import models.CityModel;
+import models.meeples.CityModel;
 import rendering.matrices.transformation.TransformationMatrix;
 
 public class GameBoardModel {
