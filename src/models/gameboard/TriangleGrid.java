@@ -1,4 +1,4 @@
-package models.worldModels;
+package models.gameboard;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 import static org.lwjgl.opengl.GL31.GL_PRIMITIVE_RESTART;

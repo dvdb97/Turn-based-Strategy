@@ -2,16 +2,16 @@ package mapModes;
 
 import java.util.HashMap;
 
-import models.worldModels.BoardModels;
+import models.gameboard.GameBoardModel;
 
 public class MapModesManager {
 	
-	private BoardModels boardModels;
+	private GameBoardModel boardModels;
 	private HashMap<Integer, MapMode> modes;
 	
 	private int currentMode;
 	
-	public MapModesManager(HashMap<Integer, MapMode> modes, BoardModels boardModels) {
+	public MapModesManager(HashMap<Integer, MapMode> modes, GameBoardModel boardModels) {
 		
 		this.modes = modes;
 		this.boardModels = boardModels;

@@ -1,4 +1,4 @@
-package models.worldModels;
+package models.gameboard;
 
 import assets.material.Material;
 import assets.material.StandardMaterial;
@@ -64,7 +64,7 @@ public class ModelCreater {
 	 * creates all models needed to render the game board.
 	 * namely: terrain, sea, tile borders and an coordinate system
 	 */
-	public BoardModels createModels() {
+	public GameBoardModel createModels() {
 		
 		createSuperGrid();
 		createTerrain();
@@ -72,7 +72,7 @@ public class ModelCreater {
 		createSea();
 		createHexagons();
 		
-		return new BoardModels(terrain, tileBorders, sea, hexagons);
+		return new GameBoardModel(terrain, tileBorders, sea, hexagons);
 		
 	}
 	

@@ -3,10 +3,10 @@ package world;
 import mapModes.MapModesCreater;
 import mapModes.MapModesManager;
 import math.vectors.Vector3f;
+import models.gameboard.GameBoardModel;
+import models.gameboard.ModelCreater;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
-import models.worldModels.BoardModels;
-import models.worldModels.ModelCreater;
 import utils.Statistics;
 import utils.Percentage;
 import utils.ProvisionalUI;
@@ -19,7 +19,7 @@ public class WorldManager {
 	private static int lengthInTiles, widthInTiles;
 	private static int NUM_TILES;
 	
-	private static BoardModels boardModels;
+	private static GameBoardModel gameBoardModel;
 	private static SuperGrid superGrid;
 	
 	private static float[] fertility;
@@ -46,7 +46,7 @@ public class WorldManager {
 		
 		ModelCreater modelCreater = new ModelCreater(lengthInTiles, widthInTiles);
 		
-		boardModels = modelCreater.createModels();
+		gameBoardModel = modelCreater.createModels();
 		superGrid   = modelCreater.getSuperGrid();
 		
 	}
@@ -86,7 +86,7 @@ public class WorldManager {
 	}
 	
 	private static void initMapModes() {
-		MapModesManager mmm = new MapModesManager(MapModesCreater.getMapModes(), boardModels);
+		MapModesManager mmm = new MapModesManager(MapModesCreater.getMapModes(), gameBoardModel);
 		ui = new ProvisionalUI(mmm);
 	}
 	
@@ -124,7 +124,8 @@ public class WorldManager {
 	
 	public static void render() {
 		
-		boardModels.render();
+		gameBoardModel.render();
+		
 		
 	}
 	

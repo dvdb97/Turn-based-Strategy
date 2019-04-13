@@ -1,4 +1,4 @@
-package models.worldModels;
+package models.gameboard;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;

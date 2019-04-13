@@ -1,4 +1,4 @@
-package models.worldModels;
+package models.gameboard;
 
 import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;

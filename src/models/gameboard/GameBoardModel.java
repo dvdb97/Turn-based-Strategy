@@ -1,6 +1,7 @@
-package models.worldModels;
+package models.gameboard;
 
 import assets.light.DirectionalLight;
+import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
 import assets.scene.Scene;
 import interaction.PlayerCamera;
@@ -10,7 +11,7 @@ import math.vectors.Vector3f;
 import models.CityModel;
 import rendering.matrices.transformation.TransformationMatrix;
 
-public class BoardModels {
+public class GameBoardModel {
 	
 	//measurements
 	private int lengthInTiles;
@@ -25,8 +26,7 @@ public class BoardModels {
 	
 	private HexagonGrid hex;
 	
-	//matrices
-	private TransformationMatrix boardModelMatrix;
+	public Transformable transformable;
 	
 	//others
 	private static DirectionalLight sun;
@@ -45,15 +45,22 @@ public class BoardModels {
 	 * @param sea
 	 * @param coSystem
 	 */
-	public BoardModels(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
+	public GameBoardModel(TriangleGrid terrain, HexagonBorderGrid tileBorders, TriangleGrid sea,
 			HexagonGrid hex) {
+		
+		transformable = new Transformable();
 		
 		this.terrain = terrain;
 		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.hex = hex;
 		
-		this.TEST = new CityModel(terrain);
+		terrain.transformable.setParent(transformable);
+		tileBorders.transformable.setParent(transformable);
+		sea.transformable.setParent(transformable);
+		hex.transformable.setParent(transformable);
+		
+		this.TEST = new CityModel(transformable);
 		TEST.transformable.setScaling(0.3f);
 		
 		lengthInTiles = tileBorders.getLength();
@@ -61,7 +68,7 @@ public class BoardModels {
 		
 		hardCode();
 		
-		boardModelMatrix = new TransformationMatrix();
+		transformable = new Transformable();
 		
 	}
 	
