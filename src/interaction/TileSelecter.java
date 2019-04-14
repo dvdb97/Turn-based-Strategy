@@ -1,11 +1,9 @@
 package interaction;
 
-import graphics.matrices.Matrices;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;
-import math.matrices.Matrix33f;
-import math.matrices.advanced.MatrixInversion33f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import math.vectors.advanced.Distances;
 import world.WorldManager;
 
@@ -21,7 +19,6 @@ public class TileSelecter {
 	private static Vector3f[] tileCenterVertices;
 	
 	//variables needed for calculation
-	private static Matrix33f invertedViewMatrix33f;
 	private static Vector3f rayOrigin;					//ray is an imaginary line starting at the camera postion and going through the cursor position
 	private static Vector3f rayDirection;				//	it's a line in 3D space corresponding to a dot in 2D space
 	
@@ -52,17 +49,20 @@ public class TileSelecter {
 	}
 
 	private static void refreshVariables() {
-		
-		invertedViewMatrix33f = new Matrix33f(PlayerCamera.getInvertedViewMatrix());
-
+		//Normalised device space
 		cursorX = CursorPosInput.getXPosAsOpenglCoord();
-		cursorY = CursorPosInput.getYPosAsOpenglCoord();
+		cursorY = CursorPosInput.getYPosAsOpenglCoord();		
 		
+		//Homogeneous Clip Coordinates
+		Vector4f ray_clip = new Vector4f(cursorX, cursorY, -1f, 1f);
+		
+		//To eye space of the given camera
+		Vector4f ray_eye = PlayerCamera.getInvertedProjectionMatrix().times(ray_clip);
+		ray_eye = new Vector4f(ray_eye.getA(), ray_eye.getB(), -1f, 0f);
+		
+		//To world Space
+		rayDirection = PlayerCamera.getInvertedViewMatrix().times(ray_eye).toVector3f().normalize();
 		rayOrigin = PlayerCamera.getCameraPosition();
-		rayDirection = new Vector3f(cursorX, cursorY/Matrices.getWindowProportions(), -1f);
-		
-		rayDirection = invertedViewMatrix33f.times(rayDirection);
-		rayDirection = rayDirection.normalize();
 	}
 	
 	
