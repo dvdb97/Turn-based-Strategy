@@ -60,7 +60,7 @@ public class Game {
 	private void processInput() {
 		
 		PlayerCamera.update();
-		
+		KeyInputHandler.pollEvents();
 		if (KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}

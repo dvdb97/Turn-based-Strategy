@@ -27,10 +27,10 @@ public class KeyInputHandler extends GLFWKeyCallback {
 	 * 
 	 * Replace the old KeyEventManager with a new one.
 	 * 
-	 * @param keyEvents The new KeyEventManager.
+	 * @param keyEventManager The new KeyEventManager.
 	 */
-	public static void setKeyEventManager(KeyEventManager keyEvents) {
-		eventSystem = keyEvents;
+	public static void setKeyEventManager(KeyEventManager keyEventManager) {
+		eventSystem = keyEventManager;
 	}
 	
 	

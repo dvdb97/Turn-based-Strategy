@@ -3,7 +3,9 @@ package font;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import input.ToggleButton;
+import interaction.input.KeyEventManager;
 import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import rendering.shapes.implemented.GUIQuad;
 import static utils.ColorPalette.*;
 
@@ -17,9 +19,13 @@ public class EditableTextBox extends ToggleButton{
 		super(new GUIQuad(), color, new GUIElementMatrix(xShift, yShift, xStretch, reqHeight));
 		currentText = "$";
 		textBox = new TextBox(xShift, yShift, reqHeight, currentText, BLACK);
+		KeyEventManager kim = new KeyEventManager();
+		KeyInputHandler.setKeyEventManager(kim);
+	//	kim.addKeyDownEventListener((key) -> processKeyInput(KeyStringConverter.getStringOf(key)));
+		kim.addKeyDownEventListener((key) -> System.out.println("**************"+KeyStringConverter.getStringOf(key)));
 		setFunctions();
 	}
-
+	
 	private void setFunctions() {
 		setEnableFunc((e) -> color=Color.getComplement(color));
 		setDisableFunc((e) -> color=Color.getComplement(color));
@@ -28,19 +34,12 @@ public class EditableTextBox extends ToggleButton{
 	@Override
 	public void update(GUIElementMatrix parentMatrix) {
 		super.update(parentMatrix);
-		if (isEnabled())
-			processKeyInput();
 	}
 	
-	private void processKeyInput() {
+	private void processKeyInput(String string) {
 		
-		for (int k=32; k<=90; k++) {
-			if (KeyInput.keyPressed(k)) {
-				currentText += (char)k;
-				textBox.changeTextTo(currentText);
-				break;
-			}
-		}
+		currentText += string;
+		textBox.changeTextTo(currentText);
 		
 	}
 	

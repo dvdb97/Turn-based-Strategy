@@ -12,14 +12,14 @@ public abstract class TimedKeyEventListener implements KeyEventListener {
 	
 	
 	@Override
-	public void handle(int key, Action action) {
+	public void handle(int key) {
 		if (cooldown.ended()) {
-			timedHandle(key, action);
+			timedHandle(key);
 			cooldown.refresh();
 		}
 	}
 	
 	
-	public abstract void timedHandle(int key, Action action);
+	public abstract void timedHandle(int key);
 	
 }
