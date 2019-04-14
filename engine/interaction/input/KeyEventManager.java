@@ -172,12 +172,12 @@ public class KeyEventManager {
 	
 	public void triggerKeyDownEvent(int key) {
 		for (KeyEventListener listener : keyIndependentKeyDownListener) {
-			listener.handle(key, Action.KEY_DOWN);
+			listener.handle(key);
 		}
 		
 		if (keyDownEventListener.containsKey(key)) {
 			for (KeyEventListener listener : keyDownEventListener.get(key)) {
-				listener.handle(key, Action.KEY_DOWN);
+				listener.handle(key);
 			}
 		}
 	}
@@ -185,12 +185,12 @@ public class KeyEventManager {
 	
 	public void triggerKeyPressedEvent(int key) {
 		for (KeyEventListener listener : keyIndependentKeyPressedListener) {
-			listener.handle(key, Action.KEY_PRESSED);
+			listener.handle(key);
 		}
 		
 		if (keyPressedEventListener.containsKey(key)) {
 			for (KeyEventListener listener : keyPressedEventListener.get(key)) {
-				listener.handle(key, Action.KEY_PRESSED);
+				listener.handle(key);
 			}
 		}
 	}
@@ -198,12 +198,12 @@ public class KeyEventManager {
 	
 	public void triggerKeyReleasedEvent(int key) {
 		for (KeyEventListener listener : keyIndependentKeyReleasedListener) {
-			listener.handle(key, Action.KEY_RELEASED);
+			listener.handle(key);
 		}
 		
 		if (keyReleasedEventListener.containsKey(key)) {
 			for (KeyEventListener listener : keyReleasedEventListener.get(key)) {
-				listener.handle(key, Action.KEY_RELEASED);
+				listener.handle(key);
 			}
 		}
 	}

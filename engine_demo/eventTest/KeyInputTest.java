@@ -26,12 +26,12 @@ public class KeyInputTest {
 	
 	
 	public static void run() {
-		KeyEventManager keyEvents = new KeyEventManager();
+		KeyEventManager keyEventManager = new KeyEventManager();
 		
-		keyEvents.addKeyDownEventListener((key, action) -> System.err.println(key + " down!"));
-		keyEvents.addKeyPressedEventListener((key, action) -> System.out.println(key));
+		keyEventManager.addKeyDownEventListener((key) -> System.err.println(key + " down!"));
+		keyEventManager.addKeyPressedEventListener((key) -> System.out.println(key));
 		
-		KeyInputHandler.setKeyEventManager(keyEvents);
+		KeyInputHandler.setKeyEventManager(keyEventManager);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();

@@ -11,13 +11,13 @@ import java.util.function.IntConsumer;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 
-public class KeyInput extends GLFWKeyCallback {
+public class KeyInput {}/*extends GLFWKeyCallback {
 	
 	private static boolean[] keys = new boolean[400];	
 	
 	/**
 	 * this method sucks! Don't use it!
-	 */
+	 *//*
 	public static boolean keyPressed(int key) {
 		return keys[key];
 	}
@@ -63,4 +63,4 @@ public class KeyInput extends GLFWKeyCallback {
 		
 	}
 
-}
+}*/
