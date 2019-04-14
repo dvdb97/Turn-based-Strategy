@@ -3,7 +3,7 @@ package font;
 import assets.meshes.geometry.Color;
 import dataType.GUIElementMatrix;
 import input.ToggleButton;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import rendering.shapes.implemented.GUIQuad;
 import static utils.ColorPalette.*;
 
@@ -35,7 +35,7 @@ public class EditableTextBox extends ToggleButton{
 	private void processKeyInput() {
 		
 		for (int k=32; k<=90; k++) {
-			if (KeyInput.keyPressed(k)) {
+			if (KeyInputHandler.keyPressed(k)) {
 				currentText += (char)k;
 				textBox.changeTextTo(currentText);
 				break;

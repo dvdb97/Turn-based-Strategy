@@ -1,6 +1,6 @@
 package utils;
 
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import mapModes.MapModesManager;
 
 import java.util.HashMap;
@@ -44,7 +44,7 @@ public class ProvisionalUI {
 	public void processInput() {
 		
 		for (Integer key : keySet) {
-			if (KeyInput.keyPressed(key)) {
+			if (KeyInputHandler.keyPressed(key)) {
 				map.get(key).execute();
 			}
 		}

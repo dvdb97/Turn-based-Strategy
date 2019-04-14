@@ -19,7 +19,6 @@ public class Cooldown {
 	 */
 	public Cooldown(double duration) {
 		this.duration = duration;
-		start();
 	}
 	
 	

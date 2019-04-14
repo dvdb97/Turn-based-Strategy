@@ -6,7 +6,7 @@ import graphics.matrices.Matrices;
 import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import interaction.input.MouseInputManager;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
@@ -33,7 +33,7 @@ public class Application {
 		window.createFullscreenWindow(params.getTitle() + "-" + params.getVersion());
 		
 		//Set the input
-		window.setKeyInputCallback(new KeyInput());
+		window.setKeyInputCallback(new KeyInputHandler());
 		window.setMouseInputCallback(new MouseInputManager());
 		window.setMousePosInput(new CursorPosInput(window));
 	}
