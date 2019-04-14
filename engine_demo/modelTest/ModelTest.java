@@ -1,7 +1,7 @@
 package modelTest;
 
 import interaction.Window;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
@@ -50,7 +50,7 @@ public class ModelTest {
 		
 		window.createFullscreenWindow("Model Demo");
 		
-		window.setKeyInputCallback(new KeyInput());
+		window.setKeyInputCallback(new KeyInputHandler());
 		
 		RenderEngine.init(window);
 		
@@ -113,7 +113,7 @@ public class ModelTest {
 		
 		light.fitToBoundingBox(mesh);
 		
-		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
+		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			handleInput();
 			
@@ -131,7 +131,7 @@ public class ModelTest {
 	
 	
 	private static void handleInput() {
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_W)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_W)) {
 			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
 			
 			xRot += Transformable._1_DEGREE;
@@ -141,7 +141,7 @@ public class ModelTest {
 			camera.lookAt(new Vector3f(0f, 0f, 0f));			
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_S)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_S)) {
 			//model.getTransformable().rotate(-Transformable._1_DEGREE, 0f, 0f);
 			
 			xRot -= Transformable._1_DEGREE;
@@ -151,7 +151,7 @@ public class ModelTest {
 			camera.lookAt(new Vector3f(0f, 0f, 0f));			
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_A)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_A)) {
 			//model.getTransformable().rotate(0f, -Transformable._1_DEGREE, 0f);
 			
 			yRot -= Transformable._1_DEGREE;
@@ -161,7 +161,7 @@ public class ModelTest {
 			camera.lookAt(new Vector3f(0f, 0f, 0f));
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_D)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_D)) {
 			//model.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
 			
 			yRot += Transformable._1_DEGREE;
@@ -171,15 +171,15 @@ public class ModelTest {
 			camera.lookAt(new Vector3f(0f, 0f, 0f));
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_Q)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_Q)) {
 			camera.backward(0.1f);
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_E)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_E)) {
 			camera.forward(0.1f);
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_ENTER)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_ENTER)) {
 			if (Cooldown.ended("shadows")) {
 				shadows = !shadows;
 				
@@ -187,7 +187,7 @@ public class ModelTest {
 			}
 		}
 		
-		if (KeyInput.keyPressed(GLFW.GLFW_KEY_F2)) {
+		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_F2)) {
 			if (Cooldown.ended("screenshot")) {
 				RenderEngine.takeScreenshot("screenshots", "PNG");
 				
