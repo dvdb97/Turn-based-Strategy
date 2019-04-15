@@ -57,6 +57,19 @@ class Step<N> implements Comparable<Step<N>> {
 }
 
 
+class Node<N> extends Tuple<N, Float> implements Comparable<Node<N>> {
+	public Node(N x, Float y) {
+		super(x, y);
+	}
+
+	@Override
+	public int compareTo(Node<N> o) {
+		// TODO Auto-generated method stub
+		return y.compareTo(o.y);
+	}
+}
+
+
 public class AStarSearch {	
 		
 	/**
@@ -78,9 +91,10 @@ public class AStarSearch {
 		//The step we are currently working with.
 		Step<N> current = null;
 		
-		while ((current = priorityQueue.poll()).node != end) {
+		while (!(current = priorityQueue.poll()).node.equals(end)) {
 			//Look up all sucessors to the current node.
 			List<N> successors = graph.getSuccessors(current.node);
+			System.out.println(current.node + ": " + successors);
 			
 			for (N successor : successors) {
 				//Conpute the total path costs for our next step.
@@ -196,22 +210,11 @@ public class AStarSearch {
 	 * @param budget The maximum distance that we can walk from the start node.
 	 * @return Returns a set of nodes that is reachable from the start node.
 	 */
-	public static <N> Set<N> getReachableNodes(IGraph<N> graph, N start, float budget) {
-		
-		class Node extends Tuple<N, Float> implements Comparable<Float> {
-			public Node(N x, Float y) {
-				super(x, y);
-			}
-
-			@Override
-			public int compareTo(Float o) {
-				return y.compareTo(o);
-			}
-		}
-		
+	public static <N> Set<N> getReachableNodes(IGraph<N> graph, N start, float budget) {		
 		//All nodes have already been visited by a path and the according path costs.
 		HashMap<N, Float> visited = new HashMap<N, Float>();
-		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();
+		queue.add(new Node<N>(start, 0f));
 		
 		Tuple<N, Float> current = null;
 		
@@ -226,7 +229,10 @@ public class AStarSearch {
 				//Add all successors of the current node to the priorityQueue.
 				for (N node : graph.getSuccessors(current.x)) {
 					float distance = current.y + graph.getCosts(current.x, node);
-					queue.add(new Node(node, distance));
+					
+					if (distance < budget) {
+						queue.add(new Node<N>(node, distance));
+					}
 				}
 			}
 		}

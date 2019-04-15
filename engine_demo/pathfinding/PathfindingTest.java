@@ -1,9 +1,6 @@
 package pathfinding;
 
-import java.util.List;
-
-import output.charts.graph.Graph;
-import output.charts.graph.Node;
+import datastructures.Tuple;
 
 public class PathfindingTest {
 	
@@ -13,36 +10,9 @@ public class PathfindingTest {
 	
 	
 	private static void run() {		
-		Graph graph = new Graph();
-		
-		graph.addNode("A", -1f, 1f);
-		graph.addNode("B", 0f, 1f);
-		graph.addNode("C", 1f, 1f);
-		graph.addNode("D", -1f, 0f);
-		graph.addNode("E", 0f, 0f);
-		graph.addNode("F", 1f, 0f);
-		graph.addNode("G", -1f, -1f);
-		graph.addNode("H", 0f, -1f);
-		graph.addNode("I", 1f, -1f);
-		
-		graph.addEdge("A", "D");
-		graph.addEdge("A", "E");
-		graph.addEdge("B", "D");
-		graph.addEdge("B", "E");
-		graph.addEdge("B", "F");
-		graph.addEdge("C", "E");
-		graph.addEdge("D", "E");
-		graph.addEdge("D", "G");
-		graph.addEdge("E", "I");
-		graph.addEdge("F", "G");
-		graph.addEdge("F", "I");
-		graph.addEdge("G", "H");
-		
-		List<Node> path = AStarSearch.getPath(graph, graph.getNode("H"), graph.getNode("I"));
-		
-		for (Node n : path) {
-			System.out.println(n.label);
-		}
+		DemoBoard board = new DemoBoard(30, 30);	
+		//board.display(AStarSearch.getPath(board, new Tuple<Integer, Integer>(0, 0), new Tuple<Integer, Integer>(10, 10)));
+		board.display(AStarSearch.getReachableNodes(board, new Tuple<Integer, Integer>(13, 13), 20f));
 	}
 
 }
