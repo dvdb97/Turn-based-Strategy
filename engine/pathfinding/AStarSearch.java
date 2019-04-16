@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
-import datastructures.Tuple;
+
 
 /**
  * 
@@ -13,61 +13,41 @@ import datastructures.Tuple;
  * 
  * @param <N> The type of the nodes of the graph.
  */
-class Step<N> implements Comparable<Step<N>> {
-	public N node;
-	public Step<N> predecessor;
-	public float distance;
+class Node<N> implements Comparable<Node<N>> {
+	public N value;
+	public Node<N> parent;
+	
+	public float total;
 	public float heuristic;
+	public float distance;
 	
-	public Step(N node, Step<N> predecessor, float distance, float heuristic) {
-		this.node = node;
-		this.predecessor = predecessor;
+	public Node(N value, Float distance) {
+		this.value = value;
 		this.distance = distance;
+	}
+	
+	public Node(N value, float total, float heuristic, float distance, Node<N> parent) {
+		this.value = value;
 		this.heuristic = heuristic;
+		this.distance = distance;
+		this.total = total;
+		this.parent = parent;
 	}
-	
 
 	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "[" + node + ", " + distance + ", " + heuristic + "]";
-	}
-	
-	
-	public float getTotal() {
-		return  distance + heuristic;
-	}
-	
-
-	@Override
-	public int compareTo(Step<N> o) {
-		float total = getTotal();
-		float oTotal = o.getTotal();
-		
-		if (total < oTotal) {
+	public int compareTo(Node<N> n) {
+		if (total < n.total) {
 			return -1;
 		}
 		
-		if (total > oTotal) {
+		if (total > n.total) {
 			return 1;
 		}
 		
 		return 0;
-	}
+	}	
 }
 
-
-class Node<N> extends Tuple<N, Float> implements Comparable<Node<N>> {
-	public Node(N x, Float y) {
-		super(x, y);
-	}
-
-	@Override
-	public int compareTo(Node<N> o) {
-		// TODO Auto-generated method stub
-		return y.compareTo(o.y);
-	}
-}
 
 
 public class AStarSearch {	
@@ -81,32 +61,70 @@ public class AStarSearch {
 	 * @param end The end node for our path.
 	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
 	 */
-	private static <N> Step<N> runAStarSearch(IGraph<N> graph, N start, N end) {
-		PriorityQueue<Step<N>> priorityQueue = new PriorityQueue<Step<N>>();
+	private static <N> Node<N> runAStarSearch(IGraph<N> graph, N start, N end) {
+		//The priority queue that sorts the nodes by total distance.
+		PriorityQueue<Node<N>> priorityQueue = new PriorityQueue<Node<N>>();
 		
-		//The first step.
-		Step<N> step = new Step<N>(start, null, 0f, 0f);
-		priorityQueue.add(step);
+		//A map to keep track of all nodes that have been visited so far and their references.
+		HashMap<N, Node<N>> visited = new HashMap<N, Node<N>>();
+		
+		//The first node.
+		Node<N> startNode = new Node<N>(start, 0, 0, 0, null);
 		
 		//The step we are currently working with.
-		Step<N> current = null;
+		Node<N> current = startNode;
 		
-		while (!(current = priorityQueue.poll()).node.equals(end)) {
+		while (!current.value.equals(end)) {			
+			//Mark the node as visited.
+			visited.put(current.value, current);
+			
 			//Look up all sucessors to the current node.
-			List<N> successors = graph.getSuccessors(current.node);
-			System.out.println(current.node + ": " + successors);
+			List<N> successors = graph.getSuccessors(current.value);
 			
 			for (N successor : successors) {
 				//Conpute the total path costs for our next step.
-				float distance = graph.getCosts(current.node, successor) + current.distance;
+				float distance = graph.getCosts(current.value, successor) + current.distance;
 				//Compute the estimated remaining path costs to the end node.
 				float heuristic = graph.getHeuristic(successor, end);
+				//Compute the estimated total distance from the start node to the end using this path.
+				float total = distance + heuristic;
 				
-				priorityQueue.add(new Step<N>(successor, current, distance, heuristic));
+				//If the successor has already been visited
+				if (visited.containsKey(successor)) {
+					Node<N> visitedNode = visited.get(successor);
+					
+					//If the new path to the visited node is shorter, override its properties with the new ones.
+					if (total < visitedNode.total) {
+						visitedNode.distance = distance;
+						visitedNode.heuristic = heuristic;
+						visitedNode.total = total;
+						visitedNode.parent = current;
+					}
+				} else {
+					priorityQueue.add(new Node<N>(successor, total, heuristic, distance, current));
+				}
 			}
+			
+			current = priorityQueue.poll();
 		}
 		
 		return current;
+	}
+	
+	
+	/**
+	 * 
+	 * Finds the shortest path between two nodes using the A*-Algorithm.
+	 * This method also takes the unit's properties into consideration.
+	 * 
+	 * @param graph The graph that is the evironment for our algorithm.
+	 * @param start The start node for our path.
+	 * @param end The end node for our path.
+	 * @param unit The unit for which we are computing the path.
+	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
+	 */
+	public static <N, U> Node<N> runAStarSearch(ITraversable<N, U> graph, N start, N end, U unit) {
+		return null;
 	}
 	
 	
@@ -117,16 +135,16 @@ public class AStarSearch {
 	 * @param s The step that is the result of the A*-Search.
 	 * @return Returns a list containg all nodes on the path.
 	 */
-	private static <N> List<N> toPath(Step<N> s) {
-		if (s.predecessor == null) {
+	private static <N> List<N> toPath(Node<N> s) {
+		if (s.parent == null) {
 			ArrayList<N> path = new ArrayList<N>();
-			path.add(s.node);
+			path.add(s.value);
 			
 			return path;
 		}
 		
-		List<N> path = toPath(s.predecessor);
-		path.add(s.node);
+		List<N> path = toPath(s.parent);
+		path.add(s.value);
 		
 		return path;
 	}
@@ -164,45 +182,6 @@ public class AStarSearch {
 	
 	/**
 	 * 
-	 * Finds the shortest path between two nodes using the A*-Algorithm.
-	 * This method also takes the unit's properties into consideration.
-	 * 
-	 * @param graph The graph that is the evironment for our algorithm.
-	 * @param start The start node for our path.
-	 * @param end The end node for our path.
-	 * @param unit The unit for which we are computing the path.
-	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
-	 */
-	public static <N, U> Step<N> runAStarSearch(ITraversable<N, U> graph, N start, N end, U unit) {
-		PriorityQueue<Step<N>> priorityQueue = new PriorityQueue<Step<N>>();
-		
-		//The first step.
-		Step<N> step = new Step<N>(start, null, 0f, 0f);
-		priorityQueue.add(step);
-		
-		//The step we are currently working with.
-		Step<N> current = null;
-		
-		while ((current = priorityQueue.poll()).node != end) {
-			//Look up all sucessors to the current node.
-			List<N> successors = graph.getSuccessors(current.node, unit);
-			
-			for (N successor : successors) {
-				//Conpute the total path costs for our next step.
-				float distance = graph.getCosts(current.node, successor, unit) + current.distance;
-				//Compute the estimated remaining path costs to the end node.
-				float heuristic = graph.getHeuristic(successor, end, unit);
-				
-				priorityQueue.add(new Step<N>(successor, current, distance, heuristic));
-			}
-		}
-		
-		return current;
-	}
-	
-	
-	/**
-	 * 
 	 * Find all nodes that are reachable from the start using the given budget.
 	 * 
 	 * @param graph The graph to work with.
@@ -216,19 +195,19 @@ public class AStarSearch {
 		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();
 		queue.add(new Node<N>(start, 0f));
 		
-		Tuple<N, Float> current = null;
+		Node<N> current = null;
 		
 		while (!queue.isEmpty()) {
 			current = queue.poll();
 			
 			//Only look at this node if it hasn't been visited yet or we have found a shorter path to this node.
-			if (!visited.containsKey(current.x) || visited.get(current.x) > current.y) {
+			if (!visited.containsKey(current.value) || visited.get(current.value) > current.total) {
 				//Mark this node as visited or override the path costs for this node with an updated value.
-				visited.put(current.x, current.y);
+				visited.put(current.value, current.total);
 				
 				//Add all successors of the current node to the priorityQueue.
-				for (N node : graph.getSuccessors(current.x)) {
-					float distance = current.y + graph.getCosts(current.x, node);
+				for (N node : graph.getSuccessors(current.value)) {
+					float distance = current.total + graph.getCosts(current.value, node);
 					
 					if (distance < budget) {
 						queue.add(new Node<N>(node, distance));
@@ -253,36 +232,24 @@ public class AStarSearch {
 	 * @return Returns a set of nodes that is reachable from the start node.
 	 */
 	public static <N, U> Set<N> getReachableNodes(ITraversable<N, U> graph, N start, float budget, U unit) {
-		
-		class Node extends Tuple<N, Float> implements Comparable<Float> {
-			public Node(N x, Float y) {
-				super(x, y);
-			}
-
-			@Override
-			public int compareTo(Float o) {
-				return y.compareTo(o);
-			}
-		}
-		
 		//All nodes have already been visited by a path and the according path costs.
 		HashMap<N, Float> visited = new HashMap<N, Float>();
-		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();
 		
-		Tuple<N, Float> current = null;
+		Node<N> current = null;
 		
 		while (!queue.isEmpty()) {
 			current = queue.poll();
 			
 			//Only look at this node if it hasn't been visited yet or we have found a shorter path to this node.
-			if (!visited.containsKey(current.x) || visited.get(current.x) > current.y) {
+			if (!visited.containsKey(current.value) || visited.get(current.value) > current.total) {
 				//Mark this node as visited or override the path costs for this node with an updated value.
-				visited.put(current.x, current.y);
+				visited.put(current.value, current.total);
 				
 				//Add all successors of the current node to the priorityQueue.
-				for (N node : graph.getSuccessors(current.x, unit)) {
-					float distance = current.y + graph.getCosts(current.x, node, unit);
-					queue.add(new Node(node, distance));
+				for (N node : graph.getSuccessors(current.value, unit)) {
+					float distance = current.total + graph.getCosts(current.value, node, unit);
+					queue.add(new Node<N>(node, distance));
 				}
 			}
 		}

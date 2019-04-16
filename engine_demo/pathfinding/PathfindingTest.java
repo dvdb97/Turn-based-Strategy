@@ -1,6 +1,6 @@
 package pathfinding;
 
-import datastructures.Tuple;
+import java.util.List;
 
 public class PathfindingTest {
 	
@@ -9,10 +9,24 @@ public class PathfindingTest {
 	}
 	
 	
-	private static void run() {		
-		DemoBoard board = new DemoBoard(30, 30);	
-		//board.display(AStarSearch.getPath(board, new Tuple<Integer, Integer>(0, 0), new Tuple<Integer, Integer>(10, 10)));
-		board.display(AStarSearch.getReachableNodes(board, new Tuple<Integer, Integer>(13, 13), 20f));
+	private static void run() {
+		int width = 50;
+		int height = 50;
+		
+		int startX = 0;
+		int startY = 0;
+		
+		int endX = width - 1;
+		int endY = height - 1;
+		
+		System.out.println("Generating board . . .");
+		DemoBoard board = new DemoBoard(width, height);
+		
+		System.out.println("Finding path . . .");
+		List<Integer> path = AStarSearch.getPath(board, startY * width + startX, endY * width + endX);
+		
+		System.out.println("Displaying board . . .");
+		board.display(path);
 	}
 
 }

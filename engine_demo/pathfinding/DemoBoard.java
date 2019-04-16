@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import datastructures.Tuple;
+import java.util.Set;
+
 import math.vectors.Vector4f;
 
 import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
 import static java.lang.Math.abs;
 
-public class DemoBoard implements ITraversable<Tuple<Integer, Integer>, DemoUnit> {
+public class DemoBoard implements ITraversable<Integer, DemoUnit> {
 
 	private char[] terrainTypes = {
 		'~', //Water
@@ -38,7 +39,7 @@ public class DemoBoard implements ITraversable<Tuple<Integer, Integer>, DemoUnit
 		this.width = width;
 		this.height = height;
 		
-		generate(10f);
+		generate(2f);
 	}
 	
 	private void generate(float weight) {
@@ -95,52 +96,67 @@ public class DemoBoard implements ITraversable<Tuple<Integer, Integer>, DemoUnit
 	
 	
 	@Override
-	public List<Tuple<Integer, Integer>> getSuccessors(Tuple<Integer, Integer> node) {
-		List<Tuple<Integer, Integer>> successors = new ArrayList<Tuple<Integer, Integer>>();
+	public List<Integer> getSuccessors(Integer node) {
+		List<Integer> successors = new ArrayList<Integer>();
 		
-		if (node.x + 1 < width) {
-			successors.add(new Tuple<Integer, Integer>(node.x + 1, node.y));
+		int x = node % width;
+		int y = node / height;
+		
+		if (x + 1 < width) {
+			successors.add(y * width + x + 1);
 		}
 		
-		if (node.x - 1 >= 0) {
-			successors.add(new Tuple<Integer, Integer>(node.x - 1, node.y));
+		if (x - 1 >= 0) {
+			successors.add(y * width + x - 1);
 		}
 		
-		if (node.y + 1 < height) {
-			successors.add(new Tuple<Integer, Integer>(node.x, node.y + 1));
+		if (y + 1 < height) {
+			successors.add((y + 1) * width + x);
 		}
 		
-		if (node.y - 1 >= 0) {
-			successors.add(new Tuple<Integer, Integer>(node.x, node.y - 1));
+		if (y - 1 >= 0) {
+			successors.add((y - 1) * width + x);
 		}
 		
 		return successors;
 	}
 
 	@Override
-	public float getCosts(Tuple<Integer, Integer> start, Tuple<Integer, Integer> end) {
-		return 0.5f * terrainCosts[board[start.y][start.y]] + 0.5f * terrainCosts[board[end.y][end.x]];
+	public float getCosts(Integer start, Integer end) {
+		int startX = start % width;
+		int startY = start / width;
+		
+		int endX = end % width;
+		int endY = end / width;
+		
+		return 0.5f * terrainCosts[board[startY][startX]] + 0.5f * terrainCosts[board[endY][endX]];
 	}
 
 	@Override
-	public float getHeuristic(Tuple<Integer, Integer> start, Tuple<Integer, Integer> end) {
-		return (float)abs(end.x - start.x) + (float)abs(end.y - start.y);
+	public float getHeuristic(Integer start, Integer end) {
+		int startX = start % width;
+		int startY = start / width;
+		
+		int endX = end % width;
+		int endY = end / width;
+		
+		return (float)abs(endX - startX) + (float)abs(endY - startY);
 	}
 
 	@Override
-	public List<Tuple<Integer, Integer>> getSuccessors(Tuple<Integer, Integer> node, DemoUnit unit) {
+	public List<Integer> getSuccessors(Integer node, DemoUnit unit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public float getCosts(Tuple<Integer, Integer> start, Tuple<Integer, Integer> end, DemoUnit unit) {
+	public float getCosts(Integer start, Integer end, DemoUnit unit) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public float getHeuristic(Tuple<Integer, Integer> start, Tuple<Integer, Integer> end, DemoUnit unit) {
+	public float getHeuristic(Integer start, Integer end, DemoUnit unit) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -156,14 +172,12 @@ public class DemoBoard implements ITraversable<Tuple<Integer, Integer>, DemoUnit
 		}
 	}
 	
-	public void display(Collection<Tuple<Integer, Integer>> tiles) {
-		System.out.println(tiles);
-		
+	public void display(Collection<Integer> tiles) {
 		for (int y = 0; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
-				Tuple<Integer, Integer> tile = new Tuple<Integer, Integer>(x, y);
+				int tile = y * width + x;
 				
-				if (contains(tile, tiles)) {
+				if (tiles.contains(tile)) {
 					System.out.print("[" + terrainTypes[board[y][x]] + "]");
 				} else {
 					System.out.print(" " + terrainTypes[board[y][x]] + " ");
@@ -174,15 +188,4 @@ public class DemoBoard implements ITraversable<Tuple<Integer, Integer>, DemoUnit
 		}
 	}
 	
-	
-	public boolean contains(Tuple<Integer, Integer> tile, Collection<Tuple<Integer, Integer>> tiles) {
-		for (Tuple<Integer, Integer> t : tiles) {
-			if (t.x == tile.x && t.y == tile.y) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
 }
