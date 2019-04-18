@@ -250,6 +250,7 @@ public class AStarSearch {
 		//All nodes have already been visited by a path and the according path costs.
 		HashMap<N, Float> visited = new HashMap<N, Float>();
 		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();
+		
 		queue.add(new Node<N>(start, 0f));
 		
 		Node<N> current = null;
@@ -258,13 +259,13 @@ public class AStarSearch {
 			current = queue.poll();
 			
 			//Only look at this node if it hasn't been visited yet or we have found a shorter path to this node.
-			if (!visited.containsKey(current.value) || visited.get(current.value) > current.total) {
+			if (!visited.containsKey(current.value) || visited.get(current.value) > current.distance) {
 				//Mark this node as visited or override the path costs for this node with an updated value.
-				visited.put(current.value, current.total);
+				visited.put(current.value, current.distance);
 				
 				//Add all successors of the current node to the priorityQueue.
 				for (N node : graph.getSuccessors(current.value)) {
-					float distance = current.total + graph.getCosts(current.value, node);
+					float distance = current.distance + graph.getCosts(current.value, node);
 					
 					if (distance < budget) {
 						queue.add(new Node<N>(node, distance));

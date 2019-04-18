@@ -39,7 +39,7 @@ public class DemoBoard implements ITraversable<Integer, DemoUnit> {
 		this.width = width;
 		this.height = height;
 		
-		generate(2f);
+		generate(10f);
 	}
 	
 	private void generate(float weight) {
