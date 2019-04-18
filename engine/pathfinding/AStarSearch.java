@@ -124,7 +124,54 @@ public class AStarSearch {
 	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
 	 */
 	public static <N, U> Node<N> runAStarSearch(ITraversable<N, U> graph, N start, N end, U unit) {
-		return null;
+		//The priority queue that sorts the nodes by total distance.
+		PriorityQueue<Node<N>> priorityQueue = new PriorityQueue<Node<N>>();
+		
+		//A map to keep track of all nodes that have been visited so far and their references.
+		HashMap<N, Node<N>> visited = new HashMap<N, Node<N>>();
+		
+		//The first node.
+		Node<N> startNode = new Node<N>(start, 0, 0, 0, null);
+		
+		//The step we are currently working with.
+		Node<N> current = startNode;
+		
+		while (!current.value.equals(end)) {			
+			//Mark the node as visited.
+			visited.put(current.value, current);
+			
+			//Look up all sucessors to the current node.
+			List<N> successors = graph.getSuccessors(current.value, unit);
+			
+			for (N successor : successors) {
+				//Conpute the total path costs for our next step.
+				float distance = graph.getCosts(current.value, successor, unit) + current.distance;
+				//Compute the estimated remaining path costs to the end node.
+				float heuristic = graph.getHeuristic(successor, end, unit);
+				//Compute the estimated total distance from the start node to the end using this path.
+				float total = distance + heuristic;
+				
+				//If the successor has already been visited
+				if (visited.containsKey(successor)) {
+					Node<N> visitedNode = visited.get(successor);
+					
+					//If the new path to the visited node is shorter, override its properties with the new ones.
+					if (total < visitedNode.total) {
+						visitedNode.distance = distance;
+						visitedNode.heuristic = heuristic;
+						visitedNode.total = total;
+						visitedNode.parent = current;
+					}
+					
+				} else {
+					priorityQueue.add(new Node<N>(successor, total, heuristic, distance, current));
+				}
+			}
+			
+			current = priorityQueue.poll();
+		}
+		
+		return current;
 	}
 	
 	
@@ -165,6 +212,11 @@ public class AStarSearch {
 	}
 	
 	
+	public static <N, U> List<N> getPath(ITraversable<N, U> graph, N start, N end, U unit) {
+		return toPath(runAStarSearch(graph, start, end, unit));
+	}
+	
+	
 	/**
 	 * 
 	 * Searches the shortest path from a start N to an end N with end being
@@ -177,6 +229,11 @@ public class AStarSearch {
 	 */
 	public static <N> float getPathCosts(IGraph<N> graph, N start, N end) {
 		return runAStarSearch(graph, start, end).distance;
+	}
+	
+	
+	public static <N, U> float getPathCosts(ITraversable<N, U> graph, N start, N end, U unit) {
+		return runAStarSearch(graph, start, end, unit).distance;
 	}
 	
 	

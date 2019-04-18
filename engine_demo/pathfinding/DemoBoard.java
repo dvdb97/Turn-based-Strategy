@@ -145,20 +145,41 @@ public class DemoBoard implements ITraversable<Integer, DemoUnit> {
 
 	@Override
 	public List<Integer> getSuccessors(Integer node, DemoUnit unit) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSuccessors(node);
 	}
 
 	@Override
 	public float getCosts(Integer start, Integer end, DemoUnit unit) {
-		// TODO Auto-generated method stub
-		return 0;
+		int startX = start % width;
+		int startY = start / width;
+		
+		int endX = end % width;
+		int endY = end / width;
+		
+		float startWeight = getCosts(board[startY][startX], unit);
+		float endWeight = getCosts(board[endY][endX], unit);
+		
+		return 0.5f * startWeight + 0.5f * endWeight;
+	}
+	
+	private float getCosts(int type, DemoUnit unit) {
+		switch (type) {
+			case 0:
+				return unit.getWater();
+			case 1:
+				return unit.getGrasland();
+			case 2:
+				return unit.getForest();
+			case 3:
+				return unit.getMountains();
+			default:
+				return 1f;
+		}
 	}
 
 	@Override
 	public float getHeuristic(Integer start, Integer end, DemoUnit unit) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getHeuristic(start, end);
 	}
 	
 	
