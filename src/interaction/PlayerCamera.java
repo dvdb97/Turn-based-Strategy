@@ -177,7 +177,7 @@ public class PlayerCamera {
 	
 	
 	public static Matrix44f getInvertedProjectionMatrix() {
-		return camera.getInvertedViewProjectionMatrix();
+		return camera.getInvertedProjectionMatrix();
 	}
 	
 	

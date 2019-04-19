@@ -276,6 +276,16 @@ public class Camera {
 	}
 	
 	
+	public void leftwards(float distance) {
+		this.move(upVector.cross(viewDirection).normalize().times(distance));
+	}
+	
+	
+	public void rightwards(float distance) {
+		this.leftwards(-distance);
+	}
+	
+	
 	/**
 	 * 
 	 * Moves the camera in the given direction
