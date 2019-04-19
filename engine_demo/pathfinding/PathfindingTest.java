@@ -1,7 +1,6 @@
 package pathfinding;
 
 import java.util.List;
-import java.util.Set;
 
 public class PathfindingTest {
 	
@@ -10,7 +9,7 @@ public class PathfindingTest {
 	}
 	
 	
-	private static void run() {
+	private static void run() {		
 		int width = 40;
 		int height = 40;
 		
@@ -30,11 +29,11 @@ public class PathfindingTest {
 		DemoBoard board = new DemoBoard(width, height);
 		
 		System.out.println("Finding path . . .");
-		//ist<Integer> path = AStarSearch.getPath(board, startY * width + startX, endY * width + endX, mountaineer);
-		Set<Integer> reachable = AStarSearch.getReachableNodes(board, centerY * width + centerX, 20f);
+		List<Integer> path = AStarSearch.getPath(board, startY * width + startX, endY * width + endX);
+		//Set<Integer> reachable = AStarSearch.getReachableNodes(board, centerY * width + centerX, 20f);
 		
 		System.out.println("Displaying board . . .");
-		board.display(reachable);
+		board.display(path);
 	}
 
 }

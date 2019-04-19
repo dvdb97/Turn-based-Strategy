@@ -24,7 +24,7 @@ public class DemoBoard implements ITraversable<Integer, DemoUnit> {
 	private float[] terrainCosts = {
 		3f,  //Water
 		1f,  //Grasland
-		2f,//Forest
+		2f,  //Forest
 		4f   //Mountains
 	};
 	
