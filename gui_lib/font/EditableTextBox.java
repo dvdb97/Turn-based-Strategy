@@ -14,21 +14,20 @@ public class EditableTextBox extends ToggleButton{
 	//TODO: private
 	public TextBox textBox;
 	private String currentText;
+	private KeyEventManager kem;
 	
 	public EditableTextBox(float xShift, float yShift, float xStretch, float reqHeight, Color color) {
 		super(new GUIQuad(), color, new GUIElementMatrix(xShift, yShift, xStretch, reqHeight));
 		currentText = "$";
 		textBox = new TextBox(xShift, yShift, reqHeight, currentText, BLACK);
-		KeyEventManager kim = new KeyEventManager();
-		KeyInputHandler.setKeyEventManager(kim);
-	//	kim.addKeyDownEventListener((key) -> processKeyInput(KeyStringConverter.getStringOf(key)));
-		kim.addKeyDownEventListener((key) -> System.out.println("**************"+KeyStringConverter.getStringOf(key)));
+		kem = new KeyEventManager();
+		kem.addKeyDownEventListener((key) -> processKeyInput(KeyStringConverter.getStringOf(key)));
 		setFunctions();
 	}
 	
 	private void setFunctions() {
-		setEnableFunc((e) -> color=Color.getComplement(color));
-		setDisableFunc((e) -> color=Color.getComplement(color));
+		setEnableFunc((e) -> {color=Color.getComplement(color);KeyInputHandler.addKeyEventManager(kem);});
+		setDisableFunc((e) -> {color=Color.getComplement(color);KeyInputHandler.removeKeyEventManager();});
 	}
 	
 	@Override

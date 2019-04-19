@@ -9,24 +9,24 @@ import interaction.input.KeyEventListener.Action;
 public class KeyEventManager {
 	
 	//key-specific event listeners that will be called when the specified key was pressed.
-	private static HashMap<Integer, List<KeyEventListener>> keyDownEventListener;
+	private HashMap<Integer, List<KeyEventListener>> keyDownEventListener;
 	
 	//Key-independent event listeners that will be called when any key was pressed.
-	private static List<KeyEventListener> keyIndependentKeyDownListener;
+	private List<KeyEventListener> keyIndependentKeyDownListener;
 	
 	
 	//Key-specific event listeners that will be called when the specified key is pressed for a while.
-	private static HashMap<Integer, List<KeyEventListener>> keyPressedEventListener;
+	private HashMap<Integer, List<KeyEventListener>> keyPressedEventListener;
 	
 	//Key-independent event listeners that will be called when any key is pressed for a while.
-	private static List<KeyEventListener> keyIndependentKeyPressedListener;
+	private List<KeyEventListener> keyIndependentKeyPressedListener;
 	
 	
 	//Key-specific event listeners that will be called when the specified key is released.
-	private static HashMap<Integer, List<KeyEventListener>> keyReleasedEventListener;
+	private HashMap<Integer, List<KeyEventListener>> keyReleasedEventListener;
 	
 	//Key-independent event listeners that will be called when any key is released.
-	private static List<KeyEventListener> keyIndependentKeyReleasedListener;
+	private List<KeyEventListener> keyIndependentKeyReleasedListener;
 	
 	
 	public KeyEventManager() {

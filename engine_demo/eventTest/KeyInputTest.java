@@ -31,7 +31,7 @@ public class KeyInputTest {
 		keyEventManager.addKeyDownEventListener((key) -> System.err.println(key + " down!"));
 		keyEventManager.addKeyPressedEventListener((key) -> System.out.println(key));
 		
-		KeyInputHandler.setKeyEventManager(keyEventManager);
+		KeyInputHandler.addKeyEventManager(keyEventManager);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();

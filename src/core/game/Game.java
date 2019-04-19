@@ -24,6 +24,7 @@ public class Game {
 		WorldManager.init(boardLength, boardWidth);
 		
 		TileSelecter.init();
+		
 		GameGUIManager.init();
 		
 		run();
