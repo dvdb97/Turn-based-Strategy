@@ -43,9 +43,7 @@ public class Utils {
 				sb.append(text.charAt(c));
 			}
 		}
-		if (sb.length() > 0) {
-			strings.add(sb.toString());
-		}
+		strings.add(sb.toString());
 		return strings;
 	}
 	

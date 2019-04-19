@@ -49,6 +49,14 @@ public class KeyStringConverter {
 	"Z"};
 	
 	public static String getStringOf(int key) {
+		
+		switch(key) {
+		case 32 : return " ";
+		case 46 : return ".";
+		case 257: return "\n";
+		case 258: return "\t";
+		}
+		
 		if (key-65 > 25 || key-65 < 0) {
 			return "NON-VALID";
 		}

@@ -48,7 +48,6 @@ public class FontTextureGenerator {
 	public Texture2D getFontTexture(float reqHeight, String text, Color color) {
 		
 		ArrayList<String> lineStrings = Utils.divideInLines(text);
-		
 		scale = scaleForReqHeight(reqHeight);
 		float lineGapPx = lineGap[0] * scale;
 		
@@ -98,6 +97,9 @@ public class FontTextureGenerator {
 	}	
 	
 	private Bitmap getLineBitmap(String text) {
+		if (text.length() < 1) {
+			return getCodepointBitmap(Character.MIN_VALUE);
+		}
 		Bitmap bitmap = getCodepointBitmap(text.charAt(0));
 		Bitmap bufBitmap;
 		for (int i=1; i<text.length(); i++) {
@@ -114,9 +116,10 @@ public class FontTextureGenerator {
 	//-------------------------------- tier 3 --------------------------------------------------
 	
 	private Bitmap getCodepointBitmap(char c) {
-		if (c == ' ') {
+		if (c == Character.MIN_VALUE)
+			return new Bitmap(1, pixelHeight);
+		if (c == ' ')
 			return new Bitmap(pixelHeight/4, pixelHeight);
-		}
 		ByteBuffer b = STBTruetype.stbtt_GetCodepointBitmap(fontInfo, scale, scale, c, width, height, null, null);
 		Bitmap bitmap = new Bitmap(b, width[0], height[0]);
 		int[] x0 = new int[1], x1 = new int[1], y0 = new int[1], y1 = new int[1];

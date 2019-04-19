@@ -14,7 +14,7 @@ public class FontWindow extends GUIWindow {
 	public FontWindow(Color color, GUIElementMatrix transformationMatrix) {
 		super(color, transformationMatrix);
 		
-		text = new EditableTextBox(0.05f, -0.2f, 0.9f, 0.3f, GREEN);
+		text = new EditableTextBox(0.05f, -0.2f, 0.9f, 0.1f, GREEN);
 		children.add(text);
 		children.add(text.textBox);
 		

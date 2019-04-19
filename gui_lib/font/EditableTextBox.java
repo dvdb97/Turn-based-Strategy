@@ -18,7 +18,7 @@ public class EditableTextBox extends ToggleButton{
 	
 	public EditableTextBox(float xShift, float yShift, float xStretch, float reqHeight, Color color) {
 		super(new GUIQuad(), color, new GUIElementMatrix(xShift, yShift, xStretch, reqHeight));
-		currentText = "$";
+		currentText = "";
 		textBox = new TextBox(xShift, yShift, reqHeight, currentText, BLACK);
 		kem = new KeyEventManager();
 		kem.addKeyDownEventListener((key) -> processKeyInput(KeyStringConverter.getStringOf(key)));
@@ -32,7 +32,8 @@ public class EditableTextBox extends ToggleButton{
 	
 	@Override
 	public void update(GUIElementMatrix parentMatrix) {
-		super.update(parentMatrix);
+		TM = new GUIElementMatrix(elementMatrix.getXShift()*parentMatrix.getXStretch()+parentMatrix.getXShift(), elementMatrix.getYShift()*parentMatrix.getYStretch()+parentMatrix.getYShift(), elementMatrix.getXStretch(), elementMatrix.getYStretch());
+		invertedTM = TM.getInverse();		
 	}
 	
 	private void processKeyInput(String string) {
