@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import datastructures.Tuple;
+
 
 /**
  * 
@@ -287,9 +289,9 @@ public class AStarSearch {
 	 * @param start The node that is the start of our path search.
 	 * @param budget The maximum distance that we can walk from the start node.
 	 * @param unit The unit for which we are computing the path.
-	 * @return Returns a set of nodes that is reachable from the start node.
+	 * @return Returns a list of tuples containing nodes that are reachable and the path costs.
 	 */
-	public static <N, U> Set<N> getReachableNodes(ITraversable<N, U> graph, N start, float budget, U unit) {
+	public static <N, U> List<Tuple<N, Float>> getReachableNodes(ITraversable<N, U> graph, N start, float budget, U unit) {
 		//All nodes have already been visited by a path and the according path costs.
 		HashMap<N, Float> visited = new HashMap<N, Float>();
 		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();
@@ -312,7 +314,13 @@ public class AStarSearch {
 			}
 		}
 		
-		return visited.keySet();
+		List<Tuple<N, Float>> nodes = new ArrayList<Tuple<N,Float>>(visited.keySet().size());
+		
+		for (N n : visited.keySet()) {
+			nodes.add(new Tuple<N, Float>(n, visited.get(n)));
+		}
+		
+		return nodes;
 	}
 	
 }

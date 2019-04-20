@@ -1,0 +1,19 @@
+Basic:
+- Grasland: 3
+- Forest: 4
+- Mountains: 6
+- Glacier: 20
+- Desert: 4 (Attrition?)
+- Water (Ocean): 5 (Impassable for land units?)
+- Water (River): 5
+- marshland: 8
+
+Special:
+- Street: 
+- City
+- Encampments
+- ?
+
+Map features:
+- Terrain-Costs-Mapmode
+- Display all reachable tiles for a unit

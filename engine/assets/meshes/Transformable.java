@@ -1,11 +1,12 @@
 package assets.meshes;
 
+import assets.IInstantiatable;
 import math.matrices.Matrix44f;
 import rendering.matrices.transformation.*;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
-public class Transformable {
+public class Transformable implements IInstantiatable<Transformable> {
 	
 	private static final Vector4f[] unitCube = {
 		//Front face:
@@ -360,6 +361,15 @@ public class Transformable {
 	 */
 	public Vector4f[] getBoundaries() {
 		return toWorldSpace(unitCube);
+	}
+
+
+	@Override
+	public Transformable instanciate() {
+		Transformable transformable = new Transformable();
+		transformable.adaptTo(this);
+		
+		return transformable;
 	}
 
 }

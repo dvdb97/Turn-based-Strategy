@@ -13,7 +13,6 @@ public class GameBoard {
 	private static HashMap<Tile, City> cities;
 	
 	
-	
 	public static boolean addCity(Tile tile, City city) {
 		
 		//TODO: maybe use exceptions here

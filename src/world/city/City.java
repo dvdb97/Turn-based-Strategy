@@ -31,7 +31,7 @@ public class City {
 	 */
 	public boolean setTile(Tile tile) {
 		
-		if(this.tile != null) {
+		if (this.tile != null) {
 			return false;
 		}
 		

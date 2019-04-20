@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 
 import assets.IDeletable;
+import assets.IInstantiatable;
 import assets.buffers.VertexBuffer;
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
@@ -424,6 +425,26 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	
 	public Texture getTexture() {
 		return texture;
+	}
+	
+	
+	public VertexArrayObject getVAO() {
+		return vao;
+	}
+	
+	
+	public void setVertexArrayObject(VertexArrayObject vao) {
+		this.vao = vao;
+	}
+	
+	
+	public int getDrawMode() {
+		return drawMode;
+	}
+	
+	
+	public void setDrawMode(int drawMode) {
+		this.drawMode = drawMode;
 	}
 	
 	

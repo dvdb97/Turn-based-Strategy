@@ -104,6 +104,7 @@ public class WorldManager {
 		
 		float[] heights = new float[7];
 		heights[0] = center.getC();
+		
 		for (int i=1; i<heights.length; i++) {
 			heights[i] = border[i-1].getC();
 		}
