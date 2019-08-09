@@ -20,7 +20,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 public abstract class Mesh implements IDeletable, IRenderable {
 	
 	private enum Attribute {
-		POSITION, COLOR, TEXCOORD, NORMAL
+		POSITION, COLOR, TEXCOORD, NORMAL, MATRIX
 	};
 	
 	protected HashMap<Attribute, FloatBuffer> vertexData;
@@ -166,6 +166,23 @@ public abstract class Mesh implements IDeletable, IRenderable {
 		}
 	}
 	
+	public void setMatrixData(FloatBuffer buffer, int rows, int cols, int index) {
+		VertexBuffer vertexBuffer = new VertexBuffer(buffer);
+		
+		for (int i = index; i < index + rows; ++i) {
+			setVertexBuffer(vertexBuffer, i, cols, (rows - 1) * cols * 4, i * cols * 4, 1);
+		}
+	}
+	
+	
+	public void setMatrixVertexBuffer(VertexBuffer buffer, int rows, int cols, int index) {
+		for (int i = 0; i < rows; ++i) {
+			//Buffer, index, size, 
+			vao.setVertexAttributePointer(buffer, index + i, cols, rows * cols * 4, i * cols * 4, 1);
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * Sets this Mesh's position data and stores it on the gpu.
@@ -303,6 +320,11 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	}
 	
 	
+	public VertexArrayObject getVAO() {
+		return vao;
+	}
+	
+	
 	/**
 	 * 
 	 * @return Returns this Mesh's texture coordinate data as a FloatBuffer.
@@ -364,16 +386,41 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	}
 	
 	
-	private void setAttribute(FloatBuffer buffer, Attribute attribute, int pos, int size) {
+	public void setAttribute(FloatBuffer buffer, Attribute attribute, int pos, int size) {
 		this.vertexData.put(attribute, buffer);
 		VertexBuffer vertexBuffer = new VertexBuffer(buffer);
 		this.setVertexBuffer(vertexBuffer, attribute, pos, size);
 	}
 	
+	public void setAttribute(FloatBuffer buffer, Attribute attribute, int pos, int size, int divisor) {
+		this.vertexData.put(attribute, buffer);
+		VertexBuffer vertexBuffer = new VertexBuffer(buffer);
+		this.setVertexBuffer(vertexBuffer, attribute, pos, size, divisor);
+	}
 	
-	private void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size) {
+	
+	public void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size) {
 		vao.setVertexAttributePointer(buffer, pos, size, 0, 0);
 		this.vertexBuffers.put(attribute, buffer);
+	}
+	
+	public void setVertexBuffer(VertexBuffer buffer, Attribute attribute, int pos, int size, int divisor) {
+		vao.setVertexAttributePointer(buffer, pos, size, 0, 0, divisor);
+		this.vertexBuffers.put(attribute, buffer);
+	}
+	
+	
+	public void setVertexBuffer(VertexBuffer buffer, int pos, int size, int stride, int offset) {
+		vao.setVertexAttributePointer(buffer, pos, size, stride, offset);
+	}
+	
+	
+	public void setVertexBuffer(VertexBuffer buffer, int pos, int size, int stride, int offset, int divisor) {
+		vao.setVertexAttributePointer(buffer, pos, size, stride, offset, divisor);
+	}
+	
+	public void setVertexAttribute(VertexAttribute attribute, int index) {
+		vao.setVertexAttributePointer(attribute, index);
 	}
 	
 	
@@ -394,6 +441,11 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	 */
 	public IntBuffer getIndexBuffer() {
 		return indexBuffer;
+	}
+	
+	
+	public int getDrawMode() {
+		return drawMode;
 	}
 	
 	

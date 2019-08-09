@@ -240,6 +240,11 @@ public class ShaderProgram extends Bindable {
 	}
 	
 	
+	public void setViewProjectionMatrix(Matrix44f vpMatrix) {
+		this.setUniformMatrix4fv("vpMatrix", vpMatrix);
+	}
+	
+	
 	/**
 	 * 
 	 * Passes the MVPMatrix as an uniform to the shader. 

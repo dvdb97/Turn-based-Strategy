@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL44.*;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -37,10 +38,43 @@ public class Buffer extends GLTargetObject {
 	
 	
 	/**
+	 * 
+	 * @author Dario
+	 *
+	 * Custom exception to handle the unsuccessful attempts to map a buffer.
+	 *
+	 */
+	private class GLBufferMappingFailedException extends RuntimeException {}
+	
+	
+	/**
 	 * The contents of the data store may be updated after creation
 	 */
 	public static final int DYNAMIC_STORAGE = GL_DYNAMIC_STORAGE_BIT;
 	
+	
+	/*
+	 * Flags for gl_BufferData
+	 */
+	public static final int STATIC_READ = GL_STATIC_READ;
+	public static final int STATIC_DRAW = GL_STATIC_DRAW;
+	public static final int STATIC_COPY = GL_STATIC_COPY;
+	
+	public static final int DYNAMIC_READ = GL_DYNAMIC_READ;
+	public static final int DYNAMIC_DRAW = GL_DYNAMIC_DRAW;
+	public static final int DYNAMIC_COPY = GL_DYNAMIC_COPY;
+	
+	public static final int STREAM_READ = GL_STREAM_READ;
+	public static final int STREAM_DRAW = GL_STREAM_DRAW;
+	public static final int STREAM_COPY = GL_STREAM_COPY;
+	
+	
+	/*
+	 * Flags for glMapBuffer
+	 */
+	public static final int MAP_READ_ONLY = GL_READ_ONLY;
+	public static final int MAP_WRITE_ONLY = GL_WRITE_ONLY;
+	public static final int MAP_READ_WRITE = GL_READ_WRITE;
 	
 	private int dataType;
 	
@@ -60,6 +94,35 @@ public class Buffer extends GLTargetObject {
 		
 		this.dataStored = false;
 		this.dataType = dataType;
+	}
+	
+	
+	/**
+	 * 
+	 * Maps a buffer object's data store.
+	 * 
+	 * @param access A flag that defines how to use the buffer object's mapped data store.
+	 * @return Returns a Bytebuffer that represents the buffer object's mapped data store.
+	 */
+	public ByteBuffer mapBuffer(int access) {
+		bind();
+		
+		ByteBuffer buffer = glMapBuffer(getType(), access);
+		
+		unbind();
+		
+		return buffer;
+	}
+	
+	
+	public void unmapBuffer() {
+		bind();
+		
+		if (!glUnmapBuffer(getType())) {
+			throw new GLBufferMappingFailedException();
+		}
+		
+		unbind();
 	}
 	
 	
@@ -159,6 +222,40 @@ public class Buffer extends GLTargetObject {
 		unbind();
 		
 		return buffer;
+	}
+	
+	
+	/**
+	 * 
+	 * Allocates memory on the gpu.
+	 * 
+	 * @param size The number of bytes that will be stored in this buffer.
+	 * @param flag The usage for this VertexBuffer. A combination of
+	 * STREAM/STATIC/DYNAMIC and DRAW/READ/COPY.
+	 */
+	public void setBufferData(int size, int flag) {
+		bind();
+		
+		glBufferData(getType(), size, flag);
+		
+		unbind();
+	}
+	
+	
+	/**
+	 * 
+	 * Saves the given data in this VertexBuffer.
+	 * 
+	 * @param data The data to store in this VertexBuffer.
+	 * @param flag The usage for this VertexBuffer. A combination of
+	 * STREAM/STATIC/DYNAMIC and DRAW/READ/COPY.
+	 */
+	public void setBufferData(FloatBuffer data, int flag) {
+		bind();
+		
+		glBufferData(getType(), data, flag);
+		
+		unbind();
 	}
 	
 	

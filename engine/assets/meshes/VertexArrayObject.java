@@ -2,56 +2,38 @@ package assets.meshes;
 
 import assets.GLObject;
 import assets.buffers.VertexBuffer;
-import assets.buffers.Buffer;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 import static org.lwjgl.opengl.GL41.glVertexAttribLPointer;
 
+/**
+ * 
+ * @author Dario
+ * 
+ * One vertex attribute of this vertex attribute object. This
+ * vertex attribute stores a reference to the buffer containing
+ * the data and information about the layout of the data
+ *
+ */
+class VertexAttribute {
+	
+	public VertexBuffer buffer;
+	
+	public int size, stride, offset, divisor;
+
+	public VertexAttribute(VertexBuffer buffer, int size, int stride, int offset, int divisor) {
+		this.buffer = buffer;
+		this.size = size;
+		this.stride = stride;
+		this.offset = offset;
+		this.divisor = divisor;
+	}	
+}
+
+
 public class VertexArrayObject extends GLObject {
-	
-	/**
-	 * 
-	 * @author Dario
-	 * 
-	 * One vertex attribute of this vertex attribute object. This
-	 * vertex attribute stores a reference to the buffer containing
-	 * the data and information about the layout of the data
-	 *
-	 */
-	private class VertexAttribute {
-		
-		private Buffer buffer;
-		
-		private int size, stride, offset;
-
-		public VertexAttribute(Buffer buffer, int size, int stride, int offset) {
-			
-			this.buffer = buffer;
-			this.size = size;
-			this.stride = stride;
-			this.offset = offset;
-		}
-
-		public Buffer getBuffer() {
-			return buffer;
-		}
-
-		public int getSize() {
-			return size;
-		}
-
-		public int getStride() {
-			return stride;
-		}
-
-		public int getOffset() {
-			return offset;
-		}		
-		
-	}
-	
 	
 	//An array containing all vertex attribute
 	private VertexAttribute[] attributes;
@@ -74,33 +56,52 @@ public class VertexArrayObject extends GLObject {
 	 * @param stride The offset in bytes between the blocks
 	 * @param offset The starting position of the blocks in the buffer
 	 */
-	public void setVertexAttributePointer(VertexBuffer buffer, int index, int size, int stride, int offset) {
+	public void setVertexAttributePointer(VertexBuffer buffer, int index, int size, int stride, int offset, int divisor) {
 		
 		this.bind();
 		buffer.bind();
+		glEnableVertexAttribArray(index);
 		
 		//If the buffer contains float data
 		if(isFloat(buffer.getDataType())) {
 			
 			glVertexAttribPointer(index, size, buffer.getDataType(), false, stride, offset);
-			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset, divisor);
 			
 		//If the buffer contains integer data
 		} else if(isInteger(buffer.getDataType())) {
 			
 			glVertexAttribIPointer(index, size, buffer.getDataType(), stride, offset);
-			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset, divisor);
 			
 		//If the buffer contains long data (double, long)
 		} else {
 			
 			glVertexAttribLPointer(index, size, buffer.getDataType(), stride, offset);
-			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset);
+			this.attributes[index] = new VertexAttribute(buffer, size, stride, offset, divisor);
 			
 		}
 		
+		glVertexAttribDivisor(index, divisor);
+		glDisableVertexAttribArray(index);
+		
 		buffer.unbind();
 		this.unbind();
+	}
+	
+	
+	public void setVertexAttributePointer(VertexBuffer buffer, int index, int size, int stride, int offset) {
+		this.setVertexAttributePointer(buffer, index, size, stride, offset, 0);
+	}
+	
+	
+	public void setVertexAttributePointer(VertexAttribute attribute, int index) {
+		this.setVertexAttributePointer(attribute.buffer, index, attribute.size, attribute.stride, attribute.offset, attribute.divisor);
+	}
+	
+	
+	public VertexAttribute[] getVertexAttributes() {
+		return attributes;
 	}
 	
 	
@@ -135,27 +136,6 @@ public class VertexArrayObject extends GLObject {
 	 */
 	private boolean isFloat(int dataType) {
 		return dataType == GL_FLOAT || dataType == GL_HALF_FLOAT;
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns the total size of the data stored for each vertex
-	 */
-	public int getVertexSize() {
-		
-		int totalSize = 0;
-		
-		for (VertexAttribute attribute : attributes) {
-			if (attribute == null) {
-				continue;
-			}
-			
-			totalSize += attribute.size;
-		}
-		
-		return totalSize;
-		
 	}
 	
 	

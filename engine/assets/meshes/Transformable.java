@@ -45,6 +45,7 @@ public class Transformable {
 	 * @param scale The scale of the Transformable
 	 */
 	public Transformable(Vector3f translation, Vector3f rotation, Vector3f scale) {
+		this();
 		transformationMatrix.setTranslation(translation);
 		transformationMatrix.setScale(scale);
 		transformationMatrix.setRot(rotation);

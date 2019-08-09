@@ -11,8 +11,8 @@ public class LightShader extends ShaderProgram {
 	private static final String path = "Shaders/LightShaders/";	
 	
 	
-	private LightShader(String vertPath, String fragPath) {
-		super(vertPath, fragPath);
+	private LightShader(String vertSource, String fragSource) {
+		super(vertSource, fragSource);
 	}
 	
 	
@@ -21,7 +21,6 @@ public class LightShader extends ShaderProgram {
 	 * @return returns a LightShader that does per vertex light computing
 	 */
 	public static LightShader createPerVertexLightShader() {
-		
 		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShaderPV.vert");
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShaderPV.frag");
 		
@@ -34,8 +33,19 @@ public class LightShader extends ShaderProgram {
 	 * @return returns a LightShader that does per fragment light computing
 	 */
 	public static LightShader createPerFragmentLightShader() {
-		
 		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShader.vert");
+		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
+		
+		return new LightShader(vertSource, fragSource);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns a LightShader for instanced rendering
+	 */
+	public static LightShader createInstancedRenderingShader() {
+		String vertSource = FileUtils.loadShaderSourceCode(path + "lightShaderInstanced.vert");
 		String fragSource = FileUtils.loadShaderSourceCode(path + "lightShader.frag");
 		
 		return new LightShader(vertSource, fragSource);

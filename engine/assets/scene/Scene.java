@@ -20,6 +20,11 @@ public class Scene {
 	}
 	
 	
+	public Scene(Camera camera, DirectionalLight light) {
+		this(camera, light, null);
+	}
+	
+	
 	public boolean hasCamera() {
 		return camera != null;
 	}

@@ -60,7 +60,8 @@ public class Mesh3D extends Mesh {
 		shader.setModelMatrix(getTransformable().getTransformationMatrix());
 		shader.setUniformSubroutines();
 		
-		if (getTexture() != null) shader.bindTexture("material.texture", getTexture());
+		if (getTexture() != null) 
+			shader.bindTexture("material.texture", getTexture());
 	}
 	
 	
