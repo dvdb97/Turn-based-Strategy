@@ -269,10 +269,34 @@ public class Camera {
 	 * 
 	 * Moves the camera against the view direction (distance * -viewDirection)
 	 * 
-	 * @param distance
+	 * @param distance The distance
 	 */
 	public void backward(float distance) {
 		this.move(viewDirection.times(-distance));
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera to the left.
+	 * 
+	 * @param distance The distance 
+	 */
+	public void leftwards(float distance) {
+		Vector3f axis = viewDirection.cross(upVector).normalize();
+		this.move(axis.times(-distance));
+	}
+	
+	
+	/**
+	 * 
+	 * Moves the camera to the right.
+	 * 
+	 * @param distance The distance 
+	 */
+	public void rightwards(float distance) {
+		Vector3f axis = viewDirection.cross(upVector).normalize();
+		this.move(axis.times(distance));
 	}
 	
 	
