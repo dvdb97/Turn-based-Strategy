@@ -8,7 +8,7 @@ import utils.FileUtils;
 
 public class SpriteShader extends ShaderProgram {
 
-	private static final String PATH = "Shaders/StandardShaders/sprite";
+	private static final String PATH = "Shaders/StandardShaders/";
 	
 	private SpriteShader(String vertSource, String fragSource) {
 		super(vertSource, fragSource);
@@ -17,8 +17,16 @@ public class SpriteShader extends ShaderProgram {
 	
 	
 	public static SpriteShader create() {
-		String vert = FileUtils.loadShaderSourceCode(PATH + ".vert");
-		String frag = FileUtils.loadShaderSourceCode(PATH + ".frag");
+		String vert = FileUtils.loadShaderSourceCode(PATH + "sprite.vert");
+		String frag = FileUtils.loadShaderSourceCode(PATH + "sprite.frag");
+		
+		return new SpriteShader(vert, frag);
+	}
+	
+	
+	public static SpriteShader createInstancedRenderingShader() {
+		String vert = FileUtils.loadShaderSourceCode(PATH + "spriteInstanced.vert");
+		String frag = FileUtils.loadShaderSourceCode(PATH + "sprite.frag");
 		
 		return new SpriteShader(vert, frag);
 	}

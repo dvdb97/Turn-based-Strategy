@@ -5,6 +5,10 @@ import rendering.matrices.transformation.*;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 
+import static java.lang.Math.sqrt;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+
 public class Transformable {
 	
 	private static final Vector4f[] unitCube = {
@@ -295,5 +299,5 @@ public class Transformable {
 	public Vector4f[] getBoundaries() {
 		return toWorldSpace(unitCube);
 	}
-
+	
 }
