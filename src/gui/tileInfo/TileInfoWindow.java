@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import container.RadioButtons;
 import container.Tab;
 import container.TabMenu;
-import core.Application;
+import core.Application1;
 
 public class TileInfoWindow extends GUIWindow {
 	
@@ -39,7 +39,7 @@ public class TileInfoWindow extends GUIWindow {
 		
 		infoText = new TTFBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
-		float textureHeight = 0.4f/0.9f/3f*Application.getWindow().getAspectRatio();
+		float textureHeight = 0.4f/0.9f/3f*Application1.getWindow().getAspectRatio();
 		waterTex = new GUITexture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, textureHeight));
 		grassTex = new GUITexture("res/PH_Grassland.png", new GUIElementMatrix(0, 0, 1, textureHeight));
 		

@@ -2,7 +2,7 @@ package stbFont;
 
 import assets.meshes.geometry.Color;
 import assets.textures.Texture2D;
-import core.Application;
+import core.Application1;
 import dataType.GUIElementMatrix;
 import fundamental.Element;
 import rendering.shapes.implemented.GUIQuad;
@@ -25,8 +25,8 @@ public class TTFBox extends Element {
 			ftg = new FontTextureGenerator("res/fonts/FreeMono.ttf");
 			font = ftg.getFontTexture(reqHeight, text, color);
 			
-			elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());
-			elementMatrix.setYStretch((float)2*font.getHeight()/Application.getWindowHeight());
+			elementMatrix.setXStretch((float)2*font.getWidth() /Application1.getWindowWidth());
+			elementMatrix.setYStretch((float)2*font.getHeight()/Application1.getWindowHeight());
 			
 		} catch (IOException e) {}
 				
@@ -40,8 +40,8 @@ public class TTFBox extends Element {
 		
 		font = ftg.getFontTexture(reqHeight, text, color);
 		
-		elementMatrix.setXStretch((float)2*font.getWidth() /Application.getWindowWidth());
-		elementMatrix.setYStretch((float)2*font.getHeight()/Application.getWindowHeight());
+		elementMatrix.setXStretch((float)2*font.getWidth() /Application1.getWindowWidth());
+		elementMatrix.setYStretch((float)2*font.getHeight()/Application1.getWindowHeight());
 		
 	}
 	

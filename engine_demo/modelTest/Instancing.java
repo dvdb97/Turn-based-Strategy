@@ -10,7 +10,7 @@ import assets.meshes.fileLoaders.FileLoader;
 import assets.meshes.instanced.Instancer3D;
 import assets.scene.Scene;
 import interaction.Window;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import timer.Cooldown;
@@ -31,7 +31,7 @@ private static Window window;
 	public static void init() {
 		window = new Window();
 		window.createFullscreenWindow("Model Demo");
-		window.setKeyInputCallback(new KeyInput());
+		window.setKeyInputCallback(new KeyInputHandler());
 		
 		RenderEngine.init(window);
 		RenderEngine.enableDepthTest();
@@ -71,7 +71,7 @@ private static Window window;
 		cd.start();
 		int index = 0;
 		
-		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
+		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			//Measure speed
 		    double currentTime = glfwGetTime();
 		    nbFrames++;

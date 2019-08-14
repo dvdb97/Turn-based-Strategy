@@ -1,6 +1,6 @@
 package interaction;
 
-import core.Application;
+import core.Application1;
 import graphics.matrices.Matrices;
 import interaction.input.CursorPosInput;
 import interaction.input.MouseInputManager;

@@ -5,7 +5,7 @@ import interaction.PlayerCamera;
 import gui.GameGUIManager;
 import gui_core.GUIManager;
 import interaction.TileSelecter;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import rendering.RenderEngine;
 import world.WorldManager;
 
@@ -61,7 +61,7 @@ public class Game {
 		
 		PlayerCamera.update();
 		
-		if (KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
+		if (KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			running = false;
 		}
 

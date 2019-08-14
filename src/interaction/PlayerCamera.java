@@ -6,7 +6,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
 import assets.cameras.Camera;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import math.matrices.Matrix44f;
 import math.vectors.Vector3f;
 import timer.Cooldown;
@@ -55,28 +55,28 @@ public class PlayerCamera {
 		
 		//Temporary: Move the map with W-A-S-D
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationForward())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationForward())) {
 			
 			camera.move(0f, cameraMovementSpeed, 0f);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationBackward())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationBackward())) {
 			
 			camera.move(0f, -cameraMovementSpeed, 0f);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationRight())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationRight())) {
 			
 			camera.move(cameraMovementSpeed, 0f, 0f);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationLeft())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationLeft())) {
 			
 			camera.move(-cameraMovementSpeed, 0f, 0f);
 			
@@ -91,35 +91,35 @@ public class PlayerCamera {
 		
 		//Move the Camera downwards and tilt it a bit. TODO: A function that processes the matrix for that
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationDown())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationDown())) {
 			
 			camera.move(0f, 0f, -cameraMovementSpeed);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(KeyBindings.getMapTranslationUp())) {
+		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationUp())) {
 			
 			camera.move(0f, 0f, cameraMovementSpeed);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(GLFW_KEY_T)) {
+		if (KeyInputHandler.keyPressed(GLFW_KEY_T)) {
 			
 			camera.pitch(0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(GLFW_KEY_G)) {
+		if (KeyInputHandler.keyPressed(GLFW_KEY_G)) {
 			
 			camera.pitch(-0.1f * cameraRotationSpeed);
 			
 		}
 		
 		
-		if (KeyInput.keyPressed(GLFW_KEY_ENTER)) {
+		if (KeyInputHandler.keyPressed(GLFW_KEY_ENTER)) {
 			
 			if (glfwGetTime() - timer1 <= 1.0) {
 				return;

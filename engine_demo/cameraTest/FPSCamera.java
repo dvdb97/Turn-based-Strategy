@@ -12,7 +12,7 @@ import assets.scene.Scene;
 import assets.textures.Skybox;
 import interaction.Window;
 import interaction.input.CursorPosInput;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import rendering.RenderEngine;
@@ -24,7 +24,7 @@ public class FPSCamera {
 	public static void init() {
 		window = new Window();
 		window.createFullscreenWindow("Model Demo");
-		window.setKeyInputCallback(new KeyInput());
+		window.setKeyInputCallback(new KeyInputHandler());
 		window.setMousePosInput(new CursorPosInput(window));
 		
 		RenderEngine.init(window);
@@ -57,7 +57,7 @@ public class FPSCamera {
 		mesh.useMaterialColor();
 		
 		
-		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
+		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			
 			fpc.update();

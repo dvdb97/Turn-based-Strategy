@@ -9,7 +9,7 @@ import assets.meshes.specialized.Circle;
 import assets.scene.Scene;
 import assets.textures.Texture2D;
 import interaction.Window;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
 import rendering.RenderEngine;
 import rendering.RenderQueue;
@@ -21,7 +21,7 @@ public class Parenting {
 	public static void main(String[] args) {
 		window = new Window();
 		window.createFullscreenWindow("Parenting Test");
-		window.setKeyInputCallback(new KeyInput());
+		window.setKeyInputCallback(new KeyInputHandler());
 		
 		RenderEngine.init(window);
 		RenderEngine.enableDepthTest();
@@ -59,7 +59,7 @@ public class Parenting {
 		renderQueue.addMesh(blueCircle);
 		renderQueue.addMesh(greenCircle);
 		
-		while (!KeyInput.keyPressed(GLFW_KEY_ESCAPE)) {
+		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			RenderEngine.clear();
 			
 			//Update

@@ -8,7 +8,7 @@ import static java.lang.Math.sin;
 import assets.meshes.Transformable;
 import interaction.Window;
 import interaction.input.CursorPosInput;
-import interaction.input.KeyInput;
+import interaction.input.KeyInputHandler;
 import interaction.input.Keys;
 
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
@@ -100,19 +100,19 @@ public class FirstPersonController {
 		
 		this.rotateCamera(yoffset, xoffset);
 		
-		if (KeyInput.keyPressed(Keys.KEY_W)) {
+		if (KeyInputHandler.keyPressed(Keys.KEY_W)) {
 			moveForward();
 		}
 		
-		if (KeyInput.keyPressed(Keys.KEY_S)) {
+		if (KeyInputHandler.keyPressed(Keys.KEY_S)) {
 			moveBackward();
 		}
 		
-		if (KeyInput.keyPressed(Keys.KEY_A)) {
+		if (KeyInputHandler.keyPressed(Keys.KEY_A)) {
 			moveLeft();
 		}
 		
-		if (KeyInput.keyPressed(Keys.KEY_D)) {
+		if (KeyInputHandler.keyPressed(Keys.KEY_D)) {
 			moveRight();
 		}
 	}

@@ -5,7 +5,7 @@ import core.saves.StartParams;
 public class Main {
 	
 	public static void main(String[] args) {	
-		Application.init(new StartParams("Files/StartParameters"));
+		Application1.init(new StartParams("Files/StartParameters"));
 	}
 	
 }

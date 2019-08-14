@@ -13,6 +13,8 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
+import interaction.input.MouseInputHandler;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 
@@ -80,13 +82,22 @@ public class Window {
 	}
 	
 	
+	public boolean createFullscreenWindow(String title, Resolution resolution) {
+		return createWindow(resolution.width, resolution.height, title, glfwGetPrimaryMonitor());
+	}
+	
+	
 	public boolean createWindowedWindow(String title) {
 		return createWindow(screenWidth / 2, screenHeight / 2, title, NULL);
 	}
 	
 	
+	public boolean createWindowedWindow(String title, Resolution resolution) {
+		return createWindow(resolution.width, resolution.height, title, NULL);
+	}
+	
+	
 	private boolean createWindow(int width, int height, String title, long monitor) {
-		
 		windowWidth = width;
 		windowHeight = height;
 		
@@ -118,8 +129,9 @@ public class Window {
 	}
 	
 	
-	public void setMouseInputCallback(GLFWMouseButtonCallback mouseInputCallback) {
-		glfwSetMouseButtonCallback(windowID, mouseInputCallback);
+	public void setMouseInputCallback(MouseInputHandler mouseInputHandler) {
+		glfwSetMouseButtonCallback(windowID, mouseInputHandler.getMouseButtonInputHandler());
+		glfwSetCursorPosCallback(windowID, mouseInputHandler.getCursorPosInputHandler());
 	}
 	
 	
