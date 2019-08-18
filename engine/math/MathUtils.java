@@ -1,9 +1,16 @@
 package math;
 
+import java.lang.Math;
+
 public class MathUtils {
 	
 	public static float square(float value) {
 		return value * value;
+	}
+	
+	
+	public static float sqrt(float value) {
+		return (float)Math.sqrt(value);
 	}
 	
 	
