@@ -1,138 +1,74 @@
 package rendering.shapes;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-
-import assets.cameras.Camera;
-import assets.light.DirectionalLight;
-import assets.meshes.Mesh;
-import assets.meshes.Mesh2D;
 import assets.meshes.geometry.Color;
-import assets.scene.Scene;
-import assets.shaders.standardShaders.SpriteShader;
-import assets.textures.Texture;
-import dataType.GUIElementMatrix;
-import math.matrices.Matrix44f;
 
-public abstract class GUIShape extends Mesh {
+public abstract class GUIShape {
 	
-	private SpriteShader shader;
+	private Color color;
+	protected String state;
 
-	public GUIShape() {
-		this(GL_TRIANGLES);
+	/**
+	 * 
+	 * @param color The color to render the shape with.
+	 */
+	public GUIShape(Color color) {
+		this.color = color;
 	}
 	
 	
-	public GUIShape(int drawMode) {
-		super(drawMode);
-		
-		shader = SpriteShader.create();
-		useTextureColor();	
+	/**
+	 * 
+	 * @param color The color to render the shape with.
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	
-	public void render(Texture texture) {
-		this.setTexture(texture);
-		this.useTextureColor();
-		
-		onDrawStart(null);
-		this.render();		
-		onDrawEnd(null);
+	/**
+	 * 
+	 * @return Returns the color of this shape.
+	 */
+	public Color getColor() {
+		return color;
 	}
 	
 	
-	public void render(Texture texture, GUIElementMatrix matrix) {
-		this.setTexture(texture);
-		this.useTextureColor();		
-		
-		onDrawStart(null, null, matrix.toMatrix44f());
-		this.render();
-		onDrawEnd(null, null);
+	/**
+	 * 
+	 * Changes the state of this shape.
+	 * 
+	 * @param state The new state.
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 	
-	public void render(Color color) {
-		this.getMaterial().color = color;
-		this.useMaterialColor();
-		
-		onDrawStart(null);
-		this.render();
-		onDrawEnd(null);
-	}
+	/**
+	 * 
+	 * Renders the Shape onto the screen.
+	 * 
+	 * @param x The x coordinate of the left upper corner of the element.
+	 * @param y The y coordinate of the left upper corner of the element.
+	 * @param width The width of the element.
+	 * @param height The height of the element.
+	 */
+	public abstract void render(int x, int y, int width, int height);
 	
 	
-	public void render(Color color, GUIElementMatrix matrix) {
-		this.getMaterial().color = color;
-		this.useMaterialColor();
-		
-		onDrawStart(null, null, matrix.toMatrix44f());
-		this.render();
-		onDrawEnd(null, null);
-	}
-	
-	
-	protected void onDrawStart(Camera camera, DirectionalLight light, Matrix44f transformationMatrix) {
-		shader.bind();
-		shader.setMVPMatrix(transformationMatrix);
-		shader.setMaterial(getMaterial());
-		shader.setUniformSubroutines();
-		
-		if (getTexture() != null)
-			shader.setMaterialTexture(getTexture());
-	}
-	
-
-	@Override
-	protected void onDrawStart(Camera camera, DirectionalLight light) {
-		this.onDrawStart(camera, light, transformable.getTransformationMatrix());
-	}
-
-
-	@Override
-	protected void onDrawEnd(Camera camera, DirectionalLight light) {
-		shader.unbind();		
-	}
-
-
-
-	@Override
-	protected void onDrawStart(Scene scene) {
-		this.onDrawStart(null, null);	
-	}
-
-	@Override
-	protected void onDrawEnd(Scene scene) {
-		this.onDrawEnd(null, null);		
-	}
-	
-	
-	public abstract boolean isHit(float cursorX, float cursorY);
-	
-	
-	public void useTextureColor() {
-		shader.bind();
-		shader.useTextureColor();
-		shader.unbind();
-	}
-	
-	
-	public void useMaterialColor() {
-		shader.bind();
-		shader.useMaterialColor();
-		shader.unbind();
-	}
-	
-	
-	public void useAttributeColor() {
-		shader.bind();
-		shader.useAttribColor();
-		shader.unbind();
-	}
-	
-	
-	@Override
-	public void delete() {
-		shader.delete();
-		super.delete();
-	}
+	/**
+	 * 
+	 * Checks if the cursor is currently targeting the element with this shape.
+	 * 
+	 * @param x The x coordinate of the left upper corner of the element.
+	 * @param y The y coordinate of the left upper corner of the element.
+	 * @param width The width of the element.
+	 * @param height The height of the element.
+	 * @param cursorX The y coordinate of the cursor.
+	 * @param cursorY The x coordinate of the cursor.
+	 * @return Returns true if the cursor is targeting the element with this shape.
+	 */
+	public abstract boolean isTargeted(int x, int y, int width, int height, int cursorX, int cursorY);
 	
 }

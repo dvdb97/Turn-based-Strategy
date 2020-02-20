@@ -5,17 +5,16 @@ import rendering.Renderer2D;
 import rendering.shapes.GUIShape;
 import target_detection.TargetDetection;
 
-public class GUIQuad extends GUIShape {	
-	
-	public GUIQuad(Color color) {
+public class GUIImage extends GUIShape {
+
+	public GUIImage(Color color) {
 		super(color);
 	}
 
 	@Override
 	public void render(int x, int y, int width, int height) {
 		Renderer2D.beginPath();
-		Renderer2D.rect(x, y, width, height);
-		Renderer2D.fill(getColor());
+		
 	}
 
 	@Override

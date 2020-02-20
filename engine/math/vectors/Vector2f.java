@@ -1,7 +1,5 @@
 package math.vectors;
 
-import math.matrices.Matrixf;
-
 public class Vector2f extends Vectorf {
 
 	private Vector2f() {
@@ -53,6 +51,24 @@ public class Vector2f extends Vectorf {
 	
 	public float dot(Vector2f vec) {
 		return this.getA() * vec.getA() + this.getB() * vec.getB();
+	}
+	
+	
+	public Vector2f times(float value) {
+		return new Vector2f(value * getA(), value * getB());
+	}
+	
+	
+	public Vector2f timesEQ(float value) {
+		this.setA(value * getA());
+		this.setB(value * getB());
+		
+		return this;
+	}
+	
+	
+	public Vector2f normalized() {
+		return timesEQ(1f / norm());
 	}
 
 	

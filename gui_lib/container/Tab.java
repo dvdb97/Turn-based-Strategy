@@ -1,9 +1,9 @@
 package container;
 
 import assets.meshes.geometry.Color;
-import dataType.GUIElementMatrix;
 import fundamental.Container;
 import fundamental.Element;
+import rendering.shapes.implemented.GUIQuad;
 
 /**
  * 
@@ -14,15 +14,15 @@ import fundamental.Element;
  * 
  * @author jona
  */
-public class Tab extends Container {
-
-	protected Tab(Color color, GUIElementMatrix transformationMatrix) {
-		super(color, transformationMatrix);
-		// TODO Auto-generated constructor stub
-	}
+public class Tab extends Container<Element> {
 	
-	public void addElement(Element e) {
-		children.add(e);
+	/**
+	 * 
+	 * @param color The color of the tab.
+	 * @param flexDirection Specifies the layout of this Container.
+	 */
+	public Tab(Color color, FlexDirection flexDirection) {
+		super(new GUIQuad(color), 100f, 100f, flexDirection);
 	}
 	
 }

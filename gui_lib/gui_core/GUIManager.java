@@ -1,86 +1,71 @@
 package gui_core;
 
-import java.util.LinkedList;
-import fundamental.ClickableElement;
+import java.util.HashSet;
 import fundamental.GUIWindow;
 import input.Mouse;
 import interaction.Window;
+import interaction.input.CursorPosInput;
 
 public class GUIManager {
 	
+	private static boolean initialized = false;	
 	
-	private static boolean initialized = false;
+	private static int width, height;
 	
-	private static int idCounter;
+	private static HashSet<GUIWindow> windows;
 	
-	
-	private static LinkedList<GUIWindow> windows;
-	
-	private static int width;
-	
-	private static int height;
-	
-	private static ClickableElement clickedElement;
+	private static Input input;
 	
 	
-	private GUIManager() {
-		
-	}
+	/**
+	 * Disable the constructor as this class is only used in a static way. 
+	 */
+	private GUIManager() {}
+	
 	
 	public static void init(Window window) {
-		
 		if (initialized) {
 			return;
 		}
 		
-		GUIShaderCollection.init(window);
-		idCounter = 0;
 		initialized = true;
-		windows = new LinkedList<GUIWindow>();
+		
+		windows = new HashSet<GUIWindow>();
 		width = window.getWidth();
 		height = window.getHeight();
-		Mouse.init();
+		input = new Input();
 		
+		Mouse.init();
 	}
 	
-	//***************************************************************************************
 	
 	/**
 	 * 
 	 * @return true,  if any window is hit
 	 */
-	public static boolean processInput() {
-		
+	public static void processInput() {
 		Mouse.update();
 		
-		if (clickedElement != null) {
-			
-			clickedElement.processInput();
-			return true;
-			
-		} else {
-			
-			for (GUIWindow window : windows) {
-				
-				if (window.processInput()) {
-					return true;
-				}
-				
+		for (GUIWindow window : windows) {
+			if (window.isObsolete()) {
+				windows.remove(window);
+				window.delete();
 			}
-			
 		}
 		
-		return false;
+		int x = (int) CursorPosInput.getXPos();
+		int y = (int) CursorPosInput.getYPos();
 		
+		input.dx = x - input.cursorX;
+		input.dy = y - input.cursorY;
+		input.cursorX = x;
+		input.cursorY = y;
+		input.leftMouseButton = Mouse.isLeftButtonPressed();
+		input.rightMouseButton = Mouse.isRightButtonPressed();
+		
+		windows.forEach((e) -> e.processInput(input));
 	}
 	
-	public static void update() {
-		for (GUIWindow window : windows) {
-			//TODO: Only call it when there were changes
-			//updates rendering matrices (and its inversions)
-			window.update();
-		}
-	}
 
 	public static void render() {
 		for (GUIWindow window : windows) {
@@ -88,31 +73,6 @@ public class GUIManager {
 		}
 	}
 	
-	//************************** clicked element ******************************************
-	
-	public static void setClickedElement(ClickableElement element) {
-		
-		if (clickedElement == null) {
-			clickedElement = element;
-		} else {
-			System.err.println("GUIManager: clickedElement already set");
-		}
-		
-	}
-	
-	
-	public static void resetClickedELement(ClickableElement element) {
-		
-		if (clickedElement == element) {
-			clickedElement = null;
-		} else {
-			//TODO: error report
-			System.err.println("GUIManager: TODO");
-		}
-		
-	}
-	
-	//***************************************************************************************
 	
 	public static void setPrimaryWindow(GUIWindow window) {
 		if (windows.contains(window)) {
@@ -124,15 +84,8 @@ public class GUIManager {
 	}
 	
 	
-	//***************************************************************************************
-	
 	public static boolean isInitialized() {
 		return initialized;
-	}
-	
-	
-	public static int generateID() {		
-		return idCounter++;
 	}
 	
 	
@@ -143,6 +96,11 @@ public class GUIManager {
 	
 	public static void remove(GUIWindow window) {
 		windows.remove(window);
+	}
+	
+	
+	public static void delete() {
+		windows.forEach((e) -> e.delete());
 	}
 
 }

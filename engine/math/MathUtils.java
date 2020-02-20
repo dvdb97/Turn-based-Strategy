@@ -7,6 +7,11 @@ public class MathUtils {
 	}
 	
 	
+	public static float sqrt(float value) {
+		return (float)Math.sqrt(value);
+	}
+	
+	
 	public static float getAbsoluteValue(float value) {
 		
 		return value < 0 ? -1f * value : value;
@@ -38,5 +43,10 @@ public class MathUtils {
 	
 	public static float min(float a, float b) {
 		return a < b ? a : b;
+	}
+	
+	
+	public static float clamp(float value, float min, float max) {
+		return min(max(value, min), max);
 	}
 }

@@ -5,22 +5,34 @@ import rendering.Renderer2D;
 import rendering.shapes.GUIShape;
 import target_detection.TargetDetection;
 
-public class GUIQuad extends GUIShape {	
+public class GUIRoundedRect extends GUIShape {
 	
-	public GUIQuad(Color color) {
+	private int radius;
+	
+	public GUIRoundedRect(Color color, int radius) {
 		super(color);
+		
+		this.radius = radius;
+	}
+	
+	public int getRadius() {
+		return radius;
+	}
+	
+	public void setRadius(int radius) {
+		this.radius = radius;
 	}
 
 	@Override
 	public void render(int x, int y, int width, int height) {
 		Renderer2D.beginPath();
-		Renderer2D.rect(x, y, width, height);
+		Renderer2D.roundedRect(x, y, width, height, radius);
 		Renderer2D.fill(getColor());
 	}
 
 	@Override
 	public boolean isTargeted(int x, int y, int width, int height, int cursorX, int cursorY) {
-		return TargetDetection.square(x, y, width, height, cursorX, cursorY);
+		return TargetDetection.roundedRect(x, y, width, height, radius, cursorX, cursorY);
 	}
-
+	
 }

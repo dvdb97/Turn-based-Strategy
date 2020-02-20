@@ -3,6 +3,7 @@ package utils;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,17 @@ public class CustomBufferUtils {
 		buffer.flip();
 		
 		return buffer;
+	}
+	
+	
+	public static ByteBuffer createByteBuffer(String s, boolean nt) {
+		if (!nt) {
+			return ByteBuffer.wrap(s.getBytes());
+		} else {
+			ByteBuffer buffer = BufferUtils.createByteBuffer(s.getBytes().length + 1);
+			buffer.put(s.getBytes());
+			return buffer;
+		}
 	}
 	
 	

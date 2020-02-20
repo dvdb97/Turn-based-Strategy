@@ -93,6 +93,24 @@ public class Color {
 	
 	//***********************************
 	
+	public byte getRedByte() {
+		return (byte)(red * 255);
+	}
+	
+	public byte getGreenByte() {
+		return (byte)(green * 255);
+	}
+	
+	public byte getBlueByte() {
+		return (byte)(blue * 255);
+	}
+	
+	public byte getAlphaByte() {
+		return (byte)(alpha * 255);
+	}
+	
+	//***********************************
+	
 	/**
 	 * @return the red
 	 */

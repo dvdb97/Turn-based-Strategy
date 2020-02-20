@@ -16,8 +16,6 @@ import java.util.HashSet;
  * 	<li> Layout management using Yoga as all the children of a node will be identified by an index. </li>
  * </ul> 
  *
- * TODO: Limitless IndexManager.
- *
  */
 public class IndexManager {
 	
@@ -36,6 +34,11 @@ public class IndexManager {
 		this.limit = limit;
 		this.pointer = -1;
 		this.unused = new HashSet<Integer>();
+	}
+	
+	
+	public IndexManager() {
+		this(Integer.MAX_VALUE);
 	}
 	
 	
@@ -134,6 +137,15 @@ public class IndexManager {
 			
 			throw new IndexOutOfBoundsException();
 		}
+	}
+	
+	
+	/**
+	 * Frees all used indices resetting this IndexManager.
+	 */
+	public void freeAll() {
+		pointer = -1;
+		unused.clear();
 	}
 
 }

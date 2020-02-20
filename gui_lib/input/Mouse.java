@@ -110,8 +110,18 @@ public class Mouse {
 	}
 	
 	
+	public static int getCursorXi() {
+		return (int)cursorPosition.getA();
+	}
+	
+	
 	public static float getCursorY() {
 		return cursorPosition.getB();
+	}
+	
+	
+	public static int getCursorYi() {
+		return (int)cursorPosition.getB();
 	}
 	
 	

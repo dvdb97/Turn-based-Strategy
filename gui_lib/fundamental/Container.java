@@ -1,56 +1,232 @@
 package fundamental;
 
-import assets.meshes.geometry.Color;
-import dataType.ElementList;
-import dataType.GUIElementMatrix;
-import rendering.shapes.implemented.GUIQuad;
+import static org.lwjgl.util.yoga.Yoga.*;
 
-public abstract class Container extends Element {
+import java.util.HashMap;
+import java.util.Set;
+
+import gui_core.Input;
+import rendering.shapes.GUIShape;
+import utils.IndexManager;
+
+@SuppressWarnings("serial")
+class GUIElementNotFoundException extends RuntimeException {}
+
+public class Container<E extends Element> extends Element implements IContainer<E> {
 	
+	//Keeps track of the indices that are currently in use.
+	private IndexManager indexManager;
 	
-	protected ElementList children;
+	//Maps all
+	private HashMap<E, Integer> children;
+	
+	//Settings
+	private FlexDirection flexDirection;
+	
+	//The maximum number of children this container can have.
+	private int maxChildren;
 	
 	
 	//******************** constructor *******************************
 	
-	protected Container(Color color, GUIElementMatrix elementMatrix) {
-		super(new GUIQuad(), color, elementMatrix);
+	/**
+	 * 
+	 * @param width The width of the Container in pixels.
+	 * @param height The height of the Container in pixels.
+	 * @param flexDirection Specifies the layout of this Container.
+	 */
+	protected Container(GUIShape shape, int width, int height, FlexDirection flexDirection) {
+		super(shape, width, height);
+		init(flexDirection, Integer.MAX_VALUE);
+	}
+	
+	
+	/**
+	 * 
+	 * @param width The width of the Container in pixels.
+	 * @param height The height of the Container in pixels.
+	 * @param flexDirection Specifies the layout of this Container.
+	 * @param maxChildren The maximum number of children this container can have.
+	 */
+	protected Container(GUIShape shape, int width, int height, FlexDirection flexDirection, int maxChildren) {
+		super(shape, width, height);
+		init(flexDirection, maxChildren);
+	}
+	
+	
+	/**
+	 * 
+	 * @param widthPercent The width of the Container in relation to its parent.
+	 * @param heightPercent The height of the Container in relation to its parent.
+	 * @param flexDirection Specifies the layout of this Container.
+	 */
+	protected Container(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection) {
+		super(shape, widthPercent, heightPercent);
+		init(flexDirection, Integer.MAX_VALUE);
+	}
+	
+	
+	/**
+	 * 
+	 * @param widthPercent The width of the Container in relation to its parent.
+	 * @param heightPercent The height of the Container in relation to its parent.
+	 * @param flexDirection Specifies the layout of this Container.
+	 * @param maxChildren The maximum number of children this container can have.
+	 */
+	protected Container(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection, int maxChildren) {
+		super(shape, widthPercent, heightPercent);
+		init(flexDirection, maxChildren);
+	}
+	
+	
+	private void init(FlexDirection flexDirection, int maxChildren) {
+		indexManager = new IndexManager();
+		children = new HashMap<E, Integer>();
+		this.maxChildren = maxChildren;
 		
-		children = new ElementList();
+		setFlexDirection(flexDirection);
+	}
+	
+	
+	/**
+	 * 
+	 * @param flexDirection Specifies the layout of this Container.
+	 */
+	public void setFlexDirection(FlexDirection flexDirection) {
+		this.flexDirection = flexDirection;
 		
+		switch (flexDirection) {
+			case ROW:
+				YGNodeStyleSetFlexDirection(layoutID, YGFlexDirectionRow);
+				break;
+			case COLUMN:
+				YGNodeStyleSetFlexDirection(layoutID, YGFlexDirectionColumn);
+				break;
+			case ROW_REVERSE:
+				YGNodeStyleSetFlexDirection(layoutID, YGFlexDirectionRowReverse);
+				break;
+			case COLUMN_REVERSE:
+				YGNodeStyleSetFlexDirection(layoutID, YGFlexDirectionColumnReverse);
+				break;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns the flex direction that is currently set for this Container.
+	 */
+	public FlexDirection getFlexDirection() {
+		return flexDirection;
+	}
+	
+	
+	/**
+	 * 
+	 * Adds an element to this Container.
+	 * 
+	 * @param element The element to add to this container.
+	 */
+	public void addChild(E element) {
+		if (children.size() == maxChildren) {
+			System.err.println("Can't add a new child as the maximum number of children was reached!");
+		}
+		
+		int index = indexManager.getNewIndex();
+		children.put(element, index);
+		YGNodeInsertChild(layoutID, element.layoutID, index);
+	}
+	
+	
+	/**
+	 * 
+	 * Removes an element from this Container.
+	 * 
+	 * @param element The element to remove from this Container.
+	 */
+	public void removeChild(E element) {
+		if (!children.containsKey(element)) {
+			throw new GUIElementNotFoundException();
+		}
+		
+		int index = children.get(element);
+		indexManager.freeIndex(index);
+		children.remove(element);
+		YGNodeRemoveChild(layoutID, index);
+	}
+	
+	
+	/**
+	 * Removes all children from this Container.
+	 */
+	public void removeAllChildren() {
+		indexManager.freeAll();
+		children.clear();
+		YGNodeRemoveAllChildren(layoutID);
+	}
+	
+	
+	/**
+	 * 
+	 * @return Returns all children that are currently in this Container.
+	 */
+	public Set<E> getChildren() {
+		return children.keySet();
+	}
+	
+	
+	@Override
+	public int getNumChildren() {
+		return children.size();
+	}
+
+
+	private int alignmentToYGEnum(Alignment align) {
+		switch (align) {
+			case AUTO:
+				return YGAlignAuto;
+			case CENTER:
+				return YGAlignCenter;
+			case BASELINE:
+				return YGAlignBaseline;
+			case FLEX_START:
+				return YGAlignFlexStart;
+			case FLEX_END:
+				return YGAlignFlexEnd;
+			case SPACE_AROUND:
+				return YGAlignSpaceAround;
+			case SPACE_BETWEEN:
+				return YGAlignSpaceBetween;
+			default:
+				return YGAlignStretch;
+		}
+	}
+	
+	
+	@Override
+	public void setContentAlignment(Alignment align) {
+		YGNodeStyleSetAlignItems(layoutID, alignmentToYGEnum(align));
 	}
 	
 	
 	//*****************************************************************
-	
-	
-	
-	@Override
-	public void update(GUIElementMatrix parentMatrix) {
-		
-		super.update(parentMatrix);
-		children.update(this.TM);
-		
-	}
-	
-	@Override
-	public void render() {
-		super.render();
-		children.render();
-	}
-	
-	@Override
-	public boolean processInput() {
-		
-		if(super.processInput() == false) {
-			
-			return false;
-		}
-		
-		children.processInput();
-		
-		return true;
 
+
+	@Override
+	public void processInput(int parentX, int parentY, Input input) {		
+		int x = parentX + getXPosition();
+		int y = parentY + getYPosition();
+		children.keySet().forEach((e) -> e.processInput(x, y, input));
+			
+		super.processInput(parentX, parentY, input);
+	}
+
+
+	@Override
+	public void render(int parentX, int parentY) {
+		super.render(parentX, parentY);
+		
+		getChildren().forEach((e) -> e.render(parentX + getXPosition(), parentY + getYPosition()));
 	}
 	
 }
