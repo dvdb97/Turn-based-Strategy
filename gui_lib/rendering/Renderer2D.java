@@ -218,6 +218,15 @@ public class Renderer2D {
 	}
 	
 	
+	/**
+	 * 
+	 * @param x The x coordinate of the upper left corner.
+	 * @param y The y coordinate of the upper left corner.
+	 * @param text The text to render.
+	 * @param font The font to use for rendering.
+	 * @param color The text color.
+	 * @param size The font size.
+	 */
 	public static void text(int x, int y, String text, String font, Color color, int size) {		
 		nvgTextAlign(nvg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
 		nvgFontSize(nvg, size);
@@ -228,13 +237,40 @@ public class Renderer2D {
 		nvgText(nvg, x, y, textUtf8);
 	}
 	
+	
+	/**
+	 * 
+	 * The text is drawn on multiple lines if it is too long to
+	 * fit in a single line.
+	 * 
+	 * @param x The x coordinate of the upper left corner.
+	 * @param y The y coordinate of the upper left corner.
+	 * @param width The maximum width of a line.
+	 * @param text The text to render.
+	 * @param The font to use for rendering.
+	 * @param color The text color.
+	 * @param size The font size.
+	 */
+	public static void multilineText(int x, int y, int width, String text, String font, Color color, int size) {
+		nvgTextAlign(nvg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+		nvgFontSize(nvg, size);
+		nvgFontFace(nvg, font);
+		Renderer2D.fillStyle(color);
+		
+		ByteBuffer textUtf8 = memUTF8(text, false);
+		nvgTextBox(nvg, x, y, width, textUtf8);
+	}
+	
+	
 	///////////////////////////////////////////////////////////////
 	//////////////////////////// Style ////////////////////////////
 	///////////////////////////////////////////////////////////////
 	
+	
 	private static NVGColor rgba(Color color, NVGColor nvgColor) {
 		return nvgRGBAf(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), nvgColor);
 	}
+	
 	
 	/**
 	 * 

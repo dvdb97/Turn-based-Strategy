@@ -146,14 +146,17 @@ public class NanoVGSandbox {
 		
 		Tab tab5 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		
-		GUITextField text = new GUITextField("Not hovering!", "FreeMono", 200, 30, 30);
+		String notHovering = "This is a multi-line text. It starts a new line if the text is too long to fit in only one line.";
+		String hovering = "Hovering! Hovering! Hovering! Hovering! Hovering! Hovering!";
+		
+		GUITextField text = new GUITextField(notHovering, "FreeMono", 100f, 30f, 30);
 		text.setMargin(Direction.ALL, 10);
 		tab5.addChild(text);
 		
 		Button button = new Button(new GUIQuad(ColorPalette.BLUE), 100, 30);
 		button.setMargin(Direction.ALL, 10);
-		button.addOnMouseEnterListener((Input input) -> text.setText("Hovering!"));
-		button.addOnMouseLeaveListener((Input input) -> text.setText("Not hovering!"));
+		button.addOnMouseEnterListener((Input input) -> text.setText(hovering));
+		button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));
 		tab5.addChild(button);
 		
 		//############################## TabMenu ##############################

@@ -62,8 +62,8 @@ public class GUIText extends GUIShape {
 
 	@Override
 	public void render(int x, int y, int width, int height) {
-		Renderer2D.beginPath();
-		Renderer2D.text(x, y, text, font, getColor(), fontSize);
+		Renderer2D.beginPath();		
+		Renderer2D.multilineText(x, y, width, text, font, getColor(), fontSize);
 	}
 	
 
