@@ -13,7 +13,6 @@ import assets.scene.Scene;
 import container.Tab;
 import container.TabMenu;
 import fundamental.Element.Direction;
-import fundamental.GUIWindow;
 import fundamental.IContainer.FlexDirection;
 import fundamental.GUITextField;
 import gui_core.GUIManager;
@@ -95,7 +94,7 @@ public class NanoVGSandbox {
 		TestQuadElement quad = new TestQuadElement(100, 100);
 		quad.setMargin(Direction.ALL, 10);
 		
-		TestRoundedRectElement roundedRect = new TestRoundedRectElement(150, 100, 20);
+		TestRoundedRectElement roundedRect = new TestRoundedRectElement(1500, 100, 20);
 		roundedRect.setMargin(Direction.ALL, 10);
 		
 		tab1.addChild(circle);
@@ -155,8 +154,9 @@ public class NanoVGSandbox {
 		
 		Button button = new Button(new GUIQuad(ColorPalette.BLUE), 100, 30);
 		button.setMargin(Direction.ALL, 10);
-		button.addOnMouseEnterListener((Input input) -> text.setText(hovering));
-		button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));
+		//button.addOnMouseEnterListener((Input input) -> text.setText(hovering));
+		//button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));
+		button.addOnClickListener((Input input) -> RenderEngine.takeScreenshot("screenshots/", "png"));
 		tab5.addChild(button);
 		
 		//############################## TabMenu ##############################

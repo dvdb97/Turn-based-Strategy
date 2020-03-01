@@ -239,8 +239,18 @@ public abstract class Element {
 	 * @return Returns the x coordinate of the upper left corner of this element. Note that this
 	 * isn't the global position but the offset relative to the parent's position.
 	 */
-	public int getXPosition() {
+	public int getLocalXPosition() {
 		return (int)YGNodeLayoutGetLeft(layoutID);
+	}
+	
+	
+	/**
+	 * 
+	 * @param parentX The parent's x coordinate on the screen.
+	 * @return Return this element's x coordinate on the screen.
+	 */
+	public int getGlobalXPosition(int parentX) {
+		return parentX + getLocalXPosition();
 	}
 	
 	
@@ -249,8 +259,18 @@ public abstract class Element {
 	 * @return Returns the y coordinate of the upper left corner of this element. Note that this
 	 * isn't the global position but the offset relative to the parent's position.
 	 */
-	public int getYPosition() {
+	public int getLocalYPosition() {
 		return (int)YGNodeLayoutGetTop(layoutID);
+	}
+	
+	
+	/**
+	 * 
+	 * @param parentY The parent's y coordinate on the screen.
+	 * @return Return this element's y coordinate on the screen.
+	 */
+	public int getGlobalYPosition(int parentY) {
+		return parentY + getLocalYPosition();
 	}
 	
 	
@@ -290,8 +310,8 @@ public abstract class Element {
 	 */
 	public void render(int parentX, int parentY) {
 		if (visible) {
-			int x = parentX + getXPosition();
-			int y = parentY + getYPosition();
+			int x = getGlobalXPosition(parentX);
+			int y = getGlobalYPosition(parentY);
 			
 			shape.render(x, y, getWidth(), getHeight());
 		}
@@ -309,8 +329,8 @@ public abstract class Element {
 	 * @return Returns true if the cursor is targeting this element.
 	 */
 	public boolean isTargeted(int parentX, int parentY, int cursorX, int cursorY) {
-		int x = parentX + getXPosition();
-		int y = parentY + getYPosition();
+		int x = parentX + getLocalXPosition();
+		int y = parentY + getLocalYPosition();
 		
 		return shape.isTargeted(x, y, getWidth(), getHeight(), cursorX, cursorY);
 	}

@@ -102,13 +102,43 @@ public class Renderer2D {
 	}
 	
 	
+	/**
+	 * Pushes and saves the current render state into a state stack.
+	 * Use {@link #restoreState() restoreState} to restore this state.
+	 */
 	public static void saveState() {
 		nvgSave(nvg);
 	}
 	
 	
+	/**
+	 * Pops and restores the current render state.
+	 */
 	public static void restoreState() {
 		nvgRestore(nvg);
+	}
+	
+	
+	/**
+	 * 
+	 * Clip the rendering into a rectangle defined by the parameters.
+	 * 
+	 * @param x The x coordinate of the clipping window.
+	 * @param y The y coordinate of the clipping window.-
+	 * @param width The width of the clipping window.
+	 * @param height The height of the clipping window.
+	 */
+	public static void scissor(int x, int y, int width, int height) {
+		nvgScissor(nvg, x, y, width, height);
+	}
+	
+	
+	/**
+	 * 
+	 * Reset and disable scissoring. 
+	 */
+	public static void resetScissor() {
+		nvgResetScissor(nvg);
 	}
 	
 	

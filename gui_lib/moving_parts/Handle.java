@@ -67,14 +67,14 @@ public class Handle extends Element {
 
 
 	@Override
-	public int getXPosition() {
-		return super.getXPosition() + (int)position.getA();
+	public int getLocalXPosition() {
+		return super.getLocalXPosition() + (int)position.getA();
 	}
 
 
 	@Override
-	public int getYPosition() {
-		return super.getYPosition() + (int)position.getB();
+	public int getLocalYPosition() {
+		return super.getLocalYPosition() + (int)position.getB();
 	}
 	
 }

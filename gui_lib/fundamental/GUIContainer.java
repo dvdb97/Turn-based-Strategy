@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.Set;
 
 import gui_core.Input;
+import rendering.Renderer2D;
 import rendering.shapes.GUIShape;
 import utils.IndexManager;
 
 @SuppressWarnings("serial")
 class GUIElementNotFoundException extends RuntimeException {}
+
 
 public class Container<E extends Element> extends Element implements IContainer<E> {
 	
@@ -214,8 +216,8 @@ public class Container<E extends Element> extends Element implements IContainer<
 
 	@Override
 	public void processInput(int parentX, int parentY, Input input) {		
-		int x = parentX + getXPosition();
-		int y = parentY + getYPosition();
+		int x = parentX + getLocalXPosition();
+		int y = parentY + getLocalYPosition();
 		children.keySet().forEach((e) -> e.processInput(x, y, input));
 			
 		super.processInput(parentX, parentY, input);
@@ -226,7 +228,17 @@ public class Container<E extends Element> extends Element implements IContainer<
 	public void render(int parentX, int parentY) {
 		super.render(parentX, parentY);
 		
-		getChildren().forEach((e) -> e.render(parentX + getXPosition(), parentY + getYPosition()));
+		//Add a scissor to make sure that the children are only rendered inside the container.
+		Renderer2D.saveState();
+		int x = getGlobalXPosition(parentX);
+		int y = getGlobalYPosition(parentY);
+		Renderer2D.scissor(x, y, getWidth(), getHeight());
+		
+		//Render all children.
+		getChildren().forEach((e) -> e.render(parentX + getLocalXPosition(), parentY + getLocalYPosition()));
+		
+		Renderer2D.resetScissor();
+		Renderer2D.restoreState();
 	}
 	
 }

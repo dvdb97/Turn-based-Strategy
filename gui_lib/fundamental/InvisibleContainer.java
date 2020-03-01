@@ -15,7 +15,7 @@ public class InvisibleContainer<E extends Element> extends Container<E> {
 
 	@Override
 	public void render(int parentX, int parentY) {
-		getChildren().forEach((e) -> e.render(parentX + getXPosition(), parentY + getYPosition()));
+		getChildren().forEach((e) -> e.render(parentX + getLocalXPosition(), parentY + getLocalYPosition()));
 	}
 
 }
