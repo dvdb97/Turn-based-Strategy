@@ -9,14 +9,14 @@ import utils.ColorPalette;
 
 public class DefaultWindow extends GUIWindow {
 	
-	private Container<Element> taskBar;
-	private Container<Element> content;
+	private GUIContainer<Element> taskBar;
+	private GUIContainer<Element> content;
 	
 	public DefaultWindow(String title, int x, int y, int width, int height, FlexDirection flexDirection) {
 		super(new GUIQuad(ColorPalette.GRAY), x, y, width, height, FlexDirection.COLUMN);
 		
 		//Set up the task bar
-		taskBar = new Container<Element>(new GUIQuad(ColorPalette.WHITE), width, 50, FlexDirection.ROW_REVERSE);
+		taskBar = new GUIContainer<Element>(new GUIQuad(ColorPalette.WHITE), width, 50, FlexDirection.ROW_REVERSE);
 		
 		Button exitButton = new Button(new GUIExitButton(ColorPalette.ZERO, ColorPalette.BLACK), 30, 30);
 		exitButton.setMargin(Direction.ALL, 10);

@@ -1,7 +1,7 @@
 package container;
 
 import assets.meshes.geometry.Color;
-import fundamental.Container;
+import fundamental.GUIContainer;
 import fundamental.Element;
 import rendering.shapes.implemented.GUIQuad;
 
@@ -14,7 +14,7 @@ import rendering.shapes.implemented.GUIQuad;
  * 
  * @author jona
  */
-public class Tab extends Container<Element> {
+public class Tab extends GUIContainer<Element> {
 	
 	/**
 	 * 

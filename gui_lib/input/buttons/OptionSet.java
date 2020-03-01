@@ -1,11 +1,11 @@
 package input.buttons;
 
-import fundamental.Container;
+import fundamental.GUIContainer;
 import gui_core.Input;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
-public class OptionSet<E extends ToggleButton> extends Container<E> {
+public class OptionSet<E extends ToggleButton> extends GUIContainer<E> {
 	
 	private E enabledButton;
 	private E defaultButton;

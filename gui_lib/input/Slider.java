@@ -1,12 +1,12 @@
 package input;
 
 import function.Function;
-import fundamental.Container;
+import fundamental.GUIContainer;
 import moving_parts.Handle;
 import rendering.shapes.implemented.GUIQuad;
 import assets.meshes.geometry.Color;
 
-public class Slider extends Container<Handle> {
+public class Slider extends GUIContainer<Handle> {
 	
 	private Handle handle;
 	

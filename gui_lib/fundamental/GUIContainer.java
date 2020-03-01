@@ -14,7 +14,7 @@ import utils.IndexManager;
 class GUIElementNotFoundException extends RuntimeException {}
 
 
-public class Container<E extends Element> extends Element implements IContainer<E> {
+public class GUIContainer<E extends Element> extends Element implements IContainer<E> {
 	
 	//Keeps track of the indices that are currently in use.
 	private IndexManager indexManager;
@@ -37,7 +37,7 @@ public class Container<E extends Element> extends Element implements IContainer<
 	 * @param height The height of the Container in pixels.
 	 * @param flexDirection Specifies the layout of this Container.
 	 */
-	protected Container(GUIShape shape, int width, int height, FlexDirection flexDirection) {
+	protected GUIContainer(GUIShape shape, int width, int height, FlexDirection flexDirection) {
 		super(shape, width, height);
 		init(flexDirection, Integer.MAX_VALUE);
 	}
@@ -50,7 +50,7 @@ public class Container<E extends Element> extends Element implements IContainer<
 	 * @param flexDirection Specifies the layout of this Container.
 	 * @param maxChildren The maximum number of children this container can have.
 	 */
-	protected Container(GUIShape shape, int width, int height, FlexDirection flexDirection, int maxChildren) {
+	protected GUIContainer(GUIShape shape, int width, int height, FlexDirection flexDirection, int maxChildren) {
 		super(shape, width, height);
 		init(flexDirection, maxChildren);
 	}
@@ -62,7 +62,7 @@ public class Container<E extends Element> extends Element implements IContainer<
 	 * @param heightPercent The height of the Container in relation to its parent.
 	 * @param flexDirection Specifies the layout of this Container.
 	 */
-	protected Container(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection) {
+	protected GUIContainer(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection) {
 		super(shape, widthPercent, heightPercent);
 		init(flexDirection, Integer.MAX_VALUE);
 	}
@@ -75,7 +75,7 @@ public class Container<E extends Element> extends Element implements IContainer<
 	 * @param flexDirection Specifies the layout of this Container.
 	 * @param maxChildren The maximum number of children this container can have.
 	 */
-	protected Container(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection, int maxChildren) {
+	protected GUIContainer(GUIShape shape, float widthPercent, float heightPercent, FlexDirection flexDirection, int maxChildren) {
 		super(shape, widthPercent, heightPercent);
 		init(flexDirection, maxChildren);
 	}
@@ -213,14 +213,27 @@ public class Container<E extends Element> extends Element implements IContainer<
 	
 	//*****************************************************************
 
+	
+	@Override
+	public void resetInputStates(Input input) {
+		children.keySet().forEach((e) -> e.resetInputStates(input));
+		
+		super.resetInputStates(input);
+	}
+	
 
 	@Override
-	public void processInput(int parentX, int parentY, Input input) {		
+	public boolean processInput(int parentX, int parentY, Input input) {		
 		int x = parentX + getLocalXPosition();
 		int y = parentY + getLocalYPosition();
-		children.keySet().forEach((e) -> e.processInput(x, y, input));
+		
+		if (super.processInput(parentX, parentY, input)) {
+			children.keySet().forEach((e) -> e.processInput(x, y, input));
 			
-		super.processInput(parentX, parentY, input);
+			return true;
+		}
+		
+		return false;
 	}
 
 

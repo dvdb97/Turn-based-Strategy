@@ -1,7 +1,7 @@
 package container;
 
 import assets.meshes.geometry.Color;
-import fundamental.Container;
+import fundamental.GUIContainer;
 import fundamental.Element;
 import fundamental.InvisibleContainer;
 import input.buttons.OptionSet;
@@ -9,13 +9,13 @@ import input.buttons.ToggleButton;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
-public class TabMenu extends Container<Element> {
+public class TabMenu extends GUIContainer<Element> {
 	
 	//The buttons to choose the tabs.
 	private OptionSet<ToggleButton> buttons;
 	
 	//The container that will contain the tabs.
-	private Container<Tab> tabContainer;
+	private GUIContainer<Tab> tabContainer;
 	
 	//The color of the tabs that will be added to this TabMenu.
 	private Color tabColor;

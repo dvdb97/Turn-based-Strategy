@@ -3,7 +3,7 @@ package fundamental;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
-public class InvisibleContainer<E extends Element> extends Container<E> {
+public class InvisibleContainer<E extends Element> extends GUIContainer<E> {
 
 	public InvisibleContainer(int width, int height, FlexDirection flexDirection) {
 		super(new GUIQuad(ColorPalette.ZERO), width, height, flexDirection);

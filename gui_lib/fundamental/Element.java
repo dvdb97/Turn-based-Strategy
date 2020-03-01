@@ -389,8 +389,10 @@ public abstract class Element {
 	/**
 	 * Cleans up the input state when the cursor isn't targeting 
 	 * this element anymore.
+	 * 
+	 * @param input The current input state.
 	 */
-	private void resetInputStates(Input input) {
+	public void resetInputStates(Input input) {
 		if (isTargeted) {
 			onMouseLeave(input);
 			isTargeted = false;
@@ -418,15 +420,23 @@ public abstract class Element {
 	 * @param cursorY The y coordinate of the cursor.
 	 * @return Returns true if the user is currently interacting with this element.
 	 */
-	public void processInput(int parentX, int parentY, Input input) {
-		if (active) {
-			if (isTargeted(parentX, parentY, input.cursorX, input.cursorY)) {
-				updateTargetingState(input);
-				updateLeftMouseButtonState(input);
-				updateRightMouseButtonState(input);		
-			} else {
-				resetInputStates(input);
-			}
+	public boolean processInput(int parentX, int parentY, Input input) {
+		if (!active) {
+			return false;
+		}
+		
+		if (isTargeted(parentX, parentY, input.cursorX, input.cursorY)) {
+			//Update all states.
+			updateTargetingState(input);
+			updateLeftMouseButtonState(input);
+			updateRightMouseButtonState(input);
+			
+			return true;
+		} else {
+			//Reset all states.
+			resetInputStates(input);
+			
+			return false;
 		}
 	}
 	
