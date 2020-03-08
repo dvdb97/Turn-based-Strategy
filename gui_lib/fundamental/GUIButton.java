@@ -3,7 +3,7 @@ package fundamental;
 import function.GUIEventListener;
 import rendering.shapes.GUIShape;
 
-public class Button extends Element {
+public class GUIButton extends Element {
 	
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class Button extends Element {
 	 * @param width The width of this element in pixels.
 	 * @param height The height of this element in pixels.
 	 */
-	public Button(GUIShape shape, int width, int height) {
+	public GUIButton(GUIShape shape, int width, int height) {
 		super(shape, width, height);
 	}
 	
@@ -22,7 +22,7 @@ public class Button extends Element {
 	 * @param widthPercent The width of this element relative to the width of its parent.
 	 * @param heightPercent The height of this element relative to the height of its parentr.
 	 */
-	public Button(GUIShape shape, float widthPercent, float heightPercent) {
+	public GUIButton(GUIShape shape, float widthPercent, float heightPercent) {
 		super(shape, widthPercent, heightPercent);
 	}
 	

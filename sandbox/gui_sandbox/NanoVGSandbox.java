@@ -23,7 +23,7 @@ import implementations.TestRoundedRectElement;
 import input.Slider;
 import input.buttons.OptionSet;
 import input.buttons.RadioButton;
-import fundamental.Button;
+import fundamental.GUIButton;
 import fundamental.DefaultWindow;
 import interaction.Window;
 import interaction.input.CursorPosInput;
@@ -32,7 +32,7 @@ import interaction.input.MouseInputManager;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import math.vectors.Vector3f;
-import output.ColorBox;
+import output.GUIColorBox;
 import rendering.RenderEngine;
 import rendering.Renderer2D;
 import rendering.shapes.implemented.GUIQuad;
@@ -112,7 +112,7 @@ public class NanoVGSandbox {
 		
 		Tab tab2 = new Tab(ColorPalette.WHITE, FlexDirection.ROW);
 		
-		ColorBox colorBox = new ColorBox(80f, 80f, ColorPalette.WHITE);
+		GUIColorBox colorBox = new GUIColorBox(80f, 80f, ColorPalette.WHITE);
 		colorBox.setMargin(Direction.ALL, 10);
 		
 		RadioButton radio1 = new RadioButton(30);
@@ -146,7 +146,7 @@ public class NanoVGSandbox {
 		
 		Slider slider = new Slider(new GUIQuad(ColorPalette.GRAY), new GUIQuad(ColorPalette.BLACK), 80f, 10f, FlexDirection.ROW);
 		slider.setLocalYPosition(50f);
-		slider.setLocalXPosition(20f);
+		slider.setLocalXPosition(50f);
 		
 		slider.addEventListener(e -> {
 			number.setText(slider.getValue() + "%");
@@ -172,7 +172,7 @@ public class NanoVGSandbox {
 		text.setMargin(Direction.ALL, 10);
 		tab5.addChild(text);
 		
-		Button button = new Button(new GUIQuad(ColorPalette.BLUE), 100, 30);
+		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.BLUE), 100, 30);
 		button.setMargin(Direction.ALL, 10);
 		//button.addOnMouseEnterListener((Input input) -> text.setText(hovering));
 		//button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));

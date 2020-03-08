@@ -1,22 +1,23 @@
 package implementations;
 
-import dataType.GUIElementMatrix;
-import font.TextBox;
-import fundamental.GUIWindow;
+import fundamental.DefaultWindow;
+import fundamental.GUIButton;
+import fundamental.GUITextField;
 import input.Slider;
-import output.ColorBox;
-
-import static utils.ColorPalette.*;
+import layout.IGUILayoutNode.FlexDirection;
+import output.GUIColorBox;
+import rendering.shapes.implemented.GUIQuad;
+import utils.ColorPalette;
 
 import assets.meshes.geometry.Color;
 
-public class ColorPickWindow extends GUIWindow {
+public class ColorPickWindow extends DefaultWindow {
 	
-	private ColorBox colorBox;
+	private GUIColorBox colorBox;
 	
-	private TextBox redText;
-	private TextBox greenText;
-	private TextBox blueText;
+	private GUITextField redText;
+	private GUITextField greenText;
+	private GUITextField blueText;
 	
 	private Slider redSlider;
 	private Slider greenSlider;
@@ -25,7 +26,7 @@ public class ColorPickWindow extends GUIWindow {
 	//************************* constructor **************************************
 	
 	public ColorPickWindow() {
-		super(GRAY, new GUIElementMatrix(0f, 0.5f, 0.5f, 1f));
+		super("Color Picker", 100, 100, 500, 500, FlexDirection.COLUMN);
 		
 		setUpColorBox();
 		
@@ -38,56 +39,61 @@ public class ColorPickWindow extends GUIWindow {
 	}
 	
 	
-	
 	//********************************************************************************
 	
 	private void setUpColorBox() {
-		colorBox = new ColorBox(WHITE, new GUIElementMatrix(0.03f, -0.03f, 0.94f, 0.235f));
-		children.add(colorBox);
+		colorBox = new GUIColorBox(80f, 20f, ColorPalette.WHITE);
+		colorBox.setLocalXPosition(50f);
+		colorBox.setLocalYPosition(10f);
+		
+		addChild(colorBox);
 	}
+	
 
 	private void SetUpButton() {
-		TestPushButton button = new TestPushButton(YELLOW_1, new GUIElementMatrix(0.03f, -0.265f, 0.94f, 0.1f));
-		button.setFunction( (e) -> {redSlider.setValue((float)Math.random());greenSlider.setValue((float)Math.random());blueSlider.setValue((float)Math.random());} );
-		children.add(button);
+		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.BLACK), 20f, 10f);
+		button.setLocalXPosition(50f);
+		
+		button.addOnClickListener(e -> {
+			redSlider.setValue((float)Math.random() * 100f);
+			greenSlider.setValue((float)Math.random() * 100f);
+			blueSlider.setValue((float)Math.random() * 100f);
+		});
+
+		addChild(button);
 	}
+	
 
 	private void setUpTextBoxes() {
-		redText   = new TextBox(0.0833f, -0.4f, 0.07f, "255", BLACK);
-		greenText = new TextBox(0.4167f, -0.4f, 0.07f, "255", BLACK);
-		blueText  = new TextBox(0.7500f, -0.4f, 0.07f, "255", BLACK);
+		redText   = new GUITextField("Red:", "FreeMono", 20f, 10f, 30);
+		greenText = new GUITextField("Red:", "FreeMono", 20f, 10f, 30);
+		blueText  = new GUITextField("Red:", "FreeMono", 20f, 10f, 30);
 		
-		children.add(redText);
-		children.add(greenText);
-		children.add(blueText);
+		addChild(redText);
+		addChild(greenText);
+		addChild(blueText);
 	}
+	
 	
 	private void setUpSliders() {
+		redSlider   = new Slider(new GUIQuad(ColorPalette.GRAY), new GUIQuad(ColorPalette.BLACK), 80f, 10f, FlexDirection.ROW);
+		greenSlider = new Slider(new GUIQuad(ColorPalette.GRAY), new GUIQuad(ColorPalette.BLACK), 80f, 10f, FlexDirection.ROW);
+		blueSlider  = new Slider(new GUIQuad(ColorPalette.GRAY), new GUIQuad(ColorPalette.BLACK), 80f, 10f, FlexDirection.ROW);
 		
-		redSlider   = new Slider(RED, new GUIElementMatrix(0.0833f, -0.535f, 0.1667f, 0.435f));
-		greenSlider = new Slider(GREEN, new GUIElementMatrix(0.4167f, -0.535f, 0.1667f, 0.435f));
-		blueSlider  = new Slider(BLUE, new GUIElementMatrix(0.7500f, -0.535f, 0.1667f, 0.435f));
+		redSlider.addEventListener(e -> updateColor());
+		greenSlider.addEventListener(e -> updateColor());
+		blueSlider.addEventListener(e -> updateColor());
 		
-		redSlider.setFunction(   (slider) -> setColor(new Color(slider.getValue()           , colorBox.getColor().getGreen(), colorBox.getColor().getBlue(), colorBox.getColor().getAlpha())) );
-		greenSlider.setFunction( (slider) -> setColor(new Color(colorBox.getColor().getRed(), slider.getValue()             , colorBox.getColor().getBlue(), colorBox.getColor().getAlpha())) );
-		blueSlider.setFunction(  (slider) -> setColor(new Color(colorBox.getColor().getRed(), colorBox.getColor().getGreen(), slider.getValue()            , colorBox.getColor().getAlpha())) );
-		
-		children.add(redSlider);
-		children.add(greenSlider);
-		children.add(blueSlider);
-		
+		addChild(redSlider);
+		addChild(greenSlider);
+		addChild(blueSlider);
 	}
 	
-	//********************************************************************************
 	
-	private void setColor(Color color) {
+	private void updateColor() {
+		Color color = new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue(), 1f);
 		
 		colorBox.setColor(color);
-		
-		redText.changeTextTo(Integer.toString(color.getRedInt()));
-		greenText.changeTextTo(Integer.toString(color.getGreenInt()));
-		blueText.changeTextTo(Integer.toString(color.getBlueInt()));
-		
 	}
 	
 }

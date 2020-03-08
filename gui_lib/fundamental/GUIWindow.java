@@ -7,6 +7,7 @@ import assets.IDeletable;
 import gui_core.GUIManager;
 import gui_core.Input;
 import layout.IGUILayoutNode.Alignment;
+import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import layout.yoga.GUIYogaRootNode;
 import rendering.shapes.GUIShape;
@@ -57,6 +58,16 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	 */
 	public FlexDirection getFlexDirection() {
 		return node.getFlexDirection();
+	}
+	
+	
+	public void setPadding(Direction direction, int padding) {
+		node.setPadding(direction, padding);
+	}
+	
+	
+	public void setPadding(Direction direction, float percent) {
+		node.setPadding(direction, percent);
 	}
 	
 	

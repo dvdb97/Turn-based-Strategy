@@ -19,17 +19,18 @@ public class DefaultWindow extends GUIWindow {
 		//Set up the task bar
 		taskBar = new GUIContainer<Element>(new GUIQuad(ColorPalette.WHITE), width, 50, FlexDirection.ROW_REVERSE);
 		
-		Button exitButton = new Button(new GUIExitButton(ColorPalette.ZERO, ColorPalette.BLACK), 30, 30);
+		GUIButton exitButton = new GUIButton(new GUIExitButton(ColorPalette.ZERO, ColorPalette.BLACK), 30, 30);
 		exitButton.setMargin(Direction.ALL, 10);
 		exitButton.addMouseEnterListener((Input input) -> exitButton.getShape().setColor(ColorPalette.GRAY));
 		exitButton.addMouseLeaveListener((Input input) -> exitButton.getShape().setColor(ColorPalette.ZERO));
 		exitButton.addLeftMouseButtonReleaseListener((Input input) -> this.close());
 		
-		//TextField titleField = new TextField(title, "FreeMono", 50, 30, 30);
-		//titleField.setMargin(Direction.ALL, 10);
+		GUITextField titleField = new GUITextField(title, "FreeMono", width - 40, 50, 30);
+		titleField.setActive(false);
+		titleField.setLocalXPosition(10);
 		
 		taskBar.addChild(exitButton);
-		//taskBar.addChild(titleField);
+		taskBar.addChild(titleField);
 		taskBar.addDragListener((Input input) -> move(input.dx, input.dy));
 		
 		content = new InvisibleContainer<Element>(width, height - 50, flexDirection);

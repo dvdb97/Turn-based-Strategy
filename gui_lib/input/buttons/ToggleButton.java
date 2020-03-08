@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import function.GUIEventListener;
-import fundamental.Button;
+import fundamental.GUIButton;
 import gui_core.Input;
 import rendering.shapes.GUIShape;
 
-public class ToggleButton extends Button {
+public class ToggleButton extends GUIButton {
 	
 	protected boolean enabled;
 	

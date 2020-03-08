@@ -78,6 +78,12 @@ public class Slider extends GUIContainer<Handle> {
 	}
 	
 	
+	public void setValue(float value) {
+		this.value = value;
+		handle.setLocalXPosition(value);
+	}
+	
+	
 	public float getValue() {
 		return value;
 	}

@@ -4,15 +4,15 @@ import assets.meshes.geometry.Color;
 import fundamental.Element;
 import rendering.shapes.implemented.GUIQuad;
 
-public class ColorBox extends Element {
+public class GUIColorBox extends Element {
 	
-	public ColorBox(int width, int height, Color color) {
+	public GUIColorBox(int width, int height, Color color) {
 		super(new GUIQuad(color), width, height);
 		setColor(color);
 	}
 	
 	
-	public ColorBox(float widthPercent, float heightPercent, Color color) {
+	public GUIColorBox(float widthPercent, float heightPercent, Color color) {
 		super(new GUIQuad(color), widthPercent, heightPercent);
 		setColor(color);
 	}

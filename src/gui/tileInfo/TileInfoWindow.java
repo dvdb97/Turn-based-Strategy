@@ -4,26 +4,24 @@ import world.BuildingAuthority;
 import world.WorldManager;
 import world.gameBoard.Tile;
 import dataType.GUIElementMatrix;
-import font.TextBox;
+import fundamental.DefaultWindow;
 import fundamental.GUIWindow;
-import implementations.TestPushButton;
 import interaction.TileSelecter;
-import output.GUITexture;
 
 import static utils.ColorPalette.*;
 
+import java.awt.TextField;
 import java.util.ArrayList;
 
-import container.RadioButtons;
 import container.Tab;
 import container.TabMenu;
 import core.Application;
 
-public class TileInfoWindow extends GUIWindow {
+public class TileInfoWindow extends DefaultWindow {
 	
 	private Tile tile;
 	
-	private TextBox infoText;
+	private TextField infoText;
 	
 	//private GUIToggleButton button;
 	
@@ -37,7 +35,7 @@ public class TileInfoWindow extends GUIWindow {
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
-		super(GREEN_1, new GUIElementMatrix(-0.9f, 0.2f, 0.4f, 0.9f));
+		super(title, counter, counter, counter, counter, flexDirection)
 		
 		infoText = new TextBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
 		
