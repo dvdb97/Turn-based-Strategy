@@ -145,7 +145,7 @@ public class GUIYogaNode implements IGUILayoutNode {
 
 	@Override
 	public int getGlobalXCoordinate() {
-		return 0;
+		return parent.getGlobalXCoordinate() + getLocalXCoordinate();
 	}
 	
 
@@ -185,7 +185,7 @@ public class GUIYogaNode implements IGUILayoutNode {
 
 	@Override
 	public int getGlobalYCoordinate() {
-		return 0;
+		return parent.getGlobalYCoordinate() + getLocalYCoordinate();
 	}
 	
 

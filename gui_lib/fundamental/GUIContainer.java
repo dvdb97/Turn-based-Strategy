@@ -178,10 +178,20 @@ public class GUIContainer<E extends Element> extends Element implements IContain
 		int x = parentX + getLocalXPosition();
 		int y = parentY + getLocalYPosition();
 		
-		if (super.processInput(parentX, parentY, input)) {
+		if (isTargeted(parentX, parentY, input.cursorX, input.cursorY)) {
 			children.forEach((e) -> e.processInput(x, y, input));
 			
+			for (Element child : children) {
+				if (child.processInput(x, y, input)) {
+					return true;
+				}
+			}
+			
+			updateInputStates(input);
+			
 			return true;
+		} else {
+			resetInputStates(input);
 		}
 		
 		return false;
@@ -194,8 +204,8 @@ public class GUIContainer<E extends Element> extends Element implements IContain
 		
 		//Add a scissor to make sure that the children are only rendered inside the container.
 		Renderer2D.saveState();
-		int x = getGlobalXPosition(parentX);
-		int y = getGlobalYPosition(parentY);
+		int x = parentX + getLocalXPosition();
+		int y = parentY + getLocalYPosition();
 		Renderer2D.scissor(x, y, getWidth(), getHeight());
 		
 		//Render all children.

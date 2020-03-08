@@ -28,7 +28,7 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	private boolean obsolete = false;
 	
 	public GUIWindow(GUIShape shape, int x, int y, int width, int height, FlexDirection flexDirection) {
-		node = GUIYogaRootNode.createRootNode(width, height);
+		node = GUIYogaRootNode.createRootNode(x, y, width, height);
 		children = new HashSet<Element>();		
 		
 		this.shape = shape;

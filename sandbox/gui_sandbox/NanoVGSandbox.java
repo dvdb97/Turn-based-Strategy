@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.awt.Color;
+
 import assets.cameras.Camera;
 import assets.light.DirectionalLight;
 import assets.meshes.Mesh3D;
@@ -18,6 +20,7 @@ import gui_core.Input;
 import implementations.TestCircleElement;
 import implementations.TestQuadElement;
 import implementations.TestRoundedRectElement;
+import input.Slider;
 import input.buttons.OptionSet;
 import input.buttons.RadioButton;
 import fundamental.Button;
@@ -138,6 +141,19 @@ public class NanoVGSandbox {
 		//############################## Tab 3 ##############################
 		
 		Tab tab3 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+		
+		GUITextField number = new GUITextField("0%", "FreeMono", 100f, 10f, 30);
+		
+		Slider slider = new Slider(new GUIQuad(ColorPalette.GRAY), new GUIQuad(ColorPalette.BLACK), 80f, 10f, FlexDirection.ROW);
+		slider.setLocalYPosition(50f);
+		slider.setLocalXPosition(20f);
+		
+		slider.addEventListener(e -> {
+			number.setText(slider.getValue() + "%");
+		});
+		
+		tab3.addChild(number);
+		tab3.addChild(slider);
 		
 		
 		//############################## Tab 3 ##############################

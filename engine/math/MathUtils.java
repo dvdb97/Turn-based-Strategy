@@ -36,17 +36,32 @@ public class MathUtils {
 	}
 	
 	
-	public static float max(float a, float b) {
-		return a > b ? a : b;
-	}
-	
-	
 	public static float min(float a, float b) {
 		return a < b ? a : b;
 	}
 	
 	
+	public static int min(int a, int b) {
+		return a < b ? a : b;
+	}
+	
+	
+	public static float max(float a, float b) {
+		return a > b ? a : b;
+	}
+	
+	
+	public static int max(int a, int b) {
+		return a > b ? a : b;
+	}
+	
+	
 	public static float clamp(float value, float min, float max) {
+		return min(max(value, min), max);
+	}
+	
+	
+	public static int clamp(int value, int min, int max) {
 		return min(max(value, min), max);
 	}
 }

@@ -137,8 +137,8 @@ public abstract class Element {
 	 * @param parentX The parent's x coordinate on the screen.
 	 * @return Return this element's x coordinate on the screen.
 	 */
-	public int getGlobalXPosition(int parentX) {
-		return parentX + getLocalXPosition();
+	public int getGlobalXPosition() {
+		return node.getGlobalXCoordinate();
 	}
 	
 	
@@ -179,8 +179,8 @@ public abstract class Element {
 	 * @param parentY The parent's y coordinate on the screen.
 	 * @return Return this element's y coordinate on the screen.
 	 */
-	public int getGlobalYPosition(int parentY) {
-		return parentY + getLocalYPosition();
+	public int getGlobalYPosition() {
+		return node.getGlobalYCoordinate();
 	}
 	
 	
@@ -290,8 +290,8 @@ public abstract class Element {
 	 */
 	public void render(int parentX, int parentY) {
 		if (visible) {
-			int x = getGlobalXPosition(parentX);
-			int y = getGlobalYPosition(parentY);
+			int x = parentX + getLocalXPosition();
+			int y = parentY + getLocalYPosition();
 			
 			shape.render(x, y, getWidth(), getHeight());
 		}
@@ -366,13 +366,20 @@ public abstract class Element {
 	}
 	
 	
+	protected void updateInputStates(Input input) {
+		updateTargetingState(input);
+		updateLeftMouseButtonState(input);
+		updateRightMouseButtonState(input);
+	}
+	
+	
 	/**
 	 * Cleans up the input state when the cursor isn't targeting 
 	 * this element anymore.
 	 * 
 	 * @param input The current input state.
 	 */
-	public void resetInputStates(Input input) {		
+	protected void resetInputStates(Input input) {		
 		if (isTargeted) {
 			onMouseLeave(input);
 			isTargeted = false;
@@ -407,9 +414,7 @@ public abstract class Element {
 		
 		if (isTargeted(parentX, parentY, input.cursorX, input.cursorY)) {
 			//Update all states.
-			updateTargetingState(input);
-			updateLeftMouseButtonState(input);
-			updateRightMouseButtonState(input);
+			updateInputStates(input);
 			
 			return true;
 		} else {
