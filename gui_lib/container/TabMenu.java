@@ -6,6 +6,7 @@ import fundamental.Element;
 import fundamental.InvisibleContainer;
 import input.buttons.OptionSet;
 import input.buttons.ToggleButton;
+import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
@@ -83,7 +84,10 @@ public class TabMenu extends GUIContainer<Element> {
 		}
 
 		button.addOnMouseEnterListener((e) -> button.getShape().setColor(ColorPalette.GRAY));
-		button.addOnMouseLeaveListener((e) -> button.getShape().setColor(ColorPalette.DARK_SLATE_GRAY));
+		button.addOnMouseLeaveListener((e) -> {
+			if (!button.isEnabled())
+				button.getShape().setColor(ColorPalette.DARK_SLATE_GRAY);
+		});
 		button.addEnableListener((e) -> changeTab(tab));	
 		button.addEnableListener((e) -> button.getShape().setColor(tabColor));
 		button.addDisableListener((e) -> button.getShape().setColor(ColorPalette.DARK_SLATE_GRAY));
@@ -120,6 +124,7 @@ public class TabMenu extends GUIContainer<Element> {
 	private void changeTab(Tab tab) {
 		tabContainer.removeAllChildren();
 		tabContainer.addChild(tab);
+		System.out.println("Tabs: " + tab.getNumChildren());
 	}
 	
 	

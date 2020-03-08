@@ -1,5 +1,6 @@
 package fundamental;
 
+import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 

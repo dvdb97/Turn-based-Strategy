@@ -5,6 +5,7 @@ import fundamental.GUIWindow;
 import input.Mouse;
 import interaction.Window;
 import interaction.input.CursorPosInput;
+import rendering.Renderer2D;
 
 public class GUIManager {
 	
@@ -71,6 +72,8 @@ public class GUIManager {
 		for (GUIWindow window : windows) {
 			window.render();
 		}
+		
+		Renderer2D.endFrame();
 	}
 	
 	

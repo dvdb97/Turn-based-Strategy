@@ -2,16 +2,10 @@ package fundamental;
 
 import java.util.Set;
 
-import fundamental.Element.Alignment;
+import layout.IGUILayoutNode.Alignment;
+import layout.IGUILayoutNode.FlexDirection;
 
 public interface IContainer<E extends Element> {
-	
-	public enum FlexDirection {
-		ROW,
-		COLUMN,
-		ROW_REVERSE,
-		COLUMN_REVERSE
-	}
 	
 	public void setFlexDirection(FlexDirection flexDirection);
 	

@@ -2,6 +2,7 @@ package container;
 
 import assets.meshes.geometry.Color;
 import fundamental.GUIContainer;
+import layout.IGUILayoutNode.FlexDirection;
 import fundamental.Element;
 import rendering.shapes.implemented.GUIQuad;
 

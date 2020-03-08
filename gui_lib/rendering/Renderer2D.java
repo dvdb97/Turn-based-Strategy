@@ -52,7 +52,7 @@ public class Renderer2D {
 		
 		fonts = new HashMap<String, Integer>();
 		
-		loadFont("FreeMono", "res/fonts/FreeMono.TTF");
+		loadFont("FreeMono", "res/fonts/FreeMono.ttf");
 		
 		initialized = true;
 	}

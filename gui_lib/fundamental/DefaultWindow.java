@@ -1,8 +1,9 @@
 package fundamental;
 
 import assets.meshes.geometry.Color;
-import fundamental.Element.Direction;
 import gui_core.Input;
+import layout.IGUILayoutNode.Direction;
+import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIExitButton;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;

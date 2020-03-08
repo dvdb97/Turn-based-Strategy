@@ -12,8 +12,6 @@ import assets.meshes.fileLoaders.FileLoader;
 import assets.scene.Scene;
 import container.Tab;
 import container.TabMenu;
-import fundamental.Element.Direction;
-import fundamental.IContainer.FlexDirection;
 import fundamental.GUITextField;
 import gui_core.GUIManager;
 import gui_core.Input;
@@ -28,6 +26,8 @@ import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.KeyInputHandler;
 import interaction.input.MouseInputManager;
+import layout.IGUILayoutNode.Direction;
+import layout.IGUILayoutNode.FlexDirection;
 import math.vectors.Vector3f;
 import output.ColorBox;
 import rendering.RenderEngine;
@@ -90,12 +90,15 @@ public class NanoVGSandbox {
 		
 		TestCircleElement circle = new TestCircleElement(100, 100);
 		circle.setMargin(Direction.ALL, 10);
+		circle.setLocalYPosition(50f);
 		
 		TestQuadElement quad = new TestQuadElement(100, 100);
 		quad.setMargin(Direction.ALL, 10);
+		quad.setLocalYPosition(50f);
 		
-		TestRoundedRectElement roundedRect = new TestRoundedRectElement(1500, 100, 20);
+		TestRoundedRectElement roundedRect = new TestRoundedRectElement(100, 100, 20);
 		roundedRect.setMargin(Direction.ALL, 10);
+		roundedRect.setLocalYPosition(50f);
 		
 		tab1.addChild(circle);
 		tab1.addChild(quad);
@@ -141,6 +144,7 @@ public class NanoVGSandbox {
 		
 		Tab tab4 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		
+		
 		//############################## Tab 4 ##############################
 		
 		Tab tab5 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
@@ -158,6 +162,7 @@ public class NanoVGSandbox {
 		//button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));
 		button.addOnClickListener((Input input) -> RenderEngine.takeScreenshot("screenshots/", "png"));
 		tab5.addChild(button);
+		
 		
 		//############################## TabMenu ##############################
 		
@@ -185,7 +190,6 @@ public class NanoVGSandbox {
 			Renderer2D.beginFrame(window);
 			GUIManager.processInput();
 			GUIManager.render();
-			Renderer2D.endFrame();
 			glEnable(GL_DEPTH_TEST);
 			
 			mesh.render(scene);
