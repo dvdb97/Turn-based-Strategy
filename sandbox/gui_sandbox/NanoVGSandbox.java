@@ -24,6 +24,8 @@ import input.Slider;
 import input.buttons.OptionSet;
 import input.buttons.RadioButton;
 import fundamental.GUIButton;
+import fundamental.GUIElement;
+import fundamental.GUIImageBox;
 import fundamental.DefaultWindow;
 import interaction.Window;
 import interaction.input.CursorPosInput;
@@ -160,6 +162,11 @@ public class NanoVGSandbox {
 		
 		Tab tab4 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		
+		GUIImageBox image = new GUIImageBox("res/PH_Grassland.png", 80f, 80f);
+		image.setLocalXPosition(50f);
+		image.setLocalYPosition(50f);
+		
+		tab4.addChild(image);
 		
 		//############################## Tab 4 ##############################
 		
@@ -194,7 +201,6 @@ public class NanoVGSandbox {
 		int frames = 0;
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
-			
 			if (glfwGetTime() - timer >= 1) {
 				System.out.println(frames);
 				frames = 0;

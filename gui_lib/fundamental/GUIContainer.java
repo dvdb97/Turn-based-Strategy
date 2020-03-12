@@ -13,7 +13,7 @@ import rendering.shapes.GUIShape;
 class GUIElementNotFoundException extends RuntimeException {}
 
 
-public class GUIContainer<E extends Element> extends Element implements IContainer<E> {
+public class GUIContainer<E extends GUIElement> extends GUIElement implements IContainer<E> {
 	
 	//Maps all
 	private HashSet<E> children;
@@ -179,15 +179,17 @@ public class GUIContainer<E extends Element> extends Element implements IContain
 		int y = parentY + getLocalYPosition();
 		
 		if (isTargeted(parentX, parentY, input.cursorX, input.cursorY)) {
-			children.forEach((e) -> e.processInput(x, y, input));
+			boolean targetedChild = false;
 			
-			for (Element child : children) {
+			for (GUIElement child : children) {
 				if (child.processInput(x, y, input)) {
-					return true;
+					targetedChild = true;
 				}
 			}
 			
-			updateInputStates(input);
+			if (!targetedChild) {
+				updateInputStates(input);
+			}
 			
 			return true;
 		} else {

@@ -5,7 +5,7 @@ import java.util.Set;
 import layout.IGUILayoutNode.Alignment;
 import layout.IGUILayoutNode.FlexDirection;
 
-public interface IContainer<E extends Element> {
+public interface IContainer<E extends GUIElement> {
 	
 	public void setFlexDirection(FlexDirection flexDirection);
 	

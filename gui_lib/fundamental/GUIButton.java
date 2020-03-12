@@ -3,7 +3,7 @@ package fundamental;
 import function.GUIEventListener;
 import rendering.shapes.GUIShape;
 
-public class GUIButton extends Element {
+public class GUIButton extends GUIElement {
 	
 	/**
 	 * 

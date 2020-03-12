@@ -5,18 +5,17 @@ import static org.lwjgl.util.yoga.Yoga.*;
 public class GUIYogaRootNode extends GUIYogaNode {
 	
 	private final long config;
-	
-	private int x, y;
+
 	private int width, height;
 
 	private GUIYogaRootNode(long layoutID, long config, int x, int y, int width, int height) {
 		super(layoutID);
 		
 		this.config = config;
-		this.width = width;
-		this.height = height;
-		this.x = x;
-		this.y = y;
+		setWidth(width);
+		setHeight(height);
+		setLocalXCoordinate(x);
+		setLocalYCoordinate(y);
 	}
 	
 	public static GUIYogaRootNode createRootNode(int x, int y, int width, int height) {
@@ -35,12 +34,12 @@ public class GUIYogaRootNode extends GUIYogaNode {
 	
 	@Override
 	public int getGlobalXCoordinate() {
-		return x;
+		return getLocalXCoordinate();
 	}
 
 	@Override
 	public int getGlobalYCoordinate() {
-		return y;
+		return getLocalYCoordinate();
 	}
 
 	@Override

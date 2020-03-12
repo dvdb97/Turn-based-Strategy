@@ -3,7 +3,7 @@ package container;
 import assets.meshes.geometry.Color;
 import fundamental.GUIContainer;
 import layout.IGUILayoutNode.FlexDirection;
-import fundamental.Element;
+import fundamental.GUIElement;
 import rendering.shapes.implemented.GUIQuad;
 
 /**
@@ -15,7 +15,7 @@ import rendering.shapes.implemented.GUIQuad;
  * 
  * @author jona
  */
-public class Tab extends GUIContainer<Element> {
+public class Tab extends GUIContainer<GUIElement> {
 	
 	/**
 	 * 

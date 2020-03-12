@@ -5,9 +5,6 @@ import static org.lwjgl.util.yoga.Yoga.*;
 import java.util.HashMap;
 
 import layout.IGUILayoutNode;
-import layout.IGUILayoutNode.Alignment;
-import layout.IGUILayoutNode.Direction;
-import layout.IGUILayoutNode.FlexDirection;
 import utils.IndexManager;
 
 public class GUIYogaNode implements IGUILayoutNode {

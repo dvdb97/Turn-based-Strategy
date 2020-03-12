@@ -3,24 +3,15 @@ package rendering;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import static org.lwjgl.system.MemoryUtil.memAddress;
 import static org.lwjgl.system.MemoryUtil.memUTF8;
-import static org.lwjgl.system.MemoryStack.*;
-
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NVGPaint;
-import org.lwjgl.nanovg.NVGTextRow;
-import org.lwjgl.system.MemoryStack;
-
 import assets.meshes.geometry.Color;
 import interaction.Window;
 import math.vectors.Vector2f;
-import utils.CustomBufferUtils;
-import utils.FileUtils;
 
 /**
  * 
@@ -33,9 +24,10 @@ public class Renderer2D {
 	private static boolean initialized = false;
 	
 	private static NVGColor strokeColor, fillColor, startColor, endColor;
-	private static NVGPaint gradientPaint;
+	private static NVGPaint paint;
 	
 	private static HashMap<String, Integer> fonts;
+	private static HashMap<String, Integer> images;
 	
 	public static void init() {
 		nvg = nvgCreate(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
@@ -48,9 +40,10 @@ public class Renderer2D {
 		fillColor = NVGColor.create();
 		startColor = NVGColor.create();
 		endColor = NVGColor.create();
-		gradientPaint = NVGPaint.create();
+		paint = NVGPaint.create();
 		
 		fonts = new HashMap<String, Integer>();
+		images = new HashMap<String, Integer>();
 		
 		loadFont("FreeMono", "res/fonts/FreeMono.ttf");
 		
@@ -63,14 +56,26 @@ public class Renderer2D {
 		fillColor.free();
 		startColor.free();
 		endColor.free();
-		gradientPaint.free();
+		paint.free();
 		
 		nvgDelete(nvg);
 		initialized = false;
 	}
 	
 	
+	/**
+	 * 
+	 * Loads a font.
+	 * 
+	 * @param name The name of the font. This name will be used to reference the loaded font.
+	 * @param path The location of the font file.
+	 */
 	public static void loadFont(String name, String path) {
+		if (fonts.containsKey(name)) {
+			System.err.println("Font " + name + " already exists!");
+			return;
+		}
+		
 		int fontID = nvgCreateFont(nvg, name, path);
 		
 		if (fontID == -1) {
@@ -78,6 +83,29 @@ public class Renderer2D {
 		}
 		
 		fonts.put(name, fontID);
+	}
+	
+	
+	/**
+	 * 
+	 * Loads an image.
+	 * 
+	 * @param name The name of the image. This name will be used to reference the loaded image.
+	 * @param path The location of the image file.
+	 */
+	public static void loadImage(String name, String path) {
+		if (images.containsKey(name)) {
+			System.err.println("Image " + name + " already exists!");
+			return;
+		}
+		
+		int imageID = nvgCreateImage(nvg, path, NVG_IMAGE_NEAREST);
+		
+		if (imageID == -1) {
+			System.err.println("Could not image " + name + "!");
+		}
+		
+		images.put(name, imageID);
 	}
 	
 	
@@ -195,10 +223,13 @@ public class Renderer2D {
 	}
 	
 	
-	public static void image(int x, int y, int width, int height) {
+	public static void image(String image, int x, int y, int width, int height) {
 		assert initialized : "Renderer2D not initialized!";
 	
-		//TODO: Add rendering for textures.
+		nvgImagePattern(nvg, x, y, width, height, 0f, images.get(image), 1f, paint);
+		beginPath();
+		rect(x, y, width, height);
+		fillPaint(paint);
 	}
 	
 	
@@ -337,6 +368,11 @@ public class Renderer2D {
 	}
 	
 	
+	public static void fillPaint(NVGPaint paint) {
+		nvgFillPaint(nvg, paint);
+	}
+	
+	
 	public static void fill() {
 		nvgFill(nvg);
 	}
@@ -348,10 +384,16 @@ public class Renderer2D {
 	}
 	
 	
+	public static void fill(NVGPaint paint) {
+		fillPaint(paint);
+		fill();
+	}
+	
+	
 	public static void linearGradient(Vector2f start, Vector2f end, Color c0, Color c1) {
 		nvgLinearGradient(nvg, start.getA(), start.getB(), end.getA(), end.getB(), 
-						  rgba(c0, startColor), rgba(c1, endColor), gradientPaint);
-		nvgFillPaint(nvg, gradientPaint);
+						  rgba(c0, startColor), rgba(c1, endColor), paint);
+		nvgFillPaint(nvg, paint);
 	}
 	
 	

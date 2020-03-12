@@ -44,7 +44,7 @@ public class GUIManager {
 	 * 
 	 * @return true,  if any window is hit
 	 */
-	public static void processInput() {
+	public static boolean processInput() {
 		Mouse.update();
 		
 		for (GUIWindow window : windows) {
@@ -64,7 +64,13 @@ public class GUIManager {
 		input.leftMouseButton = Mouse.isLeftButtonPressed();
 		input.rightMouseButton = Mouse.isRightButtonPressed();
 		
-		windows.forEach((e) -> e.processInput(input));
+		for (GUIWindow window : windows) {
+			if (window.processInput(input)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 

@@ -1,8 +1,8 @@
 package function;
 
-import fundamental.Element;
+import fundamental.GUIElement;
 
-public interface BooleanFunction<E extends Element> {
+public interface BooleanFunction<E extends GUIElement> {
 	
 	boolean test(E e);
 	

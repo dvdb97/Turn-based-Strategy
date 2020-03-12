@@ -3,7 +3,7 @@ package fundamental;
 import rendering.shapes.implemented.GUIText;
 import utils.ColorPalette;
 
-public class GUITextField extends Element {
+public class GUITextField extends GUIElement {
 	
 	private GUIText textField;
 

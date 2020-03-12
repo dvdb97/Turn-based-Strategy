@@ -1,13 +1,13 @@
 package implementations;
 
 import assets.meshes.geometry.Color;
-import fundamental.Element;
+import fundamental.GUIElement;
 import gui_core.Input;
 import rendering.shapes.GUIShape;
 import rendering.shapes.implemented.GUIEllipse;
 import utils.ColorPalette;
 
-public class TestElement extends Element {
+public class TestElement extends GUIElement {
 
 	protected static final Color defaultColor = ColorPalette.RED;
 	protected static final Color targetedColor = ColorPalette.GREEN;

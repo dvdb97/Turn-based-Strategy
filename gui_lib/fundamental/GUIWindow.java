@@ -12,16 +12,15 @@ import layout.IGUILayoutNode.FlexDirection;
 import layout.yoga.GUIYogaRootNode;
 import rendering.shapes.GUIShape;
 
-public class GUIWindow implements IContainer<Element>, IDeletable {
+public class GUIWindow implements IContainer<GUIElement>, IDeletable {
 	
 	private final GUIYogaRootNode node;
 	
 	//Tools for managing the children.
-	private HashSet<Element> children;
+	private HashSet<GUIElement> children;
 	
 	//Settings
 	protected FlexDirection flexDirection;
-	protected int x, y, width, height;
 	private GUIShape shape;
 	
 	//States
@@ -30,14 +29,9 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	
 	public GUIWindow(GUIShape shape, int x, int y, int width, int height, FlexDirection flexDirection) {
 		node = GUIYogaRootNode.createRootNode(x, y, width, height);
-		children = new HashSet<Element>();		
+		children = new HashSet<GUIElement>();		
 		
 		this.shape = shape;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		
 		setFlexDirection(flexDirection);
 		GUIManager.addWindow(this);
 	}
@@ -77,7 +71,7 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	 * 
 	 * @param element The element to add to this container.
 	 */
-	public void addChild(Element element) {
+	public void addChild(GUIElement element) {
 		children.add(element);
 		node.setChild(element.node);
 	}
@@ -89,7 +83,7 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	 * 
 	 * @param element The element to remove from this Container.
 	 */
-	public void removeChild(Element element) {
+	public void removeChild(GUIElement element) {
 		if (!children.contains(element)) {
 			throw new GUIElementNotFoundException();
 		}
@@ -112,7 +106,7 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	 * 
 	 * @return Returns all children that are currently in this Container.
 	 */
-	public Set<Element> getChildren() {
+	public Set<GUIElement> getChildren() {
 		return children;
 	}
 	
@@ -120,6 +114,46 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	@Override
 	public int getNumChildren() {
 		return children.size();
+	}
+	
+	
+	public void setXCoordinate(int x) {
+		node.setLocalXCoordinate(x);
+	}
+	
+	
+	public int getXCoordinate() {
+		return node.getLocalXCoordinate();
+	}
+	
+	
+	public void setYCoordinate(int y) {
+		node.setLocalYCoordinate(y);
+	}
+	
+	
+	public int getYCoordinate() {
+		return node.getLocalYCoordinate();
+	}
+	
+	
+	public void setWidth(int width) {
+		node.setWidth(width);
+	}
+	
+	
+	public int getWidth() {
+		return node.getWidth();
+	}
+	
+	
+	public void setHeight(int height) {
+		node.setHeight(height);
+	}
+	
+	
+	public int getHeight() {
+		return node.getHeight();
 	}
 	
 	
@@ -156,9 +190,24 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 		
 		node.calculateLayout();
 		
-		shape.render(x, y, width, height);
+		shape.render(getXCoordinate(), getYCoordinate(), getWidth(), getHeight());
 		
-		children.forEach((e) -> e.render(x, y));
+		children.forEach((e) -> e.render(getXCoordinate(), getYCoordinate()));
+	}
+	
+	
+	/**
+	 * 
+	 * Check if the cursor is currently targeting this window.
+	 * 
+	 * @param parentX The x coordinate of the parent window.
+	 * @param parentY The y coordinate of the parent window.
+	 * @param cursorX The x coordinate of the cursor.
+	 * @param cursorY The y coordinate of the cursor.
+	 * @return Returns true if the cursor is targeting this window.
+	 */
+	public boolean isTargeted(int cursorX, int cursorY) {
+		return shape.isTargeted(getXCoordinate(), getYCoordinate(), getWidth(), getHeight(), cursorX, cursorY);
 	}
 	
 	
@@ -170,11 +219,17 @@ public class GUIWindow implements IContainer<Element>, IDeletable {
 	 * @param cursorY The y position of the cursor.
 	 * @return Returns true if this GUIWindow was effected by the user's input.
 	 */
-	public void processInput(Input input) {
+	public boolean processInput(Input input) {
 		if (!active)
-			return;
-			
-		getChildren().forEach((e) -> e.processInput(x, y, input));
+			return false;
+		
+		if (isTargeted(input.cursorX, input.cursorY)) {
+			for (GUIElement element : children) {
+				element.processInput(getXCoordinate(), getYCoordinate(), input);
+			}
+		}
+		
+		return false;
 	}
 	
 	

@@ -10,14 +10,14 @@ import utils.ColorPalette;
 
 public class DefaultWindow extends GUIWindow {
 	
-	private GUIContainer<Element> taskBar;
-	private GUIContainer<Element> content;
+	private GUIContainer<GUIElement> taskBar;
+	private GUIContainer<GUIElement> content;
 	
 	public DefaultWindow(String title, int x, int y, int width, int height, FlexDirection flexDirection) {
 		super(new GUIQuad(ColorPalette.GRAY), x, y, width, height, FlexDirection.COLUMN);
 		
 		//Set up the task bar
-		taskBar = new GUIContainer<Element>(new GUIQuad(ColorPalette.WHITE), width, 50, FlexDirection.ROW_REVERSE);
+		taskBar = new GUIContainer<GUIElement>(new GUIQuad(ColorPalette.WHITE), width, 50, FlexDirection.ROW_REVERSE);
 		
 		GUIButton exitButton = new GUIButton(new GUIExitButton(ColorPalette.ZERO, ColorPalette.BLACK), 30, 30);
 		exitButton.setMargin(Direction.ALL, 10);
@@ -31,9 +31,9 @@ public class DefaultWindow extends GUIWindow {
 		
 		taskBar.addChild(exitButton);
 		taskBar.addChild(titleField);
-		taskBar.addDragListener((Input input) -> move(input.dx, input.dy));
+		taskBar.addDragListener((Input input) -> move(input.dx, input.dy ));
 		
-		content = new InvisibleContainer<Element>(width, height - 50, flexDirection);
+		content = new InvisibleContainer<GUIElement>(width, height - 50, flexDirection);
 		
 		super.addChild(taskBar);
 		super.addChild(content);		
@@ -41,8 +41,8 @@ public class DefaultWindow extends GUIWindow {
 	
 	
 	private void move(int dx, int dy) {
-		x += dx;
-		y += dy;
+		setXCoordinate(getXCoordinate() + dx);
+		setYCoordinate(getYCoordinate() + dy);
 	}
 	
 	
@@ -57,13 +57,13 @@ public class DefaultWindow extends GUIWindow {
 
 
 	@Override
-	public void addChild(Element element) {
+	public void addChild(GUIElement element) {
 		content.addChild(element);
 	}
 
 
 	@Override
-	public void removeChild(Element element) {
+	public void removeChild(GUIElement element) {
 		content.removeChild(element);
 	}
 

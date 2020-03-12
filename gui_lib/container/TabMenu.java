@@ -2,7 +2,7 @@ package container;
 
 import assets.meshes.geometry.Color;
 import fundamental.GUIContainer;
-import fundamental.Element;
+import fundamental.GUIElement;
 import fundamental.InvisibleContainer;
 import input.buttons.OptionSet;
 import input.buttons.ToggleButton;
@@ -10,7 +10,7 @@ import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
-public class TabMenu extends GUIContainer<Element> {
+public class TabMenu extends GUIContainer<GUIElement> {
 	
 	//The buttons to choose the tabs.
 	private OptionSet<ToggleButton> buttons;

@@ -1,11 +1,11 @@
 package function;
 
-import fundamental.Element;
+import fundamental.GUIElement;
 
 //this interface is similar to java.util.function.Consumer
 
 @FunctionalInterface
-public interface Function<E extends Element> {
+public interface Function<E extends GUIElement> {
 	
 	void execute(E element);
 	

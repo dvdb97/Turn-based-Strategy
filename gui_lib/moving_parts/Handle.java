@@ -1,9 +1,9 @@
 package moving_parts;
 
-import fundamental.Element;
+import fundamental.GUIElement;
 import rendering.shapes.GUIShape;
 
-public class Handle extends Element {
+public class Handle extends GUIElement {
 	
 	private float value;
 	

@@ -11,7 +11,7 @@ import layout.IGUILayoutNode.Direction;
 import layout.yoga.GUIYogaNode;
 import rendering.shapes.GUIShape;
 
-public abstract class Element {	
+public abstract class GUIElement {	
 	
 	//The Yoga ID for this element.
 	protected final IGUILayoutNode node;
@@ -46,7 +46,7 @@ public abstract class Element {
 	 * @param width The width of the element in pixels.
 	 * @param height The height of the element in pixels.
 	 */
-	protected Element(GUIShape shape, int width, int height) {
+	protected GUIElement(GUIShape shape, int width, int height) {
 		node = GUIYogaNode.createNode();
 		
 		this.shape = shape;
@@ -61,7 +61,7 @@ public abstract class Element {
 	 * @param widthPercent The width of the element in relation to the parent.
 	 * @param heightPercent The height of the element in relation to the parent.
 	 */
-	protected Element(GUIShape shape, float widthPercent, float heightPercent) {
+	protected GUIElement(GUIShape shape, float widthPercent, float heightPercent) {
 		node = GUIYogaNode.createNode();
 		
 		this.shape = shape;
@@ -537,7 +537,7 @@ public abstract class Element {
 	}
 
 	
-	public boolean equals(Element element) {
+	public boolean equals(GUIElement element) {
 		return node.equals(element.node);
 	}
 	

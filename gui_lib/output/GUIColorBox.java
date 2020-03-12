@@ -1,10 +1,10 @@
 package output;
 
 import assets.meshes.geometry.Color;
-import fundamental.Element;
+import fundamental.GUIElement;
 import rendering.shapes.implemented.GUIQuad;
 
-public class GUIColorBox extends Element {
+public class GUIColorBox extends GUIElement {
 	
 	public GUIColorBox(int width, int height, Color color) {
 		super(new GUIQuad(color), width, height);

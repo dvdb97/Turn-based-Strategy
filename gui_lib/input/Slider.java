@@ -56,9 +56,9 @@ public class Slider extends GUIContainer<Handle> {
 			
 			int clampedY = MathUtils.clamp(input.cursorY - globalYPos, 0, getHeight());
 			float percent = (float)clampedY / (float)getHeight() * 100f;
-			this.value = percent;
 			
-			handle.setLocalYPosition(percent);			
+			handle.setLocalYPosition(percent);
+			this.value = percent;
 		} else {
 			int globalXPos = getGlobalXPosition();
 			
