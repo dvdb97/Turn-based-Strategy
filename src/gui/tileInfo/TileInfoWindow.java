@@ -3,75 +3,116 @@ package gui.tileInfo;
 import world.BuildingAuthority;
 import world.WorldManager;
 import world.gameBoard.Tile;
-import dataType.GUIElementMatrix;
 import fundamental.DefaultWindow;
-import fundamental.GUIWindow;
+import fundamental.GUIButton;
+import fundamental.GUIImageBox;
+import fundamental.GUITextField;
+import input.buttons.OptionSet;
+import input.buttons.RadioButton;
 import interaction.TileSelecter;
-
-import static utils.ColorPalette.*;
-
-import java.awt.TextField;
-import java.util.ArrayList;
+import layout.IGUILayoutNode.Direction;
+import layout.IGUILayoutNode.FlexDirection;
+import rendering.shapes.implemented.GUIQuad;
+import utils.ColorPalette;
 
 import container.Tab;
 import container.TabMenu;
-import core.Application;
 
 public class TileInfoWindow extends DefaultWindow {
 	
 	private Tile tile;
 	
-	private TextField infoText;
-	
 	//private GUIToggleButton button;
 	
 	private TabMenu tabMenu;
-	private ArrayList<Tab> tabList;
 	
-	private GUITextaure waterTex;
-	private GUITextaure grassTex;
+	private GUITextField tileText;
+	
+	private GUIImageBox imageBox;
+	private GUIQuad waterTex;
+	private GUIQuad grassTex;
 	
 	int counter = 0;
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
-		super(title, counter, counter, counter, counter, flexDirection)
+		super("Tile Information", 100, 100, 500, 800, FlexDirection.COLUMN);
 		
-		infoText = new TextBox(0.05f, -0.05f, 0.05f, "index", GIANTS_ORANGE);
+		imageBox = new GUIImageBox("res/PH_Sea.png", 90f, 30f);
+		imageBox.setLocalXPosition(50f);
+		imageBox.setMargin(Direction.TOP, 10);
+		imageBox.setMargin(Direction.BOTTOM, 10);
+		addChild(imageBox);
 		
-		float textureHeight = 0.4f/0.9f/3f*Application.getWindow().getAspectRatio();
-		waterTex = new GUITeaxture("res/PH_Sea.png", new GUIElementMatrix(0, 0, 1, textureHeight));
-		grassTex = new GUITexature("res/PH_Grassland.png", new GUIElementMatrix(0, 0, 1, textureHeight));
-		
-		children.add(waterTex);
+		waterTex = new GUIQuad("res/PH_Sea.png");
+		grassTex = new GUIQuad("res/PH_Grassland.png");
 		
 		
-		tabMenu = new TabMenu(DARK_SLATE_GRAY, 0.1f, new GUIElementMatrix(0f, -textureHeight, 1f, 1 - textureHeight));
-		children.add(tabMenu);
-		tabList = new ArrayList<>(4);
+		tabMenu = new TabMenu(90f, 60f, FlexDirection.COLUMN, ColorPalette.WHITE);
+		tabMenu.setLocalXPosition(50f);
+		tabMenu.setMargin(Direction.TOP, 10);
+		tabMenu.setMargin(Direction.BOTTOM, 10);
+		addChild(tabMenu);
+		
 		//**************************************************************
-		tabMenu.addTab(TURQUOISE, "overview", tabList);
-		tabList.get(0).addElement(new TextBox(0, 0, 0.05f, "turquoise fucks!", TURQUOISE));
+		
+		Tab tab1 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+		GUITextField text1 = new GUITextField("turquoise fucks!", "FreeMono", 100f, 100f, 20);
+		tab1.addChild(text1);
+		
+		tabMenu.addTab("overview", tab1);
+		
 		//**************************************************************
-		tabMenu.addTab(GIANTS_ORANGE, "geopgraphy", tabList);
-		tabList.get(1).addElement(infoText);
+		
+		Tab tab2 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+		GUITextField text2 = new GUITextField("Geography information", "FreeMono", 100f, 100f, 20);
+		tileText = text2;
+		tab2.addChild(text2);
+		
+		tabMenu.addTab("geography", tab2);
+		
 		//**************************************************************
-		tabMenu.addTab(TEAL_BLUE, "buildings", tabList);
-		TextBox ttfBox = new TextBox(0.1f, -0.1f, 0.05f, "total number of cities: " + Integer.toString(counter), BLACK);
-		tabList.get(2).addElement(ttfBox);
-		TestPushButton button = new TestPushButton(SAFFRON, new GUIElementMatrix(0.1f, -0.2f, 0.3f, 0.1f));
-		tabList.get(2).addElement(button);
-		button.setFunction((e) -> {
+		
+		Tab tab3 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 100f, 60f, 30);
+		
+		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.BLACK), 20f, 10f);
+		button.setLocalXPosition(50f);
+		button.addOnClickListener((e) -> {
 			if (BuildingAuthority.requestCityOnTile(TileSelecter.getSelectedTileIndex()))
-				ttfBox.changeTextTo("total number of cities: " + Integer.toString(++counter));
-			});
+				text3.setText("total number of cities: " + Integer.toString(++counter));
+			}
+		);
+		
+		tab3.addChild(text3);
+		tab3.addChild(button);
+		
+		tabMenu.addTab("buildings", tab3);
+		
 		//**************************************************************
-		tabMenu.addTab(GREEN_1, "map mode", tabList);
-		RadioButtons rb = new RadioButtons(WHITE, 0.05f, new GUIElementMatrix(0.1f, -0.1f, 0.8f, 0.5f));
-		tabList.get(3).addElement(rb);
-		rb.addButton("zero", SAFFRON, (e) -> WorldManager.changeMM(0));
-		rb.addButton("one", BLACK, (e) -> WorldManager.changeMM(1));
-		rb.addButton("two", RED, (e) -> WorldManager.changeMM(2));	
+		
+		Tab tab4 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+		
+		OptionSet<RadioButton> set = new OptionSet<RadioButton>(50, 150, FlexDirection.COLUMN);
+		set.setLocalXPosition(50f);
+		
+		RadioButton rb1 = new RadioButton(30);
+		rb1.setMargin(Direction.ALL, 10);
+		rb1.addEnableListener((e) -> WorldManager.changeMM(0));
+		set.addDefaultButton(rb1);
+		
+		RadioButton rb2 = new RadioButton(30);
+		rb2.setMargin(Direction.ALL, 10);
+		rb2.addEnableListener((e) -> WorldManager.changeMM(1));
+		set.addButton(rb2);
+		
+		RadioButton rb3 = new RadioButton(30);
+		rb3.setMargin(Direction.ALL, 10);
+		rb3.addEnableListener((e) -> WorldManager.changeMM(2));
+		set.addButton(rb3);
+		
+		tab4.addChild(set);
+		tabMenu.addTab("map modes", tab4);
 		
 	}
 	
@@ -90,21 +131,15 @@ public class TileInfoWindow extends DefaultWindow {
 		if (this.tile == tile) {
 			return;
 		}
-		this.tile = tile;
-		infoText.changeTextTo(TileInfoStringIssuer.getTileInfoString(tile));
-		if(tile.isWater()) {
-			color = BLUE_1;
-			if (!children.contains(waterTex)) {
-				children.remove(grassTex);
-				children.add(waterTex);
-			}
-		} else {
-			color = GREEN_1;
-			if (!children.contains(grassTex)) {
-				children.remove(waterTex);
-				children.add(grassTex);
-			}
 
+		this.tile = tile;
+				
+		tileText.setText(TileInfoStringIssuer.getTileInfoString(tile));
+				
+		if (tile.isWater()) {
+			imageBox.setShape(waterTex);
+		} else {
+			imageBox.setShape(grassTex);
 		}
 	}
 	

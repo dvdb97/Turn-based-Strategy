@@ -2,22 +2,21 @@ package interaction.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.HashSet;
 import java.util.Stack;
-import java.util.TreeSet;
-
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 
 public class KeyInputHandler extends GLFWKeyCallback {
 	
 	//All keys that have been pressed down last iteration. (GLFW_PRESS)
-	private static TreeSet<Integer> keysPressed = new TreeSet<Integer>();
+	private static HashSet<Integer> keysPressed = new HashSet<Integer>();
 	
 	//All keys that have been continuously pressed down for multiple iterations. (kind of GLFW_REPEAT)
-	private static TreeSet<Integer> keysRepeated = new TreeSet<Integer>();
+	private static HashSet<Integer> keysRepeated = new HashSet<Integer>();
 	
 	//All keys that have been released last iteration. (GLFW_RELEASE)
-	private static TreeSet<Integer> keysReleased = new TreeSet<Integer>();
+	private static HashSet<Integer> keysReleased = new HashSet<Integer>();
 	
 	
 	//The current KeyEventManager that handles all events for the key input.
@@ -59,13 +58,17 @@ public class KeyInputHandler extends GLFWKeyCallback {
 	}
 	
 	
-	public static void pollEvents() {
+	/**
+	 * 
+	 * Update all key input.
+	 */
+	public static void pollEvents() {		
 		for (int key : keysPressed) {
 			keyEventManagers.peek().triggerKeyDownEvent(key);
-			
-			keysPressed.remove(key);
 			keysRepeated.add(key);
 		}
+		
+		keysPressed.clear();
 		
 		for (int key : keysRepeated) {
 			keyEventManagers.peek().triggerKeyPressedEvent(key);
@@ -73,8 +76,9 @@ public class KeyInputHandler extends GLFWKeyCallback {
 		
 		for (int key : keysReleased) {
 			keyEventManagers.peek().triggerKeyReleasedEvent(key);
-			keysReleased.remove(key);
 		}
+		
+		keysReleased.clear();
 	}
 	
 	
@@ -89,7 +93,7 @@ public class KeyInputHandler extends GLFWKeyCallback {
 	
 	
 	@Override
-	public void invoke(long window, int key, int scancode, int action, int mods) {
+	public void invoke(long window, int key, int scancode, int action, int mods) {		
 		if (key < 0 || key >= 400) {
 			return;
 		}

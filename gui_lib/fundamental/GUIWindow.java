@@ -227,6 +227,8 @@ public class GUIWindow implements IContainer<GUIElement>, IDeletable {
 			for (GUIElement element : children) {
 				element.processInput(getXCoordinate(), getYCoordinate(), input);
 			}
+			
+			return true;
 		}
 		
 		return false;

@@ -15,7 +15,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		tiw = new TileInfoWindow();
-		new ColorPickWindow();
+		//new ColorPickWindow();
 	
 		
 	}

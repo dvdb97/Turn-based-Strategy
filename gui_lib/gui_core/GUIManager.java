@@ -11,6 +11,7 @@ public class GUIManager {
 	
 	private static boolean initialized = false;	
 	
+	private static Window frame;
 	private static int width, height;
 	
 	private static HashSet<GUIWindow> windows;
@@ -29,8 +30,11 @@ public class GUIManager {
 			return;
 		}
 		
+		Renderer2D.init();
+		
 		initialized = true;
 		
+		frame = window;
 		windows = new HashSet<GUIWindow>();
 		width = window.getWidth();
 		height = window.getHeight();
@@ -75,6 +79,8 @@ public class GUIManager {
 	
 
 	public static void render() {
+		Renderer2D.beginFrame(frame);
+		
 		for (GUIWindow window : windows) {
 			window.render();
 		}

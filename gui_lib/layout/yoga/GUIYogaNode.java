@@ -37,19 +37,19 @@ public class GUIYogaNode implements IGUILayoutNode {
 	}
 	
 	
-	private void init() {
-		indexManager = new IndexManager();
-		children = new HashMap<IGUILayoutNode, Integer>();
-		modeX = modeY = CoordinateMode.LAYOUT;
-	}
-	
-	
 	public static GUIYogaNode createNode() {
 		long layoutID = YGNodeNew();
 		
 		GUIYogaNode node = new GUIYogaNode(layoutID);
 		
 		return node;
+	}
+	
+	
+	private void init() {
+		indexManager = new IndexManager();
+		children = new HashMap<IGUILayoutNode, Integer>();
+		modeX = modeY = CoordinateMode.LAYOUT;
 	}
 	
 	

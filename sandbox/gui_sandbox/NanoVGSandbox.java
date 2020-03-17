@@ -71,7 +71,6 @@ public class NanoVGSandbox {
 	
 	
 	public static void run() {
-		Renderer2D.init();
 		GUIManager.init(window);
 		
 		Mesh3D mesh = new Mesh3D();
@@ -208,8 +207,6 @@ public class NanoVGSandbox {
 			}
 			
 			RenderEngine.clear();
-			
-			Renderer2D.beginFrame(window);
 			GUIManager.processInput();
 			GUIManager.render();
 			glEnable(GL_DEPTH_TEST);
