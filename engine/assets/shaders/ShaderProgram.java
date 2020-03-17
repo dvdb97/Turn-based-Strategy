@@ -520,9 +520,7 @@ public class ShaderProgram extends Bindable {
 		if (!uniforms.containsKey(name)) {
 			int index = glGetUniformLocation(ID, name);
 			
-			if (index == -1) {
-				System.err.println("ERROR L524: The uniform " + name + " doesn't exist!");
-				
+			if (index == -1) {				
 				return index;
 			}
 			

@@ -123,7 +123,6 @@ public class TileInfoWindow extends DefaultWindow {
 	private void disable() {
 	//	children.remove(infoText);
 	}
-
 	
 	
 	//************************ get & set *************************************

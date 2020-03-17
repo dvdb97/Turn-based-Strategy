@@ -98,6 +98,15 @@ public class Tile {
 	}
 	
 	
+	/**
+	 * 
+	 * @return Returns true if a city is build on this tile.
+	 */
+	public boolean hasCity() {
+		return city != null;
+	}
+	
+	
 	//**************************** buildings *************************************
 	
 	public boolean addBuilding(Building building) {

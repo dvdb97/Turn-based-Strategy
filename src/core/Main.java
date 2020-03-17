@@ -7,4 +7,3 @@ public class Main {
 		Application.init(new StartParams("Files/StartParameters"));
 	}
 }
-

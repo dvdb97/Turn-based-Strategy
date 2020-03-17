@@ -36,7 +36,7 @@ public class GameBoard {
 		
 		cities.put(tile, city);
 		city.setTile(tile);
-		
+		tile.setCity(city);
 	}
 	
 	//-------------------------------- get & set -------------------------------

@@ -23,8 +23,8 @@ public class BuildingAuthority {
 		BuildingAuthority.superGrid = superGrid;
 	}
 	
-	public static boolean requestCityOnTile(int tileIndex) {
-		
+	
+	public static boolean requestCityOnTile(int tileIndex) {	
 		Tile tile = GameBoard.getTile(tileIndex);
 		
 		if (!GameBoard.tileAvailableForCity(tile))
@@ -43,7 +43,5 @@ public class BuildingAuthority {
 		meepleModels.add(cityModel);
 		return true;
 	}
-	
-	
 	
 }
