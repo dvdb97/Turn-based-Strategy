@@ -60,7 +60,7 @@ public class TileInfoWindow extends DefaultWindow {
 		GUITextField text1 = new GUITextField("turquoise fucks!", "FreeMono", 100f, 100f, 20);
 		tab1.addChild(text1);
 		
-		tabMenu.addTab("overview", tab1);
+		tabMenu.addDefaultTab("overview", tab1);
 		
 		//**************************************************************
 		
