@@ -126,7 +126,6 @@ public class TabMenu extends GUIContainer<GUIElement> {
 	private void changeTab(Tab tab) {
 		tabContainer.removeAllChildren();
 		tabContainer.addChild(tab);
-		System.out.println("Tabs: " + tab.getNumChildren());
 	}
 	
 	

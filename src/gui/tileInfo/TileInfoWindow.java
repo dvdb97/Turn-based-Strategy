@@ -57,7 +57,10 @@ public class TileInfoWindow extends DefaultWindow {
 		//**************************************************************
 		
 		Tab tab1 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-		GUITextField text1 = new GUITextField("turquoise fucks!", "FreeMono", 100f, 100f, 20);
+		GUITextField text1 = new GUITextField("turquoise fucks!", "FreeMono", 90f, 90f, 20);
+		text1.setLocalXPosition(50f);
+		text1.setLocalYPosition(50f);
+		
 		tab1.addChild(text1);
 		
 		tabMenu.addDefaultTab("overview", tab1);
@@ -65,7 +68,10 @@ public class TileInfoWindow extends DefaultWindow {
 		//**************************************************************
 		
 		Tab tab2 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-		GUITextField text2 = new GUITextField("Geography information", "FreeMono", 100f, 100f, 20);
+		GUITextField text2 = new GUITextField("Geography information", "FreeMono", 90f, 90f, 20);
+		text2.setLocalXPosition(50f);
+		text2.setLocalYPosition(50f);
+		
 		tileText = text2;
 		tab2.addChild(text2);
 		
@@ -74,7 +80,9 @@ public class TileInfoWindow extends DefaultWindow {
 		//**************************************************************
 		
 		Tab tab3 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 100f, 60f, 30);
+		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 90f, 60f, 20);
+		text3.setLocalXPosition(50f);
+		text3.setLocalYPosition(10f);
 		
 		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
 		button.setLabel("Build City", "FreeMono", 20);
