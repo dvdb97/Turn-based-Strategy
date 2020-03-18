@@ -76,7 +76,9 @@ public class TileInfoWindow extends DefaultWindow {
 		Tab tab3 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 100f, 60f, 30);
 		
-		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.BLACK), 20f, 10f);
+		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		button.setLabel("Build City", "FreeMono", 20);
+		
 		button.setLocalXPosition(50f);
 		button.addOnClickListener((e) -> {
 			if (BuildingAuthority.requestCityOnTile(TileSelecter.getSelectedTileIndex()))

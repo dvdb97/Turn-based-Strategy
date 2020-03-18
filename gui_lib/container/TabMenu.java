@@ -82,6 +82,8 @@ public class TabMenu extends GUIContainer<GUIElement> {
 			//Rescale all buttons.
 			buttons.getChildren().forEach((e) -> e.setHeight(newSize));
 		}
+		
+		button.setLabel(label, "FreeMono", 20);
 
 		button.addOnMouseEnterListener((e) -> button.getShape().setColor(ColorPalette.GRAY));
 		button.addOnMouseLeaveListener((e) -> {

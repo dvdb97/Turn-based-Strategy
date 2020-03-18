@@ -2,7 +2,7 @@ package input.buttons;
 
 import rendering.shapes.implemented.GUIRadioButton;
 
-public class RadioButton  extends ToggleButton {
+public class RadioButton extends ToggleButton {
 	
 	public RadioButton(int diameter) {
 		super(new GUIRadioButton(), diameter, diameter);
