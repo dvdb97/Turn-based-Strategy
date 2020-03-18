@@ -3,6 +3,8 @@ package world;
 import java.util.List;
 
 import assets.meshes.Mesh3D;
+import assets.meshes.Transformable;
+import math.MathUtils;
 import models.gameboard.GameBoardModel;
 import models.meeples.CityModel;
 import models.seeds.SuperGrid;
@@ -38,7 +40,8 @@ public class BuildingAuthority {
 		GameBoard.addCity(tile, city);
 		
 		CityModel cityModel = new CityModel(gameBoardModel.transformable);
-		cityModel.transformable.setScaling(0.1f, 0.1f, 0.25f);
+		cityModel.transformable.setScaling(0.25f, 0.25f, 0.25f);
+		cityModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
 		cityModel.transformable.setTranslation(superGrid.getHexCenter(tileIndex));
 		meepleModels.add(cityModel);
 		return true;
