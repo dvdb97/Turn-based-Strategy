@@ -1,5 +1,8 @@
 package gui_core;
 
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 import java.util.HashSet;
 import fundamental.GUIWindow;
 import input.Mouse;
@@ -86,6 +89,7 @@ public class GUIManager {
 		}
 		
 		Renderer2D.endFrame();
+		glEnable(GL_DEPTH_TEST);
 	}
 	
 	

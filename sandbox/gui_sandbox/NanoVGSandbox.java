@@ -209,7 +209,6 @@ public class NanoVGSandbox {
 			RenderEngine.clear();
 			GUIManager.processInput();
 			GUIManager.render();
-			glEnable(GL_DEPTH_TEST);
 			
 			mesh.render(scene);
 			RenderEngine.swapBuffers();
