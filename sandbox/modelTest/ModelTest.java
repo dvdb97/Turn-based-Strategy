@@ -35,13 +35,10 @@ public class ModelTest {
 	private static Window window;
 	
 	private static Camera camera;
-	
 	private static DirectionalLight light;
 	
-	private static Skybox skybox;
-	
-	private static float xRot = 0f;
-	private static float yRot = 0f;	
+	private static Skybox skybox;	
+	private static Mesh mesh;
 	
 	private static boolean shadows = true;
 	
@@ -89,7 +86,7 @@ public class ModelTest {
 	
 	
 	private static void testShadows() {
-		Mesh mesh = initMesh();
+		mesh = initMesh();
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
 		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
@@ -132,51 +129,27 @@ public class ModelTest {
 	
 	private static void handleInput() {
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_W)) {
-			//model.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);
-			
-			xRot += Transformable._1_DEGREE;
-			float l = camera.getPosition().norm();
-			
-			camera.setPosition(new Vector3f(0f, (float)sin(xRot), (float)cos(xRot)).times(l));
-			camera.lookAt(new Vector3f(0f, 0f, 0f));			
+			mesh.getTransformable().rotate(Transformable._1_DEGREE, 0f, 0f);		
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_S)) {
-			//model.getTransformable().rotate(-Transformable._1_DEGREE, 0f, 0f);
-			
-			xRot -= Transformable._1_DEGREE;
-			float l = camera.getPosition().norm();
-			
-			camera.setPosition(new Vector3f(0f, (float)sin(xRot), (float)cos(xRot)).times(l));
-			camera.lookAt(new Vector3f(0f, 0f, 0f));			
+			mesh.getTransformable().rotate(-Transformable._1_DEGREE, 0f, 0f);			
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_A)) {
-			//model.getTransformable().rotate(0f, -Transformable._1_DEGREE, 0f);
-			
-			yRot -= Transformable._1_DEGREE;
-			float l = camera.getPosition().norm();
-			
-			camera.setPosition(new Vector3f((float)sin(yRot), 0f, (float)cos(yRot)).times(l));
-			camera.lookAt(new Vector3f(0f, 0f, 0f));
+			mesh.getTransformable().rotate(0f, -Transformable._1_DEGREE, 0f);
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_D)) {
-			//model.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
-			
-			yRot += Transformable._1_DEGREE;
-			float l = camera.getPosition().norm();
-			
-			camera.setPosition(new Vector3f((float)sin(yRot), 0f, (float)cos(yRot)).times(l));
-			camera.lookAt(new Vector3f(0f, 0f, 0f));
+			mesh.getTransformable().rotate(0f, Transformable._1_DEGREE, 0f);
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_Q)) {
-			camera.backward(0.1f);
+			mesh.transformable.translate(0f, 0f, -0.01f);
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_E)) {
-			camera.forward(0.1f);
+			mesh.transformable.translate(0f, 0f, 0.01f);
 		}
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_ENTER)) {

@@ -8,7 +8,7 @@ import utils.FileUtils;
 
 public class SpriteShader extends ShaderProgram {
 
-	private static final String PATH = "Shaders/StandardShaders/sprite";
+	private static final String PATH = "Shaders/StandardShaders/";
 	
 	private SpriteShader(String vertSource, String fragSource) {
 		super(vertSource, fragSource);
@@ -17,21 +17,18 @@ public class SpriteShader extends ShaderProgram {
 	
 	
 	public static SpriteShader create() {
-		String vert = FileUtils.loadShaderSourceCode(PATH + ".vert");
-		String frag = FileUtils.loadShaderSourceCode(PATH + ".frag");
+		String vert = FileUtils.loadShaderSourceCode(PATH + "sprite.vert");
+		String frag = FileUtils.loadShaderSourceCode(PATH + "sprite.frag");
 		
 		return new SpriteShader(vert, frag);
 	}
 	
 	
-	/**
-	 * 
-	 * Passes the MVPMatrix as an uniform to the shader. 
-	 * 
-	 * @param matrix The matrix to use as the MVPMatrix.
-	 */
-	public void setMVPMatrix(Matrix44f matrix) {
-		this.setUniformMatrix4fv("mvpMatrix", matrix);
+	public static SpriteShader createInstancedRenderingShader() {
+		String vert = FileUtils.loadShaderSourceCode(PATH + "spriteInstanced.vert");
+		String frag = FileUtils.loadShaderSourceCode(PATH + "sprite.frag");
+		
+		return new SpriteShader(vert, frag);
 	}
 	
 	
