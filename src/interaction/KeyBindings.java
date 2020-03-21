@@ -22,6 +22,11 @@ public class KeyBindings {
 	
 	private static int mapTranslationDown = GLFW_KEY_F;
 	
+	private static int mapPitchForward = GLFW_KEY_T;
+	
+	private static int mapPitchBackward = GLFW_KEY_G;
+	
+	
 	public static void setMapZoomOut(int mapZoomOut) {
 		KeyBindings.mapTranslationUp = mapZoomOut;
 	}
@@ -90,6 +95,16 @@ public class KeyBindings {
 
 	public static int getMapTranslationDown() {
 		return mapTranslationDown;
+	}
+	
+	
+	public static int getCameraPitchForward() {
+		return mapPitchForward;
+	}
+	
+	
+	public static int getCameraPitchBackward() {
+		return mapPitchBackward;
 	}
 
 }

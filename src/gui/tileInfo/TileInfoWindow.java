@@ -126,14 +126,6 @@ public class TileInfoWindow extends DefaultWindow {
 		
 	}
 	
-	private void enable() {
-	//	children.add(infoText);
-	}
-	
-	private void disable() {
-	//	children.remove(infoText);
-	}
-	
 	
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {

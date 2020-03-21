@@ -9,7 +9,7 @@ import interaction.input.CursorPosInput;
 import interaction.input.KeyInputHandler;
 import interaction.input.MouseInputManager;
 import math.vectors.Vector4f;
-import rendering.RenderEngine;
+import rendering.Renderer;
 
 public class Application {
 	
@@ -40,10 +40,10 @@ public class Application {
 	
 	
 	private static void initRenderEngine(StartParams params) {
-		RenderEngine.init(window);
-		RenderEngine.setClearColor(new Vector4f(0.2f, 0.4f, 1f, 1f));
-		RenderEngine.enableDepthTest();
-		RenderEngine.setSwapInterval(1);
+		Renderer.init(window);
+		Renderer.setClearColor(new Vector4f(0.2f, 0.4f, 1f, 1f));
+		Renderer.enableDepthTest();
+		Renderer.setSwapInterval(1);
 		
 		Matrices.initProjectionMatrix(window);		
 	}
@@ -64,7 +64,7 @@ public class Application {
 	
 	
 	private static void close() {
-		RenderEngine.close();
+		Renderer.close();
 		
 		//TODO: This method makes the program crash
 		//window.close();

@@ -13,7 +13,7 @@ import interaction.Window;
 import interaction.input.KeyInput;
 import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
-import rendering.RenderEngine;
+import rendering.Renderer;
 import utils.Cooldown;
 
 public class Instancing {
@@ -34,9 +34,9 @@ private static Window window;
 		window.createFullscreenWindow("Model Demo");
 		window.setKeyInputCallback(new KeyInputHandler());
 		
-		RenderEngine.init(window);
-		RenderEngine.enableDepthTest();
-		RenderEngine.setSwapInterval(1);
+		Renderer.init(window);
+		Renderer.enableDepthTest();
+		Renderer.setSwapInterval(1);
 	}
 	
 	
@@ -88,11 +88,11 @@ private static Window window;
 		    	cd.start();
 		    }
 			
-			RenderEngine.clear();
+			Renderer.clear();
 			
 			mesh.render(scene);
 			
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 		}
 		
 		mesh.delete();

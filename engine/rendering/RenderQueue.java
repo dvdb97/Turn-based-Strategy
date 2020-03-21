@@ -77,12 +77,20 @@ public class RenderQueue implements IDeletable {
 	}
 	
 	
+	/**
+	 * 
+	 * Renders all given meshes.
+	 */
 	public void render() {
 		mapShadows();
 		renderMeshes();
 	}
 	
 	
+	/**
+	 * 
+	 * Render all meshes that are supposed to have shadows to the shadow map.
+	 */
 	protected void mapShadows() {		
 		DirectionalLight light = scene.getLightSource();
 		
@@ -93,22 +101,24 @@ public class RenderQueue implements IDeletable {
 		light.startShadowMapPass();
 		
 		for (Mesh mesh : meshes) {
-			if (mesh.castShadows()) {
-				light.passToShadowMap(mesh);
-			}
+			light.passToShadowMap(mesh);
 		}
 		
 		light.endShadowMapPass();
 	}
 	
 	
+	/**
+	 * 
+	 * Render all meshes to the screen.
+	 */
 	protected void renderMeshes() {
 		for (Mesh mesh : meshes) {
 			mesh.render(scene);
 		}
 	}
-
-
+	
+	
 	@Override
 	public void delete() {
 		for (Mesh mesh : meshes) {

@@ -4,7 +4,7 @@ import interaction.Window;
 import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
-import rendering.RenderEngine;
+import rendering.Renderer;
 import rendering.shapes.implemented.GUIQuad;
 import utils.Cooldown;
 
@@ -49,11 +49,11 @@ public class ModelTest {
 		
 		window.setKeyInputCallback(new KeyInputHandler());
 		
-		RenderEngine.init(window);
+		Renderer.init(window);
 		
-		RenderEngine.enableDepthTest();
+		Renderer.enableDepthTest();
 		
-		RenderEngine.setSwapInterval(1);
+		Renderer.setSwapInterval(1);
 		
 		Cooldown.start("shadows", 0.2);
 		Cooldown.start("screenshot", 1.0);
@@ -99,7 +99,7 @@ public class ModelTest {
 		paths[Skybox.LEFT] = "res/Textures/Skyboxes/ice/left.jpg";
 		paths[Skybox.RIGHT] = "res/Textures/Skyboxes/ice/right.jpg";
 		
-		RenderEngine.setClearColor(new Vector4f(1f, 1f, 1f, 1f));
+		Renderer.setClearColor(new Vector4f(1f, 1f, 1f, 1f));
 		
 		skybox = new Skybox(paths);
 		SkyboxMesh skyboxMesh = new SkyboxMesh(skybox);
@@ -111,12 +111,12 @@ public class ModelTest {
 		light.fitToBoundingBox(mesh);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
-			RenderEngine.clear();
+			Renderer.clear();
 			handleInput();
 			
 			mesh.render(scene);
 			
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 		}
 		
 		mesh.delete();
@@ -162,7 +162,7 @@ public class ModelTest {
 		
 		if (KeyInputHandler.keyPressed(GLFW.GLFW_KEY_F2)) {
 			if (Cooldown.ended("screenshot")) {
-				RenderEngine.takeScreenshot("screenshots", "PNG");
+				Renderer.takeScreenshot("screenshots", "PNG");
 				
 				Cooldown.refresh("screenshot");
 			}

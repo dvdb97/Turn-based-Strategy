@@ -11,7 +11,7 @@ import assets.textures.Texture2D;
 import interaction.Window;
 import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
-import rendering.RenderEngine;
+import rendering.Renderer;
 import rendering.RenderQueue;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
@@ -25,9 +25,9 @@ public class Parenting {
 		window.createFullscreenWindow("Parenting Test");
 		window.setKeyInputCallback(new KeyInputHandler());
 		
-		RenderEngine.init(window);
-		RenderEngine.enableDepthTest();
-		RenderEngine.setSwapInterval(1);
+		Renderer.init(window);
+		Renderer.enableDepthTest();
+		Renderer.setSwapInterval(1);
 		
 		run();
 	}
@@ -62,7 +62,7 @@ public class Parenting {
 		renderQueue.addMesh(greenCircle);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
-			RenderEngine.clear();
+			Renderer.clear();
 			
 			//Update
 			redCircle.transformable.rotate(0f, 0f, -0.01f);
@@ -70,7 +70,7 @@ public class Parenting {
 			greenCircle.transformable.rotate(0f, 0f, -0.03f);
 			
 			renderQueue.render();
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 		}
 		
 		renderQueue.delete();

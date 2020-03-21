@@ -14,29 +14,34 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+
+import assets.meshes.Mesh;
+import assets.scene.Scene;
 import interaction.Window;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
-import java.time.format.DateTimeFormatter;  
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.time.LocalDateTime;
 
 
-public class RenderEngine {
+public class Renderer {
 	
 	//A reference to the window this RenderEngine is supposed to draw on 
 	private static Window window;
 		
 	//Settings:
-	private static boolean depthTestEnabled = false;
+	private static boolean depthTest = false;
 	
-
 	private static double timer;
 	
+	private static RenderQueue renderQueue;
 	
-	public static void init(Window win) {
+	
+	public static void init(Window window) {
 		createCapabilities();
 		
-		window = win;
+		Renderer.window = window;
 		
 		timer = glfwGetTime();
 		
@@ -47,12 +52,55 @@ public class RenderEngine {
 	}
 	
 	
+	/**
+	 * 
+	 * @param scene The scene in which the meshes in the render queue are rendered.
+	 */
+	public static void initRenderQueue(Scene scene) {
+		renderQueue = new RenderQueue(window, scene);
+	}
+	
+	
+	/**
+	 * 
+	 * @param renderQueue A predefined render queue.
+	 */
+	public static void setRenderQueue(RenderQueue renderQueue) {
+		Renderer.renderQueue = renderQueue;
+	}
+	
+	
+	public static void addMeshToRenderQueue(Mesh mesh) {
+		renderQueue.addMesh(mesh);
+	}
+	
+	
+	public static void addMeshesToRenderQueue(Mesh[] meshes) {
+		renderQueue.addMeshes(meshes);
+	}
+	
+	
+	public static void addMeshesToRenderQueue(List<Mesh> meshes) {
+		renderQueue.addMeshes(meshes);
+	}
+	
+	
+	public static void removeMeshFromRenderQueue(Mesh mesh) {
+		renderQueue.removeMesh(mesh);
+	}
+	
+	
 	public static void close() {
-		
+		renderQueue.delete();
 	}
 	
 	
 	//****************************** Draw Functions ******************************
+	
+	
+	public static void render() {
+		renderQueue.render();
+	}
 	
 	
 	public static void clear() {
@@ -126,7 +174,7 @@ public class RenderEngine {
 		
 	
 	public static boolean isDepthTestEnabled() {
-		return depthTestEnabled;
+		return depthTest;
 	}
 	
 	
@@ -163,13 +211,13 @@ public class RenderEngine {
 	
 	
 	public static void enableDepthTest() {
-		if (depthTestEnabled) {
+		if (depthTest) {
 			System.out.println("Depth Test is already enabled!");
 			
 			return;
 		}
 		
-		depthTestEnabled = true;
+		depthTest = true;
 		
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
@@ -177,13 +225,13 @@ public class RenderEngine {
 	
 	
 	public static void disableDepthTest() {
-		if (!depthTestEnabled) {
+		if (!depthTest) {
 			System.out.println("Depth is already disabled!");
 			
 			return;
 		}
 		
-		depthTestEnabled = false;
+		depthTest = false;
 		
 		glDisable(GL_DEPTH_TEST);
 	}

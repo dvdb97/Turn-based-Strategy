@@ -14,7 +14,7 @@ import interaction.Window;
 import interaction.input.CursorPosInput;
 import interaction.input.KeyInputHandler;
 import math.vectors.Vector3f;
-import rendering.RenderEngine;
+import rendering.Renderer;
 
 public class FPSCamera {
 	
@@ -26,9 +26,9 @@ public class FPSCamera {
 		window.setKeyInputCallback(new KeyInputHandler());
 		window.setMousePosInput(new CursorPosInput(window));
 		
-		RenderEngine.init(window);
-		RenderEngine.enableDepthTest();
-		RenderEngine.setSwapInterval(1);
+		Renderer.init(window);
+		Renderer.enableDepthTest();
+		Renderer.setSwapInterval(1);
 	}
 	
 	
@@ -57,14 +57,14 @@ public class FPSCamera {
 		
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
-			RenderEngine.clear();
+			Renderer.clear();
 			
 			fpc.update();
 			
 			skyboxMesh.render(scene);
 			mesh.render(scene);
 			
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 		}
 		
 		mesh.delete();

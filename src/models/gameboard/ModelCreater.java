@@ -88,6 +88,7 @@ public class ModelCreater {
 	private void createTerrain() {
 		
 		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
+		mat.castShadows = true;		
 		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
 		
 	}
@@ -107,7 +108,7 @@ public class ModelCreater {
 		
 		Color[] colors = randomColors(lengthInHex, widthInHex);
 		hexagons = new HexagonGrid(superGrid, colors);
-		
+		hexagons.setColor((i) -> new Color(0f, 0f, 0f, 0f));
 	}
 	
 	//******************************** calculations *******************************

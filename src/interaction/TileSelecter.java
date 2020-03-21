@@ -5,6 +5,7 @@ import interaction.input.MouseInputManager;
 import math.vectors.Vector3f;
 import math.vectors.Vector4f;
 import math.vectors.advanced.Distances;
+import rendering.SceneManager;
 import world.WorldManager;
 
 
@@ -57,12 +58,12 @@ public class TileSelecter {
 		Vector4f ray_clip = new Vector4f(cursorX, cursorY, -1f, 1f);
 		
 		//To eye space of the given camera
-		Vector4f ray_eye = PlayerCamera.getInvertedProjectionMatrix().times(ray_clip);
+		Vector4f ray_eye = SceneManager.getCamera().getInvertedProjectionMatrix().times(ray_clip);
 		ray_eye = new Vector4f(ray_eye.getA(), ray_eye.getB(), -1f, 0f);
 		
 		//To world Space
-		rayDirection = PlayerCamera.getInvertedViewMatrix().times(ray_eye).toVector3f().normalize();
-		rayOrigin = PlayerCamera.getCameraPosition();
+		rayDirection = SceneManager.getCamera().getInvertedViewMatrix().times(ray_eye).toVector3f().normalize();
+		rayOrigin = SceneManager.getCamera().getPosition();
 	}
 	
 	

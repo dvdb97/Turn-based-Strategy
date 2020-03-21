@@ -1,193 +1,43 @@
 package interaction;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
-
 import assets.cameras.Camera;
+import interaction.input.KeyEventManager;
 import interaction.input.KeyInputHandler;
-import math.matrices.Matrix44f;
-import math.vectors.Vector3f;
-import obsolete.Cooldown;
 
-public class PlayerCamera {
+public class PlayerCamera extends Camera {
 	
-	private static Camera camera;
+	private boolean enabled = true;
 	
-	//The Map shouldn't move in some cases. For example when you are in a menu
-	private static boolean cameraMovementDisabled;	
+	private float moveSpeed = 0.1f;
+	private float rotSpeed = 0.1f;
 	
-	//TODO: The value is temporary
-	private static float cameraMovementSpeed = 0.1f;
-	private static float cameraRotationSpeed = 0.1f;
 	
-	private static double timer1;
-
-	
-	//Init the camera
-	public static void init() {
-		cameraMovementDisabled = false;	
-		camera = new Camera();
+	public PlayerCamera() {
+		KeyEventManager keyManager = KeyInputHandler.getKeyEventManager();
 		
-		timer1 = glfwGetTime();
+		//Forward movement
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationForward(), i -> move(0f, moveSpeed, 0f));
 		
-	}
-	
-	
-	//Processes the player input and translate it to camera movement
-	public static void update() {
+		//Backward movement
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationBackward(), i -> move(0f, -moveSpeed, 0f));
 		
-		if (cameraMovementDisabled) {
-			return;
-		}
+		//Rightward movement
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationRight(), i -> move(moveSpeed, 0f, 0f));
 		
+		//Leftward movement
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationLeft(), i -> move(-moveSpeed, 0f, 0f));
 		
-		processCameraMovement();
+		//Zoom in
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationDown(), i -> move(0f, 0f, -moveSpeed));
 		
-		processZoom();
+		//Zoom out
+		keyManager.addKeyPressedEventListener(KeyBindings.getMapTranslationUp(), i -> move(0f, 0f, moveSpeed));
 		
-	}
-	
-	
-	//Checks the input and checks whether the player wants to move the map
-	private static void processCameraMovement() {
+		//Pitch forward
+		keyManager.addKeyPressedEventListener(KeyBindings.getCameraPitchForward(), i -> pitch(0.1f * rotSpeed));
 		
-		//Temporary: Move the map with W-A-S-D
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationForward())) {
-			
-			camera.move(0f, cameraMovementSpeed, 0f);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationBackward())) {
-			
-			camera.move(0f, -cameraMovementSpeed, 0f);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationRight())) {
-			
-			camera.move(cameraMovementSpeed, 0f, 0f);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationLeft())) {
-			
-			camera.move(-cameraMovementSpeed, 0f, 0f);
-			
-		}
-		
-	}
-	
-	
-	private static void processZoom() {
-		
-		//Get Mouse wheel input
-		
-		//Move the Camera downwards and tilt it a bit. TODO: A function that processes the matrix for that
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationDown())) {
-			
-			camera.move(0f, 0f, -cameraMovementSpeed);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(KeyBindings.getMapTranslationUp())) {
-			
-			camera.move(0f, 0f, cameraMovementSpeed);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(GLFW_KEY_T)) {
-			
-			camera.pitch(0.1f * cameraRotationSpeed);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(GLFW_KEY_G)) {
-			
-			camera.pitch(-0.1f * cameraRotationSpeed);
-			
-		}
-		
-		
-		if (KeyInputHandler.keyPressed(GLFW_KEY_ENTER)) {
-			
-			if (glfwGetTime() - timer1 <= 1.0) {
-				return;
-			}
-			
-			
-			System.out.println("View Direction:");
-			
-			camera.getViewDirection().print();
-			
-			System.out.println("View matrix:");
-			
-			camera.getViewMatrix().print();
-			
-			timer1 = glfwGetTime();
-			
-		}
-		
-	}
-	
-	
-	public static void lookAt(Vector3f point) {
-		camera.lookAt(point);
-	}
-	
-	
-	public static void lookAt(Vector3f position, Vector3f point) {
-		camera.lookAt(position, point);
-	}
-	
-	
-	public static void disableCameraMovement(boolean b) {
-		cameraMovementDisabled = b;
-	}
-	
-	
-	public static boolean isCameraMovementDisabled() {
-		return cameraMovementDisabled;
-	}
-	
-	
-	public static Matrix44f getViewMatrix() {
-		return camera.getViewMatrix();
-	}
-	
-	
-	public static Matrix44f getInvertedViewMatrix() {
-		return camera.getInvertedViewMatrix();
-	}
-	
-	
-	public static Matrix44f getProjectionMatrix() {
-		return camera.getProjectionMatrix();
-	}
-	
-	
-	public static Matrix44f getInvertedProjectionMatrix() {
-		return camera.getInvertedProjectionMatrix();
-	}
-	
-	
-	public static Vector3f getCameraPosition() {
-		return camera.getPosition();
-	}
-	
-	
-	public static Camera getCamera() {
-		return camera;
+		//Pitch backwards
+		keyManager.addKeyPressedEventListener(KeyBindings.getCameraPitchBackward(), i -> pitch(-0.1f * rotSpeed));
 	}
 
 }

@@ -6,7 +6,7 @@ import interaction.Window;
 import interaction.input.KeyEventListener;
 import interaction.input.KeyEventManager;
 import interaction.input.KeyInputHandler;
-import rendering.RenderEngine;
+import rendering.Renderer;
 
 public class KeyInputTest {
 	
@@ -17,9 +17,9 @@ public class KeyInputTest {
 		window.createWindowedWindow("Event System Test");
 		window.setKeyInputCallback(new KeyInputHandler());
 		
-		RenderEngine.init(window);
-		RenderEngine.enableDepthTest();
-		RenderEngine.setSwapInterval(1);
+		Renderer.init(window);
+		Renderer.enableDepthTest();
+		Renderer.setSwapInterval(1);
 		
 		run();
 	}
@@ -34,11 +34,11 @@ public class KeyInputTest {
 		KeyInputHandler.addKeyEventManager(keyEventManager);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
-			RenderEngine.clear();
+			Renderer.clear();
 
 			KeyInputHandler.pollEvents();
 			
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 		}
 	}
 

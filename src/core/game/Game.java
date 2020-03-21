@@ -6,7 +6,8 @@ import gui.GameGUIManager;
 import gui_core.GUIManager;
 import interaction.TileSelecter;
 import interaction.input.KeyInputHandler;
-import rendering.RenderEngine;
+import rendering.Renderer;
+import rendering.SceneManager;
 import world.WorldManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -18,13 +19,9 @@ public class Game {
 	
 	//Start a completely new game
 	public Game(int boardLength, int boardWidth) {
-		
-		PlayerCamera.init();
-		
+		SceneManager.init();
 		WorldManager.init(boardLength, boardWidth);
-		
 		TileSelecter.init();
-		
 		GameGUIManager.init();
 		
 		run();
@@ -42,7 +39,7 @@ public class Game {
 		
 		while (running) {
 			
-			RenderEngine.clear();
+			Renderer.clear();
 			
 			update();
 			
@@ -50,7 +47,7 @@ public class Game {
 			
 			processInput();
 			
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 			
 		}
 		
@@ -59,7 +56,6 @@ public class Game {
 	
 	
 	private void processInput() {
-		PlayerCamera.update();
 		KeyInputHandler.pollEvents();
 		
 		if (KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {

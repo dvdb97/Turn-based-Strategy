@@ -35,7 +35,7 @@ import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import math.vectors.Vector3f;
 import output.GUIColorBox;
-import rendering.RenderEngine;
+import rendering.Renderer;
 import rendering.Renderer2D;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
@@ -55,8 +55,8 @@ public class NanoVGSandbox {
 		window.setMouseInputCallback(new MouseInputManager());
 		glfwWindowHint(GLFW_SAMPLES, 4);
 		
-		RenderEngine.init(window);
-		RenderEngine.enableDepthTest();
+		Renderer.init(window);
+		Renderer.enableDepthTest();
 		glEnable(GL_STENCIL_TEST);
 	}
 	
@@ -182,7 +182,7 @@ public class NanoVGSandbox {
 		button.setMargin(Direction.ALL, 10);
 		//button.addOnMouseEnterListener((Input input) -> text.setText(hovering));
 		//button.addOnMouseLeaveListener((Input input) -> text.setText(notHovering));
-		button.addOnClickListener((Input input) -> RenderEngine.takeScreenshot("screenshots/", "png"));
+		button.addOnClickListener((Input input) -> Renderer.takeScreenshot("screenshots/", "png"));
 		tab5.addChild(button);
 		
 		
@@ -206,12 +206,12 @@ public class NanoVGSandbox {
 				timer = glfwGetTime();
 			}
 			
-			RenderEngine.clear();
+			Renderer.clear();
 			GUIManager.processInput();
 			GUIManager.render();
 			
 			mesh.render(scene);
-			RenderEngine.swapBuffers();
+			Renderer.swapBuffers();
 			frames++;
 		}
 		

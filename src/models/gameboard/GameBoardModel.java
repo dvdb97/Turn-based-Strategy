@@ -4,13 +4,10 @@ import assets.light.DirectionalLight;
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
 import assets.scene.Scene;
-import interaction.PlayerCamera;
 import interaction.TileSelecter;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
-import models.meeples.CityModel;
-import rendering.matrices.transformation.TransformationMatrix;
-import world.WorldManager;
+import rendering.SceneManager;
 
 public class GameBoardModel {
 	
@@ -75,10 +72,10 @@ public class GameBoardModel {
 	private void hardCode() {
 		
 		//TODO: no hard coding!
-		sun = new DirectionalLight(new Vector3f(0.2f, 0.2f, -1f), new Vector3f(0.5f, 0.5f, 0.3f), 4000, 4000);
+		sun = new DirectionalLight(new Vector3f(0f, -1f, -0.2f), new Vector3f(0.8f, 0.8f, 0.5f), 4000, 4000);
 		sun.fitToBoundingBox(terrain);
 		
-		scene = new Scene(PlayerCamera.getCamera(), sun, null);
+		scene = new Scene(SceneManager.getCamera(), sun, null);
 	}	
 	
 	//***************************** render ********************************
@@ -87,6 +84,8 @@ public class GameBoardModel {
 	 * renders the game board models
 	 */
 	public void render() {
+		
+		computeShadows();
 		
 		renderTerrain();
 		
@@ -100,10 +99,16 @@ public class GameBoardModel {
 	
 	//*********************************
 	
+	
+	private void computeShadows() {
+		scene.getLightSource().startShadowMapPass();
+		scene.getLightSource().passToShadowMap(terrain);
+		scene.getLightSource().endShadowMapPass();
+	}
+	
+	
 	private void renderTerrain() {
-		
 		terrain.render(scene);
-		
 	}
 	
 	private void renderBordersSeaCOS() {

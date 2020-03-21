@@ -140,12 +140,14 @@ public class HexagonGrid extends Mesh3D {
 		
 	}
 	
+	
 	public void setColor(MapMode mapMode) {
 		for (int i=0; i<length*width; i++) {
 			this.colors[i] = mapMode.getColor(i);
 		}
 		updateColor();
 	}
+	
 	
 	public void setColor(int[] indices, Color color) {
 		
