@@ -3,12 +3,14 @@ package gui.tileInfo;
 import world.AgentAuthority;
 import world.BuildingAuthority;
 import world.WorldManager;
+import world.agents.Agent;
 import world.gameBoard.GameBoard;
 import world.gameBoard.Tile;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUIImageBox;
 import fundamental.GUITextField;
+import gui.GameGUIManager;
 import input.buttons.OptionSet;
 import input.buttons.RadioButton;
 import interaction.TileSelecter;
@@ -82,7 +84,7 @@ public class TileInfoWindow extends DefaultWindow {
 		//**************************************************************
 		
 		Tab tab3 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 90f, 60f, 20);
+		GUITextField text3 = new GUITextField("Total number of cities: " + counter, "FreeMono", 90f, 20f, 20);
 		text3.setLocalXPosition(50f);
 		text3.setLocalYPosition(10f);
 		
@@ -95,18 +97,27 @@ public class TileInfoWindow extends DefaultWindow {
 				text3.setText("total number of cities: " + Integer.toString(++counter));
 			}
 		);
-		GUIButton agentButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		agentButton.setLabel("Spawn Agent", "FreeMono", 20);
+		GUIButton agentButton1 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		agentButton1.setLabel("Spawn Agent", "FreeMono", 20);
 		
-		agentButton.setLocalXPosition(50f);
-		agentButton.addOnClickListener((e) -> {
+		agentButton1.setLocalXPosition(50f);
+		agentButton1.addOnClickListener((e) -> {
 			AgentAuthority.requestAgentInCity(GameBoard.getCity(TileSelecter.getSelectedTileIndex()));
+			}
+		);
+		GUIButton agentButton2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		agentButton2.setLabel("Show Agent Info", "FreeMono", 20);
+		
+		agentButton2.setLocalXPosition(50f);
+		agentButton2.addOnClickListener((e) -> {
+			GameGUIManager.showAgentInfoWindow(GameBoard.getAgent(TileSelecter.getSelectedTileIndex()));
 			}
 		);
 		
 		tab3.addChild(text3);
 		tab3.addChild(cityButton);
-		tab3.addChild(agentButton);
+		tab3.addChild(agentButton1);
+		tab3.addChild(agentButton2);
 		
 		tabMenu.addTab("buildings", tab3);
 		
@@ -144,7 +155,6 @@ public class TileInfoWindow extends DefaultWindow {
 	private void disable() {
 	//	children.remove(infoText);
 	}
-	
 	
 	//************************ get & set *************************************
 	public void setTile(Tile tile) {

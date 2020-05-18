@@ -186,7 +186,7 @@ public class WorldManager {
 
 	/**
 	 * @param i index of requested tile
-	 * @return the fertilty of the requested tile
+	 * @return the fertility of the requested tile
 	 */
 	public static float getFertility(int i) {
 		return fertility[i];

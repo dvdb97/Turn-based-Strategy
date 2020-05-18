@@ -1,28 +1,29 @@
 package world.agents;
 
 import world.city.City;
-import world.city.Population;
 
-public class Agent {
+public abstract class Agent {
 	//TODO: basic (and maybe abstract) agent class
 	//TODO: subclasses for different kinds of agents (e.g. military units ...)
 	
 	private City homeCity;
-	private int position;	//tile index
+	private int range;		//number of tiles, the agent can travel within one round
 
-	//******************** contructor ***********************************
+	//******************** constructor ***********************************
 	
 	public Agent(City homeCity) {
 		
 		this.homeCity = homeCity;
-		this.position = homeCity.getTileIndex();
-		
+		this.range = 3;	//TODO: don't hard code
 	}
 	
 	//******************** get & set ************************************
 	
-	public int getPosition() {
-		return position;
+	public City getHomeCity() {
+		return homeCity;
 	}
-		
+
+	public String getAgentInfoString() {
+		return "An Agent. Yay!";
+	}	
 }

@@ -8,6 +8,7 @@ import models.gameboard.GameBoardModel;
 import models.meeples.AgentModel;
 import models.seeds.SuperGrid;
 import world.agents.Agent;
+import world.agents.MilitaryUnit;
 import world.city.City;
 import world.gameBoard.GameBoard;
 
@@ -26,6 +27,9 @@ public class AgentAuthority {
 	public static boolean requestAgentInCity(City city) {
 		//TODO: in future buildings spawn agents, not cities
 		
+		if (city==null)
+			return false;
+		
 		//if (city is not allowed to spawn agent)
 			//return false;
 		
@@ -33,7 +37,7 @@ public class AgentAuthority {
 			//return false;
 		
 		//spawn agent
-		Agent agent = new Agent(city);
+		Agent agent = new MilitaryUnit(city);
 		GameBoard.addAgent(agent);
 		
 		AgentModel agentModel = new AgentModel(gameBoardModel.transformable);
@@ -44,4 +48,16 @@ public class AgentAuthority {
 		return true;
 		
 	}
+	
+	public static boolean moveAgent(Agent agent, int tileIndex) {
+
+		if (agent==null)
+			return false;
+		
+		
+		
+		return true;
+		
+	}
+	
 }
