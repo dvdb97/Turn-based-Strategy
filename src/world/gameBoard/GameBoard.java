@@ -1,7 +1,10 @@
 package world.gameBoard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import world.agents.Agent;
 import world.city.City;
 
 //this class is a sort of data structure
@@ -12,6 +15,7 @@ public class GameBoard {
 	//-------------------------------- fields ---------------------------------
 	private static Tile[] tiles;
 	private static HashMap<Tile, City> cities = new HashMap<>();
+	private static List<Agent> agents = new ArrayList<>();
 	
 	public static boolean tileAvailableForCity(Tile tile) {
 		//TODO: maybe use exceptions here
@@ -37,6 +41,10 @@ public class GameBoard {
 		cities.put(tile, city);
 		city.setTile(tile);
 		tile.setCity(city);
+	}
+	
+	public static void addAgent(Agent agent) {
+		agents.add(agent);
 	}
 	
 	//-------------------------------- get & set -------------------------------
@@ -89,6 +97,13 @@ public class GameBoard {
 		return width;
 	}
 	
+	/**
+	 * @param tileIndex position of the requested city's tile in "Tile[] tiles"
+	 * @return the requested city
+	 */
+	public static City getCity(int tileIndex) {
+		return cities.get(tiles[tileIndex]);
+	}
 	
 	//-------------------------------------- reset -------------------------------
 	

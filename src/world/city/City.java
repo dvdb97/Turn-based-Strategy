@@ -41,4 +41,7 @@ public class City {
 		
 	}
 	
+	public int getTileIndex() {
+		return tile.getIndex();
+	}
 }

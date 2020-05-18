@@ -1,7 +1,9 @@
 package gui.tileInfo;
 
+import world.AgentAuthority;
 import world.BuildingAuthority;
 import world.WorldManager;
+import world.gameBoard.GameBoard;
 import world.gameBoard.Tile;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
@@ -84,18 +86,27 @@ public class TileInfoWindow extends DefaultWindow {
 		text3.setLocalXPosition(50f);
 		text3.setLocalYPosition(10f);
 		
-		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		button.setLabel("Build City", "FreeMono", 20);
+		GUIButton cityButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		cityButton.setLabel("Build City", "FreeMono", 20);
 		
-		button.setLocalXPosition(50f);
-		button.addOnClickListener((e) -> {
+		cityButton.setLocalXPosition(50f);
+		cityButton.addOnClickListener((e) -> {
 			if (BuildingAuthority.requestCityOnTile(TileSelecter.getSelectedTileIndex()))
 				text3.setText("total number of cities: " + Integer.toString(++counter));
 			}
 		);
+		GUIButton agentButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		agentButton.setLabel("Spawn Agent", "FreeMono", 20);
+		
+		agentButton.setLocalXPosition(50f);
+		agentButton.addOnClickListener((e) -> {
+			AgentAuthority.requestAgentInCity(GameBoard.getCity(TileSelecter.getSelectedTileIndex()));
+			}
+		);
 		
 		tab3.addChild(text3);
-		tab3.addChild(button);
+		tab3.addChild(cityButton);
+		tab3.addChild(agentButton);
 		
 		tabMenu.addTab("buildings", tab3);
 		

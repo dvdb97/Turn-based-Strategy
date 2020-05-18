@@ -49,6 +49,7 @@ public class WorldManager {
 		initMapModes();
 		
 		BuildingAuthority.init(gameBoardModel, meepleModels, superGrid);
+		AgentAuthority.init(gameBoardModel, meepleModels, superGrid);
 		
 	}
 	
