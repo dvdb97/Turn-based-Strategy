@@ -103,17 +103,18 @@ public class TileInfoWindow extends DefaultWindow {
 		agentButton1.setLocalXPosition(50f);
 		agentButton1.addOnClickListener((e) -> {
 			AgentAuthority.requestAgentInCity(GameBoard.getCity(TileSelecter.getSelectedTileIndex()));
-			}
-		);
+		});
 		GUIButton agentButton2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
 		agentButton2.setLabel("Show Agent Info", "FreeMono", 20);
 		
 		agentButton2.setLocalXPosition(50f);
 		agentButton2.addOnClickListener((e) -> {
-			System.out.println(GameBoard.getAgent(TileSelecter.getSelectedTileIndex()).getAgentInfoString());
-			GameGUIManager.showAgentInfoWindow(GameBoard.getAgent(TileSelecter.getSelectedTileIndex()));
+			Agent a = GameBoard.getAgent(TileSelecter.getSelectedTileIndex());
+			if (a != null) {
+				System.out.println(a.getAgentInfoString());
+				GameGUIManager.showAgentInfoWindow(a);
 			}
-		);
+		});
 		
 		tab3.addChild(text3);
 		tab3.addChild(cityButton);

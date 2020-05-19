@@ -16,6 +16,7 @@ public class AgentInfoWindow extends DefaultWindow {
 	private Agent agent;
 	private String agentInfoString;
 	private GUITextField text;
+	private GUIButton button;
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
@@ -24,7 +25,7 @@ public class AgentInfoWindow extends DefaultWindow {
 		text = new GUITextField("Dummy", "FreeMono", 90f, 20f, 20);
 		text.setLocalXPosition(50f);
 		text.setLocalYPosition(50f);
-		GUIButton button = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 30f, 20f);
+		button = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
 		button.setLabel("Move Agent", "FreeMono", 20);
 		button.setLocalXPosition(50f);
 		button.addOnClickListener((e) -> {
@@ -51,6 +52,6 @@ public class AgentInfoWindow extends DefaultWindow {
 		}
 
 		text.setText(agentInfoString);
-		
+		button.setShape(new GUIQuad(agent.getColor()));
 	}
 }

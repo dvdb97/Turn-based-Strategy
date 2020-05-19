@@ -2,6 +2,7 @@ package world.agents;
 
 import java.util.Random;
 
+import assets.meshes.geometry.Color;
 import world.city.City;
 
 public class MilitaryUnit extends Agent {
@@ -11,8 +12,8 @@ public class MilitaryUnit extends Agent {
 	private int endurance;
 	private int experience;
 	
-	public MilitaryUnit(City homeCity) {
-		super(homeCity);
+	public MilitaryUnit(City homeCity, Color color) {
+		super(homeCity, color);
 		Random r = new Random();
 		strength   = r.nextInt(100);
 		endurance  = r.nextInt(100);
@@ -22,4 +23,5 @@ public class MilitaryUnit extends Agent {
 	public String getAgentInfoString() {
 		return "Strengh:    " + strength + "\nEndurance:  " + endurance + "\nExperience: " + experience;
 	}
+	
 }

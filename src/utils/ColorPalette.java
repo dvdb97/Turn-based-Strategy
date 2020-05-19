@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Random;
+
 import assets.meshes.geometry.Color;
 
 public class ColorPalette {
@@ -31,5 +33,10 @@ public class ColorPalette {
 	
 	public static Color gray(float grade) {
 		return new Color(grade, grade, grade, 1f);
+	}
+	
+	public static Color randomColor() {
+		Random r = new Random();
+		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256), 256);
 	}
 }

@@ -5,9 +5,11 @@ import java.util.List;
 
 import assets.meshes.Mesh3D;
 import assets.meshes.Transformable;
+import assets.meshes.geometry.Color;
 import models.gameboard.GameBoardModel;
 import models.meeples.AgentModel;
 import models.seeds.SuperGrid;
+import utils.ColorPalette;
 import world.agents.Agent;
 import world.agents.MilitaryUnit;
 import world.city.City;
@@ -40,10 +42,11 @@ public class AgentAuthority {
 			//return false;
 		
 		//spawn agent
-		Agent agent = new MilitaryUnit(city);
+		Color agentColor = ColorPalette.randomColor();
+		Agent agent = new MilitaryUnit(city, agentColor);
 		GameBoard.addAgent(agent);
 		
-		AgentModel agentModel = new AgentModel(gameBoardModel.transformable);
+		AgentModel agentModel = new AgentModel(gameBoardModel.transformable, agentColor);
 		agentModel.transformable.setScaling(0.05f, 0.05f, 0.05f);
 		agentModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
 		agentModel.transformable.setTranslation(superGrid.getHexCenter(city.getTileIndex()));
