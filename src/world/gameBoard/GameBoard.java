@@ -3,6 +3,7 @@ package world.gameBoard;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import world.agents.Agent;
@@ -113,6 +114,12 @@ public class GameBoard {
 	 */
 	public static Agent getAgent(int tileIndex) {
 		//TODO: loop through all agents and find those that are on the requested tile
+		for (Iterator<Agent> i = agents.keySet().iterator(); i.hasNext(); ) {
+			Agent a = i.next();
+			if (agents.get(a).getIndex() == tileIndex)
+				return a;
+		}
+		return null;
 	}
 	
 	//-------------------------------------- reset -------------------------------

@@ -110,6 +110,7 @@ public class TileInfoWindow extends DefaultWindow {
 		
 		agentButton2.setLocalXPosition(50f);
 		agentButton2.addOnClickListener((e) -> {
+			System.out.println(GameBoard.getAgent(TileSelecter.getSelectedTileIndex()).getAgentInfoString());
 			GameGUIManager.showAgentInfoWindow(GameBoard.getAgent(TileSelecter.getSelectedTileIndex()));
 			}
 		);

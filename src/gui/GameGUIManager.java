@@ -25,7 +25,10 @@ public class GameGUIManager {
 	}
 	
 	public static void showAgentInfoWindow(Agent agent) {
-		aiw = new AgentInfoWindow(agent);
+		if (aiw == null)
+			aiw = new AgentInfoWindow(agent);
+		else
+			aiw.changeAgent(agent);	
 	}
 	
 	public static void hideAgentInfoWindow() {

@@ -1,5 +1,7 @@
 package world.agents;
 
+import java.util.Random;
+
 import world.city.City;
 
 public class MilitaryUnit extends Agent {
@@ -11,6 +13,10 @@ public class MilitaryUnit extends Agent {
 	
 	public MilitaryUnit(City homeCity) {
 		super(homeCity);
+		Random r = new Random();
+		strength   = r.nextInt(100);
+		endurance  = r.nextInt(100);
+		experience = r.nextInt(100);
 	}
 	
 	public String getAgentInfoString() {
