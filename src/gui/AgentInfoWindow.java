@@ -16,7 +16,8 @@ public class AgentInfoWindow extends DefaultWindow {
 	private Agent agent;
 	private String agentInfoString;
 	private GUITextField text;
-	private GUIButton button;
+	private GUIButton button1;
+	private GUIButton button2;
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
@@ -25,17 +26,28 @@ public class AgentInfoWindow extends DefaultWindow {
 		text = new GUITextField("Dummy", "FreeMono", 90f, 20f, 20);
 		text.setLocalXPosition(50f);
 		text.setLocalYPosition(50f);
-		button = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
-		button.setLabel("Move Agent", "FreeMono", 20);
-		button.setLocalXPosition(50f);
-		button.addOnClickListener((e) -> {
+		
+		button1 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
+		button1.setLabel("Move Agent", "FreeMono", 20);
+		button1.setLocalXPosition(15f);
+		button1.addOnClickListener((e) -> {
 			System.out.println("Move!");
 			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
 			}
 		);
-				
+		
+		button2 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
+		button2.setLabel("Move Agent", "FreeMono", 20);
+		button2.setLocalXPosition(15f);
+		button2.addOnClickListener((e) -> {
+			System.out.println("Delete!");
+			AgentAuthority.deleteAgent(this.agent);
+			}
+		);
+		
 		addChild(text);
-		addChild(button);
+		addChild(button1);
+		addChild(button2);
 		
 		changeAgent(agent);
 		
@@ -52,6 +64,7 @@ public class AgentInfoWindow extends DefaultWindow {
 		}
 
 		text.setText(agentInfoString);
-		button.setShape(new GUIQuad(agent.getColor()));
+		button1.setShape(new GUIQuad(agent.getColor()));
+		button2.setShape(new GUIQuad(agent.getColor()));
 	}
 }

@@ -62,6 +62,13 @@ public class GameBoard {
 		agents.replace(agent, getTile(tileIndex));
 	}
 	
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
+	public static void deleteAgent(Agent agent) {
+		agents.remove(agent);
+	}
+	
 	//-------------------------------- get & set -------------------------------
 	
 	/**

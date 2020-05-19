@@ -6,6 +6,7 @@ import java.util.List;
 import assets.meshes.Mesh3D;
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
+import gui.GameGUIManager;
 import models.gameboard.GameBoardModel;
 import models.meeples.AgentModel;
 import models.seeds.SuperGrid;
@@ -76,4 +77,17 @@ public class AgentAuthority {
 		
 	}
 	
+	public static boolean deleteAgent(Agent agent) {
+		
+		if (agent==null)
+			return false;
+		
+		GameBoard.deleteAgent(agent);
+		meepleModels.remove(agentModels.get(agent));
+		agentModels.remove(agent);
+		GameGUIManager.hideAgentInfoWindow();
+		
+		return true;
+		
+	}
 }
