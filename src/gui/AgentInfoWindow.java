@@ -21,26 +21,24 @@ public class AgentInfoWindow extends DefaultWindow {
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
-		super("Agent Information", 610, 100, 300, 300, FlexDirection.COLUMN);
+		super("Agent Information", 610, 100, 300, 300, FlexDirection.ROW);
 							
 		text = new GUITextField("Dummy", "FreeMono", 90f, 20f, 20);
-		text.setLocalXPosition(50f);
+//		text.setLocalXPosition(50f);
 		text.setLocalYPosition(50f);
 		
 		button1 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
 		button1.setLabel("Move Agent", "FreeMono", 20);
-		button1.setLocalXPosition(15f);
+		button1.setLocalYPosition(15f);
 		button1.addOnClickListener((e) -> {
-			System.out.println("Move!");
 			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
 			}
 		);
 		
 		button2 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
-		button2.setLabel("Move Agent", "FreeMono", 20);
-		button2.setLocalXPosition(15f);
+		button2.setLabel("Remove Agent", "FreeMono", 20);
+		button2.setLocalYPosition(15f);
 		button2.addOnClickListener((e) -> {
-			System.out.println("Delete!");
 			AgentAuthority.deleteAgent(this.agent);
 			}
 		);

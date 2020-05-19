@@ -32,7 +32,8 @@ public class GameGUIManager {
 	}
 	
 	public static void hideAgentInfoWindow() {
-		aiw.delete();
+		aiw.close();
 		aiw = null;
+		System.out.println(aiw);
 	}
 }
