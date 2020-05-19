@@ -7,6 +7,7 @@ import interaction.TileSelecter;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
+import world.AgentAuthority;
 import world.agents.Agent;
 import world.gameBoard.GameBoard;
 
@@ -28,6 +29,7 @@ public class AgentInfoWindow extends DefaultWindow {
 		button.setLocalXPosition(50f);
 		button.addOnClickListener((e) -> {
 			System.out.println("Move!");
+			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
 			}
 		);
 				

@@ -21,8 +21,8 @@ public class BuildingAuthority {
 	
 	public static void init(GameBoardModel gameBoardModel, List<Mesh3D> meepleModels, SuperGrid superGrid) {
 		BuildingAuthority.gameBoardModel = gameBoardModel;
-		BuildingAuthority.meepleModels = meepleModels;
-		BuildingAuthority.superGrid = superGrid;
+		BuildingAuthority.meepleModels   = meepleModels;
+		BuildingAuthority.superGrid      = superGrid;
 	}
 	
 	

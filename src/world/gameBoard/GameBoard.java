@@ -11,14 +11,15 @@ import world.city.City;
 
 //this class is a sort of data structure
 public class GameBoard {
-	
-	private static int length, width;
-	
+		
 	//-------------------------------- fields ---------------------------------
+	private static int length, width;
 	private static Tile[] tiles;
 	private static HashMap<Tile, City> cities = new HashMap<>();
 	private static HashMap<Agent, Tile> agents = new HashMap<>();
 	
+
+	//-------------------------------- cities ---------------------------------
 	public static boolean tileAvailableForCity(Tile tile) {
 		//TODO: maybe use exceptions here
 		if (cities.containsKey(tile)) {
@@ -44,9 +45,21 @@ public class GameBoard {
 		city.setTile(tile);
 		tile.setCity(city);
 	}
-	
+
+	//-------------------------------- agents ---------------------------------
+
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
 	public static void addAgent(Agent agent) {
 		agents.put(agent, tiles[agent.getHomeCity().getTileIndex()]);
+	}
+	
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
+	public static void moveAgent(Agent agent, int tileIndex) {
+		agents.replace(agent, getTile(tileIndex));
 	}
 	
 	//-------------------------------- get & set -------------------------------
@@ -126,8 +139,9 @@ public class GameBoard {
 	
 	public static void reset() {
 		
-		tiles = null;
+		tiles  = null;
 		cities = null;
+		agents = null;
 		
 	}
 	
