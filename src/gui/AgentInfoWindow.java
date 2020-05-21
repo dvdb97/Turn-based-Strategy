@@ -1,8 +1,11 @@
 package gui;
 
+import container.Tab;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
+import fundamental.GUIContainer;
 import fundamental.GUITextField;
+import fundamental.InvisibleContainer;
 import interaction.TileSelecter;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
@@ -21,32 +24,39 @@ public class AgentInfoWindow extends DefaultWindow {
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
-		super("Agent Information", 610, 100, 300, 300, FlexDirection.ROW);
-							
-		text = new GUITextField("Dummy", "FreeMono", 90f, 20f, 20);
-//		text.setLocalXPosition(50f);
-		text.setLocalYPosition(50f);
+		super("Agent Information", 610, 100, 300, 300, FlexDirection.COLUMN);
 		
-		button1 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
+		// INPUT-CONTAINER
+		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
+		button1 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
 		button1.setLabel("Move Agent", "FreeMono", 20);
-		button1.setLocalYPosition(15f);
+//		button1.setLocalXPosition(7f);
+		button1.setLocalYPosition(0f);
 		button1.addOnClickListener((e) -> {
 			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
 			}
 		);
-		
-		button2 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 20f);
+		button2 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
 		button2.setLabel("Remove Agent", "FreeMono", 20);
-		button2.setLocalYPosition(15f);
+//		button2.setLocalXPosition(53f);
+		button2.setLocalYPosition(5f);
 		button2.addOnClickListener((e) -> {
 			AgentAuthority.deleteAgent(this.agent);
 			}
 		);
+		inputContainer.addChild(button1);
+		inputContainer.addChild(button2);
 		
-		addChild(text);
-		addChild(button1);
-		addChild(button2);
+		// OUTPUT-CONTAINER
+		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
+		text = new GUITextField("Dummy", "FreeMono", 90f, 90f, 20);
+//		text.setLocalXPosition(50f);
+//		text.setLocalYPosition(50f);
 		
+		outputContainer.addChild(text);
+		
+		addChild(inputContainer);
+		addChild(outputContainer);
 		changeAgent(agent);
 		
 	}
