@@ -1,7 +1,6 @@
 package core.game;
 
 import core.saves.GameScore;
-import interaction.PlayerCamera;
 import gui.GameGUIManager;
 import gui_core.GUIManager;
 import interaction.TileSelecter;

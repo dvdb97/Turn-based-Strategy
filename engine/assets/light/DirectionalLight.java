@@ -42,7 +42,7 @@ public class DirectionalLight extends Camera implements IDeletable {
 	 * @param color The color of the light source.
 	 */
 	public DirectionalLight(Vector3f direction, Vector3f color) {
-		super(new Vector3f(0f, 0f, 0f), direction, ProjectionType.ORTHOGRAPHIC);
+		super(new Vector3f(0f, 0f, -1f), direction, ProjectionType.ORTHOGRAPHIC);
 		this.color = color;
 		this.ambient = new Vector3f(0.2f, 0.2f, 0.2f);
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import assets.meshes.Mesh3D;
+import assets.scene.Scene;
 import mapModes.MapModesCreater;
 import mapModes.MapModesManager;
 import math.vectors.Vector3f;
@@ -12,6 +13,7 @@ import models.gameboard.ModelCreater;
 import models.meeples.CityModel;
 import models.seeds.SuperGrid;
 import models.seeds.noise.TrigonalNoise;
+import rendering.SceneManager;
 import utils.Statistics;
 import utils.Percentage;
 import utils.ProvisionalUI;
@@ -133,11 +135,12 @@ public class WorldManager {
 	//*************************** render ****************************
 	
 	public static void render() {
+		Scene scene = SceneManager.getScene();
 		
 		gameBoardModel.render();
 		
 		for (Mesh3D meeple : meepleModels) {
-			meeple.render(GameBoardModel.scene);
+			meeple.render(scene);
 		}
 		
 	}

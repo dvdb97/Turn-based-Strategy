@@ -62,7 +62,7 @@ public class ModelTest {
 	
 	public static Mesh initMesh() {
 		Mesh3D mesh = new Mesh3D();
-		FileLoader.loadObjFile(mesh, "res/models/Box.obj", "res/models/Box_Textur.png");
+		FileLoader.loadObjFile(mesh, "res/models/Suzanne.obj");
 		
 		Material material = new Material(Color.RED, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.6f, 0.6f, 0.6f), 256f);
 		material.castShadows = true;
@@ -72,7 +72,7 @@ public class ModelTest {
 		mesh.getTransformable().setScaling(2f, 2f, 2f);
 		mesh.getTransformable().translate(0, 0, 0);
 		mesh.getTransformable().rotate(0f, 0f, 0f);
-		mesh.useTextureColor();
+		mesh.useMaterialColor();
 		
 		return mesh;	
 	}
@@ -89,7 +89,7 @@ public class ModelTest {
 		mesh = initMesh();
 		
 		camera = new Camera(new Vector3f(0f, 0f, 5f));
-		light = new DirectionalLight(new Vector3f(1f, 1f, -1f), new Vector3f(1f, 1f, 1f), 4000, 4000);
+		light = new DirectionalLight(new Vector3f(-1f, 0, -1), new Vector3f(1f, 1f, 1f), 4000, 4000);
 		
 		String[] paths = new String[6];
 		paths[Skybox.FRONT] = "res/Textures/Skyboxes/ice/back.jpg";
@@ -108,13 +108,25 @@ public class ModelTest {
 		
 		WireframeBox box = new WireframeBox();
 		
+		Quad quad = new Quad();
+		quad.transformable.scale(0.25f);
+		quad.transformable.setTranslation(new Vector3f(0.75f, 0.75f, -1f));
+		quad.useTextureColor();
+		
 		light.fitToBoundingBox(mesh);
 		
 		while (!KeyInputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
 			Renderer.clear();
 			handleInput();
 			
+			light.startShadowMapPass();
+			light.passToShadowMap(mesh);
+			light.endShadowMapPass();
+			
+			quad.setTexture(light.getShadowMap().getDepthTexture());
+			
 			mesh.render(scene);
+			quad.render(scene);
 			
 			Renderer.swapBuffers();
 		}

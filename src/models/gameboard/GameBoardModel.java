@@ -3,11 +3,14 @@ package models.gameboard;
 import assets.light.DirectionalLight;
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
+import assets.meshes.specialized.Quad;
 import assets.scene.Scene;
 import interaction.TileSelecter;
 import mapModes.MapMode;
 import math.vectors.Vector3f;
+import rendering.Renderer;
 import rendering.SceneManager;
+import sun.java2d.pipe.RenderingEngine;
 
 public class GameBoardModel {
 	
@@ -26,11 +29,7 @@ public class GameBoardModel {
 	
 	public Transformable transformable;
 	
-	//others
-	private static DirectionalLight sun;
-	
-	//TODO: private
-	public static Scene scene;
+	public Quad quad;
 	
 	
 	//***************************** constructor ********************************
@@ -51,6 +50,12 @@ public class GameBoardModel {
 		this.tileBorders = tileBorders;
 		this.sea = sea;
 		this.hex = hex;
+		this.quad = new Quad();
+		
+		Renderer.addMeshToRenderQueue(terrain);
+		Renderer.addMeshToRenderQueue(tileBorders);
+		Renderer.addMeshToRenderQueue(sea);
+		Renderer.addMeshToRenderQueue(hex);
 		
 		terrain.transformable.setParent(transformable);
 		tileBorders.transformable.setParent(transformable);
@@ -60,23 +65,10 @@ public class GameBoardModel {
 		lengthInTiles = tileBorders.getLength();
 		widthInTiles = tileBorders.getWidth();
 		
-		hardCode();
-		
 		transformable = new Transformable();
 		
 	}
-	
-	//*****************************************
-	
-	
-	private void hardCode() {
-		
-		//TODO: no hard coding!
-		sun = new DirectionalLight(new Vector3f(0f, -1f, -0.2f), new Vector3f(0.8f, 0.8f, 0.5f), 4000, 4000);
-		sun.fitToBoundingBox(terrain);
-		
-		scene = new Scene(SceneManager.getCamera(), sun, null);
-	}	
+
 	
 	//***************************** render ********************************
 	
@@ -101,17 +93,28 @@ public class GameBoardModel {
 	
 	
 	private void computeShadows() {
+		Scene scene = SceneManager.getScene();
+		
 		scene.getLightSource().startShadowMapPass();
 		scene.getLightSource().passToShadowMap(terrain);
 		scene.getLightSource().endShadowMapPass();
+		
+		quad.setTexture(scene.getLightSource().getShadowMap().getDepthTexture());
+		quad.getTransformable().setScaling(0.25f);
+		quad.getTransformable().setTranslation(new Vector3f(0.75f, 0.75f, -1f));
+		quad.useTextureColor();
+		quad.render(scene);
 	}
 	
 	
 	private void renderTerrain() {
+		Scene scene = SceneManager.getScene();
+		
 		terrain.render(scene);
 	}
 	
 	private void renderBordersSeaCOS() {
+		Scene scene = SceneManager.getScene();
 		
 		tileBorders.displayAll();
 
@@ -124,6 +127,7 @@ public class GameBoardModel {
 	}
 	
 	private void renderHoveredTile() {
+		Scene scene = SceneManager.getScene();
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
 
@@ -132,6 +136,7 @@ public class GameBoardModel {
 	}
 	
 	private void renderSelectedTile() {
+		Scene scene = SceneManager.getScene();
 		
 		tileBorders.display(TileSelecter.getSelectedTileIndex());
 		

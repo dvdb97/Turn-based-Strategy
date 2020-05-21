@@ -541,7 +541,7 @@ public class ShaderProgram extends Bindable {
 	 * @return Returns the uniform's location
 	 */
 	public int getUniformLocation(String name) {		
-		if (!uniforms.containsKey(name)) {
+		if (!uniforms.containsKey(name)) {			
 			int index = glGetUniformLocation(ID, name);
 			
 			if (index == -1) {				

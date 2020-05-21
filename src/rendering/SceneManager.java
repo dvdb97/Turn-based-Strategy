@@ -48,5 +48,10 @@ public class SceneManager {
 	public static Skybox getSkybox() {
 		return skybox;
 	}
+	
+	
+	public static Scene getScene() {
+		return scene;
+	}
 
 }
