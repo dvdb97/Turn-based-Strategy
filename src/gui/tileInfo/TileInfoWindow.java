@@ -2,10 +2,10 @@ package gui.tileInfo;
 
 import world.AgentAuthority;
 import world.BuildingAuthority;
+import world.GameBoard;
+import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
-import world.gameBoard.GameBoard;
-import world.gameBoard.Tile;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUIImageBox;
@@ -18,6 +18,8 @@ import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
+
+import java.util.ArrayList;
 
 import container.Tab;
 import container.TabMenu;
@@ -109,10 +111,9 @@ public class TileInfoWindow extends DefaultWindow {
 		
 		agentButton2.setLocalXPosition(50f);
 		agentButton2.addOnClickListener((e) -> {
-			Agent a = GameBoard.getAgent(TileSelecter.getSelectedTileIndex());
-			if (a != null) {
-				System.out.println(a.getAgentInfoString());
-				GameGUIManager.showAgentInfoWindow(a);
+			ArrayList<Agent> a = GameBoard.getAgents(TileSelecter.getSelectedTileIndex());
+			if (a.size() > 0) {
+				GameGUIManager.showAgentInfoWindow(a.get(0));
 			}
 		});
 		

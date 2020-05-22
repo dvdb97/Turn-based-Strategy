@@ -1,11 +1,11 @@
 package world.city;
 
-import world.gameBoard.Tile;
+import world.Tile;
 
 public class City {
 	
-	private Tile tile;
-	private SphereOfInfluence spoi;
+	private SphereOfInfluence spoi;		//TODO: spoi nicht bei city abspeichern, sondern bei bedarf sowas wie SPOI-Klasse.getSPOI(tile, radius)
+	private int spoiRadius;
 	
 	private Population population;
 	
@@ -18,30 +18,7 @@ public class City {
 	public City(Population population) {
 		
 		this.population = population;
+		this.spoiRadius = 1;		//TODO: don't hard code
 		
-	}
-	
-	//******************** get & set ************************************
-	
-	/**
-	 * this method is only useful, when called the first time
-	 * 
-	 * @param tile the tile this city is placed on
-	 * @return true, if tile was set. false, if the tile already has been set.
-	 */
-	public boolean setTile(Tile tile) {
-		
-		if(this.tile != null) {
-			return false;
-		}
-		
-		this.tile = tile;
-		spoi = new SphereOfInfluence(tile);
-		return true;
-		
-	}
-	
-	public int getTileIndex() {
-		return tile.getIndex();
 	}
 }

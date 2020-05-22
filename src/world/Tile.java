@@ -1,4 +1,4 @@
-package world.gameBoard;
+package world;
 
 import java.util.ArrayList;
 
@@ -19,11 +19,9 @@ public class Tile {
 	private Percentage fertility;
 	private Percentage forest;		//Grad der Bewaldung
 	
-	//buildings
-	private int maxNumBuildings;
-	private ArrayList<Building> buildings;
-	
-	private City city;
+//	//buildings
+//	private int maxNumBuildings;
+//	private ArrayList<Building> buildings;
 	
 	
 	//*************************** constructor ***********************************
@@ -61,80 +59,34 @@ public class Tile {
 	}
 	
 	
-	
-	//*************************** city ******************************************
-	
-	
-	/**
-	 * 
-	 * @param city
-	 * @return false if city already has been set
-	 */
-	public boolean setCity(City city) {
-		
-		if (this.city != null) {
-			System.err.println("there can be only one city on a tile");
-			return false;
-		}
-		
-		this.city = city;
-		return true;
-		
-	}
-	
-	/**
-	 * 
-	 * @return true if has been removed, false if there wasn't a city to remove
-	 */
-	public boolean removeCity() {
-		
-		if (city == null) {
-			return false;
-		}
-		
-		city = null;
-		return true;
-		
-	}
-	
-	
-	/**
-	 * 
-	 * @return Returns true if a city is build on this tile.
-	 */
-	public boolean hasCity() {
-		return city != null;
-	}
-	
-	
 	//**************************** buildings *************************************
 	
-	public boolean addBuilding(Building building) {
-		
-		if (buildings.size() >= maxNumBuildings) {
-			return false;
-		}
-		
-		buildings.add(building);
-		return true;
-		
-	}
+//	public boolean addBuilding(Building building) {
+//		
+//		if (buildings.size() >= maxNumBuildings) {
+//			return false;
+//		}
+//		
+//		buildings.add(building);
+//		return true;
+//		
+//	}
+//	
+//	public Building getBuilding(int i) {
+//		return buildings.get(i);
+//	}
 	
-	public Building getBuilding(int i) {
-		return buildings.get(i);
-	}
 	
 	
-	
-	//**************************** get & set *************************************
+	//**************************** public getter **********************************
 	
 	public int getIndex() {
 		return index;
 	}
 	
-	public int getNumBuildings() {
-		return buildings.size();
-	}
+//	public int getNumBuildings() {
+//		return buildings.size();
+//	}
 	
 	/**
 	 * 
@@ -143,56 +95,28 @@ public class Tile {
 	public boolean isWater() {
 		return water;
 	}
-	
-	
+		
 	/**
 	 * @return the average height
 	 */
 	public float getAvgHeight() {
 		return avgHeight;
 	}
-
-
-	/**
-	 * @param average height the avgHeight to set
-	 */
-	public void setAvgHeight(float avgHeight) {
-		this.avgHeight = avgHeight;
-	}
-
-
+	
 	/**
 	 * @return the heights standard deviation
 	 */
 	public float getHeightSTDV() {
 		return heightSTDV;
 	}
-
-
-	/**
-	 * @param heightSTDV the heights standard deviation to set
-	 */
-	public void setHeightSTDV(float heightSTDV) {
-		this.heightSTDV = heightSTDV;
-	}
-
-
+	
 	/**
 	 * @return the fertility
 	 */
 	public Percentage getFertility() {
 		return fertility;
 	}
-
-
-	/**
-	 * @param fertility the fertility to set
-	 */
-	public void setFertility(Percentage fertility) {
-		this.fertility = fertility;
-	}
-
-
+	
 	/**
 	 * @return the forest value (how much forest is on this tile), float between 0 and 1
 	 */
@@ -200,11 +124,12 @@ public class Tile {
 		return forest;
 	}
 
-
+	//********************************  setter ************************************
+	
 	/**
 	 * @param forest the forest value to set
 	 */
-	public void setForest(Percentage forest) {
+	void setForest(Percentage forest) {
 		this.forest = forest;
 	}
 	

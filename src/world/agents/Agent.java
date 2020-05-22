@@ -10,7 +10,7 @@ public abstract class Agent {
 	private Color color;
 	private City homeCity;
 	private int range;		//number of tiles, the agent can travel within one round
-
+	
 	//******************** constructor ***********************************
 	
 	public Agent(City homeCity, Color color) {
@@ -20,7 +20,7 @@ public abstract class Agent {
 		this.range = 3;	//TODO: don't hard code
 	}
 	
-	//******************** get & set ************************************
+	//******************** public getter **********************************
 	
 	public City getHomeCity() {
 		return homeCity;
@@ -33,4 +33,5 @@ public abstract class Agent {
 	public Color getColor() {
 		return color.copyOf();
 	}
+	
 }

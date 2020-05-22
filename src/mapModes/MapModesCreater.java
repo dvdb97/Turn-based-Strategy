@@ -3,8 +3,8 @@ package mapModes;
 import java.util.HashMap;
 
 import assets.meshes.geometry.Color;
+import world.GameBoard;
 import world.WorldManager;
-import world.gameBoard.GameBoard;
 
 public class MapModesCreater {
 	

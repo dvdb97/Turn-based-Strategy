@@ -10,7 +10,7 @@ package utils;
  */
 public class Percentage implements Cloneable {
 	
-	private float value;
+	private final float value;
 	
 	//********************************** constructor *****************************************
 	

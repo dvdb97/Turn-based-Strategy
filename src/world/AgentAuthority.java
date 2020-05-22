@@ -14,7 +14,6 @@ import utils.ColorPalette;
 import world.agents.Agent;
 import world.agents.MilitaryUnit;
 import world.city.City;
-import world.gameBoard.GameBoard;
 
 public class AgentAuthority {
 	
@@ -50,7 +49,7 @@ public class AgentAuthority {
 		AgentModel agentModel = new AgentModel(gameBoardModel.transformable, agentColor);
 		agentModel.transformable.setScaling(0.05f, 0.05f, 0.05f);
 		agentModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
-		agentModel.transformable.setTranslation(superGrid.getHexCenter(city.getTileIndex()));
+		agentModel.transformable.setTranslation(superGrid.getHexCenter(GameBoard.getTile(city).getIndex()));
 		meepleModels.add(agentModel);
 		agentModels.put(agent, agentModel);
 		return true;
@@ -67,7 +66,7 @@ public class AgentAuthority {
 			return false;
 		}
 		
-		if (GameBoard.getAgent(tileIndex) != null) {
+		if (GameBoard.getAgents(tileIndex).size() > 0) {
 			return false;
 		}
 		

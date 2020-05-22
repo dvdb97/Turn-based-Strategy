@@ -1,19 +1,15 @@
 package gui;
 
-import container.Tab;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
-import fundamental.GUIContainer;
 import fundamental.GUITextField;
 import fundamental.InvisibleContainer;
 import interaction.TileSelecter;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
-import utils.ColorPalette;
 import world.AgentAuthority;
 import world.agents.Agent;
-import world.gameBoard.GameBoard;
 
 public class AgentInfoWindow extends DefaultWindow {
 	

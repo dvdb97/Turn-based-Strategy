@@ -1,0 +1,153 @@
+package world;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import world.agents.Agent;
+import world.city.City;
+
+//this class is sort of a data structure
+public class GameBoard {
+		
+	//-------------------------------- fields ---------------------------------
+	private static int length, width;
+	private static Tile[] tiles;
+	private static HashMap<Tile, City> cities = new HashMap<>();
+	private static HashMap<Agent, Tile> agents = new HashMap<>();
+
+	//---------------------------------- init -----------------------------------
+	
+	/**
+	 * 
+	 * @param tiles 
+	 * @return true if tiles was set, false if tiles has been set before (tiles can only be set once)
+	 */
+	static boolean setTiles(Tile[] tiles, int length, int width) {
+		
+		if (GameBoard.tiles == null) {
+			
+			GameBoard.length = length;
+			GameBoard.width  = width;
+			GameBoard.tiles  = tiles;
+			return true;
+			
+		} else {
+			
+			return false;
+			
+		}
+		
+	}
+	
+	//-------------------------------- cities ---------------------------------
+	static boolean tileAvailableForCity(Tile tile) {
+		//TODO: maybe use exceptions here
+		if (cities.containsKey(tile)) {
+			System.out.println("can't place two cities on one tile");
+			return false;
+		}
+		
+		if (tile.isWater()) {
+			System.out.println("can't place a city on water");
+			System.out.println(tile.getAvgHeight());
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * BuildingAuthority is the only authority that has the authority to use this method!
+	 */
+	static void addCity(Tile tile, City city) {
+		cities.put(tile, city);
+	}
+
+	//-------------------------------- agents ---------------------------------
+
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
+	static void addAgent(Agent agent) {
+		agents.put(agent, getTile(agent.getHomeCity()));
+	}
+	
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
+	static void moveAgent(Agent agent, int tileIndex) {
+		agents.replace(agent, getTile(tileIndex));
+	}
+	
+	/**
+	 * AgentAuthority is the only authority that has the authority to use this method!
+	 */
+	static void deleteAgent(Agent agent) {
+		agents.remove(agent);
+	}
+		
+	//-------------------------------- public getter -------------------------------
+	
+	public static Tile getTile(Agent agent) {
+		return agents.get(agent);
+	}
+	
+	public static Tile getTile(City city) {
+		for (Iterator<Tile> i = cities.keySet().iterator(); i.hasNext(); ) {
+			Tile t = i.next();
+			if (cities.get(t) == city)
+				return t;
+		}
+		return null;
+	}
+	
+	/**
+	 * @param tileIndex position of the requested agent's tile in "Tile[] tiles"
+	 * @return the requested agent or null if there is no agent
+	 */
+	public static ArrayList<Agent> getAgents(int tileIndex) {
+		ArrayList<Agent> agentList = new ArrayList<>();
+		for (Iterator<Agent> i = agents.keySet().iterator(); i.hasNext(); ) {
+			Agent a = i.next();
+			if (agents.get(a).getIndex() == tileIndex)
+				agentList.add(a);
+		}
+		return agentList;
+	}
+	
+	/**
+	 * @param tileIndex position of the requested city's tile in "Tile[] tiles"
+	 * @return the requested city or null if there is no city
+	 */
+	public static City getCity(int tileIndex) {
+		return cities.get(tiles[tileIndex]);
+	}
+		
+	/**
+	 * 
+	 * @param index position of the requested tile in "Tile[] tiles"
+	 * @return the requested tile
+	 */
+	public static Tile getTile(int index) {
+		
+		return tiles[index];
+		
+	}
+	
+	/**
+	 * @return the length
+	 */
+	public static int getLength() {
+		return length;
+	}
+	
+	
+	/**
+	 * @return the width
+	 */
+	public static int getWidth() {
+		return width;
+	}
+	
+	
+}

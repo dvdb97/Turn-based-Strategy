@@ -2,8 +2,8 @@ package world.city;
 
 import java.util.ArrayList;
 
-import world.gameBoard.GameBoard;
-import world.gameBoard.Tile;
+import world.Tile;
+import world.GameBoard;
 
 public class SphereOfInfluence {
 	

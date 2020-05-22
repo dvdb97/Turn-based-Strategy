@@ -4,8 +4,8 @@ import fundamental.GUIWindow;
 import gui.tileInfo.TileInfoWindow;
 import implementations.ColorPickWindow;
 import interaction.TileSelecter;
+import world.GameBoard;
 import world.agents.Agent;
-import world.gameBoard.GameBoard;
 
 public class GameGUIManager {
 	

@@ -15,8 +15,6 @@ import models.seeds.noise.TrigonalNoise;
 import utils.Statistics;
 import utils.Percentage;
 import utils.ProvisionalUI;
-import world.gameBoard.GameBoard;
-import world.gameBoard.Tile;
 
 //TODO: 1. shitty name, 2. try to encapsulate graphic and logic
 public class WorldManager {

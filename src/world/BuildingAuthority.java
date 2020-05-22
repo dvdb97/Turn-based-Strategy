@@ -10,8 +10,6 @@ import models.meeples.CityModel;
 import models.seeds.SuperGrid;
 import world.city.City;
 import world.city.Population;
-import world.gameBoard.GameBoard;
-import world.gameBoard.Tile;
 
 public class BuildingAuthority {
 	
