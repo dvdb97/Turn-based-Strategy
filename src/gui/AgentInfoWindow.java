@@ -7,6 +7,7 @@ import fundamental.GUIContainer;
 import fundamental.GUITextField;
 import fundamental.InvisibleContainer;
 import interaction.TileSelecter;
+import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
@@ -30,16 +31,16 @@ public class AgentInfoWindow extends DefaultWindow {
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
 		button1 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
 		button1.setLabel("Move Agent", "FreeMono", 20);
-//		button1.setLocalXPosition(7f);
-		button1.setLocalYPosition(0f);
+		button1.setMargin(Direction.ALL, 5);
+		button1.setPadding(Direction.ALL, 5);
 		button1.addOnClickListener((e) -> {
 			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
 			}
 		);
 		button2 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
 		button2.setLabel("Remove Agent", "FreeMono", 20);
-//		button2.setLocalXPosition(53f);
-		button2.setLocalYPosition(5f);
+		button2.setMargin(Direction.ALL, 5);
+		button2.setPadding(Direction.ALL, 5);
 		button2.addOnClickListener((e) -> {
 			AgentAuthority.deleteAgent(this.agent);
 			}
@@ -50,8 +51,8 @@ public class AgentInfoWindow extends DefaultWindow {
 		// OUTPUT-CONTAINER
 		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
 		text = new GUITextField("Dummy", "FreeMono", 90f, 90f, 20);
-//		text.setLocalXPosition(50f);
-//		text.setLocalYPosition(50f);
+		text.setMargin(Direction.ALL, 5);
+		text.setPadding(Direction.ALL, 5);
 		
 		outputContainer.addChild(text);
 		
