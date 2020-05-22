@@ -70,6 +70,10 @@ public class AgentAuthority {
 			return false;
 		}
 		
+		if (agent.budget <= 0) {
+			return false;
+		}
+		
 		GameBoard.moveAgent(agent, tileIndex);
 		agentModels.get(agent).transformable.setTranslation(superGrid.getHexCenter(tileIndex));
 		return true;

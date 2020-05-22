@@ -30,9 +30,11 @@ public class AgentInfoWindow extends DefaultWindow {
 		button1.setMargin(Direction.ALL, 5);
 		button1.setPadding(Direction.ALL, 5);
 		button1.addOnClickListener((e) -> {
-			AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
+			if(AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex())) {
+				agent.budget -= 1;
+				refreshAgentInfo();
 			}
-		);
+		});
 		button2 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
 		button2.setLabel("Remove Agent", "FreeMono", 20);
 		button2.setMargin(Direction.ALL, 5);
@@ -71,5 +73,9 @@ public class AgentInfoWindow extends DefaultWindow {
 		text.setText(agentInfoString);
 		button1.setShape(new GUIQuad(agent.getColor()));
 		button2.setShape(new GUIQuad(agent.getColor()));
+	}
+	
+	private void refreshAgentInfo() {
+		text.setText(agent.getAgentInfoString());
 	}
 }
