@@ -10,7 +10,7 @@ public abstract class Agent {
 	private Color color;
 	private City homeCity;
 	private int range;		//number of tiles, the agent can travel within one round
-	public int budget;		//TODO: temporary
+	public float budget;		//TODO: temporary
 	
 	//******************** constructor ***********************************
 	
@@ -19,7 +19,7 @@ public abstract class Agent {
 		this.color = color;
 		this.homeCity = homeCity;
 		this.range = 3;	//TODO: don't hard code
-		budget = 10;
+		budget = 500f;
 	}
 	
 	//******************** public getter **********************************

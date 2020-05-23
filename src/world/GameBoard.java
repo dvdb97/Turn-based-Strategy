@@ -185,7 +185,7 @@ class GameBoardGraph implements IGraph<Tile> {
 	
 	@Override
 	public float getCosts(Tile start, Tile end) {
-		return 1;
+		return 1+Math.abs(start.getAvgHeight()-end.getAvgHeight())/0.1f;
 	}
 	
 	@Override
