@@ -8,6 +8,7 @@ import java.util.List;
 
 import pathfinding.IGraph;
 import utils.ListUtil;
+import utils.SymmetricSparseMatrix;
 import utils.TileSurrounding;
 import world.agents.Agent;
 import world.city.City;
@@ -18,8 +19,9 @@ public class GameBoard {
 	//-------------------------------- fields ---------------------------------
 	private static int length, width;
 	private static Tile[] tiles;
-	private static HashMap<Tile, City> cities = new HashMap<>();
-	private static HashMap<Agent, Tile> agents = new HashMap<>();
+	private static HashMap<Tile, City> cities;
+	private static HashMap<Agent, Tile> agents;
+	private static SymmetricSparseMatrix streets;
 	
 	private static IGraph<Tile> graph;
 	
@@ -32,20 +34,22 @@ public class GameBoard {
 	 */
 	static boolean setTiles(Tile[] tiles, int length, int width) {
 		
-		if (GameBoard.tiles == null) {
-			
-			GameBoard.length = length;
-			GameBoard.width  = width;
-			GameBoard.tiles  = tiles;
-			GameBoard.graph  = new GameBoardGraph();
-			return true;
-			
-		} else {
-			
+		if (GameBoard.tiles != null)
 			return false;
-			
-		}
 		
+		if (tiles.length != length*width)
+			throw new IllegalArgumentException();
+		
+		GameBoard.length = length;
+		GameBoard.width  = width;
+		GameBoard.tiles  = tiles;
+		GameBoard.graph  = new GameBoardGraph();
+
+		cities = new HashMap<>();
+		agents = new HashMap<>();
+		streets = new SymmetricSparseMatrix(tiles.length);
+		
+		return true;
 	}
 	
 	//-------------------------------- cities ---------------------------------
