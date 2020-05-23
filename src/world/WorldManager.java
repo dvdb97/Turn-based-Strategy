@@ -120,7 +120,6 @@ public class WorldManager {
 		return heights;
 	}
 	
-	
 	//*************************** update ****************************
 	
 	public static void update() {
@@ -155,6 +154,12 @@ public class WorldManager {
 		
 		return tileCenterPositions;
 		
+	}
+	
+	public static float getDistance(int tileIndex1, int tileIndex2) {
+		Vector3f p1 = superGrid.getHexCenter(tileIndex1);
+		Vector3f p2 = superGrid.getHexCenter(tileIndex2);
+		return p1.minus(p2).getXY().norm();
 	}
 	
 	//*****************************************************************

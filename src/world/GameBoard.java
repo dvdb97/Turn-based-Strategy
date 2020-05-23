@@ -1,8 +1,14 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
+import pathfinding.IGraph;
+import utils.ListUtil;
+import utils.TileSurrounding;
 import world.agents.Agent;
 import world.city.City;
 
@@ -14,7 +20,9 @@ public class GameBoard {
 	private static Tile[] tiles;
 	private static HashMap<Tile, City> cities = new HashMap<>();
 	private static HashMap<Agent, Tile> agents = new HashMap<>();
-
+	
+	private static IGraph<Tile> graph;
+	
 	//---------------------------------- init -----------------------------------
 	
 	/**
@@ -29,6 +37,7 @@ public class GameBoard {
 			GameBoard.length = length;
 			GameBoard.width  = width;
 			GameBoard.tiles  = tiles;
+			GameBoard.graph  = new GameBoardGraph();
 			return true;
 			
 		} else {
@@ -85,7 +94,7 @@ public class GameBoard {
 	static void deleteAgent(Agent agent) {
 		agents.remove(agent);
 	}
-		
+	
 	//-------------------------------- public getter -------------------------------
 	
 	public static Tile getTile(Agent agent) {
@@ -130,6 +139,9 @@ public class GameBoard {
 	 */
 	public static Tile getTile(int index) {
 		
+		if (index < 0 || index >= tiles.length)
+			return null;
+		
 		return tiles[index];
 		
 	}
@@ -148,6 +160,40 @@ public class GameBoard {
 	public static int getWidth() {
 		return width;
 	}
+
+	//-------------------------------- graph ------------------------------------
 	
+	public static IGraph<Tile> getGraph() {
+		return graph;
+	}
 	
+}
+
+class GameBoardGraph implements IGraph<Tile> {
+	
+	GameBoardGraph() {
+		
+	}
+	
+	@Override
+	public List<Tile> getSuccessors(Tile node) {
+		List<Tile> l = ListUtil.asList(TileSurrounding.getSurroundingTiles(node.getIndex()));
+		ListUtil.removeNullInPlace(l);
+		return l;
+	}
+	
+	@Override
+	public float getCosts(Tile start, Tile end) {
+		return 1;
+	}
+	
+	@Override
+	public float getHeuristic(Tile start, Tile end) {
+		return WorldManager.getDistance(start.getIndex(), end.getIndex());
+	}
+	
+	private static final int[][] SPOI_INDICES_DX = new int[][] {{1, 1, 0,-1, 0, 1},
+		                                                        {1, 0,-1,-1,-1, 0}};
+	
+	private static final int[] SPOI_INDICES_DY = new int[] {0, 1, 1, 0,-1,-1};	
 }

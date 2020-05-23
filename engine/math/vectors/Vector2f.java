@@ -70,7 +70,7 @@ public class Vector2f extends Vectorf {
 	public Vector2f normalized() {
 		return timesEQ(1f / norm());
 	}
-
+	
 	
 	public void setA(float a) {
 		set(0, a);

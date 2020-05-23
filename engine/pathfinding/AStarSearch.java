@@ -58,7 +58,7 @@ public class AStarSearch {
 	 * 
 	 * Finds the shortest path between two nodes using the A*-Algorithm.
 	 * 
-	 * @param graph The graph that is the evironment for our algorithm.
+	 * @param graph The graph that is the environment for our algorithm.
 	 * @param start The start node for our path.
 	 * @param end The end node for our path.
 	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
@@ -80,11 +80,11 @@ public class AStarSearch {
 			//Mark the node as visited.
 			visited.put(current.value, current);
 			
-			//Look up all sucessors to the current node.
+			//Look up all successors to the current node.
 			List<N> successors = graph.getSuccessors(current.value);
 			
 			for (N successor : successors) {
-				//Conpute the total path costs for our next step.
+				//Compute the total path costs for our next step.
 				float distance = graph.getCosts(current.value, successor) + current.distance;
 				//Compute the estimated remaining path costs to the end node.
 				float heuristic = graph.getHeuristic(successor, end);
@@ -119,7 +119,7 @@ public class AStarSearch {
 	 * Finds the shortest path between two nodes using the A*-Algorithm.
 	 * This method also takes the unit's properties into consideration.
 	 * 
-	 * @param graph The graph that is the evironment for our algorithm.
+	 * @param graph The graph that is the environment for our algorithm.
 	 * @param start The start node for our path.
 	 * @param end The end node for our path.
 	 * @param unit The unit for which we are computing the path.
@@ -142,11 +142,11 @@ public class AStarSearch {
 			//Mark the node as visited.
 			visited.put(current.value, current);
 			
-			//Look up all sucessors to the current node.
+			//Look up all successors to the current node.
 			List<N> successors = graph.getSuccessors(current.value, unit);
 			
 			for (N successor : successors) {
-				//Conpute the total path costs for our next step.
+				//Compute the total path costs for our next step.
 				float distance = graph.getCosts(current.value, successor, unit) + current.distance;
 				//Compute the estimated remaining path costs to the end node.
 				float heuristic = graph.getHeuristic(successor, end, unit);
@@ -182,7 +182,7 @@ public class AStarSearch {
 	 * Recursively convert the linked steps to a list of nodes.
 	 * 
 	 * @param s The step that is the result of the A*-Search.
-	 * @return Returns a list containg all nodes on the path.
+	 * @return Returns a list containing all nodes on the path.
 	 */
 	private static <N> List<N> toPath(Node<N> s) {
 		if (s.parent == null) {
