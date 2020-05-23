@@ -16,7 +16,6 @@ public class AgentModel extends Mesh3D {
 		super(new Material(color, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f));
 		
 		float[] posData = new float[] {-1,-1, 0,
-		
 		                               -1, 1, 0,
 		                                1,-1, 0,
 		                                1, 1, 0,

@@ -48,8 +48,12 @@ public class Mesh3D extends Mesh {
 		this.setMaterial(material);
 		this.setTexture(texture);
 	}
-
-
+	
+	public Mesh3D(int drawMode, Material material) {
+		this(drawMode);
+		this.setMaterial(material);
+	}
+	
 	/**
 	 * A function that sets all uniform variables to render this mesh.
 	 * If this function wasn't overwritten, it will use a default light shader
