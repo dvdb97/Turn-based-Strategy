@@ -1,6 +1,11 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
+import world.Tile;
+import world.agents.Agent;
 
 public class SymmetricSparseMatrix {
 	
@@ -8,6 +13,8 @@ public class SymmetricSparseMatrix {
 	final int numel; // number of elements 
 	
 	HashMap<Integer, Integer> entries;
+	
+	//***************************** constructor ******************************
 	
 	/**
 	 * Symmetric: getValue(i,j)==getValue(j,i)
@@ -33,6 +40,8 @@ public class SymmetricSparseMatrix {
 	public SymmetricSparseMatrix(int n) {
 		this(n, 16);
 	}
+	
+	//****************************** get & set *******************************
 	
 	/**
 	 * 
@@ -73,5 +82,15 @@ public class SymmetricSparseMatrix {
 			return entries.get(i+j*numel);;
 		return 0;
 	}
+	
+//	public ArrayList<int[]> getEntriesByValue(int value) {
+//		ArrayList<int[]> entryList = new ArrayList<>();
+//		for (Iterator<Integer> iterator = entries.keySet().iterator(); iterator.hasNext(); ) {
+//			Integer i = iterator.next();
+//			if (entries.get(i) == value)
+//				entryList.add(new int[] {i%n, i/n});
+//		}
+//		return entryList;
+//	}
 	
 }

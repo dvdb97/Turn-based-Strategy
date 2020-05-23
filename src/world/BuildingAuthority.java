@@ -7,7 +7,9 @@ import assets.meshes.Transformable;
 import math.MathUtils;
 import models.gameboard.GameBoardModel;
 import models.meeples.CityModel;
+import models.meeples.StreetModel;
 import models.seeds.SuperGrid;
+import utils.TileSurrounding;
 import world.city.City;
 import world.city.Population;
 
@@ -45,4 +47,24 @@ public class BuildingAuthority {
 		return true;
 	}
 	
+	
+	public static boolean requestStreet(int tileIndex1, int tileIndex2) {
+		
+		if (TileSurrounding.areNeighbours(tileIndex1, tileIndex2))
+			return false;;
+		
+		if (GameBoard.getTile(tileIndex1).isWater() || GameBoard.getTile(tileIndex2).isWater())
+			return false;
+		
+		if (!GameBoard.addStreet(tileIndex1, tileIndex2))
+			return false;
+		
+		StreetModel streetModel = new StreetModel(gameBoardModel.transformable);
+		streetModel.transformable.setScaling(0.25f, 0.25f, 0.25f);
+		streetModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f); //TODO
+		streetModel.transformable.setTranslation(superGrid.getHexCenter(tileIndex1));
+		meepleModels.add(streetModel);
+		
+		return true;
+	}
 }

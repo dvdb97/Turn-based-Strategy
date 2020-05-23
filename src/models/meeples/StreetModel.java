@@ -5,7 +5,6 @@ import java.nio.FloatBuffer;
 import assets.material.Material;
 import assets.meshes.Mesh3D;
 import assets.meshes.Transformable;
-import assets.meshes.geometry.Color;
 import math.vectors.Vector3f;
 import utils.ColorPalette;
 import utils.CustomBufferUtils;
@@ -15,8 +14,8 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 
 public class StreetModel extends Mesh3D {
 	
-	public StreetModel(Transformable gameBoard, Color color) {
-		super(GL_TRIANGLE_STRIP, new Material(color, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f));
+	public StreetModel(Transformable gameBoard) {
+		super(GL_TRIANGLE_STRIP, new Material(ColorPalette.BORDEAUX, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f));
 		
 		float h = 0.3f;
 		

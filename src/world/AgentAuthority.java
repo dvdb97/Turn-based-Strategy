@@ -21,7 +21,7 @@ public class AgentAuthority {
 	private static GameBoardModel gameBoardModel;
 	private static List<Mesh3D> meepleModels;
 	private static SuperGrid superGrid;
-	private static HashMap<Agent, StreetModel> agentModels;
+	private static HashMap<Agent, AgentModel> agentModels;
 	
 	public static void init(GameBoardModel gameBoardModel, List<Mesh3D> meepleModels, SuperGrid superGrid) {
 		AgentAuthority.gameBoardModel = gameBoardModel;
@@ -47,13 +47,9 @@ public class AgentAuthority {
 		Agent agent = new MilitaryUnit(city, agentColor);
 		GameBoard.addAgent(agent);
 		
-//		AgentModel agentModel = new AgentModel(gameBoardModel.transformable, agentColor);
-//		agentModel.transformable.setScaling(0.05f, 0.05f, 0.05f);
-//		agentModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
-//		agentModel.transformable.setTranslation(superGrid.getHexCenter(GameBoard.getTile(city).getIndex()));
-		StreetModel agentModel = new StreetModel(gameBoardModel.transformable, agentColor);
-		agentModel.transformable.setScaling(0.2f, 0.2f, 0.2f);
-//		agentModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
+		AgentModel agentModel = new AgentModel(gameBoardModel.transformable, agentColor);
+		agentModel.transformable.setScaling(0.05f, 0.05f, 0.05f);
+		agentModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
 		agentModel.transformable.setTranslation(superGrid.getHexCenter(GameBoard.getTile(city).getIndex()));
 		meepleModels.add(agentModel);
 		agentModels.put(agent, agentModel);

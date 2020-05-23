@@ -52,7 +52,7 @@ public class GameBoard {
 		return true;
 	}
 	
-	//-------------------------------- cities ---------------------------------
+	//-------------------------------- cities --------------------------------
 	static boolean tileAvailableForCity(Tile tile) {
 		//TODO: maybe use exceptions here
 		if (cities.containsKey(tile)) {
@@ -76,7 +76,7 @@ public class GameBoard {
 		cities.put(tile, city);
 	}
 
-	//-------------------------------- agents ---------------------------------
+	//-------------------------------- agents --------------------------------
 
 	/**
 	 * AgentAuthority is the only authority that has the authority to use this method!
@@ -99,7 +99,16 @@ public class GameBoard {
 		agents.remove(agent);
 	}
 	
-	//-------------------------------- public getter -------------------------------
+	//------------------------------- streets --------------------------------
+	
+	static boolean addStreet(int tileIndex1, int tileIndex2) {
+		if (streets.getValue(tileIndex1, tileIndex2)==1)
+			return false;
+		streets.setValue(tileIndex1, tileIndex2, 1);
+		return true;
+	}
+	
+	//-------------------------------- public getter -------------------------
 	
 	public static Tile getTile(Agent agent) {
 		return agents.get(agent);
@@ -165,7 +174,7 @@ public class GameBoard {
 		return width;
 	}
 	
-	//-------------------------------- graph ------------------------------------
+	//-------------------------------- graph ---------------------------------
 	
 	public static IGraph<Tile> getGraph() {
 		return graph;
@@ -194,6 +203,6 @@ class GameBoardGraph implements IGraph<Tile> {
 	
 	@Override
 	public float getHeuristic(Tile start, Tile end) {
-		return WorldManager.getDistance(start.getIndex(), end.getIndex());
+		return WorldManager.getDistance(start.getIndex(), end.getIndex());	//TODO scale it, such that heuristic cost between to neighbouring tiles is one
 	}	
 }

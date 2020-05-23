@@ -41,6 +41,17 @@ public class TileSurrounding {
 		return getSurroundingTiles(tileIndex, 1);
 	}
 	
+	public static boolean areNeighbours(int tileIndex1, int tileIndex2) {
+		
+		int[] surroundingOfTile1 = getSurrounding(tileIndex1);
+		for (int i=0; i<surroundingOfTile1.length; i++) {
+			if (surroundingOfTile1[i] == tileIndex2)
+				return true;
+		}
+		return false;
+		
+	}
+	
 	//*******************************************************************
 	//TODO
 	
