@@ -53,7 +53,7 @@ class Node<N> implements Comparable<Node<N>> {
 
 
 public class AStarSearch {	
-		
+	
 	/**
 	 * 
 	 * Finds the shortest path between two nodes using the A*-Algorithm.
@@ -125,7 +125,7 @@ public class AStarSearch {
 	 * @param unit The unit for which we are computing the path.
 	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
 	 */
-	public static <N, U> Node<N> runAStarSearch(ITraversable<N, U> graph, N start, N end, U unit) {
+	private static <N, U> Node<N> runAStarSearch(ITraversable<N, U> graph, N start, N end, U unit) {
 		//The priority queue that sorts the nodes by total distance.
 		PriorityQueue<Node<N>> priorityQueue = new PriorityQueue<Node<N>>();
 		
@@ -321,6 +321,23 @@ public class AStarSearch {
 		}
 		
 		return nodes;
+	}
+	
+	/**
+	 * 
+	 * @param graph The graph to work with.
+	 * @param start The start node of our path
+	 * @param end The end node of our path.
+	 * @param path empty list, the path is going to be written into
+	 * @return the path costs for the shortest path between start and end.
+	 */
+	public static <N> float getPathAndCosts(IGraph<N> graph, N start, N end, List<N> path) {
+		if (!path.isEmpty())
+			throw new IllegalArgumentException("path have to be empty");
+		
+		Node<N> n = runAStarSearch(graph, start, end);
+		path.addAll(toPath(n));
+		return n.distance;
 	}
 	
 }

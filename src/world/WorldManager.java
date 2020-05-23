@@ -30,6 +30,8 @@ public class WorldManager {
 	
 	private static ProvisionalUI ui;
 	
+	private static List<Tile> latestPath;
+	
 	//*************************** init ******************************
 	
 	public static void init(int lengthInTiles, int widthInTiles) {
@@ -49,6 +51,7 @@ public class WorldManager {
 		BuildingAuthority.init(gameBoardModel, meepleModels, superGrid);
 		AgentAuthority.init(gameBoardModel, meepleModels, superGrid);
 		
+		latestPath = new ArrayList<Tile>();
 	}
 	
 	private static void initModels() {
@@ -67,13 +70,9 @@ public class WorldManager {
 		fertility = new float[lengthInTiles*widthInTiles];
 		
 		for (int x=0; x<lengthInTiles; x++) {
-			
 			for (int y=0; y<widthInTiles; y++) {
-				
 				fertility[x + y*lengthInTiles] = noise.getValue(x, y);
-				
 			}
-			
 		}
 		
 	}
@@ -99,13 +98,15 @@ public class WorldManager {
 		ui = new ProvisionalUI(mmm);
 	}
 	
-	//TODO
 	public static void changeMM(int m) {
 		ui.mmm.changeModeTo(m);
 	}
 	
+	public static void refreshMMColor() {
+		ui.mmm.refreshMapModeColor();
+	}
 	
-	//*************************** utils  ****************************
+	//*************************** util ******************************
 	
 	private static float[] getHeights(int indexOfTile) {
 		Vector3f center = superGrid.getHexCenter(indexOfTile);
@@ -195,4 +196,12 @@ public class WorldManager {
 		return fertility[i];
 	}
 	
+	
+	public static void setPath(List<Tile> path) {
+		latestPath = path;
+	}
+	
+	public static boolean isInLatestPath(int tileIndex) {
+		return latestPath.contains(GameBoard.getTile(tileIndex));
+	}
 }

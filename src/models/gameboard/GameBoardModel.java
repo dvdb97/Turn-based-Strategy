@@ -88,12 +88,9 @@ public class GameBoardModel {
 	 */
 	public void render() {
 		
-		renderTerrain();
-		
+		renderTerrain();		
 		renderBordersSeaCOS();
-		
-		renderHoveredTile();
-		
+		renderHoveredTile();		
 		renderSelectedTile();
 		
 	}
@@ -121,7 +118,7 @@ public class GameBoardModel {
 	private void renderHoveredTile() {
 		
 		tileBorders.display(TileSelecter.getHoveredTileIndex());
-
+		
 		tileBorders.render(scene, new Color(1f, 1f, 0f, 1f));
 		
 	}

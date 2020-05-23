@@ -22,29 +22,27 @@ public class MapModesManager {
 	}
 	
 	
-	
 	/**
-	 * 
 	 * @param modeKey index of the mode in "Color[][] modes"
-	 * @return true, if mode truely changed
 	 */
-	public boolean changeModeTo(int modeKey) {
+	public void changeModeTo(int modeKey) {
 		
-		//TODO: work with exceptions here
-		if (!modes.containsKey(modeKey)) {
-			System.err.println("mode not found");
-			return false;
-		}
-		
-		if (currentMode == modeKey) {
-			return false;
-		}
+		if (!modes.containsKey(modeKey))
+			throw new IllegalArgumentException("mode not found");
 		
 		boardModels.setHexColor(modes.get(modeKey));
 		currentMode = modeKey;
-		
-		return true;
-		
+				
 	}
 	
+	public void refreshMapModeColor() {
+		boardModels.setHexColor(modes.get(currentMode));
+	}
+	
+	/**
+	 * @return key of the current map mode
+	 */
+	public int getCurrentMode() {
+		return currentMode;
+	}
 }

@@ -160,7 +160,7 @@ public class GameBoard {
 	public static int getWidth() {
 		return width;
 	}
-
+	
 	//-------------------------------- graph ------------------------------------
 	
 	public static IGraph<Tile> getGraph() {
@@ -179,6 +179,7 @@ class GameBoardGraph implements IGraph<Tile> {
 	public List<Tile> getSuccessors(Tile node) {
 		List<Tile> l = ListUtil.asList(TileSurrounding.getSurroundingTiles(node.getIndex()));
 		ListUtil.removeNullInPlace(l);
+		l.removeIf((e) -> e.isWater());
 		return l;
 	}
 	
@@ -190,10 +191,5 @@ class GameBoardGraph implements IGraph<Tile> {
 	@Override
 	public float getHeuristic(Tile start, Tile end) {
 		return WorldManager.getDistance(start.getIndex(), end.getIndex());
-	}
-	
-	private static final int[][] SPOI_INDICES_DX = new int[][] {{1, 1, 0,-1, 0, 1},
-		                                                        {1, 0,-1,-1,-1, 0}};
-	
-	private static final int[] SPOI_INDICES_DY = new int[] {0, 1, 1, 0,-1,-1};	
+	}	
 }

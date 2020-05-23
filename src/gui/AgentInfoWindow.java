@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fundamental.DefaultWindow;
@@ -14,6 +15,7 @@ import rendering.shapes.implemented.GUIQuad;
 import world.AgentAuthority;
 import world.GameBoard;
 import world.Tile;
+import world.WorldManager;
 import world.agents.Agent;
 
 public class AgentInfoWindow extends DefaultWindow {
@@ -37,8 +39,10 @@ public class AgentInfoWindow extends DefaultWindow {
 		button1.addOnClickListener((e) -> {
 			Tile previousTile = GameBoard.getTile(this.agent);
 			if(AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex())) {
-				agent.budget = (int)AStarSearch.getPathCosts(GameBoard.getGraph(), previousTile, GameBoard.getTile(this.agent));
-				List<Tile> travelPath = AStarSearch.getPath(GameBoard.getGraph(), previousTile, GameBoard.getTile(this.agent));
+				ArrayList<Tile> travelPath = new ArrayList<>();
+				agent.budget = (int)AStarSearch.getPathAndCosts(GameBoard.getGraph(), previousTile, GameBoard.getTile(this.agent), travelPath);
+				WorldManager.setPath(travelPath);
+				WorldManager.refreshMMColor();
 				System.out.println("TravelPath: ");
 				for (int i=0; i<travelPath.size(); i++)
 					System.out.println(travelPath.get(i).getIndex());

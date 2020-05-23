@@ -128,7 +128,7 @@ public class TileInfoWindow extends DefaultWindow {
 		
 		Tab tab4 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		
-		OptionSet<RadioButton> set = new OptionSet<RadioButton>(50, 150, FlexDirection.COLUMN);
+		OptionSet<RadioButton> set = new OptionSet<RadioButton>(50, 200, FlexDirection.COLUMN);
 		set.setLocalXPosition(50f);
 		
 		RadioButton rb1 = new RadioButton(30);
@@ -145,6 +145,11 @@ public class TileInfoWindow extends DefaultWindow {
 		rb3.setMargin(Direction.ALL, 10);
 		rb3.addEnableListener((e) -> WorldManager.changeMM(2));
 		set.addButton(rb3);
+		
+		RadioButton rb4 = new RadioButton(30);
+		rb4.setMargin(Direction.ALL, 10);
+		rb4.addEnableListener((e) -> WorldManager.changeMM(3));
+		set.addButton(rb4);
 		
 		tab4.addChild(set);
 		tabMenu.addTab("map modes", tab4);
