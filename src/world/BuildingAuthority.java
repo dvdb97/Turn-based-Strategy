@@ -50,8 +50,10 @@ public class BuildingAuthority {
 	
 	public static boolean requestStreet(int tileIndex1, int tileIndex2) {
 		
-		if (TileSurrounding.areNeighbours(tileIndex1, tileIndex2))
-			return false;;
+		int angle = TileSurrounding.getAngle(tileIndex1, tileIndex2);
+		
+		if (angle == -1)
+			return false;
 		
 		if (GameBoard.getTile(tileIndex1).isWater() || GameBoard.getTile(tileIndex2).isWater())
 			return false;
@@ -60,8 +62,8 @@ public class BuildingAuthority {
 			return false;
 		
 		StreetModel streetModel = new StreetModel(gameBoardModel.transformable);
-		streetModel.transformable.setScaling(0.25f, 0.25f, 0.25f);
-		streetModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f); //TODO
+		streetModel.transformable.setScaling(0.2f, 0.2f, 0.2f);
+		streetModel.transformable.setRotation(0f, 0f, angle * Transformable._1_DEGREE);
 		streetModel.transformable.setTranslation(superGrid.getHexCenter(tileIndex1));
 		meepleModels.add(streetModel);
 		

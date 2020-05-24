@@ -39,6 +39,9 @@ public class TileInfoWindow extends DefaultWindow {
 	private GUIQuad grassTex;
 	
 	int counter = 0;
+	int tileIndex1 = -1;
+	int tileIndex2 = -1;
+	boolean selectTile1 = true;
 	
 	//**************************** init *************************************
 	public TileInfoWindow() {
@@ -63,13 +66,40 @@ public class TileInfoWindow extends DefaultWindow {
 		//**************************************************************
 		
 		Tab tab1 = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-		GUITextField text1 = new GUITextField("turquoise fucks!", "FreeMono", 90f, 90f, 20);
+		GUITextField text1 = new GUITextField("Tile 1: "+tileIndex1+"\nTile 2: "+tileIndex2, "FreeMono", 90f, 20f, 20);
 		text1.setLocalXPosition(50f);
-		text1.setLocalYPosition(50f);
+		text1.setLocalYPosition(10f);
+		
+		GUIButton selectButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		selectButton.setLabel("Select Tile", "FreeMono", 20);
+		selectButton.setLocalXPosition(50f);
+		selectButton.addOnClickListener((e) -> {
+			if (selectTile1) {
+				tileIndex1 = TileSelecter.getSelectedTileIndex();
+				selectTile1 = !selectTile1;
+			} else {
+				tileIndex2 = TileSelecter.getSelectedTileIndex();
+				selectTile1 = !selectTile1;
+			}
+			text1.setText("Tile 1: "+tileIndex1+"\nTile 2: "+tileIndex2);
+			}
+		);
+		GUIButton buildButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		buildButton.setLabel("Build Street", "FreeMono", 20);
+		buildButton.setLocalXPosition(50f);
+		buildButton.addOnClickListener((e) -> {
+			if (BuildingAuthority.requestStreet(tileIndex1, tileIndex2)) {
+				tileIndex1 = -1;
+				tileIndex2 = -1;
+				text1.setText("Tile 1: "+tileIndex1+"\nTile 2: "+tileIndex2);
+			}}
+		);
 		
 		tab1.addChild(text1);
+		tab1.addChild(selectButton);
+		tab1.addChild(buildButton);
 		
-		tabMenu.addDefaultTab("overview", tab1);
+		tabMenu.addDefaultTab("streets", tab1);
 		
 		//**************************************************************
 		
