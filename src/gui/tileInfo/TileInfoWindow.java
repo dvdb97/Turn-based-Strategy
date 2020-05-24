@@ -16,10 +16,12 @@ import input.buttons.RadioButton;
 import interaction.TileSelecter;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
+import pathfinding.AStarSearch;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import container.Tab;
 import container.TabMenu;
@@ -88,7 +90,11 @@ public class TileInfoWindow extends DefaultWindow {
 		buildButton.setLabel("Build Street", "FreeMono", 20);
 		buildButton.setLocalXPosition(50f);
 		buildButton.addOnClickListener((e) -> {
-			if (BuildingAuthority.requestStreet(tileIndex1, tileIndex2)) {
+			List<Tile> path = AStarSearch.getPath(GameBoard.getGraph(), GameBoard.getTile(tileIndex1), GameBoard.getTile(tileIndex2));
+			ArrayList<Integer> pathIndices = new ArrayList<>(path.size());
+			for (Tile tile : path)
+				pathIndices.add(tile.getIndex());
+			if (BuildingAuthority.requestConsecutiveStreets(pathIndices)) {
 				tileIndex1 = -1;
 				tileIndex2 = -1;
 				text1.setText("Tile 1: "+tileIndex1+"\nTile 2: "+tileIndex2);
