@@ -1,7 +1,6 @@
 package gui;
 
 import fundamental.GUIWindow;
-import gui.tileInfo.TileInfoWindow;
 import implementations.ColorPickWindow;
 import interaction.TileSelecter;
 import world.GameBoard;
