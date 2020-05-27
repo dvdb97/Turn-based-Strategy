@@ -15,7 +15,7 @@ public class SuperGrid {
 	private int yOffset;				//must be even
 	
 	private float triEdgeLength;
-	private int elr;                	//must be a power of 2 and > 1          //edge length relation = hexaong's edge length / triangle's edge length
+	private int elr;                	//must be a power of 2 and > 1          //edge length relation = hexagon's edge length / triangle's edge length
 	private float triangleAltitude;
 	
 	private int lengthInVectors;
@@ -186,6 +186,14 @@ public class SuperGrid {
 	
 	public float getTriangleAltitude() {
 		return triangleAltitude;
+	}
+	
+	public float getHexagonEdgeLength() {
+		return triEdgeLength*elr;
+	}
+	
+	public float getDistanceBetweenTwoHexagons() {
+		return Const.SQRT3*getHexagonEdgeLength();
 	}
 	
 	public Vector3f[] getVectors() {

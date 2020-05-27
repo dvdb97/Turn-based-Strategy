@@ -23,7 +23,7 @@ public class GameBoard {
 	private static HashMap<Agent, Tile> agents;
 	private static SymmetricSparseMatrix streets;
 	
-	private static IGraph<Tile> graph;
+	private static IGraph<Integer> graph;
 	
 	//---------------------------------- init -----------------------------------
 	
@@ -152,7 +152,7 @@ public class GameBoard {
 	/**
 	 * 
 	 * @param index position of the requested tile in "Tile[] tiles"
-	 * @return the requested tile
+	 * @return the requested tile or null if it doesn't exist (invalid index)
 	 */
 	public static Tile getTile(int index) {
 		
@@ -183,35 +183,52 @@ public class GameBoard {
 		return width;
 	}
 	
+	public static int getNumTiles() {
+		return tiles.length;
+	}
+	
 	//-------------------------------- graph ---------------------------------
 	
-	public static IGraph<Tile> getGraph() {
+	public static IGraph<Integer> getGraph() {
 		return graph;
 	}
 	
 }
 
-class GameBoardGraph implements IGraph<Tile> {
+class GameBoardGraph extends SymmetricSparseMatrix implements IGraph<Integer> {
 	
 	GameBoardGraph() {
+		super(GameBoard.getNumTiles(), GameBoard.getNumTiles()*6, 1f);
+		
+		for (int i=0; i<getN(); i++) {
+			int [] surrounding = TileSurrounding.getSurrounding(i);
+			for (int j=0; j<surrounding.length; j++) {
+				if (surrounding[j] != -1)
+					setValue(i, surrounding[j], 1);
+			}
+		}
 		
 	}
 	
 	@Override
-	public List<Tile> getSuccessors(Tile node) {
-		List<Tile> l = ListUtil.asList(TileSurrounding.getSurroundingTiles(node.getIndex()));
-		ListUtil.removeNullInPlace(l);
-		l.removeIf((e) -> e.isWater());
+	public List<Integer> getSuccessors(Integer node) {
+//		HashMap<Integer, Integer> map =  getRow(node);
+//		List<Integer> l = ListUtil.asList(map.keySet());
+//		l.removeIf((e) -> GameBoard.getTile(e).isWater());
+//		return l;
+		int[] s = TileSurrounding.getSurrounding(node);
+		List<Integer> l = ListUtil.asListI(s);
+		l.removeIf((e) -> GameBoard.getTile(e).isWater());
 		return l;
 	}
 	
 	@Override
-	public float getCosts(Tile start, Tile end) {
-		return 1+Math.abs(start.getAvgHeight()-end.getAvgHeight())/0.1f;
+	public float getCosts(Integer start, Integer end) {
+		return 1+Math.abs(GameBoard.getTile(start).getAvgHeight()-GameBoard.getTile(end).getAvgHeight())/0.1f;
 	}
 	
 	@Override
-	public float getHeuristic(Tile start, Tile end) {
-		return WorldManager.getDistance(start.getIndex(), end.getIndex());	//TODO scale it, such that heuristic cost between to neighbouring tiles is one
+	public float getHeuristic(Integer start, Integer end) {
+		return WorldManager.getRelativeDistance(start, end);
 	}	
 }

@@ -30,7 +30,7 @@ public class WorldManager {
 	
 	private static ProvisionalUI ui;
 	
-	private static List<Tile> latestPath;
+	private static List<Integer> latestPath;
 	
 	//*************************** init ******************************
 	
@@ -51,7 +51,7 @@ public class WorldManager {
 		BuildingAuthority.init(gameBoardModel, meepleModels, superGrid);
 		AgentAuthority.init(gameBoardModel, meepleModels, superGrid);
 		
-		latestPath = new ArrayList<Tile>();
+		latestPath = new ArrayList<>();
 	}
 	
 	private static void initModels() {
@@ -163,6 +163,10 @@ public class WorldManager {
 		return p1.minus(p2).getXY().norm();
 	}
 	
+	public static float getRelativeDistance(int tileIndex1, int tileIndex2) {
+		return getDistance(tileIndex1, tileIndex2)/superGrid.getDistanceBetweenTwoHexagons();
+	}
+	
 	//*****************************************************************
 	
 	
@@ -197,11 +201,11 @@ public class WorldManager {
 	}
 	
 	
-	public static void setPath(List<Tile> path) {
+	public static void setPath(List<Integer> path) {
 		latestPath = path;
 	}
 	
 	public static boolean isInLatestPath(int tileIndex) {
-		return latestPath.contains(GameBoard.getTile(tileIndex));
+		return latestPath.contains(tileIndex);
 	}
 }

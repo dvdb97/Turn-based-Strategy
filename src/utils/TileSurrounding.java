@@ -18,7 +18,7 @@ public class TileSurrounding {
 			int x = tileIndex%length + INDICES_DX[(tileIndex/length)%2][radius][i];
 			int y = tileIndex/length + INDICES_DY[radius][i];
 			
-			if (x>=0 && x<=length && y>=0 && y<=width) {
+			if (x>=0 && x<length && y>=0 && y<width) {
 				surrounding[i] = x + y*length;
 			} else {
 				surrounding[i] = -1;	//TODO: handle (-1) , e.g. getTile(-1) == null

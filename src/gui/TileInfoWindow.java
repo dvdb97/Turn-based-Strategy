@@ -149,10 +149,7 @@ public class TileInfoWindow extends DefaultWindow {
 		buildButton.setLocalXPosition(50f);
 		buildButton.setPadding(Direction.ALL, 15);
 		buildButton.addOnClickListener((e) -> {
-			List<Tile> path = AStarSearch.getPath(GameBoard.getGraph(), GameBoard.getTile(tileIndex1), GameBoard.getTile(tileIndex2));
-			ArrayList<Integer> pathIndices = new ArrayList<>(path.size());
-			for (Tile tile : path)
-				pathIndices.add(tile.getIndex());
+			List<Integer> pathIndices = AStarSearch.getPath(GameBoard.getGraph(), tileIndex1, tileIndex2);
 			if (BuildingAuthority.requestConsecutiveStreets(pathIndices)) {
 				tileIndex1 = -1;
 				tileIndex2 = -1;

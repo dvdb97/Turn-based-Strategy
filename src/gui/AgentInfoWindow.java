@@ -39,9 +39,9 @@ public class AgentInfoWindow extends DefaultWindow {
 		button1.addOnClickListener((e) -> {
 			Tile previousTile = GameBoard.getTile(this.agent);
 			if(AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex())) {
-				ArrayList<Tile> travelPath = new ArrayList<>();
-				agent.budget -= AStarSearch.getPathAndCosts(GameBoard.getGraph(), previousTile, GameBoard.getTile(this.agent), travelPath);
-				WorldManager.setPath(travelPath);
+				ArrayList<Integer> travelPathIndices = new ArrayList<>();
+				agent.budget -= AStarSearch.getPathAndCosts(GameBoard.getGraph(), previousTile.getIndex(), GameBoard.getTile(this.agent).getIndex(), travelPathIndices);
+				WorldManager.setPath(travelPathIndices);
 				WorldManager.refreshMMColor();
 				refreshAgentInfo();
 			}
