@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ListUtil {
 
@@ -24,11 +26,19 @@ public class ListUtil {
 		return l;
 	}
 	
-
 	public static ArrayList<Integer> asListI(int[] a) {
 		ArrayList<Integer> l = new ArrayList<>(a.length);
-		for (int i : a)
-			l.add(i);
+		for (int e : a)
+			l.add(e);
+		return l;
+	}
+	
+	public static ArrayList<Integer> asListI(int[] a, Predicate<Integer> condition) {
+		ArrayList<Integer> l = new ArrayList<>(a.length);
+		for (Integer e : a)
+			if(condition.test(e)) {
+				l.add(e);
+	}
 		return l;
 	}
 }

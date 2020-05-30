@@ -75,6 +75,9 @@ public class BuildingAuthority {
 		
 		int numStreets = tileIndices.size()-1;
 		
+		if (numStreets < 1)
+			return false;
+		
 		ArrayList<Integer> angles = new ArrayList<>(numStreets);
 		for (int k=0; k<numStreets; k++) {
 			int i = tileIndices.get(k);

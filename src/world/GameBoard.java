@@ -200,11 +200,15 @@ class GameBoardGraph extends SymmetricSparseMatrix implements IGraph<Integer> {
 	GameBoardGraph() {
 		super(GameBoard.getNumTiles(), GameBoard.getNumTiles()*6, 1f);
 		
+		float cost = 2f;
+		
 		for (int i=0; i<getN(); i++) {
 			int [] surrounding = TileSurrounding.getSurrounding(i);
 			for (int j=0; j<surrounding.length; j++) {
-				if (surrounding[j] != -1)
-					setValue(i, surrounding[j], 1);
+				if (surrounding[j] != -1) {
+					cost = 1+Math.abs(GameBoard.getTile(i).getAvgHeight()-GameBoard.getTile(surrounding[j]).getAvgHeight())/0.1f;
+					setValue(i, surrounding[j], (int)(cost*10000f));
+				}
 			}
 		}
 		
@@ -212,19 +216,14 @@ class GameBoardGraph extends SymmetricSparseMatrix implements IGraph<Integer> {
 	
 	@Override
 	public List<Integer> getSuccessors(Integer node) {
-//		HashMap<Integer, Integer> map =  getRow(node);
-//		List<Integer> l = ListUtil.asList(map.keySet());
-//		l.removeIf((e) -> GameBoard.getTile(e).isWater());
-//		return l;
-		int[] s = TileSurrounding.getSurrounding(node);
-		List<Integer> l = ListUtil.asListI(s);
-		l.removeIf((e) -> GameBoard.getTile(e).isWater());
+		int[] s = TileSurrounding.getSurrounding(node, 1);
+		List<Integer> l = ListUtil.asListI(s, (e) -> ((e != -1) && !GameBoard.getTile(e).isWater()));
 		return l;
 	}
 	
 	@Override
 	public float getCosts(Integer start, Integer end) {
-		return 1+Math.abs(GameBoard.getTile(start).getAvgHeight()-GameBoard.getTile(end).getAvgHeight())/0.1f;
+		return getValue(start, end)/10000f;
 	}
 	
 	@Override
