@@ -8,6 +8,7 @@ import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
+import world.BuildingAuthority;
 import world.city.City;
 
 public class CityInfoWindow extends DefaultWindow {
@@ -19,8 +20,8 @@ public class CityInfoWindow extends DefaultWindow {
 	
 	//**************************** init *************************************
 	public CityInfoWindow(City city) {
-		super("City Information", 610, 410, 300, 300, FlexDirection.COLUMN);
-
+		super("City Information", 510, 410, 300, 300, FlexDirection.COLUMN);
+		
 		// INPUT-CONTAINER
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
 		button1 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
@@ -28,7 +29,8 @@ public class CityInfoWindow extends DefaultWindow {
 		button1.setMargin(Direction.ALL, 5);
 		button1.setPadding(Direction.ALL, 5);
 		button1.addOnClickListener((e) -> {
-			//build building
+			BuildingAuthority.requestBuildingInCity(this.city);
+			refreshCityInfo();
 		});
 		inputContainer.addChild(button1);
 		
@@ -45,7 +47,7 @@ public class CityInfoWindow extends DefaultWindow {
 		changeCity(city);
 		
 	}
-
+	
 	public void changeCity(City city) {
 		this.city = city;
 		
@@ -56,6 +58,10 @@ public class CityInfoWindow extends DefaultWindow {
 		}
 
 		text.setText(cityInfoString);
+	}
+	
+	private void refreshCityInfo() {
+		text.setText(city.getCityInfoString());
 	}
 	
 }

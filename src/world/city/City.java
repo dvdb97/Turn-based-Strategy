@@ -3,6 +3,7 @@ package world.city;
 import utils.TileSurrounding;
 import world.GameBoard;
 import world.Tile;
+import world.buildings.Building;
 
 public class City {
 	
@@ -11,20 +12,32 @@ public class City {
 	
 	private Population population;
 	
+	private Building building;
+	
 	//TODO: to implement
 	//all trading related stuff
 	//...
 	
-	//******************** contructor ***********************************
+	//******************** constructor ***************************************
 	
 	public City(Population population) {
 		
 		this.population = population;
 		this.spoiRadius = 1;		//TODO: don't hard code
-		
+		this.building = null;
 	}
 	
-	//*******************************************************************
+	//************************************************************************
+	
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+	
+	//********************     get     ***************************************
+	
+	public Building getBuilding() {
+		return building;
+	}
 	
 	private Tile[] getSPOI() {
 		
@@ -35,9 +48,13 @@ public class City {
 		}
 		return spoi;
 	}
-
+	
 	public String getCityInfoString() {
-		return "This is a city";
+		if (building == null) {
+			return "Tile: "+GameBoard.getTile(this).getIndex();
+		} else {
+			return "Tile: "+GameBoard.getTile(this).getIndex()+"\nBuildings Gain: "+building.getGain();
+		}
 	}
 	
 }

@@ -28,7 +28,7 @@ public class AgentInfoWindow extends DefaultWindow {
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
-		super("Agent Information", 610, 100, 300, 300, FlexDirection.COLUMN);
+		super("Agent Information", 510, 100, 300, 300, FlexDirection.COLUMN);
 		
 		// INPUT-CONTAINER
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);

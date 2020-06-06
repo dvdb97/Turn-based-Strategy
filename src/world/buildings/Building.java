@@ -1,5 +1,15 @@
 package world.buildings;
 
-public abstract class Building {
-
+public class Building {
+	
+	private int gain;
+	
+	public Building(int gain) {
+		this.gain = gain;
+	}
+	
+	public int getGain() {
+		return gain;
+	}
+	
 }

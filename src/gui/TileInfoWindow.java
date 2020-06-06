@@ -46,7 +46,7 @@ public class TileInfoWindow extends DefaultWindow {
 	
 	//**************************** init **************************************
 	public TileInfoWindow() {
-		super("Tile Information", 100, 100, 500, 800, FlexDirection.COLUMN);
+		super("Tile Information", 5, 100, 500, 800, FlexDirection.COLUMN);
 		
 		imageBox = new GUIImageBox("res/PH_Sea.png", 90f, 30f);
 		imageBox.setLocalXPosition(50f);
