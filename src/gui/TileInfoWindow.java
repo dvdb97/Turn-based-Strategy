@@ -6,6 +6,7 @@ import world.GameBoard;
 import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
+import world.city.City;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUIImageBox;
@@ -66,7 +67,7 @@ public class TileInfoWindow extends DefaultWindow {
 
 		tabMenu.addDefaultTab("info", initInfoTab());
 		tabMenu.addTab("agents", initAgentTab());
-		tabMenu.addTab("buildings", initBuildingTab());
+		tabMenu.addTab("streets", initStreetsTab());
 		tabMenu.addTab("city", initCityTab());
 	}
 	
@@ -114,8 +115,43 @@ public class TileInfoWindow extends DefaultWindow {
 		return tab;
 	}
 	
-	//************************ agent tab *********************************
-	private Tab initBuildingTab() {
+	//************************ agent tab ******************************
+	private Tab initAgentTab() {
+		
+		Tab tab = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
+				
+		// Button1: spawn agent
+		GUIButton button1 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		button1.setLabel("Spawn Agent", "FreeMono", 20);
+		button1.setPadding(Direction.ALL, 15);
+		button1.setMargin(Direction.ALL, 15);
+		button1.setLocalXPosition(50f);
+		button1.addOnClickListener((e) -> {
+			AgentAuthority.requestAgentInCity(GameBoard.getCity(TileSelecter.getSelectedTileIndex()));
+		});
+		
+		// Button2: show agent window
+		GUIButton button2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		button2.setLabel("Show Agent Info", "FreeMono", 20);
+		button2.setPadding(Direction.ALL, 15);
+		button2.setMargin(Direction.ALL, 15);
+		button2.setLocalXPosition(50f);
+		button2.addOnClickListener((e) -> {
+			ArrayList<Agent> a = GameBoard.getAgents(TileSelecter.getSelectedTileIndex());
+			if (a.size() > 0) {
+				GameGUIManager.showAgentInfoWindow(a.get(0));
+			}
+		});
+		
+		// finish
+		tab.addChild(button1);
+		tab.addChild(button2);
+		
+		return tab;
+	}
+	
+	//************************ streets tab *********************************
+	private Tab initStreetsTab() {
 
 		Tab tab = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
 		
@@ -164,41 +200,6 @@ public class TileInfoWindow extends DefaultWindow {
 		return tab;
 	}
 	
-	//************************ building tab ******************************
-	private Tab initAgentTab() {
-		
-		Tab tab = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
-				
-		// Button1: spawn agent
-		GUIButton button1 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		button1.setLabel("Spawn Agent", "FreeMono", 20);
-		button1.setPadding(Direction.ALL, 15);
-		button1.setMargin(Direction.ALL, 15);
-		button1.setLocalXPosition(50f);
-		button1.addOnClickListener((e) -> {
-			AgentAuthority.requestAgentInCity(GameBoard.getCity(TileSelecter.getSelectedTileIndex()));
-		});
-		
-		// Button2: open agent window
-		GUIButton button2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		button2.setLabel("Show Agent Info", "FreeMono", 20);
-		button2.setPadding(Direction.ALL, 15);
-		button2.setMargin(Direction.ALL, 15);
-		button2.setLocalXPosition(50f);
-		button2.addOnClickListener((e) -> {
-			ArrayList<Agent> a = GameBoard.getAgents(TileSelecter.getSelectedTileIndex());
-			if (a.size() > 0) {
-				GameGUIManager.showAgentInfoWindow(a.get(0));
-			}
-		});
-		
-		// finish
-		tab.addChild(button1);
-		tab.addChild(button2);
-		
-		return tab;
-	}
-	
 	//************************ city tab **********************************
 	private Tab initCityTab() {
 		
@@ -210,19 +211,32 @@ public class TileInfoWindow extends DefaultWindow {
 		numCitiesTextField.setLocalYPosition(10f);
 		
 		// Button: build city
-		GUIButton cityButton = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		cityButton.setLabel("Build City", "FreeMono", 20);
+		GUIButton button1 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		button1.setLabel("Build City", "FreeMono", 20);
 		
-		cityButton.setLocalXPosition(50f);
-		cityButton.addOnClickListener((e) -> {
+		button1.setLocalXPosition(50f);
+		button1.addOnClickListener((e) -> {
 			if (BuildingAuthority.requestCityOnTile(TileSelecter.getSelectedTileIndex()))
 				numCitiesTextField.setText("Total number of cities: " + Integer.toString(++counter));
 			}
 		);
-
+		
+		// Button: show city info
+		GUIButton button2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
+		button2.setLabel("Show City Info", "FreeMono", 20);
+		
+		button2.setLocalXPosition(50f);
+		button2.addOnClickListener((e) -> {
+			City c = GameBoard.getCity(TileSelecter.getSelectedTileIndex());
+			if (c != null) {
+				GameGUIManager.showCityInfoWindow(c);
+			}
+		});
+		
 		// finish
 		tab.addChild(numCitiesTextField);
-		tab.addChild(cityButton);
+		tab.addChild(button1);
+		tab.addChild(button2);
 		
 		return tab;
 	}

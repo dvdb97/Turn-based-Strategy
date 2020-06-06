@@ -72,7 +72,6 @@ public class AgentInfoWindow extends DefaultWindow {
 	}
 	
 	public void changeAgent(Agent agent) {
-		
 		this.agent = agent;
 		
 		if (agent==null) {

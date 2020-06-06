@@ -35,5 +35,9 @@ public class City {
 		}
 		return spoi;
 	}
+
+	public String getCityInfoString() {
+		return "This is a city";
+	}
 	
 }
