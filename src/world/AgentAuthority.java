@@ -6,6 +6,7 @@ import java.util.List;
 import assets.meshes.Mesh3D;
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
+import gameplay.Tribe;
 import gui.GameGUIManager;
 import models.gameboard.GameBoardModel;
 import models.meeples.AgentModel;
@@ -22,6 +23,9 @@ public class AgentAuthority {
 	private static List<Mesh3D> meepleModels;
 	private static SuperGrid superGrid;
 	private static HashMap<Agent, AgentModel> agentModels;
+
+	//TODO: dont hard code
+	private static final int AGENT_COST = 15;
 	
 	public static void init(GameBoardModel gameBoardModel, List<Mesh3D> meepleModels, SuperGrid superGrid) {
 		AgentAuthority.gameBoardModel = gameBoardModel;
@@ -39,13 +43,15 @@ public class AgentAuthority {
 		//if (city is not allowed to spawn agent)
 			//return false;
 		
-		//if (user has no money)
-			//return false;
+		if (Tribe.getCash() < AGENT_COST)
+			return false;
 		
 		//spawn agent
 		Color agentColor = ColorPalette.randomColor();
 		Agent agent = new MilitaryUnit(city, agentColor);
 		GameBoard.addAgent(agent);
+		
+		Tribe.increaseCash(-AGENT_COST);
 		
 		AgentModel agentModel = new AgentModel(gameBoardModel.transformable, agentColor);
 		agentModel.transformable.setScaling(0.05f, 0.05f, 0.05f);

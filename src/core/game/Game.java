@@ -1,6 +1,7 @@
 package core.game;
 
 import core.saves.GameScore;
+import gameplay.TaskBarManager;
 import interaction.PlayerCamera;
 import gui.GameGUIManager;
 import gui_core.GUIManager;
@@ -20,12 +21,10 @@ public class Game {
 	public Game(int boardLength, int boardWidth) {
 		
 		PlayerCamera.init();
-		
 		WorldManager.init(boardLength, boardWidth);
-		
 		TileSelecter.init();
-		
 		GameGUIManager.init();
+		TaskBarManager.init();
 		
 		run();
 	}

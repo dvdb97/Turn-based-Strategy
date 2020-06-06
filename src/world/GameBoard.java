@@ -105,11 +105,8 @@ public class GameBoard {
 	 * 
 	 * @return false, if street has been added already. true, otherwise
 	 */
-	static boolean addStreet(int tileIndex1, int tileIndex2) {
-		if (streets.getValue(tileIndex1, tileIndex2)==1)
-			return false;
+	static void addStreet(int tileIndex1, int tileIndex2) {
 		streets.setValue(tileIndex1, tileIndex2, 1);
-		return true;
 	}
 	
 	//-------------------------------- public getter -------------------------
