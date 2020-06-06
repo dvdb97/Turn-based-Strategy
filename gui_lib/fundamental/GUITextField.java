@@ -1,5 +1,6 @@
 package fundamental;
 
+import assets.meshes.geometry.Color;
 import rendering.shapes.implemented.GUIText;
 import utils.ColorPalette;
 
@@ -36,6 +37,42 @@ public class GUITextField extends GUIElement {
 	 */
 	public GUITextField(String text, String font, float widthPercent, float heightPercent, int fontSize) {
 		super(new GUIText(text, font, ColorPalette.BLACK, fontSize), widthPercent, heightPercent);
+		
+		textField = (GUIText)getShape();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a text field that can be used to display text in the GUI.
+	 * 
+	 * @param text The text to display.
+	 * @param font The font to render the text with.
+	 * @param color The color of the font
+	 * @param width The width of the TextField measured in pixel.
+	 * @param height The height of the TextField measured in pixel.
+	 * @param fontSize The color to render the text with.
+	 */
+	public GUITextField(String text, String font, Color color, int width, int height, int fontSize) {
+		super(new GUIText(text, font, color, fontSize), width, height);
+		
+		textField = (GUIText)getShape();
+	}
+	
+	
+	/**
+	 * 
+	 * Creates a text field that can be used to display text in the GUI.
+	 * 
+	 * @param text The text to display.
+	 * @param font The font to render the text with.
+	 * @param color The color of the font
+	 * @param width The width of the TextField in relation to its parent element.
+	 * @param height The height of the TextField in relation to its parent element.
+	 * @param fontSize The color to render the text with.
+	 */
+	public GUITextField(String text, String font, Color color, float widthPercent, float heightPercent, int fontSize) {
+		super(new GUIText(text, font, color, fontSize), widthPercent, heightPercent);
 		
 		textField = (GUIText)getShape();
 	}

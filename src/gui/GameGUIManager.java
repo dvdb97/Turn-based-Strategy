@@ -16,7 +16,7 @@ public class GameGUIManager {
 	public static void init() {
 		
 		tiw = new TileInfoWindow();
-		
+		new TurnGUI();
 	}
 	
 	public static void update() {
