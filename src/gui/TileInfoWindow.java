@@ -7,6 +7,7 @@ import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
 import world.estate.City;
+import world.estate.Estate;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUIImageBox;
@@ -24,6 +25,7 @@ import utils.ColorPalette;
 import java.util.ArrayList;
 import java.util.List;
 
+import assets.meshes.geometry.Color;
 import container.Tab;
 import container.TabMenu;
 
@@ -31,13 +33,10 @@ public class TileInfoWindow extends DefaultWindow {
 	
 	private Tile tile;
 	
-//	private TabMenu tabMenu;
-	
 	private GUITextField tileText;
 	
-	private GUIImageBox imageBox;
-	private GUIQuad waterTex;
-	private GUIQuad grassTex;
+	private Color waterColor;
+	private Color grassColor;
 	
 	int counter = 0;
 	int tileIndex1 = -1;
@@ -48,15 +47,8 @@ public class TileInfoWindow extends DefaultWindow {
 	public TileInfoWindow() {
 		super("Tile Information", 5, 100, 500, 800, FlexDirection.COLUMN);
 		
-		imageBox = new GUIImageBox("res/PH_Sea.png", 90f, 30f);
-		imageBox.setLocalXPosition(50f);
-		imageBox.setMargin(Direction.TOP, 10);
-		imageBox.setMargin(Direction.BOTTOM, 10);
-		addChild(imageBox);
-		
-		waterTex = new GUIQuad("res/PH_Sea.png");
-		grassTex = new GUIQuad("res/PH_Grassland.png");
-		
+		waterColor = ColorPalette.BLUE_1;
+		grassColor = ColorPalette.GREEN_1;
 		
 		TabMenu tabMenu = new TabMenu(90f, 60f, FlexDirection.COLUMN, ColorPalette.WHITE);
 		tabMenu.setLocalXPosition(50f);
@@ -200,7 +192,7 @@ public class TileInfoWindow extends DefaultWindow {
 		return tab;
 	}
 	
-	//************************ city tab **********************************
+	//************************ estate tab **********************************
 	private Tab initCityTab() {
 		
 		Tab tab = new Tab(ColorPalette.WHITE, FlexDirection.COLUMN);
@@ -221,15 +213,15 @@ public class TileInfoWindow extends DefaultWindow {
 			}
 		);
 		
-		// Button: show city info
+		// Button: show estate info
 		GUIButton button2 = new GUIButton(new GUIQuad(ColorPalette.GRAY), 30f, 20f);
-		button2.setLabel("Show City Info", "FreeMono", 20);
+		button2.setLabel("Show Estate Info", "FreeMono", 20);
 		
 		button2.setLocalXPosition(50f);
 		button2.addOnClickListener((e) -> {
-			City c = GameBoard.getCity(TileSelecter.getSelectedTileIndex());
-			if (c != null) {
-				GameGUIManager.showCityInfoWindow(c);
+			Estate estate = GameBoard.getEstate(TileSelecter.getSelectedTileIndex());
+			if (estate != null) {
+				GameGUIManager.showEstateInfoWindow(estate);
 			}
 		});
 		
@@ -253,9 +245,9 @@ public class TileInfoWindow extends DefaultWindow {
 		tileText.setText(TileInfoStringIssuer.getTileInfoString(tile));
 				
 		if (tile.isWater()) {
-			imageBox.setShape(waterTex);
+			;
 		} else {
-			imageBox.setShape(grassTex);
+			;
 		}
 	}
 	

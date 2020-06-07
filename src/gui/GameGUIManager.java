@@ -6,13 +6,14 @@ import interaction.TileSelecter;
 import world.GameBoard;
 import world.agents.Agent;
 import world.estate.City;
+import world.estate.Estate;
 
 public class GameGUIManager {
 	
 	private static GUIWindow window;
 	private static TileInfoWindow tiw;
 	private static AgentInfoWindow aiw;
-	private static CityInfoWindow ciw;
+	private static EstateInfoWindow eiw;
 	
 	
 	public static void init() {
@@ -31,11 +32,11 @@ public class GameGUIManager {
 			aiw.changeAgent(agent);	
 	}
 	
-	public static void showCityInfoWindow(City city) {
-		if (ciw == null)
-			ciw = new CityInfoWindow(city);
+	public static void showEstateInfoWindow(Estate estate) {
+		if (eiw == null)
+			eiw = new EstateInfoWindow(estate);
 		else
-			ciw.changeCity(city);	
+			eiw.changeEstate(estate);	
 	}
 	
 	
@@ -44,6 +45,6 @@ public class GameGUIManager {
 	}
 	
 	public static void deleteCityInfoWindow() {
-		ciw = null;
+		eiw = null;
 	}
 }

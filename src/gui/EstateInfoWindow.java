@@ -11,39 +11,21 @@ import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 import world.BuildingAuthority;
 import world.estate.City;
+import world.estate.Estate;
+import world.estate.Mine;
 
-public class CityInfoWindow extends DefaultWindow {
+public class EstateInfoWindow extends DefaultWindow {
+
+	private Estate estate;
 	
-	private City city;
 	private String cityInfoString;
 	private GUITextField text;
 	private GUIButton button1;
 	private GUIButton button2;
 	
 	//**************************** init *************************************
-	public CityInfoWindow(City city) {
-		super("City Information", 510, 410, 300, 300, FlexDirection.COLUMN);
-		
-		// INPUT-CONTAINER
-		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
-		button1 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
-		button1.setLabel("Build Building", "FreeMono", 20);
-		button1.setMargin(Direction.ALL, 5);
-		button1.setPadding(Direction.ALL, 5);
-		button1.addOnClickListener((e) -> {
-			BuildingAuthority.requestBuildingInCity(this.city);
-			refreshCityInfo();
-		});
-		button2 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
-		button2.setLabel("Build Mine", "FreeMono", 20);
-		button2.setMargin(Direction.ALL, 5);
-		button2.setPadding(Direction.ALL, 5);
-		button2.addOnClickListener((e) -> {
-			BuildingAuthority.requestMineOnTile(TileSelecter.getSelectedTileIndex(), this.city);
-			refreshCityInfo();
-		});
-		inputContainer.addChild(button1);
-		inputContainer.addChild(button2);
+	public EstateInfoWindow(Estate estate) {
+		super("Estate Information", 510, 410, 300, 300, FlexDirection.COLUMN);
 		
 		// OUTPUT-CONTAINER
 		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
@@ -52,27 +34,67 @@ public class CityInfoWindow extends DefaultWindow {
 		text.setPadding(Direction.ALL, 5);
 		
 		outputContainer.addChild(text);
+		addChild(outputContainer);
+		changeEstate(estate);
+		
+		if (estate instanceof City) {
+			initCityInfoWindow();
+		} else {
+			initMineInfoWindow();
+		}
+			
+	}
+
+	private void initCityInfoWindow() {
+		
+		// INPUT-CONTAINER
+		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
+		button1 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
+		button1.setLabel("Build Building", "FreeMono", 20);
+		button1.setMargin(Direction.ALL, 5);
+		button1.setPadding(Direction.ALL, 5);
+		button1.addOnClickListener((e) -> {
+			if (estate instanceof City) {
+				BuildingAuthority.requestBuildingInCity((City) estate);
+			}
+			refreshEstateInfo();
+		});
+		button2 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
+		button2.setLabel("Build Mine", "FreeMono", 20);
+		button2.setMargin(Direction.ALL, 5);
+		button2.setPadding(Direction.ALL, 5);
+		button2.addOnClickListener((e) -> {
+			if (estate instanceof City) {
+				BuildingAuthority.requestMineOnTile(TileSelecter.getSelectedTileIndex(), (City) estate);
+				refreshEstateInfo();
+			}
+		});
+		inputContainer.addChild(button1);
+		inputContainer.addChild(button2);
 		
 		addChild(inputContainer);
-		addChild(outputContainer);
-		changeCity(city);
+	}
+	
+
+	private void initMineInfoWindow() {
+		// TODO Auto-generated method stub
 		
 	}
 	
-	public void changeCity(City city) {
-		this.city = city;
+	public void changeEstate(Estate estate) {
+		this.estate = estate;
 		
-		if (city==null) {
+		if (estate==null) {
 			cityInfoString = "City not found.";
 		} else {
-			cityInfoString = city.getCityInfoString();
+			cityInfoString = estate.getInfoString();
 		}
 
 		text.setText(cityInfoString);
 	}
 	
-	private void refreshCityInfo() {
-		text.setText(city.getCityInfoString());
+	private void refreshEstateInfo() {
+		text.setText(estate.getInfoString());
 	}
 	
 	

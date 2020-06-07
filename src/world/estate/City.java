@@ -51,7 +51,8 @@ public class City extends Estate {
 		return spoi;
 	}
 	
-	public String getCityInfoString() {
+	@Override
+	public String getInfoString() {
 		return "Tile: "+GameBoard.getTile(this).getIndex()+"\nNumber of Buildings: "+buildings.size();
 	}
 	

@@ -6,4 +6,6 @@ public abstract class Estate {
 	//only one estate per tile
 	//estates are: e.g. cities, mines, etc
 	
+	public abstract String getInfoString();
+	
 }
