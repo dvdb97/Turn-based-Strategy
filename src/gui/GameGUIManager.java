@@ -31,12 +31,6 @@ public class GameGUIManager {
 			aiw.changeAgent(agent);	
 	}
 	
-	public static void hideAgentInfoWindow() {
-		aiw.close();
-		aiw = null;
-		System.out.println(aiw);
-	}
-	
 	public static void showCityInfoWindow(City city) {
 		if (ciw == null)
 			ciw = new CityInfoWindow(city);
@@ -44,9 +38,12 @@ public class GameGUIManager {
 			ciw.changeCity(city);	
 	}
 	
-	public static void hideCityInfoWindow() {
-		ciw.close();
+	
+	public static void deleteAgentInfoWindow() {
+		aiw = null;
+	}
+	
+	public static void deleteCityInfoWindow() {
 		ciw = null;
-		System.out.println(ciw);
 	}
 }

@@ -95,7 +95,7 @@ public class AgentAuthority {
 		GameBoard.deleteAgent(agent);
 		meepleModels.remove(agentModels.get(agent));
 		agentModels.remove(agent);
-		GameGUIManager.hideAgentInfoWindow();
+		GameGUIManager.deleteAgentInfoWindow();
 		System.out.println("agent deleted");
 		return true;
 		

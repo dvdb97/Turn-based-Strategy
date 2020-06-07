@@ -75,4 +75,11 @@ public class CityInfoWindow extends DefaultWindow {
 		text.setText(city.getCityInfoString());
 	}
 	
+	
+	@Override
+	public void close() {
+		GameGUIManager.deleteCityInfoWindow();
+		super.close();
+	}
+	
 }

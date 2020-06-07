@@ -1,6 +1,8 @@
 package gui_core;
 
 import java.util.HashSet;
+import java.util.Iterator;
+
 import fundamental.GUIWindow;
 import input.Mouse;
 import interaction.Window;
@@ -51,9 +53,10 @@ public class GUIManager {
 	public static boolean processInput() {
 		Mouse.update();
 		
-		for (GUIWindow window : windows) {
+		for (Iterator<GUIWindow> i = windows.iterator(); i.hasNext();) {
+			GUIWindow window = i.next();
 			if (window.isObsolete()) {
-				windows.remove(window);
+				i.remove();
 				window.delete();
 			}
 		}

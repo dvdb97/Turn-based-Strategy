@@ -52,6 +52,7 @@ public class AgentInfoWindow extends DefaultWindow {
 		button2.setPadding(Direction.ALL, 5);
 		button2.addOnClickListener((e) -> {
 			AgentAuthority.deleteAgent(this.agent);
+			this.close();
 			}
 		);
 		inputContainer.addChild(button1);
@@ -88,4 +89,11 @@ public class AgentInfoWindow extends DefaultWindow {
 	private void refreshAgentInfo() {
 		text.setText(agent.getAgentInfoString());
 	}
+	
+	@Override
+	public void close() {
+		GameGUIManager.deleteAgentInfoWindow();
+		super.close();
+	}
+	
 }
