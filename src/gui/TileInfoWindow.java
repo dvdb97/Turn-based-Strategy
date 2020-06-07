@@ -6,7 +6,7 @@ import world.GameBoard;
 import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
-import world.city.City;
+import world.estate.City;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUIImageBox;

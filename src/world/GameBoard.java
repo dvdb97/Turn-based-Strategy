@@ -1,7 +1,6 @@
 package world;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +10,8 @@ import utils.ListUtil;
 import utils.SymmetricSparseMatrix;
 import utils.TileSurrounding;
 import world.agents.Agent;
-import world.city.City;
+import world.estate.City;
+import world.estate.Estate;
 
 //this class is sort of a data structure
 public class GameBoard {
@@ -19,7 +19,7 @@ public class GameBoard {
 	//-------------------------------- fields ---------------------------------
 	private static int length, width;
 	private static Tile[] tiles;
-	private static HashMap<Tile, City> cities;
+	private static HashMap<Tile, Estate> estates;
 	private static HashMap<Agent, Tile> agents;
 	private static SymmetricSparseMatrix streets;
 	
@@ -45,7 +45,7 @@ public class GameBoard {
 		GameBoard.tiles  = tiles;
 		GameBoard.graph  = new GameBoardGraph();
 
-		cities = new HashMap<>();
+		estates = new HashMap<>();
 		agents = new HashMap<>();
 		streets = new SymmetricSparseMatrix(tiles.length);
 		
@@ -53,15 +53,15 @@ public class GameBoard {
 	}
 	
 	//-------------------------------- cities --------------------------------
-	static boolean tileAvailableForCity(Tile tile) {
+	static boolean tileAvailableForEstate(Tile tile) {
 		//TODO: maybe use exceptions here
-		if (cities.containsKey(tile)) {
-			System.out.println("can't place two cities on one tile");
+		if (estates.containsKey(tile)) {
+			System.out.println("can't place two estates on one tile");
 			return false;
 		}
 		
 		if (tile.isWater()) {
-			System.out.println("can't place a city on water");
+			System.out.println("can't place an estate on water");
 			System.out.println(tile.getAvgHeight());
 			return false;
 		}
@@ -72,8 +72,8 @@ public class GameBoard {
 	/**
 	 * BuildingAuthority is the only authority that has the authority to use this method!
 	 */
-	static void addCity(Tile tile, City city) {
-		cities.put(tile, city);
+	static void addEstate(Tile tile, Estate estate) {
+		estates.put(tile, estate);
 	}
 
 	//-------------------------------- agents --------------------------------
@@ -115,10 +115,10 @@ public class GameBoard {
 		return agents.get(agent);
 	}
 	
-	public static Tile getTile(City city) {
-		for (Iterator<Tile> i = cities.keySet().iterator(); i.hasNext(); ) {
+	public static Tile getTile(Estate estate) {
+		for (Iterator<Tile> i = estates.keySet().iterator(); i.hasNext(); ) {
 			Tile t = i.next();
-			if (cities.get(t) == city)
+			if (estates.get(t) == estate)
 				return t;
 		}
 		return null;
@@ -139,11 +139,24 @@ public class GameBoard {
 	}
 	
 	/**
+	 * @param tileIndex position of the requested estate's tile in "Tile[] tiles"
+	 * @return the requested estate or null if there is no estate
+	 */
+	public static Estate getEstate(int tileIndex) {
+		return estates.get(tiles[tileIndex]);
+	}
+
+	/**
 	 * @param tileIndex position of the requested city's tile in "Tile[] tiles"
-	 * @return the requested city or null if there is no city
+	 * @return the requested city or null if there is no estate or the estate is not a city
 	 */
 	public static City getCity(int tileIndex) {
-		return cities.get(tiles[tileIndex]);
+		Estate estate = getEstate(tileIndex);
+		if (estate instanceof City) {
+			return (City) estate;
+		} else {
+			return null;
+		}
 	}
 		
 	/**

@@ -1,4 +1,4 @@
-package world.city;
+package world.estate;
 
 import utils.Percentage;
 

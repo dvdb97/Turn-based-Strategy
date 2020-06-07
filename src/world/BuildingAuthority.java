@@ -10,12 +10,14 @@ import gameplay.TaskBarManager;
 import math.MathUtils;
 import models.gameboard.GameBoardModel;
 import models.meeples.CityModel;
+import models.meeples.MineModel;
 import models.meeples.StreetModel;
 import models.seeds.SuperGrid;
 import utils.TileSurrounding;
 import world.buildings.Building;
-import world.city.City;
-import world.city.Population;
+import world.estate.City;
+import world.estate.Mine;
+import world.estate.Population;
 
 public class BuildingAuthority {
 	
@@ -23,10 +25,12 @@ public class BuildingAuthority {
 	private static List<Mesh3D> meepleModels;
 	private static SuperGrid superGrid;
 	
-	//TODO: dont hard code
+	//TODO: don't hard code
 	private static final int CITY_COST = 25;
+	private static final int MINE_COST = 15;
 	private static final int BUILDING_COST = 15;
 	private static final int STREET_COST = 5;
+	private static final int MAX_NUM_BUILDINGS_PER_CITY = 5;
 	
 	
 	public static void init(GameBoardModel gameBoardModel, List<Mesh3D> meepleModels, SuperGrid superGrid) {
@@ -36,10 +40,10 @@ public class BuildingAuthority {
 	}
 	
 	
-	public static boolean requestCityOnTile(int tileIndex) {	
+	public static boolean requestCityOnTile(int tileIndex) {
 		Tile tile = GameBoard.getTile(tileIndex);
 		
-		if (!GameBoard.tileAvailableForCity(tile))
+		if (!GameBoard.tileAvailableForEstate(tile))
 			return false;
 				
 		if (Tribe.getCash() < CITY_COST)
@@ -47,7 +51,7 @@ public class BuildingAuthority {
 		
 		//build city
 		City city = new City(new Population());
-		GameBoard.addCity(tile, city);
+		GameBoard.addEstate(tile, city);
 		
 		Tribe.increaseCash(-CITY_COST);
 		
@@ -59,17 +63,45 @@ public class BuildingAuthority {
 		return true;
 	}
 	
+	public static boolean requestMineOnTile(int tileIndex, City motherCity) {
+		Tile tile = GameBoard.getTile(tileIndex);
+		
+		if (!GameBoard.tileAvailableForEstate(tile))
+			return false;
+				
+		if (Tribe.getCash() < MINE_COST)
+			return false;
+		
+		if (WorldManager.getRelativeDistance(GameBoard.getTile(motherCity).getIndex(), tileIndex) > 3)
+			return false;
+		
+		//build mine
+		Mine mine = new Mine();
+		GameBoard.addEstate(tile, mine);
+		
+		Tribe.increaseCash(-MINE_COST);
+		Tribe.increaseGain(mine.getGain());
+		
+		MineModel mineModel = new MineModel(gameBoardModel.transformable);
+		mineModel.transformable.setScaling(0.25f, 0.25f, 0.25f);
+		mineModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
+		mineModel.transformable.setTranslation(superGrid.getHexCenter(tileIndex));
+		meepleModels.add(mineModel);
+		return true;
+		
+	}
+	
 	
 	public static boolean requestBuildingInCity(City city) {
 		
-		if (city.getBuilding() != null)
+		if (city.getBuildings().size() >= MAX_NUM_BUILDINGS_PER_CITY)
 			return false;
 		
 		if (Tribe.getCash() < BUILDING_COST)
 			return false;
 		
 		Building building = new Building(1);
-		city.setBuilding(building);
+		city.addBuilding(building);
 		Tribe.increaseCash(-BUILDING_COST);
 		Tribe.increaseGain(building.getGain());
 		

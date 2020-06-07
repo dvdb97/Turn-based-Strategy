@@ -3,7 +3,7 @@ package world.agents;
 import java.util.Random;
 
 import assets.meshes.geometry.Color;
-import world.city.City;
+import world.estate.City;
 
 public class MilitaryUnit extends Agent {
 	

@@ -5,7 +5,7 @@ import implementations.ColorPickWindow;
 import interaction.TileSelecter;
 import world.GameBoard;
 import world.agents.Agent;
-import world.city.City;
+import world.estate.City;
 
 public class GameGUIManager {
 	

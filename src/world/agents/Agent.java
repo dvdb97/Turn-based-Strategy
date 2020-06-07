@@ -1,7 +1,7 @@
 package world.agents;
 
 import assets.meshes.geometry.Color;
-import world.city.City;
+import world.estate.City;
 
 public abstract class Agent {
 	//TODO: basic (and maybe abstract) agent class

@@ -1,18 +1,20 @@
-package world.city;
+package world.estate;
+
+import java.util.ArrayList;
 
 import utils.TileSurrounding;
 import world.GameBoard;
 import world.Tile;
 import world.buildings.Building;
 
-public class City {
+public class City extends Estate {
 	
 	private SphereOfInfluence spoi;		//TODO: spoi nicht bei city abspeichern, sondern bei bedarf sowas wie SPOI-Klasse.getSPOI(tile, radius)
 	private int spoiRadius;
 	
 	private Population population;
 	
-	private Building building;
+	private ArrayList<Building> buildings;
 	
 	//TODO: to implement
 	//all trading related stuff
@@ -24,19 +26,19 @@ public class City {
 		
 		this.population = population;
 		this.spoiRadius = 1;		//TODO: don't hard code
-		this.building = null;
+		this.buildings = new ArrayList<>();
 	}
 	
 	//************************************************************************
 	
-	public void setBuilding(Building building) {
-		this.building = building;
+	public void addBuilding(Building building) {
+		buildings.add(building);
 	}
 	
 	//********************     get     ***************************************
 	
-	public Building getBuilding() {
-		return building;
+	public ArrayList<Building> getBuildings() {
+		return buildings;
 	}
 	
 	private Tile[] getSPOI() {
@@ -50,11 +52,7 @@ public class City {
 	}
 	
 	public String getCityInfoString() {
-		if (building == null) {
-			return "Tile: "+GameBoard.getTile(this).getIndex();
-		} else {
-			return "Tile: "+GameBoard.getTile(this).getIndex()+"\nBuildings Gain: "+building.getGain();
-		}
+		return "Tile: "+GameBoard.getTile(this).getIndex()+"\nNumber of Buildings: "+buildings.size();
 	}
 	
 }

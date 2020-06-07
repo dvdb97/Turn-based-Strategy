@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import utils.Percentage;
 import world.buildings.Building;
-import world.city.City;
+import world.estate.City;
 
 public class Tile {
 	

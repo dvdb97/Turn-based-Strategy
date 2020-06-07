@@ -4,12 +4,13 @@ import fundamental.DefaultWindow;
 import fundamental.GUIButton;
 import fundamental.GUITextField;
 import fundamental.InvisibleContainer;
+import interaction.TileSelecter;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 import world.BuildingAuthority;
-import world.city.City;
+import world.estate.City;
 
 public class CityInfoWindow extends DefaultWindow {
 	
@@ -17,6 +18,7 @@ public class CityInfoWindow extends DefaultWindow {
 	private String cityInfoString;
 	private GUITextField text;
 	private GUIButton button1;
+	private GUIButton button2;
 	
 	//**************************** init *************************************
 	public CityInfoWindow(City city) {
@@ -32,7 +34,16 @@ public class CityInfoWindow extends DefaultWindow {
 			BuildingAuthority.requestBuildingInCity(this.city);
 			refreshCityInfo();
 		});
+		button2 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
+		button2.setLabel("Build Mine", "FreeMono", 20);
+		button2.setMargin(Direction.ALL, 5);
+		button2.setPadding(Direction.ALL, 5);
+		button2.addOnClickListener((e) -> {
+			BuildingAuthority.requestMineOnTile(TileSelecter.getSelectedTileIndex(), this.city);
+			refreshCityInfo();
+		});
 		inputContainer.addChild(button1);
+		inputContainer.addChild(button2);
 		
 		// OUTPUT-CONTAINER
 		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);

@@ -15,7 +15,7 @@ import models.seeds.SuperGrid;
 import utils.ColorPalette;
 import world.agents.Agent;
 import world.agents.MilitaryUnit;
-import world.city.City;
+import world.estate.City;
 
 public class AgentAuthority {
 	
