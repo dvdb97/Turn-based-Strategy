@@ -34,17 +34,17 @@ public class AgentAuthority {
 		agentModels = new HashMap<>();
 	}
 	
-	public static boolean requestAgentInCity(City city) {
+	public static Agent requestAgentInCity(City city) {
 		//TODO: in future buildings spawn agents, not cities
 		
 		if (city==null)
-			return false;
+			return null;
 		
 		//if (city is not allowed to spawn agent)
 			//return false;
 		
 		if (Tribe.getCash() < AGENT_COST)
-			return false;
+			return null;
 		
 		//spawn agent
 		Color agentColor = ColorPalette.randomColor();
@@ -59,7 +59,7 @@ public class AgentAuthority {
 		agentModel.transformable.setTranslation(superGrid.getHexCenter(GameBoard.getTile(city).getIndex()));
 		meepleModels.add(agentModel);
 		agentModels.put(agent, agentModel);
-		return true;
+		return agent;
 		
 	}
 	

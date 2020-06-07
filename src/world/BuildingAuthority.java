@@ -40,14 +40,14 @@ public class BuildingAuthority {
 	}
 	
 	
-	public static boolean requestCityOnTile(int tileIndex) {
+	public static City requestCityOnTile(int tileIndex) {
 		Tile tile = GameBoard.getTile(tileIndex);
 		
 		if (!GameBoard.tileAvailableForEstate(tile))
-			return false;
+			return null;
 				
 		if (Tribe.getCash() < CITY_COST)
-			return false;
+			return null;
 		
 		//build city
 		City city = new City(new Population());
@@ -60,7 +60,7 @@ public class BuildingAuthority {
 		cityModel.transformable.setRotation(90f * Transformable._1_DEGREE, 0f, 0f);
 		cityModel.transformable.setTranslation(superGrid.getHexCenter(tileIndex));
 		meepleModels.add(cityModel);
-		return true;
+		return city;
 	}
 	
 	public static boolean requestMineOnTile(int tileIndex, City motherCity) {

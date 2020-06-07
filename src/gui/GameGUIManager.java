@@ -26,6 +26,9 @@ public class GameGUIManager {
 	}
 	
 	public static void showAgentInfoWindow(Agent agent) {
+		if (agent == null)
+			return;
+		
 		if (aiw == null)
 			aiw = new AgentInfoWindow(agent);
 		else
@@ -33,6 +36,9 @@ public class GameGUIManager {
 	}
 	
 	public static void showEstateInfoWindow(Estate estate) {
+		if (estate == null)
+			return;
+		
 		if (eiw == null)
 			eiw = new EstateInfoWindow(estate);
 		else

@@ -52,8 +52,8 @@ public class TabMenu extends GUIContainer<GUIElement> {
 	
 	private void init(Color tabColor) {
 		if (getFlexDirection() == FlexDirection.COLUMN) {
-			buttons = new OptionSet<ToggleButton>(100f, 10f, FlexDirection.ROW);
-			tabContainer = new InvisibleContainer<Tab>(100f, 90f, FlexDirection.ROW);
+			buttons = new OptionSet<ToggleButton>(100f, 20f, FlexDirection.ROW);
+			tabContainer = new InvisibleContainer<Tab>(100f, 80f, FlexDirection.ROW);
 		} else {
 			buttons = new OptionSet<ToggleButton>(10f, 100f, FlexDirection.COLUMN);
 			tabContainer = new InvisibleContainer<Tab>(90f, 100f, FlexDirection.ROW);

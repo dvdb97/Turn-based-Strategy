@@ -28,11 +28,18 @@ public class AgentInfoWindow extends DefaultWindow {
 	
 	//**************************** init *************************************
 	public AgentInfoWindow(Agent agent) {
-		super("Agent Information", 510, 100, 300, 300, FlexDirection.COLUMN);
+		super("Agent Information", 5, 700, 500, 300, FlexDirection.COLUMN);
 		
+		// OUTPUT-CONTAINER
+		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
+		text = new GUITextField("Dummy", "FreeMono", 90f, 90f, 20);
+		text.setMargin(Direction.ALL, 5);
+		text.setPadding(Direction.ALL, 5);
+		outputContainer.addChild(text);
+				
 		// INPUT-CONTAINER
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
-		button1 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
+		button1 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 90f);
 		button1.setLabel("Move Agent", "FreeMono", 20);
 		button1.setMargin(Direction.ALL, 5);
 		button1.setPadding(Direction.ALL, 5);
@@ -46,7 +53,7 @@ public class AgentInfoWindow extends DefaultWindow {
 				refreshAgentInfo();
 			}
 		});
-		button2 = new GUIButton(new GUIQuad(agent.getColor()), 40f, 90f);
+		button2 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 90f);
 		button2.setLabel("Remove Agent", "FreeMono", 20);
 		button2.setMargin(Direction.ALL, 5);
 		button2.setPadding(Direction.ALL, 5);
@@ -58,18 +65,10 @@ public class AgentInfoWindow extends DefaultWindow {
 		inputContainer.addChild(button1);
 		inputContainer.addChild(button2);
 		
-		// OUTPUT-CONTAINER
-		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
-		text = new GUITextField("Dummy", "FreeMono", 90f, 90f, 20);
-		text.setMargin(Direction.ALL, 5);
-		text.setPadding(Direction.ALL, 5);
-		
-		outputContainer.addChild(text);
-		
-		addChild(inputContainer);
+
 		addChild(outputContainer);
+		addChild(inputContainer);
 		changeAgent(agent);
-		
 	}
 	
 	public void changeAgent(Agent agent) {

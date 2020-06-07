@@ -9,10 +9,10 @@ import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
+import world.AgentAuthority;
 import world.BuildingAuthority;
 import world.estate.City;
 import world.estate.Estate;
-import world.estate.Mine;
 
 public class EstateInfoWindow extends DefaultWindow {
 
@@ -22,10 +22,11 @@ public class EstateInfoWindow extends DefaultWindow {
 	private GUITextField text;
 	private GUIButton button1;
 	private GUIButton button2;
+	private GUIButton button3;
 	
 	//**************************** init *************************************
 	public EstateInfoWindow(Estate estate) {
-		super("Estate Information", 510, 410, 300, 300, FlexDirection.COLUMN);
+		super("Estate Information", 5, 395, 500, 300, FlexDirection.COLUMN);
 		
 		// OUTPUT-CONTAINER
 		InvisibleContainer<GUITextField> outputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
@@ -49,7 +50,7 @@ public class EstateInfoWindow extends DefaultWindow {
 		
 		// INPUT-CONTAINER
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
-		button1 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
+		button1 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 30f, 90f);
 		button1.setLabel("Build Building", "FreeMono", 20);
 		button1.setMargin(Direction.ALL, 5);
 		button1.setPadding(Direction.ALL, 5);
@@ -59,7 +60,7 @@ public class EstateInfoWindow extends DefaultWindow {
 			}
 			refreshEstateInfo();
 		});
-		button2 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 40f, 90f);
+		button2 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 30f, 90f);
 		button2.setLabel("Build Mine", "FreeMono", 20);
 		button2.setMargin(Direction.ALL, 5);
 		button2.setPadding(Direction.ALL, 5);
@@ -69,8 +70,20 @@ public class EstateInfoWindow extends DefaultWindow {
 				refreshEstateInfo();
 			}
 		});
+		button3 = new GUIButton(new GUIQuad(ColorPalette.GIANTS_ORANGE), 30f, 90f);
+		button3.setLabel("Spawn Agent", "FreeMono", 20);
+		button3.setMargin(Direction.ALL, 5);
+		button3.setPadding(Direction.ALL, 5);
+		button3.addOnClickListener((e) -> {
+			if (estate instanceof City) {
+				GameGUIManager.showAgentInfoWindow(AgentAuthority.requestAgentInCity((City) estate));
+			}
+		});
+		
+		
 		inputContainer.addChild(button1);
 		inputContainer.addChild(button2);
+		inputContainer.addChild(button3);
 		
 		addChild(inputContainer);
 	}
