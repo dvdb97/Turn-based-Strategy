@@ -1,5 +1,6 @@
 package world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import models.gameboard.GameBoardModel;
 import models.meeples.AgentModel;
 import models.meeples.StreetModel;
 import models.seeds.SuperGrid;
+import pathfinding.AStarSearch;
 import utils.ColorPalette;
 import world.agents.Agent;
 import world.agents.MilitaryUnit;
@@ -63,27 +65,33 @@ public class AgentAuthority {
 		
 	}
 	
-	public static boolean requestToMoveAgent(Agent agent, int tileIndex) {
+	public static List<Integer> requestToMoveAgent(Agent agent, int destinationTileIndex) {
 
 		if (agent==null)
-			return false;
+			return null;
 		
-		if (GameBoard.getTile(tileIndex).isWater()) {
+		if (GameBoard.getTile(destinationTileIndex).isWater()) {
 			System.out.println("agent can't be on water");
-			return false;
+			return null;
 		}
 		
-		if (GameBoard.getAgents(tileIndex).size() > 0) {
-			return false;
+		int startingTileIndex = GameBoard.getTile(agent).getIndex();
+		
+//		if (possibleToGetFromOneTileToTheOther(startingTileIndex, destinationTileIndex)) {
+//			return false;	//implies constraint, that "agent can't be on water"(few lines above)
+//		}
+		
+		List<Integer> path = AStarSearch.getPath(GameBoard.getGraph(), startingTileIndex, destinationTileIndex);
+		float costs = AStarSearch.getPathCosts(GameBoard.getGraph(), path);
+		
+		if (agent.getTravelBudget() < costs) {
+			return null;
 		}
 		
-		if (agent.budget <= 0) {
-			return false;
-		}
-		
-		GameBoard.moveAgent(agent, tileIndex);
-		agentModels.get(agent).transformable.setTranslation(superGrid.getHexCenter(tileIndex));
-		return true;
+		GameBoard.moveAgent(agent, destinationTileIndex);
+		agent.increaseTravelBudget(-costs);
+		agentModels.get(agent).transformable.setTranslation(superGrid.getHexCenter(destinationTileIndex));
+		return path;
 		
 	}
 	

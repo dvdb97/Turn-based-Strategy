@@ -21,7 +21,7 @@ public class MilitaryUnit extends Agent {
 	}
 	
 	public String getAgentInfoString() {
-		return "Strengh:    " + strength + "\nEndurance:  " + endurance + "\nExperience: " + experience + "\nBudget:     " + budget;
+		return "Strengh:    " + strength + "\nEndurance:  " + endurance + "\nExperience: " + experience + "\nBudget:     " + getTravelBudget();
 	}
 	
 }

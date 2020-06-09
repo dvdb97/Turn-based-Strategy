@@ -340,4 +340,13 @@ public class AStarSearch {
 		return n.distance;
 	}
 	
+	//TODO: test!
+	public static <N> float getPathCosts(IGraph<N> graph, List<N> path) {
+		float costs = 0;
+		for (int i=0; i<path.size()-1; i++) {
+			costs += graph.getCosts(path.get(i), path.get(i+1));
+		}
+		return costs;
+	}
+	
 }

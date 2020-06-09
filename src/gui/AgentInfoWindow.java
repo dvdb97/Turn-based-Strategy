@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fundamental.DefaultWindow;
@@ -10,11 +9,8 @@ import fundamental.InvisibleContainer;
 import interaction.TileSelecter;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
-import pathfinding.AStarSearch;
 import rendering.shapes.implemented.GUIQuad;
 import world.AgentAuthority;
-import world.GameBoard;
-import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
 
@@ -44,13 +40,10 @@ public class AgentInfoWindow extends DefaultWindow {
 		button1.setMargin(Direction.ALL, 5);
 		button1.setPadding(Direction.ALL, 5);
 		button1.addOnClickListener((e) -> {
-			Tile previousTile = GameBoard.getTile(this.agent);
-			if(AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex())) {
-				ArrayList<Integer> travelPathIndices = new ArrayList<>();
-				agent.budget -= AStarSearch.getPathAndCosts(GameBoard.getGraph(), previousTile.getIndex(), GameBoard.getTile(this.agent).getIndex(), travelPathIndices);
-				WorldManager.setPath(travelPathIndices);
+			List<Integer> path = AgentAuthority.requestToMoveAgent(this.agent, TileSelecter.getSelectedTileIndex());
+			if( path != null) {
+				WorldManager.setPath(path);
 				WorldManager.refreshMMColor();
-				refreshAgentInfo();
 			}
 		});
 		button2 = new GUIButton(new GUIQuad(agent.getColor()), 30f, 90f);
@@ -71,18 +64,20 @@ public class AgentInfoWindow extends DefaultWindow {
 		changeAgent(agent);
 	}
 	
-	public void changeAgent(Agent agent) {
-		this.agent = agent;
+	public void changeAgent(Agent newAgent) {
 		
-		if (agent==null) {
-			agentInfoString = "Agent not found.";
-		} else {
-			agentInfoString = agent.getAgentInfoString();
-		}
-
+		if (newAgent==null)
+			return;
+		
+		if (this.agent != null) {this.agent.setCallbackFunction(null);}
+		newAgent.setCallbackFunction((a) -> refreshAgentInfo());
+		
+		agentInfoString = newAgent.getAgentInfoString();
 		text.setText(agentInfoString);
-		button1.setShape(new GUIQuad(agent.getColor()));
-		button2.setShape(new GUIQuad(agent.getColor()));
+		button1.setShape(new GUIQuad(newAgent.getColor()));
+		button2.setShape(new GUIQuad(newAgent.getColor()));
+		
+		this.agent = newAgent;		
 	}
 	
 	private void refreshAgentInfo() {

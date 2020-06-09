@@ -2,6 +2,7 @@ package gameplay;
 
 import gui.TaskBar;
 import implementations.GUINumberField;
+import world.GameBoard;
 
 public class TaskBarManager {
 	
@@ -20,6 +21,7 @@ public class TaskBarManager {
 	public static void startNextTurn() {
 		turnCountText.increaseNumber(1);
 		Tribe.increaseCash(Tribe.getGain());
+		GameBoard.startNextTurn();
 	}
 	
 	static void setCashText(int cash) {

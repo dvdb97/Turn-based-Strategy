@@ -109,6 +109,13 @@ public class GameBoard {
 		streets.setValue(tileIndex1, tileIndex2, 1);
 	}
 	
+	//------------------------------- turns ----------------------------------
+	
+	public static void startNextTurn() {
+		agents.forEach((a,t) -> a.increaseTravelBudget(20f));
+	}
+	
+	
 	//-------------------------------- public getter -------------------------
 	
 	public static Tile getTile(Agent agent) {
