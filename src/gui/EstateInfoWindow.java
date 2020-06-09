@@ -24,6 +24,9 @@ public class EstateInfoWindow extends DefaultWindow {
 	private GUIButton button2;
 	private GUIButton button3;
 	
+	private InvisibleContainer<GUIButton> cityContainer;
+	private InvisibleContainer<GUIButton> mineContainer;
+	
 	//**************************** init *************************************
 	public EstateInfoWindow(Estate estate) {
 		super("Estate Information", 5, 395, 500, 300, FlexDirection.COLUMN);
@@ -36,17 +39,20 @@ public class EstateInfoWindow extends DefaultWindow {
 		
 		outputContainer.addChild(text);
 		addChild(outputContainer);
-		changeEstate(estate);
+				
+		cityContainer = initCityInfoWindow();
+		mineContainer = initMineInfoWindow();
 		
 		if (estate instanceof City) {
-			initCityInfoWindow();
+			addChild(cityContainer);
 		} else {
-			initMineInfoWindow();
+			addChild(mineContainer);
 		}
-			
+		
+		changeEstate(estate);
 	}
 
-	private void initCityInfoWindow() {
+	private InvisibleContainer<GUIButton> initCityInfoWindow() {
 		
 		// INPUT-CONTAINER
 		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
@@ -85,25 +91,44 @@ public class EstateInfoWindow extends DefaultWindow {
 		inputContainer.addChild(button2);
 		inputContainer.addChild(button3);
 		
-		addChild(inputContainer);
+		return inputContainer;
 	}
 	
 
-	private void initMineInfoWindow() {
-		// TODO Auto-generated method stub
-		
+	private InvisibleContainer<GUIButton> initMineInfoWindow() {
+		InvisibleContainer<GUIButton> inputContainer = new InvisibleContainer<>(100f, 50f, FlexDirection.ROW);
+		return inputContainer;
 	}
 	
-	public void changeEstate(Estate estate) {
-		this.estate = estate;
+	public void changeEstate(Estate newEstate) {
 		
-		if (estate==null) {
-			cityInfoString = "City not found.";
-		} else {
-			cityInfoString = estate.getInfoString();
+		if (newEstate==null)
+			return;
+		
+		newEstate.setCallbackFunction((e) -> refreshEstateInfo());
+		if (this.estate != null) {
+			this.estate.setCallbackFunction(null);
+			switchLayout(newEstate);
 		}
-
-		text.setText(cityInfoString);
+		
+		this.estate = newEstate;
+		refreshEstateInfo();
+	}
+	
+	//**************************** refresh ***********************************
+	
+	private void switchLayout(Estate newEstate) {
+		
+		if ((newEstate.getClass() == this.estate.getClass()))
+			return;
+		
+		if (newEstate instanceof City) {
+			removeChild(mineContainer);
+			addChild(cityContainer);
+		} else {
+			removeChild(cityContainer);
+			addChild(mineContainer);
+		}
 	}
 	
 	private void refreshEstateInfo() {

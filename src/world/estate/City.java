@@ -33,6 +33,7 @@ public class City extends Estate {
 	
 	public void addBuilding(Building building) {
 		buildings.add(building);
+		func.accept(this);
 	}
 	
 	//********************     get     ***************************************
@@ -55,5 +56,5 @@ public class City extends Estate {
 	public String getInfoString() {
 		return "Tile: "+GameBoard.getTile(this).getIndex()+"\nNumber of Buildings: "+buildings.size();
 	}
-	
+		
 }

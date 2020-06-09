@@ -72,12 +72,11 @@ public class AgentInfoWindow extends DefaultWindow {
 		if (this.agent != null) {this.agent.setCallbackFunction(null);}
 		newAgent.setCallbackFunction((a) -> refreshAgentInfo());
 		
-		agentInfoString = newAgent.getAgentInfoString();
-		text.setText(agentInfoString);
 		button1.setShape(new GUIQuad(newAgent.getColor()));
 		button2.setShape(new GUIQuad(newAgent.getColor()));
 		
-		this.agent = newAgent;		
+		this.agent = newAgent;
+		text.setText(newAgent.getAgentInfoString());
 	}
 	
 	private void refreshAgentInfo() {
