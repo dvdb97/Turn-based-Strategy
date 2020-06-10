@@ -232,7 +232,7 @@ class GameBoardGraph extends SymmetricSparseMatrix implements IGraph<Integer> {
 	}
 	
 	@Override
-	public float getCosts(Integer start, Integer end) {
+	public float getCosts(Integer start, Integer end) {		
 		return getValue(start, end)/10000f;
 	}
 	
