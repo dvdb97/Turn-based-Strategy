@@ -40,12 +40,14 @@ public class UnionFind {
 		i = find(i);
 		j = find(j);
 		
-		if (sz[i] < sz[j]) {
-			id[i] = j;
-			sz[j] += sz[i]+1;
-		} else {
-			id[j] = i;
-			sz[i] += sz[j]+1;
+		if (i != j) {
+			if (sz[i] < sz[j]) {
+				id[i] = j;
+				sz[j] += sz[i]+1;
+			} else {
+				id[j] = i;
+				sz[i] += sz[j]+1;
+			}
 		}
 	}
 	
@@ -56,7 +58,7 @@ public class UnionFind {
 	 * @param i The node to find the root node for.
 	 * @return Returns the id of the root node.
 	 */
-	public int find(int i) {
+	private int find(int i) {
 		while (id[i] != i) {
 			id[i] = id[id[i]];
 			i = id[i];
