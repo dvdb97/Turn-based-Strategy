@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeSet;
 
 import datastructures.Tuple;
 
@@ -63,47 +64,34 @@ public class AStarSearch {
 	 * @param end The end node for our path.
 	 * @return Returns the last Step of our path. It can be used to extract the path costs or the nodes on it.
 	 */
-	private static <N> Node<N> runAStarSearch(IGraph<N> graph, N start, N end) {
+	private static <N> Node<N> runAStarSearch(IGraph<N> graph, N start, N end) {		
 		//The priority queue that sorts the nodes by total distance.
 		PriorityQueue<Node<N>> priorityQueue = new PriorityQueue<Node<N>>();
 		
-		//A map to keep track of all nodes that have been visited so far and their references.
-		HashMap<N, Node<N>> visited = new HashMap<N, Node<N>>();
-		
-		//The first node.
-		Node<N> startNode = new Node<N>(start, 0, 0, 0, null);
+		//A map to keep track of all nodes that have been visited so far.
+		TreeSet<N> visited = new TreeSet<N>();
 		
 		//The step we are currently working with.
-		Node<N> current = startNode;
+		Node<N> current = new Node<N>(start, 0, 0, 0, null);
 		
-		while (!current.value.equals(end)) {			
-			//Mark the node as visited.
-			visited.put(current.value, current);
-			
-			//Look up all successors to the current node.
-			List<N> successors = graph.getSuccessors(current.value);
-			
-			for (N successor : successors) {
-				//Compute the total path costs for our next step.
-				float distance = graph.getCosts(current.value, successor) + current.distance;
-				//Compute the estimated remaining path costs to the end node.
-				float heuristic = graph.getHeuristic(successor, end);
-				//Compute the estimated total distance from the start node to the end using this path.
-				float total = distance + heuristic;
+		while (!current.value.equals(end)) {
+			if (!visited.contains(current.value)) {
+				//Mark the node as visited.
+				visited.add(current.value);
 				
-				//If the successor has already been visited
-				if (visited.containsKey(successor)) {
-					Node<N> visitedNode = visited.get(successor);
+				//Look up all successors to the current node.
+				List<N> successors = graph.getSuccessors(current.value);
+				
+				for (N successor : successors) {				
+				
+					//Compute the total path costs for our next step.
+					float distance = graph.getCosts(current.value, successor) + current.distance;
+					//Compute the estimated remaining path costs to the end node.
+					float heuristic = graph.getHeuristic(successor, end);
+					//Compute the estimated total distance from the start node to the end using this path.
+					float total = distance + heuristic;
 					
-					//If the new path to the visited node is shorter, override its properties with the new ones.
-					if (total < visitedNode.total) {
-						visitedNode.distance = distance;
-						visitedNode.heuristic = heuristic;
-						visitedNode.total = total;
-						visitedNode.parent = current;
-					}
-				} else {
-					priorityQueue.add(new Node<N>(successor, total, heuristic, distance, current));
+					priorityQueue.add(new Node<N>(successor, total, heuristic, distance, current));					
 				}
 			}
 			

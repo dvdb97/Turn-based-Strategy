@@ -163,7 +163,7 @@ public class WorldManager {
 		return p1.minus(p2).getXY().norm();
 	}
 	
-	public static float getRelativeDistance(int tileIndex1, int tileIndex2) {
+	public static float getRelativeDistance(int tileIndex1, int tileIndex2) {		
 		return getDistance(tileIndex1, tileIndex2)/superGrid.getDistanceBetweenTwoHexagons();
 	}
 	
