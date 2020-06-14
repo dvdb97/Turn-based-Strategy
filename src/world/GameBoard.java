@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import pathfinding.IGraph;
+import pathfinding.UnionFind;
 import utils.ListUtil;
+import utils.PathFinder;
 import utils.SymmetricSparseMatrix;
 import utils.TileSurrounding;
 import world.agents.Agent;
@@ -24,6 +26,7 @@ public class GameBoard {
 	private static SymmetricSparseMatrix streets;
 	
 	private static IGraph<Integer> graph;
+	private static PathFinder<Integer, Integer> pathFinder;
 	
 	//---------------------------------- init -----------------------------------
 	
@@ -43,8 +46,8 @@ public class GameBoard {
 		GameBoard.length = length;
 		GameBoard.width  = width;
 		GameBoard.tiles  = tiles;
-		GameBoard.graph  = new GameBoardGraph();
-
+		GameBoard.pathFinder = new PathFinder<>(new GameBoardGraph(), new UnionFind(tiles.length));
+		
 		estates = new HashMap<>();
 		agents = new HashMap<>();
 		streets = new SymmetricSparseMatrix(tiles.length);
@@ -204,10 +207,8 @@ public class GameBoard {
 		return tiles.length;
 	}
 	
-	//-------------------------------- graph ---------------------------------
-	
-	public static IGraph<Integer> getGraph() {
-		return graph;
+	public static PathFinder getPathFinder() {
+		return pathFinder;
 	}
 	
 }

@@ -236,7 +236,7 @@ public class AStarSearch {
 	 * @param budget The maximum distance that we can walk from the start node.
 	 * @return Returns a set of nodes that is reachable from the start node.
 	 */
-	public static <N> Set<N> getReachableNodes(IGraph<N> graph, N start, float budget) {		
+	public static <N> Set<N> getReachableNodes(IGraph<N> graph, N start, float budget) {
 		//All nodes have already been visited by a path and the according path costs.
 		HashMap<N, Float> visited = new HashMap<N, Float>();
 		PriorityQueue<Node<N>> queue = new PriorityQueue<Node<N>>();

@@ -1,16 +1,13 @@
 package gui;
 
-import world.AgentAuthority;
 import world.BuildingAuthority;
 import world.GameBoard;
 import world.Tile;
 import world.WorldManager;
 import world.agents.Agent;
-import world.estate.City;
 import world.estate.Estate;
 import fundamental.DefaultWindow;
 import fundamental.GUIButton;
-import fundamental.GUIImageBox;
 import fundamental.GUITextField;
 import gui.tileInfo.TileInfoStringIssuer;
 import input.buttons.OptionSet;
@@ -18,7 +15,6 @@ import input.buttons.RadioButton;
 import interaction.TileSelecter;
 import layout.IGUILayoutNode.Direction;
 import layout.IGUILayoutNode.FlexDirection;
-import pathfinding.AStarSearch;
 import rendering.shapes.implemented.GUIQuad;
 import utils.ColorPalette;
 
@@ -158,7 +154,8 @@ public class TileInfoWindow extends DefaultWindow {
 		buildButton.setPadding(Direction.ALL, 5);
 		buildButton.setMargin(Direction.ALL, 5);
 		buildButton.addOnClickListener((e) -> {
-			List<Integer> pathIndices = AStarSearch.getPath(GameBoard.getGraph(), tileIndex1, tileIndex2);
+			List<Integer> pathIndices = GameBoard.getPathFinder().getPath(tileIndex1, tileIndex2);
+//			List<Integer> pathIndices = AStarSearch.getPath(GameBoard.getGraph(), tileIndex1, tileIndex2);
 			if (BuildingAuthority.requestConsecutiveStreets(pathIndices)) {
 				tileIndex1 = -1;
 				tileIndex2 = -1;

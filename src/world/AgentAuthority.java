@@ -81,8 +81,10 @@ public class AgentAuthority {
 //			return false;	//implies constraint, that "agent can't be on water"(few lines above)
 //		}
 		
-		List<Integer> path = AStarSearch.getPath(GameBoard.getGraph(), startingTileIndex, destinationTileIndex);
-		float costs = AStarSearch.getPathCosts(GameBoard.getGraph(), path);
+		List<Integer> path = GameBoard.getPathFinder().getPath(startingTileIndex, destinationTileIndex);
+		float costs = GameBoard.getPathFinder().getPathCosts(path);
+//		List<Integer> path = AStarSearch.getPath(GameBoard.getGraph(), startingTileIndex, destinationTileIndex);
+//		float costs = AStarSearch.getPathCosts(GameBoard.getGraph(), path);
 		
 		if (agent.getTravelBudget() < costs) {
 			return null;
