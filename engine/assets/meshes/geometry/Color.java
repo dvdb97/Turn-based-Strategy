@@ -33,6 +33,9 @@ public class Color {
 		this.alpha = alpha/255f;
 	}
 	
+	public Color(Vector4f rgba) {
+		this(rgba.getA(), rgba.getB(), rgba.getC(), rgba.getD());
+	}
 	
 	
 	//***********************************************************************

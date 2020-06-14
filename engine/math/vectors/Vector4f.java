@@ -72,7 +72,7 @@ public class Vector4f extends Vectorf {
 	/**
 	 * Scalar Multiplication
 	 * 
-	 * @param r the scalar, every component is multiplicated with
+	 * @param r the scalar, every component is multiplied with
 	 * @return returns itself after the multiplication
 	 */
 	public Vector4f times(float r) {
@@ -105,7 +105,7 @@ public class Vector4f extends Vectorf {
 	/**
 	 * Negation
 	 * 
-	 * @return itself, multiplicated with -1
+	 * @return itself, multiplied with -1
 	 */
 	public Vector4f negated() {
 		super.voidNegated();
