@@ -3,6 +3,7 @@ package models.gameboard;
 import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
+import assets.textures.Texture2D;
 import math.vectors.Vector3f;
 import models.TerrainCol;
 import models.seeds.ElevationMap;
@@ -65,7 +66,6 @@ public class ModelCreater {
 	 * namely: terrain, sea, tile borders and an coordinate system
 	 */
 	public GameBoardModel createModels() {
-		
 		createSuperGrid();
 		createTerrain();
 		createTileBorders();
@@ -73,7 +73,6 @@ public class ModelCreater {
 		createHexagons();
 		
 		return new GameBoardModel(terrain, tileBorders, sea, hexagons);
-		
 	}
 	
 	//********************************* prime methods **************************
@@ -90,7 +89,9 @@ public class ModelCreater {
 		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		mat.castShadows = true;		
 		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
-		
+		Texture2D texture = new Texture2D("res/Textures/Homer.jpg");
+		terrain.setTexture(texture);
+		terrain.useTextureColor();
 	}
 	
 	private void createTileBorders() {

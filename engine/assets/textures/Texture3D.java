@@ -2,6 +2,7 @@ package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.glTexSubImage3D;
+import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
 import static org.lwjgl.opengl.GL12.GL_TEXTURE_3D;
 import static org.lwjgl.opengl.GL42.*;
 
@@ -10,12 +11,14 @@ import assets.textures.utils.ImageLoader;
 import utils.CustomBufferUtils;
 
 
-public abstract class Texture3D extends Texture {
+public class Texture3D extends Texture {
 
 	private int depth;
 	
 	public Texture3D() {
 		this(GL_TEXTURE_3D);
+		
+		glEnable(GL_TEXTURE_3D);
 	}
 	
 	
@@ -50,17 +53,15 @@ public abstract class Texture3D extends Texture {
 	
 	public void setImageData(String[] paths) {
 		if (paths.length != this.getDepth()) {
-			
 			System.out.println("The data doesn't match the dimensions of the texture!");
 			
 			return;
-			
 		}
 		
+		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
+		
 		for (int i = 0; i < paths.length; i++) {
-			
 			this.setSubImageData(i, paths[i]);
-			
 		}
 		
 		this.generateMipMapLevels();
@@ -69,16 +70,13 @@ public abstract class Texture3D extends Texture {
 	
 	public void setImageData(int[][] data) {
 		if (data.length != this.getDepth()) {
-			
 			System.out.println("The data doesn't match the dimensions of the texture!");
 			
 			return;
 		}
 		
 		for (int i = 0; i < data.length; i++) {
-			
 			this.setSubImageData(i, data[i]);
-			
 		}
 		
 		this.generateMipMapLevels();
@@ -103,7 +101,7 @@ public abstract class Texture3D extends Texture {
 	public void setSubImageData(int depth, IntBuffer buffer) {
 		this.bind();
 		
-		glTexSubImage3D(this.getType(), 0, 0, 0, 0, this.getWidth(), this.getHeight(), depth, GL_RGBA, GL_UNSIGNED_INT, buffer);
+		glTexSubImage3D(this.getType(), 0, 0, 0, 0, this.getWidth(), this.getHeight(), depth, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
 		this.unbind();
 	}

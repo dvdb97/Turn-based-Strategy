@@ -18,10 +18,8 @@ public class Vertex extends Vector3f {
 	private float blue;
 	private float alpha;
 	
-	
 	private Vector2f texturePositions;
 	boolean textured;
-	
 	
 	//the normal vector of the vertex is the average of the normals of its surrounding surfaces
 	private Vector3f normalVec;
@@ -69,6 +67,13 @@ public class Vertex extends Vector3f {
 		this(position, new Color(0f, 0f, 0f, 0f));
 		
 		this.setTexturePositions(texPos);
+	}
+	
+	
+	public Vertex(Vector3f position, Vector3f texPos) {
+		this(position, new Color(0f, 0f, 0f, 0f));
+		
+		
 	}
 	
 	

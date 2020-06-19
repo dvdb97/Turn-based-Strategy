@@ -1,6 +1,8 @@
 package models.seeds;
 
+import math.vectors.Vector2f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import utils.Const;
 
 public class SuperGrid {
@@ -14,6 +16,9 @@ public class SuperGrid {
 	private int xOffset;				//must be even
 	private int yOffset;				//must be even
 	
+	private float width;
+	private float length;
+	
 	private float triEdgeLength;
 	private int elr;                	//must be a power of 2 and > 1          //edge length relation = hexaong's edge length / triangle's edge length
 	private float triangleAltitude;
@@ -25,15 +30,14 @@ public class SuperGrid {
 	private float[][] elevation;
 	
 	private Vector3f[] positionVectors;
+	private Vector3f[] texCoords;
 	
 	private int[] hexCenterIndices;
-	
 	
 	
 	//*************************** constructor **********************************
 	
 	public SuperGrid(int lengthInHexagons, int widthInHexagons, int xOffset, int yOffset, float triEdgeLength, int elr, float[][] elevation) {
-		
 		this.lengthInHexagons = lengthInHexagons;
 		this.widthInHexagons = widthInHexagons;
 		this.xOffset = xOffset;
@@ -45,74 +49,76 @@ public class SuperGrid {
 		calculations();
 		processVectors();
 		processHexCenters();
-		
 	}
-	
 	
 	
 	//*************************** prime methods ********************************
 	
+	
 	private void calculations() {
-		
 		lengthInVectors = (lengthInHexagons*2 + 2)*elr + 2*xOffset;
 		widthInVectors  = (widthInHexagons*3/2 + 1)*elr + 1 + 2*yOffset;
 		
 		triangleAltitude = 0.5f * Const.SQRT3 * triEdgeLength;
 		
+		width = widthInVectors * triangleAltitude;
+		length = (lengthInVectors + 0.5f) * triEdgeLength;
 	}
+	
+	
+	private Vector3f toTexCoords(float x, float y, float z) {
+		// TODO: more elegant solution.
+		float texX = x / width / 1.3290043f;
+		float texY = y / length / 0.7471637f;
+		float texZ = 0f;
+		
+		return new Vector3f(texX, texY, texZ);		
+	}
+	
 
 	private void processVectors() {
-		
 		positionVectors = new Vector3f[lengthInVectors*widthInVectors];
+		texCoords = new Vector3f[lengthInVectors*widthInVectors];
 		
 		for (int y=0; y<widthInVectors; y++) {
-			
 			for (int x=0; x<lengthInVectors; x++) {
+				float xCoord = x*triangleAltitude;
+				float yCoord = (y+0.5f*(x%2))*triEdgeLength;
+				float zCoord = elevation[x][y];
 				
-				positionVectors[y*lengthInVectors + x] = new Vector3f(x*triangleAltitude, (y+0.5f*(x%2))*triEdgeLength, elevation[x][y]);
-				
+				positionVectors[y*lengthInVectors + x] = new Vector3f(xCoord, yCoord, zCoord);
+				texCoords[y*lengthInVectors + x] = toTexCoords(xCoord, yCoord, zCoord);
 			}
-			
 		}
-		
 	}
 	
 	private void processHexCenters() {
-		
 		hexCenterIndices = new int[lengthInHexagons*widthInHexagons];
 		
 		for (int x=0; x<lengthInHexagons; x++) {
 			for (int y=0; y<widthInHexagons; y++) {
-				
 				hexCenterIndices[y*lengthInHexagons + x] = (yOffset + elr + y*elr*3/2)*lengthInVectors + (xOffset + elr + x*2*elr + (y%2)*elr  );
-				
 			}
 		}
-		
 	}
 	
 	//************************** hexagons **************************************
 	
 	public Vector3f getHexCenter(int indexOfTheHexagon) {
-		
 		return positionVectors[hexCenterIndices[indexOfTheHexagon]].copyOf();
-		
 	}
 	
+	
 	public Vector3f[] getHexBorder(int indexOfTheHexagon) {
-		
 		Vector3f[] border = new Vector3f[6];
 		
 		int[] hexBorderIndices = getHexBorderIndices(indexOfTheHexagon);
 		
 		for (int i=0; i<border.length; i++) {
-			
 			border[i] = positionVectors[hexBorderIndices[i]].copyOf();
-			
 		}
 		
-		return border;
-		
+		return border;	
 	}
 	
 	/**
@@ -165,6 +171,10 @@ public class SuperGrid {
 		return widthInHexagons;
 	}
 	
+	public int getTotalHexagons() {
+		return positionVectors.length;
+	}
+	
 	/**
 	 * @return the lengthInVectors
 	 */
@@ -188,19 +198,32 @@ public class SuperGrid {
 		return triangleAltitude;
 	}
 	
-	public Vector3f[] getVectors() {
+	private Vector3f[] getCopy(Vector3f[] array) {
+		Vector3f[] copy = new Vector3f[array.length];
 		
-		Vector3f[] copyOfPositionVectors = new Vector3f[positionVectors.length];
-		for (int v=0; v<positionVectors.length; v++) {
-			copyOfPositionVectors[v] = positionVectors[v].copyOf();
+		for (int i = 0; i < array.length; i++) {
+			copy[i] = array[i];
 		}
-		return copyOfPositionVectors;
 		
+		return copy;
 	}
 	
+	public Vector3f[] getPositions() {
+		return getCopy(positionVectors);
+	}
+	
+	
+	public Vector3f getPosition(int i) {
+		return positionVectors[i];
+	}
+	
+	
+	public Vector3f[] getTexCoords() {
+		return getCopy(texCoords);
+	}
+	
+	
 	public int[] getHexcenterIndices() {
-		
 		return hexCenterIndices;
-		
 	}
 }

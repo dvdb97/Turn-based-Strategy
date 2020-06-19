@@ -14,7 +14,7 @@ public class ArrayTexture2D extends Texture3D {
 	}
 	
 	
-	public ArrayTexture2D(int numOfSubTextures, int width, int height, String[] paths, String[] labels) {
+	public ArrayTexture2D(int numOfSubTextures, int width, int height, String[] paths) {
 		super(GL_TEXTURE_2D_ARRAY, width, height, paths.length);
 		
 		this.setImageData(paths);

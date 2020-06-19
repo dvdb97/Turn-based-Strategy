@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import math.vectors.Vector2f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 
 public class CustomBufferUtils {
 	
@@ -128,18 +130,75 @@ public class CustomBufferUtils {
 		return buffer;
 	}*/
 
-	
-	public static FloatBuffer createFloatBuffer(ArrayList<Vector3f> list) {
+	public static FloatBuffer vec4ToFloatBuffer(List<Vector4f> list) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(list.size()*4);
 		
+		for (Vector4f v : list) {
+			buffer.put(v.toArray());
+		}
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	public static FloatBuffer vec3ToFloatBuffer(List<Vector3f> list) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(list.size()*3);
+		
 		for (Vector3f v : list) {
 			buffer.put(v.toArray());
 		}
 		buffer.flip();
 		
 		return buffer;
-		
 	}
+	
+	public static FloatBuffer vec2ToFloatBuffer(List<Vector2f> list) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(list.size()*2);
+		
+		for (Vector2f v : list) {
+			buffer.put(v.toArray());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	public static FloatBuffer vec4ToFloatBuffer(Vector4f[] array) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(array.length*4);
+		
+		for (Vector4f v : array) {
+			buffer.put(v.toArray());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	public static FloatBuffer vec3ToFloatBuffer(Vector3f[] array) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(array.length*3);
+		
+		for (Vector3f v : array) {
+			buffer.put(v.toArray());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	public static FloatBuffer vec2ToFloatBuffer(Vector2f[] array) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(array.length*2);
+		
+		for (Vector2f v : array) {
+			buffer.put(v.toArray());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}	
 	
 	public static ByteBuffer createByteBuffer(ArrayList<Byte> list) {
 		

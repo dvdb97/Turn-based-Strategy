@@ -23,7 +23,7 @@ public class SceneManager {
 	public static void init() {
 		camera = new PlayerCamera();
 
-		light = new DirectionalLight(new Vector3f(0f, -1f, -0.2f), new Vector3f(0.8f, 0.8f, 0.5f), 4000, 4000);
+		light = new DirectionalLight(new Vector3f(0f, 1f, -0.5f), new Vector3f(0.8f, 0.8f, 0.5f), 4000, 4000);
 		
 		skybox = new GameSkybox();
 		sbMesh = new SkyboxMesh(skybox);

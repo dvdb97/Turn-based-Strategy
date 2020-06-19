@@ -13,9 +13,10 @@ import org.lwjgl.BufferUtils;
 import assets.material.Material;
 import assets.meshes.Mesh3D;
 import assets.meshes.geometry.Color;
-import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
+import math.vectors.Vector2f;
 import math.vectors.Vector3f;
+import math.vectors.Vector4f;
 import models.seeds.ColorFunction;
 import models.seeds.SuperGrid;
 
@@ -36,8 +37,6 @@ public class TriangleGrid extends Mesh3D {
 	
 	private final int PRI;			//primitive restart index
 	
-	private Vertex[] vertices;
-	
 	private boolean sea;
 	
 	//************************************** constructor *************************************
@@ -47,17 +46,7 @@ public class TriangleGrid extends Mesh3D {
 	 * @param material
 	 */
 	public TriangleGrid(SuperGrid superGrid, ColorFunction colorFunc, Material material, boolean sea) {
-		
 		this(superGrid, material, sea);
-		
-		/*
-		 * Replace the current shader with a shader that uses the attribute color (color specified 
-		 * per vertex when generating a mesh) instead of the material's color value.
-		 * 
-		 * This code will be replaced once shader-rework is merged with master.
-		 */
-		//MOVED TO CONTRUCTOR BELOW
-	//	this.setShader(LightShader.createPerFragmentLightShader(new AttributeColorSubshader()));
 		
 		this.colorFunc = colorFunc;
 		
@@ -69,7 +58,6 @@ public class TriangleGrid extends Mesh3D {
 	 * @param material
 	 */
 	public TriangleGrid(SuperGrid superGrid, Color color, Material material, boolean sea) {
-		
 		this(superGrid, material, sea);
 		
 		this.colorFunc = new ColorFunction() {
@@ -80,7 +68,6 @@ public class TriangleGrid extends Mesh3D {
 		};
 		
 		processVertices();
-		
 	}
 	
 	
@@ -105,41 +92,55 @@ public class TriangleGrid extends Mesh3D {
 	
 	//*************************************** prime method ****************************************
 	
+	
 	private void processVertices() {
+		processPositions();
+		processColors();
+		processTextureCoordinates();
+		processElementBuffer();
+		processNormalVectors();
+	}	
+	
+	
+	private void processPositions() {
+		Vector3f[] positions = superGrid.getPositions();
 		
-		Vector3f[] positions = superGrid.getVectors();
 		elevation = new float[length][width];
+		
 		for (int y=0; y<width; y++) {
 			for (int x=0; x<length; x++) {
 				
 				if (sea) {
 					positions[y*length + x].setC(0);
 				}
-				elevation[x][y] = positions[y*length + x].getC();
 				
+				elevation[x][y] = positions[y*length + x].getC();
 			}
 		}
 		
-		ArrayList<Vector3f> normals   = processNormalVectors();
-		
-		vertices = new Vertex[positions.length];
-		
-		for (int v=0; v<vertices.length; v++) {
-			vertices[v] = new Vertex(positions[v], colorFunc.color(v%length, v/length, positions[v].getC()));
-			vertices[v].setNormalVector(normals.get(v));
-		}
-		
-		setData(vertices, processElementBuffer(), false);
-		
+		setPositionData(positions);
 	}
 	
 	
-	
-	//*************************************** secondary methods **********************************
-	
-	
-	private IntBuffer processElementBuffer() {
+	private void processColors() {
+		Vector4f[] colors = new Vector4f[superGrid.getTotalHexagons()];
 		
+		for (int i = 0; i < superGrid.getTotalHexagons(); i++) {
+			 colors[i] = colorFunc.color(i%length, i/length, superGrid.getPosition(i).getC()).toVector4f();
+		}
+		
+		setColorData(colors);
+	}
+	
+	
+	private void processTextureCoordinates() {
+		Vector3f[] texCoords = superGrid.getTexCoords();
+		
+		setTexCoordData(texCoords);
+	}
+	
+	
+	private void processElementBuffer() {
 		IntBuffer elementBuffer = BufferUtils.createIntBuffer( (width*2+1)*(length-1));
 		
 		for (int col=0; col<length-1; col++) {
@@ -157,13 +158,11 @@ public class TriangleGrid extends Mesh3D {
 		
 		elementBuffer.flip();
 		
-		return elementBuffer;
-		
+		setIndexBuffer(elementBuffer);
 	}
 	
 	
-	private ArrayList<Vector3f> processNormalVectors() {
-		
+	private void processNormalVectors() {	
 		ArrayList<Vector3f> normals = new ArrayList<>(length*width);
 		
 		//first row
@@ -214,8 +213,7 @@ public class TriangleGrid extends Mesh3D {
 		}
 		normals.add(avgNormal_I(elevation[length-1][width-2], elevation[length-2][width-1], elevation[length-1][width-1]));
 		
-		return normals;
-		
+		setNormalData(normals);		
 	}
 	
 	

@@ -1,6 +1,5 @@
 package models.gameboard;
 
-import assets.light.DirectionalLight;
 import assets.meshes.Transformable;
 import assets.meshes.geometry.Color;
 import assets.meshes.specialized.Quad;
@@ -10,7 +9,6 @@ import mapModes.MapMode;
 import math.vectors.Vector3f;
 import rendering.Renderer;
 import rendering.SceneManager;
-import sun.java2d.pipe.RenderingEngine;
 
 public class GameBoardModel {
 	

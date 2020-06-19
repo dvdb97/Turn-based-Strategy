@@ -3,6 +3,7 @@ package assets.meshes;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
@@ -14,6 +15,11 @@ import assets.material.Material;
 import assets.meshes.geometry.Vertex;
 import assets.scene.Scene;
 import assets.textures.Texture;
+import math.vectors.Vector2f;
+import math.vectors.Vector3f;
+import math.vectors.Vector4f;
+import utils.CustomBufferUtils;
+
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
@@ -209,6 +215,19 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	
 	/**
 	 * 
+	 * Sets this Mesh's position data and stores it on the gpu.
+	 * This method assumes that a position attribut always consists
+	 * of three values.
+	 * 
+	 * @param positions An array of three-dimensional vectors.
+	 */
+	public void setPositionData(Vector3f[] positions) {
+		this.setPositionData(CustomBufferUtils.vec3ToFloatBuffer(positions));
+	}
+	
+	
+	/**
+	 * 
 	 * Sets this Mesh's position data by setting a pointer to data that
 	 * is already stored on the gpu.
 	 * 
@@ -265,6 +284,17 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	
 	/**
 	 * 
+	 * Sets this Mesh's color data and stores it on the gpu.
+	 * 
+	 * @param array An array of four-dimensional vectors.
+	 */
+	public void setColorData(Vector4f[] array) {
+		this.setColorData(CustomBufferUtils.vec4ToFloatBuffer(array));
+	}
+	
+	
+	/**
+	 * 
 	 * Sets this Mesh's color data by setting a pointer to data that
 	 * is already stored on the gpu.
 	 * 
@@ -303,6 +333,28 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	 */
 	public void setTexCoordData(FloatBuffer buffer, int size) {
 		this.setAttribute(buffer, Attribute.TEXCOORD, 2, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's texture coordinate data and stores it on the gpu.
+	 * 
+	 * @param array An array of two-dimensional vectors.
+	 */
+	public void setTexCoordData(Vector2f[] array) {
+		this.setTexCoordData(CustomBufferUtils.vec2ToFloatBuffer(array), 2);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's texture coordinate data and stores it on the gpu.
+	 * 
+	 * @param array An array of three-dimensional vectors.
+	 */
+	public void setTexCoordData(Vector3f[] array) {
+		this.setTexCoordData(CustomBufferUtils.vec3ToFloatBuffer(array), 3);
 	}
 	
 	
@@ -351,6 +403,28 @@ public abstract class Mesh implements IDeletable, IRenderable {
 	 */
 	public void setNormalData(FloatBuffer buffer, int size) {
 		this.setAttribute(buffer, Attribute.NORMAL, 3, size);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's normal data and stores it on the gpu.
+	 * 
+	 * @param normals An array of three-dimensional vectors.
+	 */
+	public void setNormalData(Vector3f[] normals) {
+		this.setNormalData(CustomBufferUtils.vec3ToFloatBuffer(normals), 3);
+	}
+	
+	
+	/**
+	 * 
+	 * Sets this Mesh's normal data and stores it on the gpu.
+	 * 
+	 * @param normals A list of three-dimensional vectors.
+	 */
+	public void setNormalData(List<Vector3f> normals) {
+		this.setNormalData(CustomBufferUtils.vec3ToFloatBuffer(normals), 3);
 	}
 	
 	
