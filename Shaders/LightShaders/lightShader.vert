@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 vPosition;
 layout(location = 1) in vec4 vColor;
-layout(location = 2) in vec2 vTexPos;
+layout(location = 2) in vec3 vTexPos;
 layout(location = 3) in vec3 vNormal;
 
 
@@ -22,7 +22,7 @@ out VS_OUT {
 	vec3 fragCoordModelSpace;
 	vec3 fragCoordWorldSpace;
 	vec4 fragColor;
-	vec2 fragTexPos;
+	vec3 fragTexPos;
 	vec3 shadowTexCoords;
 	vec3 fragNormalModelSpace;
 	vec3 fragNormalWorldSpace;

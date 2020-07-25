@@ -1,14 +1,15 @@
 package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.glTexSubImage3D;
-import static org.lwjgl.opengl.GL14.GL_GENERATE_MIPMAP;
 import static org.lwjgl.opengl.GL12.GL_TEXTURE_3D;
 import static org.lwjgl.opengl.GL42.*;
 
-import java.nio.IntBuffer;
+import java.nio.ByteBuffer;
+import org.lwjgl.BufferUtils;
+
+import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
-import utils.CustomBufferUtils;
+import debugging.ErrorDecoder;
 
 
 public class Texture3D extends Texture {
@@ -17,93 +18,56 @@ public class Texture3D extends Texture {
 	
 	public Texture3D() {
 		this(GL_TEXTURE_3D);
-		
-		glEnable(GL_TEXTURE_3D);
 	}
 	
+	
+	public Texture3D(String[] paths) {
+		this();
+		
+		this.bind();
+		setImageData(paths);
+		this.unbind();
+	}
+
 	
 	public Texture3D(int type) {
 		super(type);
 	}
 	
 	
-	public Texture3D(int type, int width, int height, int depth) {
-		super(type, width, height);
+	public void setImageData(String[] paths) {		
+		Image[] images = new Image[paths.length];
 		
-		this.depth = depth;
-	}
-	
-	
-	public Texture3D(int width, int height, int depth) {
-		this(GL_TEXTURE_3D, width, height, depth);
-	}
-	
-	
-	public void setTexStorage() {
-		this.bind();
+		Image first = ImageLoader.loadImageRGBA(paths[0]);
+		images[0]= first;
 		
-		glTexStorage3D(this.getType(), this.getMipMapLevels(), GL_RGBA8, this.getWidth(), this.getHeight(), depth);
+		setWidth(first.getWidth());
+		setHeight(first.getHeight());
+		setDepth(paths.length);
 		
-		this.setFilter(getFilterMode());
-		this.setTextureWrap(this.getWrapMode());
+		// All dimensions have to be powers of 2.
+		assert getWidth() % 2 == 0 && getHeight() % 2 == 0 && getDepth() % 2 == 0;
 		
-		this.unbind();
-	}
-	
-	
-	public void setImageData(String[] paths) {
-		if (paths.length != this.getDepth()) {
-			System.out.println("The data doesn't match the dimensions of the texture!");
+		for (int i = 1; i < paths.length; i++) {
+			Image img = ImageLoader.loadImageRGBA(paths[i]);
 			
-			return;
-		}
-		
-		glTexParameteri(getType(), GL_GENERATE_MIPMAP, GL_TRUE);
-		
-		for (int i = 0; i < paths.length; i++) {
-			this.setSubImageData(i, paths[i]);
-		}
-		
-		this.generateMipMapLevels();
-	}
-	
-	
-	public void setImageData(int[][] data) {
-		if (data.length != this.getDepth()) {
-			System.out.println("The data doesn't match the dimensions of the texture!");
+			// Make sure that all dimensions stay the same across all loaded images.
+			assert img.getWidth() == getWidth() && img.getHeight() == getHeight();
 			
-			return;
+			images[i] = img;
 		}
 		
-		for (int i = 0; i < data.length; i++) {
-			this.setSubImageData(i, data[i]);
+		ByteBuffer texels = BufferUtils.createByteBuffer(getDepth() * getHeight() * getWidth() * RGBA_CHANNELS);
+		
+		for (Image img : images) {
+			texels.put(img.getImageDataAsByteBuffer());
 		}
 		
-		this.generateMipMapLevels();
-	}
-	
-	
-	public void setSubImageData(int depth, String path) {
-		this.setSubImageData(depth, ImageLoader.loadImageDataAsRGBAInt(path));
-	}
-	
-	
-	public void setSubImageData(int depth, int[] data) {
-		this.setSubImageData(depth, CustomBufferUtils.createIntBuffer(data));
-	}
-	
-	
-	public void setSubImageData(int depth, int[][] data) {
-		this.setSubImageData(depth, CustomBufferUtils.createIntBuffer(data));
-	}
-	
-	
-	public void setSubImageData(int depth, IntBuffer buffer) {
-		this.bind();
+		texels.flip();
 		
-		glTexSubImage3D(this.getType(), 0, 0, 0, 0, this.getWidth(), this.getHeight(), depth, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		System.out.println("glTexImage3D");
 		
-		this.unbind();
+		glTexImage3D(getType(), 0, GL_RGBA, getWidth(), getHeight(), getDepth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texels);
 	}
 	
 	

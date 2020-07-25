@@ -1,6 +1,7 @@
 package assets.textures;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.GL_TEXTURE_WRAP_R;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
@@ -12,6 +13,8 @@ import assets.GLTargetObject;
 
 public abstract class Texture extends GLTargetObject {
 
+	public static final int RGBA_CHANNELS = 4;
+	
 	//Linear filtering
 	public static final int LINEAR = GL_LINEAR;
 	
@@ -26,6 +29,7 @@ public abstract class Texture extends GLTargetObject {
 	
 	//Clamp mode - clamp the texture to the border.
 	public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
+	
 	
 	//The number of mipmaplevels
 	private int mipMapLevels = 1;
@@ -48,9 +52,11 @@ public abstract class Texture extends GLTargetObject {
 	
 	public Texture(int type, int width, int height) {
 		this(type);
+		
 		this.width = width;
 		this.height = height;
 	}
+	
 	
 	public void setFilter(int filter) {
 		setFilter(filter, filter);	
@@ -63,21 +69,17 @@ public abstract class Texture extends GLTargetObject {
 		int combinedFilters = filter;
 		
 		if (filter == GL_LINEAR) {
-			
 			if (mipmapFilter == GL_LINEAR) {
 				combinedFilters = GL_LINEAR_MIPMAP_LINEAR;
 			} else {
 				combinedFilters = GL_LINEAR_MIPMAP_NEAREST;
 			}
-			
 		} else if (filter == GL_NEAREST) {
-			
 			if (mipmapFilter == GL_LINEAR) {
 				combinedFilters = GL_NEAREST_MIPMAP_LINEAR;
 			} else {
 				combinedFilters = GL_NEAREST_MIPMAP_NEAREST;
 			}
-			
 		}
 		
 		glTexParameteri(getType(), GL_TEXTURE_MAG_FILTER, combinedFilters);
@@ -95,11 +97,11 @@ public abstract class Texture extends GLTargetObject {
 	
 	
 	public void setTextureWrap(int wrapMode) {
-		
 		this.bind();
 		
 		glTexParameteri(getType(), GL_TEXTURE_WRAP_S, wrapMode);
 		glTexParameteri(getType(), GL_TEXTURE_WRAP_T, wrapMode);
+		glTexParameteri(getType(), GL_TEXTURE_WRAP_R, wrapMode);
 		
 		this.wrapMode = wrapMode;
 		
@@ -147,11 +149,23 @@ public abstract class Texture extends GLTargetObject {
 	}
 	
 	
+	@Override
+	public void bind() {
+		glBindTexture(getType(), getID());		
+	}
+
+
+	@Override
+	public void unbind() {
+		glBindTexture(getType(), 0);		
+	}	
+	
+	
 	/**
 	 * 
 	 * Bind this texture to a specific texture unit.
 	 * 
-	 * @param texUnit
+	 * @param texUnit The unit to bind the texture to.
 	 */
 	public void bind(int texUnit) {
 		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
@@ -164,6 +178,12 @@ public abstract class Texture extends GLTargetObject {
 	}
 	
 	
+	/**
+	 * 
+	 * Unbind this texture from a specific texture unit.
+	 * 
+	 * @param texUnit The unit to unbind the texture from.
+	 */
 	public void unbind(int texUnit) {
 		if (texUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS) {
 			glActiveTexture(texUnit);
@@ -173,24 +193,11 @@ public abstract class Texture extends GLTargetObject {
 								texUnit + " as it exceeds Opengl's limit.");
 		}
 	}
-	
-	
-	@Override
-	public void bind() {
-		glBindTexture(getType(), getID());		
-	}
-
-
-	@Override
-	public void unbind() {
-		glBindTexture(getType(), 0);		
-	}
 
 
 	@Override
 	public void delete() {
-		System.out.println("Texture: deleted");
-		//TODO:glDeleteTextures(getID());	
+		glDeleteTextures(getID());	
 	}
 
 }

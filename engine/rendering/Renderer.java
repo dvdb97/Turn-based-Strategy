@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import static org.lwjgl.opengl.GL.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.GL_TEXTURE_3D;
+import static org.lwjgl.opengl.GL43.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,6 +19,7 @@ import org.lwjgl.BufferUtils;
 
 import assets.meshes.Mesh;
 import assets.scene.Scene;
+import debugging.ErrorListener;
 import interaction.Window;
 import math.vectors.Vector2i;
 import math.vectors.Vector4f;
@@ -47,8 +50,11 @@ public class Renderer {
 		
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
-		
 		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_TEXTURE_3D);
+		
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(new ErrorListener(ErrorListener.HIGH_SEVERITY), 0);
 	}
 	
 	

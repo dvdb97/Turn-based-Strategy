@@ -72,7 +72,6 @@ public class ShaderProgram extends Bindable {
 	
 	
 	public void init(String vertSource, String fragSource) {
-		
 		ID = glCreateProgram();
 		
 		vertShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -104,7 +103,6 @@ public class ShaderProgram extends Bindable {
 	
 	
 	private void compileShader(String sourceCode, int id) {
-		
 		glShaderSource(id, sourceCode);
 		glCompileShader(id);
 		
@@ -444,11 +442,16 @@ public class ShaderProgram extends Bindable {
 	
 	
 	/**
-	 * Uplaods all subroutine settings to the gpu.
+	 * Uploads all subroutine settings to the gpu.
 	 */
 	public void setUniformSubroutines() {
-		glUniformSubroutinesuiv(VERTEX_SHADER, vertSubroutines);
-		glUniformSubroutinesuiv(FRAGMENT_SHADER, fragSubroutines);
+		if (vertSubroutines.length > 0) {
+			glUniformSubroutinesuiv(VERTEX_SHADER, vertSubroutines);
+		}
+		
+		if (fragSubroutines.length > 0) {
+			glUniformSubroutinesuiv(FRAGMENT_SHADER, fragSubroutines);
+		}
 	}
 	
 	

@@ -2,8 +2,6 @@ package assets.textures.utils;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.BufferUtils;
-
 import utils.CustomBufferUtils;
 
 public class Image {

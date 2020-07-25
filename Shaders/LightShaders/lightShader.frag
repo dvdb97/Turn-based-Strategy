@@ -4,7 +4,7 @@
 //Defines the properties of light on this object
 struct Material {
 	vec4 color;
-	sampler2D texture;
+	sampler3D texture;
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
@@ -23,7 +23,7 @@ in VS_OUT {
 	vec3 fragCoordModelSpace;
 	vec3 fragCoordWorldSpace;
 	vec4 fragColor;
-	vec2 fragTexPos;
+	vec3 fragTexPos;
 	vec3 shadowTexCoords;
 	vec3 fragNormalModelSpace;
 	vec3 fragNormalWorldSpace;

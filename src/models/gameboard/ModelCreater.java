@@ -4,10 +4,12 @@ import assets.material.Material;
 import assets.material.StandardMaterial;
 import assets.meshes.geometry.Color;
 import assets.textures.Texture2D;
+import assets.textures.Texture3D;
 import math.vectors.Vector3f;
 import models.TerrainCol;
 import models.seeds.ElevationMap;
 import models.seeds.SuperGrid;
+import models.textures.TerrainTexture;
 
 public class ModelCreater {
 	
@@ -89,7 +91,10 @@ public class ModelCreater {
 		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
 		mat.castShadows = true;		
 		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
-		Texture2D texture = new Texture2D("res/Textures/Homer.jpg");
+		
+		//Texture2D texture = new Texture2D("res/Textures/Homer.jpg");
+		Texture3D texture = new TerrainTexture();
+		
 		terrain.setTexture(texture);
 		terrain.useTextureColor();
 	}
