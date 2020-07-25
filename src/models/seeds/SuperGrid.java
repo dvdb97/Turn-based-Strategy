@@ -70,7 +70,7 @@ public class SuperGrid {
 		// TODO: more elegant solution.
 		float texX = x / width / 1.3290043f;
 		float texY = y / length / 0.7471637f;
-		float texZ = 0f;
+		float texZ = z;
 		
 		return new Vector3f(texX, texY, texZ);		
 	}

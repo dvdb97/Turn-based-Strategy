@@ -53,8 +53,8 @@ public class Renderer {
 		glEnable(GL_STENCIL_TEST);
 		glEnable(GL_TEXTURE_3D);
 		
-		glEnable(GL_DEBUG_OUTPUT);
-		glDebugMessageCallback(new ErrorListener(ErrorListener.HIGH_SEVERITY), 0);
+		//glEnable(GL_DEBUG_OUTPUT);
+		//glDebugMessageCallback(new ErrorListener(ErrorListener.HIGH_SEVERITY), 0);
 	}
 	
 	

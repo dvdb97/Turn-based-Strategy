@@ -9,7 +9,6 @@ import org.lwjgl.BufferUtils;
 
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
-import debugging.ErrorDecoder;
 
 
 public class Texture3D extends Texture {
@@ -24,9 +23,7 @@ public class Texture3D extends Texture {
 	public Texture3D(String[] paths) {
 		this();
 		
-		this.bind();
 		setImageData(paths);
-		this.unbind();
 	}
 
 	
@@ -35,11 +32,13 @@ public class Texture3D extends Texture {
 	}
 	
 	
-	public void setImageData(String[] paths) {		
+	public void setImageData(String[] paths) {
+		this.bind();
+		
 		Image[] images = new Image[paths.length];
 		
 		Image first = ImageLoader.loadImageRGBA(paths[0]);
-		images[0]= first;
+		images[0] = first;
 		
 		setWidth(first.getWidth());
 		setHeight(first.getHeight());
@@ -57,17 +56,15 @@ public class Texture3D extends Texture {
 			images[i] = img;
 		}
 		
-		ByteBuffer texels = BufferUtils.createByteBuffer(getDepth() * getHeight() * getWidth() * RGBA_CHANNELS);
+		glTexStorage3D(getType(), 1, GL_RGBA8, getWidth(), getHeight(), depth);
 		
-		for (Image img : images) {
-			texels.put(img.getImageDataAsByteBuffer());
+		for (int i = 0; i < images.length; i++) {
+			ByteBuffer pixels = images[i].getImageDataAsByteBuffer().flip();
+			
+			glTexSubImage3D(getType(), 0, 0, 0, i, getWidth(), getHeight(), 1, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		}
 		
-		texels.flip();
-		
-		System.out.println("glTexImage3D");
-		
-		glTexImage3D(getType(), 0, GL_RGBA, getWidth(), getHeight(), getDepth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texels);
+		this.unbind();
 	}
 	
 	
