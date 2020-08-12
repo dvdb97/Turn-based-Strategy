@@ -68,6 +68,19 @@ public class Texture3D extends Texture {
 	}
 	
 	
+	public void setImageData(ByteBuffer pixels, int width, int height, int depth) {
+		this.bind();
+		
+		setWidth(width);
+		setHeight(height);
+		setDepth(depth);
+		
+		glTexImage3D(getType(), 0, GL_RGBA8, getWidth(), getHeight(), getDepth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		
+		this.unbind();
+	}
+	
+	
 	public int getDepth() {
 		return depth;
 	}

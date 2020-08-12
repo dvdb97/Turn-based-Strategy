@@ -109,6 +109,33 @@ public abstract class Texture extends GLTargetObject {
 	}
 	
 	
+	public void setTextureSWrap(int wrapMode) {
+		this.bind();
+		
+		glTexParameteri(getType(), GL_TEXTURE_WRAP_S, wrapMode);
+		
+		this.unbind();
+	}
+	
+	
+	public void setTextureTWrap(int wrapMode) {
+		this.bind();
+		
+		glTexParameteri(getType(), GL_TEXTURE_WRAP_T, wrapMode);
+		
+		this.unbind();
+	}
+	
+	
+	public void setTextureRWrap(int wrapMode) {
+		this.bind();
+		
+		glTexParameteri(getType(), GL_TEXTURE_WRAP_R, wrapMode);
+		
+		this.unbind();
+	}
+	
+	
 	public int getWrapMode() {
 		return wrapMode;
 	}

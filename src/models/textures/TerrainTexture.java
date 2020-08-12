@@ -15,7 +15,11 @@ public class TerrainTexture extends Texture3D {
 	public TerrainTexture() {
 		super(paths);
 		
-		setTextureWrap(CLAMP_TO_EDGE);
+		setTextureSWrap(REPEAT);
+		setTextureTWrap(REPEAT);
+		setTextureRWrap(CLAMP_TO_EDGE);
+		setFilter(LINEAR);
+		generateMipMapLevels();
 	}	
 	
 }

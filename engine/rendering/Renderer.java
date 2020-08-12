@@ -142,7 +142,7 @@ public class Renderer {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
-		LocalDateTime now = LocalDateTime.now();  
+		LocalDateTime now = LocalDateTime.now();  		
 		
 		File file = new File(path + "/screenshot_" + dtf.format(now)+ "." + format.toLowerCase());
 		
@@ -158,9 +158,11 @@ public class Renderer {
 		    }
 		}
 		   
-		try {
+		try {			
 		    ImageIO.write(image, format, file);
-		} catch (IOException e) { e.printStackTrace(); }
+		} catch (IOException e) { 
+			e.printStackTrace(); 
+		}
 		
 	}
 	

@@ -1,8 +1,8 @@
 package models.seeds;
 
-import math.vectors.Vector2f;
+import java.util.Random;
+
 import math.vectors.Vector3f;
-import math.vectors.Vector4f;
 import utils.Const;
 
 public class SuperGrid {
@@ -34,6 +34,8 @@ public class SuperGrid {
 	
 	private int[] hexCenterIndices;
 	
+	private Random random;
+	
 	
 	//*************************** constructor **********************************
 	
@@ -45,6 +47,7 @@ public class SuperGrid {
 		this.triEdgeLength = triEdgeLength;
 		this.elr = elr;
 		this.elevation = elevation;
+		this.random = new Random();
 		
 		calculations();
 		processVectors();
@@ -66,13 +69,8 @@ public class SuperGrid {
 	}
 	
 	
-	private Vector3f toTexCoords(float x, float y, float z) {
-		// TODO: more elegant solution.
-		float texX = x / width / 1.3290043f;
-		float texY = y / length / 0.7471637f;
-		float texZ = z;
-		
-		return new Vector3f(texX, texY, texZ);		
+	private Vector3f toTexCoords(float x, float y, float z) {		
+		return new Vector3f(x, y, z * (1f + (float)random.nextGaussian() * 0.25f));		
 	}
 	
 

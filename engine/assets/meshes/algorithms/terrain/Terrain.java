@@ -33,7 +33,7 @@ public class Terrain extends Mesh3D {
 	 * @param depth The noise defining the terrain's landscape. The values
 	 * have to range between -1 and 1.
 	 */
-	public static Terrain generate(int width, int height, ElevationFunction depthFunc) {		
+	public static Terrain generate(int width, int height, ElevationFunction2D depthFunc) {		
 		FloatBuffer positions = BufferUtils.createFloatBuffer(height * width * 3);
 		FloatBuffer texCoords = BufferUtils.createFloatBuffer(height * width * 2);
 		FloatBuffer normals = BufferUtils.createFloatBuffer(height * width * 3);
@@ -83,19 +83,6 @@ public class Terrain extends Mesh3D {
 		terrain.setIndexBuffer(indices);
 		
 		return terrain;
-	}
-	
-	
-	/**
-	 * 
-	 * Generates a terrain Mesh using the noise to define the depth. 
-	 * The vertices' x, y and z position values will range from -1 to 1.
-	 * 
-	 * @param depth The noise defining the terrain's landscape. The values
-	 * have to range between -1 and 1.
-	 */
-	public static Terrain generate(ElevationFunction depthFunc) {
-		return generate(depthFunc.getWidth(), depthFunc.getHeight(), depthFunc);
 	}
 	
 	

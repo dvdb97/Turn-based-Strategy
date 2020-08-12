@@ -1,9 +1,11 @@
 package assets.meshes.algorithms.terrain;
 
+import assets.textures.Texture2D;
 import assets.textures.utils.Image;
 import assets.textures.utils.ImageLoader;
+import math.MathUtils;
 
-public class Heightmap implements ElevationFunction {
+public class Heightmap implements ElevationFunction2D {
 	
 	private int width, height;
 	
@@ -37,26 +39,43 @@ public class Heightmap implements ElevationFunction {
 		}
 	}
 	
-	
-	@Override
-	public float getDepth(int x, int y) {
-		if (y < 0 || y >= hmap.length)
-			return 0.0f;
+	private float getValue(int y, int x) {
+		if (y < 0 || y >= getHeight()) {
+			return 0f;
+		}
 		
-		if (x < 0 || x >= hmap[y].length)
-			return 0.0f;
+		if (x < 0 || x >= getWidth()) {
+			return 0f;
+		}
 		
-		return hmap[height - 1 - y][x];
+		return hmap[y][x];
 	}
 
 	@Override
+	public float getDepth(float x, float y) {
+		int x0 = MathUtils.floor(x * (getWidth() - 1));
+		int y0 = MathUtils.floor(y * (getHeight() - 1));
+		
+		int x1 = MathUtils.ceil(x * (getWidth() - 1));
+		int y1 = MathUtils.ceil(y * (getHeight() - 1));
+		
+		float tx = x - x0;
+		float ty = y - y0;
+		
+		return MathUtils.blerp(tx, ty, getValue(y0, x0), getValue(y0, x1), getValue(y1, x0), getValue(y1, x1));
+	}
+
+	@Override
+	public Texture2D toTexture2D() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
 
-	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
 		return height;
 	}
 

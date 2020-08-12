@@ -89,10 +89,8 @@ public class ModelCreater {
 	private void createTerrain() {
 		
 		Material mat = new Material(Color.WHITE, Vector3f.ZERO, new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f), new Vector3f(0.2f, 0.2f, 0.2f), 256f);
-		mat.castShadows = true;		
+		mat.castShadows = false;		
 		terrain = new TriangleGrid(superGrid, new TerrainCol(), mat, false);
-		
-		//Texture2D texture = new Texture2D("res/Textures/Homer.jpg");
 		Texture3D texture = new TerrainTexture();
 		
 		terrain.setTexture(texture);

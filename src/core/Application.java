@@ -1,11 +1,14 @@
 package core;
 
+import org.lwjgl.glfw.GLFW;
+
 import core.game.Game;
 import core.saves.StartParams;
 import graphics.matrices.Matrices;
 import gui_core.GUIManager;
 import interaction.Window;
 import interaction.input.CursorPosInput;
+import interaction.input.KeyEventManager;
 import interaction.input.KeyInputHandler;
 import interaction.input.MouseInputManager;
 import math.vectors.Vector4f;
@@ -45,7 +48,11 @@ public class Application {
 		Renderer.enableDepthTest();
 		Renderer.setSwapInterval(1);
 		
-		Matrices.initProjectionMatrix(window);		
+		//TODO: Deprecated?
+		Matrices.initProjectionMatrix(window);
+		
+		KeyInputHandler.getKeyEventManager()
+					   .addKeyDownEventListener(GLFW.GLFW_KEY_ENTER, key -> Renderer.takeScreenshot("screenshots", "png"));
 	}
 	
 	
