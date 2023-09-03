@@ -17,7 +17,7 @@ This is another screenshot taken during the implementation of shadows. This time
 
 # Skyboxes, reflections and ... art?!
 
-![Reflections]{https://github.com/dvdb97/Turn-based-Strategy/blob/master/screenshots/screenshot_2018-12-03-11-52.png}
+![Reflections](https://github.com/dvdb97/Turn-based-Strategy/blob/master/screenshots/screenshot_2018-12-03-11-52.png)
 
 This screenshot was taken during our experiments with skyboxes and reflections. The 3D model used here is Blender's [Suzanne](https://www.dummies.com/article/technology/software/animation-software/blender/meet-suzanne-the-blender-monkey-142918/).
 
